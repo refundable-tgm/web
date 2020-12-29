@@ -1,12 +1,182 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+  <div id="main-content">
+    <Login
+      v-if="currentComponent == 'Login'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
+    <Index
+      v-if="currentComponent == 'Index'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
+    <NewApplication
+      v-if="currentComponent == 'NewApplication'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
+    <School
+      v-if="currentComponent == 'School'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
+    <Others
+      v-if="currentComponent == 'Others'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
   </div>
 </template>
+
+<script>
+import axios from "axios";
+import Index from "@/components/Index.vue";
+import Login from "@/components/Login.vue";
+import NewApplication from "@/components/NewApplication.vue";
+import School from "@/components/new/School.vue";
+import Others from "@/components/new/Others.vue";
+export default {
+  components: {
+    Index,
+    Login,
+    NewApplication,
+    School,
+    Others
+  },
+  data() {
+    return {
+      // url is the link from the REST-API
+      url: "Michi Link",
+      data: Object,
+      //currentHeader: Header,
+      //currentFooter: Footer,
+      currentComponent: ""
+    };
+  },
+  methods: {
+    /*
+      Request function for specific data from the REST-API
+
+      link: The specific data that is requested
+    */
+    getData(link) {
+      axios.get(this.url + "/" + link).then(response => {
+        this.data = response.data;
+      });
+    },
+    changeComponent(component, back = true, application = null) {
+      switch (component) {
+        case "Login":
+          this.change("Login", back);
+          break;
+
+        case "Index":
+          this.change("Index", back);
+          break;
+        case "Application":
+          this.loadApplication(application);
+          this.change("Application", back);
+          break;
+        case "NewApplication":
+          this.change("NewApplication", back);
+          console.log("NEW APPLICATION!");
+          break;
+        case "AllApplication":
+          //this.change("allApplication", back);
+          console.log("ALL APPLICATIONS!");
+          break;
+        case "CurrentApplication":
+          //this.change("currentApplication", back);
+          console.log("CURRENT APPLICATIONS!");
+          break;
+        case "School":
+          this.change("School", back);
+          break;
+        case "Others":
+          this.change("Others", back);
+          break;
+        default:
+          console.log("DEFAULT");
+          console.log(component);
+        //this.change("Login", back)
+      }
+    },
+    change(page, back = true) {
+      this.currentComponent = page;
+      if (back) {
+        if (window.history.state !== page) {
+          window.history.pushState(page, null);
+        }
+      }
+      this.setCookie(page);
+    },
+    loadApplication(application) {
+      if (application) console.log("egal");
+      console.log("Load Application data from backend");
+    },
+    generateState(state) {
+      let output = "";
+      for (let i = 0; i < 100; i++) {
+        if (state[i] === undefined) {
+          return output;
+        } else output += state[i];
+      }
+    },
+    checkCookie() {
+      var name = "current=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return true;
+        }
+      }
+      return false;
+    },
+    getCookie() {
+      var name = "current=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    },
+    setCookie(value) {
+      var d = new Date();
+      d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
+      var expires = "expires=" + d.toUTCString();
+      document.cookie =
+        "current=" + value + ";" + expires + ";SameSite=Strict;path=/";
+    }
+  },
+  created() {
+    window.addEventListener("popstate", e => {
+      this.changeComponent(this.generateState(e.state), false);
+    });
+    if (this.checkCookie()) {
+      var c = this.getCookie();
+      if (c == this.generateState(window.history.state)) {
+        this.changeComponent(c, false);
+      } else {
+        this.changeComponent(c);
+      }
+    } else {
+      this.changeComponent("Login");
+    }
+  }
+};
+</script>
 
 <style lang="scss">
 #app {
