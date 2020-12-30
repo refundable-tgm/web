@@ -35,6 +35,7 @@ import Login from "@/components/Login.vue";
 import NewApplication from "@/components/NewApplication.vue";
 import School from "@/components/new/School.vue";
 import Others from "@/components/new/Others.vue";
+
 export default {
   components: {
     Index,
@@ -73,28 +74,35 @@ export default {
         case "Index":
           this.change("Index", back);
           break;
+
         case "Application":
           this.loadApplication(application);
           this.change("Application", back);
           break;
+
         case "NewApplication":
           this.change("NewApplication", back);
           console.log("NEW APPLICATION!");
           break;
+
         case "AllApplication":
           //this.change("allApplication", back);
           console.log("ALL APPLICATIONS!");
           break;
+
         case "CurrentApplication":
           //this.change("currentApplication", back);
           console.log("CURRENT APPLICATIONS!");
           break;
+
         case "School":
           this.change("School", back);
           break;
+
         case "Others":
           this.change("Others", back);
           break;
+
         default:
           console.log("DEFAULT");
           console.log(component);
@@ -117,9 +125,11 @@ export default {
     generateState(state) {
       let output = "";
       for (let i = 0; i < 100; i++) {
-        if (state[i] === undefined) {
-          return output;
-        } else output += state[i];
+        if (state != undefined) {
+          if (state[i] === undefined) {
+            return output;
+          } else output += state[i];
+        }
       }
     },
     checkCookie() {
