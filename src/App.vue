@@ -97,10 +97,12 @@ export default {
 
         case "School":
           this.change("School", back);
+          console.log("SCHOOL!");
           break;
 
         case "Others":
           this.change("Others", back);
+          console.log("OTHERS!");
           break;
 
         default:

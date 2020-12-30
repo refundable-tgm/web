@@ -8,7 +8,7 @@
               id="new"
               cols="12"
               class="shadow-xl dash-elem"
-              v:on:click="newApplication()"
+              v-on:click="newApplication"
             >
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
@@ -30,7 +30,7 @@
               id="current"
               cols="12"
               class="shadow-xl dash-elem"
-              v:on:click="currentApplication()"
+              v-on:click="currentApplication"
             >
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
@@ -52,7 +52,7 @@
               id="all"
               cols="12"
               class="shadow-xl dash-elem"
-              v:on:click="allApplication()"
+              v-on:click="allApplication"
             >
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
