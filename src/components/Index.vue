@@ -1,7 +1,60 @@
 <template>
   <b-container fluid>
     <b-row id="index-row" align-h="center" align-v="center">
-      <b-col id="dash-main-cont" cols="12" md="4">
+      <b-col class="d-block d-md-none" cols="12">
+        <b-container fluid>
+          <b-row align-v="center" align-h="center">
+            <b-col cols="12">
+              <center><h1 style="margin-top:10px;">Dashboard</h1></center>
+            </b-col>
+            <b-col cols="12">
+              <b-button
+                variant="outline-primary"
+                class="float-right"
+                v-on:click="logout"
+                style="margin-top:0px; margin-bottom:40px; width:100%"
+              >
+                <b-icon icon="person" aria-hidden="true"></b-icon> Ausloggen
+              </b-button>
+            </b-col>
+
+            <b-col cols="12"
+              ><b-button
+                size="lg"
+                variant="outline-primary"
+                v-on:click="newApplication"
+                style="margin-bottom:15px; width:100%"
+              >
+                <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Neuer
+                Antrag
+              </b-button></b-col
+            >
+            <b-col cols="12"
+              ><b-button
+                size="lg"
+                variant="outline-primary"
+                v-on:click="currentApplication"
+                style="margin-bottom:15px; width:100%"
+              >
+                <b-icon icon="clock" aria-hidden="true"></b-icon> Aktuelle
+                Anträge
+              </b-button></b-col
+            >
+            <b-col cols="12"
+              ><b-button
+                size="lg"
+                variant="outline-primary"
+                v-on:click="allApplication"
+                style="margin-bottom:30px; width:100%"
+              >
+                <b-icon icon="file-earmark-zip" aria-hidden="true"></b-icon>
+                Alle Anträge
+              </b-button></b-col
+            >
+          </b-row>
+        </b-container>
+      </b-col>
+      <b-col id="dash-main-cont" class="d-none d-md-block" cols="12" md="4">
         <b-container>
           <b-row id="dash-row" align-v="center" align-h="center">
             <b-col
@@ -13,8 +66,12 @@
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
                   <b-col cols="6" class="ill-wrapper d-none d-md-block">
-                    <b-img id="all-ill" center src="@/assets/new.svg" alt="Illustration für alle Anträge"></b-img>
-                    
+                    <b-img
+                      id="all-ill"
+                      center
+                      src="@/assets/new.svg"
+                      alt="Illustration für alle Anträge"
+                    ></b-img>
                   </b-col>
                   <b-col cols="12" md="6">
                     <h2 id="new-h2" class="dh">Neuer Antrag</h2>
@@ -123,13 +180,13 @@ import NewsElement from "@/components/NewsElement.vue";
 export default {
   name: "Index",
   components: {
-    NewsElement
+    NewsElement,
   },
   props: ["url"],
   data() {
     return {
       news: "",
-      maxnews: 10
+      maxnews: 10,
     };
   },
   methods: {
@@ -147,7 +204,7 @@ export default {
         { id: "7", title: "TEST 7", description: "Das ist nur Test Nr. 7" },
         { id: "8", title: "TEST 8", description: "Das ist nur Test Nr. 8" },
         { id: "9", title: "TEST 9", description: "Das ist nur Test Nr. 9" },
-        { id: "10", title: "TEST 10", description: "Das ist nur Test Nr. 10" }
+        { id: "10", title: "TEST 10", description: "Das ist nur Test Nr. 10" },
       ];
       this.news = this.cutNews(back);
     },
@@ -187,21 +244,16 @@ export default {
       }
     },
     checkClick() {
-      if (
-        window
-          .getSelection()
-          .toString()
-          .trim() === ""
-      ) {
+      if (window.getSelection().toString().trim() === "") {
         return true;
       } else {
         return false;
       }
-    }
+    },
   },
   created() {
     this.setNews();
-  }
+  },
 };
 </script>
 <style lang="scss">
