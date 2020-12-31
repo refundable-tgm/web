@@ -142,6 +142,10 @@
 
 /* -- Index -- */
 
+.dh{
+  font-size: 1.5rem;
+}
+
 #dash-main-cont {
   height: 80vh;
 }

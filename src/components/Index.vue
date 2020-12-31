@@ -21,7 +21,7 @@
                     />
                   </b-col>
                   <b-col cols="6">
-                    <h2 id="new-h2" class="text-truncate">Neuer Antrag</h2>
+                    <h2 id="new-h2" class="dh">Neuer Antrag</h2>
                   </b-col>
                 </b-row>
               </b-container>
@@ -43,7 +43,7 @@
                     />
                   </b-col>
                   <b-col cols="6">
-                    <h2 id="new-h2" class="text-truncate">Aktuelle Anträge</h2>
+                    <h2 id="new-h2" class="dh">Aktuelle Anträge</h2>
                   </b-col>
                 </b-row>
               </b-container>
@@ -65,7 +65,7 @@
                     />
                   </b-col>
                   <b-col cols="6">
-                    <h2 id="new-h2" class="text-truncate">Alle Anträge</h2>
+                    <h2 id="new-h2" class="dh">Alle Anträge</h2>
                   </b-col>
                 </b-row>
               </b-container>
