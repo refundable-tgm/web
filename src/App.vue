@@ -25,6 +25,11 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
     />
+    <Escorts
+      v-if="currentComponent == 'Escorts'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
   </div>
 </template>
 
@@ -35,6 +40,7 @@ import Login from "@/components/Login.vue";
 import NewApplication from "@/components/NewApplication.vue";
 import School from "@/components/new/School.vue";
 import Others from "@/components/new/Others.vue";
+import Escorts from "@/components/new/Escorts.vue";
 
 export default {
   components: {
@@ -42,7 +48,8 @@ export default {
     Login,
     NewApplication,
     School,
-    Others
+    Others,
+    Escorts
   },
   data() {
     return {
@@ -103,6 +110,11 @@ export default {
         case "Others":
           this.change("Others", back);
           console.log("OTHERS!");
+          break;
+
+        case "Escorts":
+          this.change("Escorts", back);
+          console.log("ESCORTS!");
           break;
 
         default:

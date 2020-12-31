@@ -198,7 +198,11 @@
                   no-resize
                 ></b-form-textarea>
               </b-form-group>
-              <center><button class="blueish-gradiant">weiter</button></center>
+              <center>
+                <button v-on:click="next()" class="blueish-gradiant">
+                  weiter
+                </button>
+              </center>
             </b-col>
           </b-row>
         </b-container>
@@ -234,6 +238,9 @@ export default {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
+    },
+    next() {
+      if (this.checkClick()) [this.changeComponent("Escorts")];
     },
   },
   data() {
