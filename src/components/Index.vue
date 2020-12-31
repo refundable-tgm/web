@@ -12,15 +12,11 @@
             >
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
-                  <b-col cols="6" class="ill-wrapper">
-                    <img
-                      src="@/assets/new.svg"
-                      id="all-ill"
-                      class="img-fluid"
-                      alt="Illustration für alle Anträge"
-                    />
+                  <b-col cols="6" class="ill-wrapper d-none d-md-block">
+                    <b-img id="all-ill" center src="@/assets/new.svg" alt="Illustration für alle Anträge"></b-img>
+                    
                   </b-col>
-                  <b-col cols="6">
+                  <b-col cols="12" md="6">
                     <h2 id="new-h2" class="dh">Neuer Antrag</h2>
                   </b-col>
                 </b-row>
@@ -34,7 +30,7 @@
             >
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
-                  <b-col cols="6" class="ill-wrapper">
+                  <b-col cols="6" class="ill-wrapper d-none d-md-block">
                     <img
                       src="@/assets/current.svg"
                       id="all-ill"
@@ -56,7 +52,7 @@
             >
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
-                  <b-col cols="6" class="ill-wrapper">
+                  <b-col cols="6" class="ill-wrapper d-none d-md-block">
                     <img
                       src="@/assets/all.svg"
                       id="all-ill"
@@ -73,8 +69,8 @@
           </b-row>
         </b-container>
       </b-col>
-      <b-col id="media-main-cont" cols="12" md="4">
-        <b-container>
+      <b-col id="media-main-cont" cols="12" md="4" class="d-none d-md-block">
+        <b-container class="">
           <b-row id="media-row" align-h="center" align-v="center">
             <img
               id="profile"

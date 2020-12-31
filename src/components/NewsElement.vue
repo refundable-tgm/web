@@ -7,7 +7,7 @@
     >
       <b-col cols="12">
         <b-container>
-          <b-row>
+          <b-row align-v="center">
             <b-col cols="2">
               <b-container style="height: 100%">
                 <b-row align-v="center" align-h="center" style="height: 100%">
@@ -22,12 +22,12 @@
             </b-col>
             <b-col cols="10">
               <b-container>
-                <b-row align-h="center">
+                <b-row align-h="center" align-v="center">
                   <b-col cols="12">
                     <h3 class="news-elem-heading">{{ snews.title }}</h3>
                   </b-col>
                 </b-row>
-                <b-row align-h="center">
+                <b-row align-h="center" class="d-none d-md-block">
                   <b-col cols="12">
                     <h4 class="news-elem-heading">{{ snews.description }}</h4>
                   </b-col>
