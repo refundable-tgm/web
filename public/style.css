@@ -298,10 +298,11 @@
 }
 
 #na-srow {
-  height: 80vh;
+  margin-top: 15%;
+  margin-bottom: 5%;
 }
 
-na-elem {
+.na-elem {
   background-color: rgb(255, 255, 255);
   height: 6rem;
   transition: all 0.3s ease 0s;
@@ -324,6 +325,6 @@ na-elem {
   height: 100%;
 }
 
-.breadcrumb {
-  background-color: white;
+.na-elem-h{
+  text-align: center;
 }
