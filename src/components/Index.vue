@@ -10,7 +10,7 @@
             <b-col cols="12">
               <b-button
                 variant="outline-primary"
-                class="float-right"
+                class="shadow-lg"
                 v-on:click="logout"
                 style="margin-top:0px; margin-bottom:40px; width:100%"
               >
@@ -23,7 +23,8 @@
                 size="lg"
                 variant="outline-primary"
                 v-on:click="newApplication"
-                style="margin-bottom:15px; width:100%"
+                class="shadow-lg"
+                style="margin-bottom:20px; width:100%"
               >
                 <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Neuer
                 Antrag
@@ -34,7 +35,8 @@
                 size="lg"
                 variant="outline-primary"
                 v-on:click="currentApplication"
-                style="margin-bottom:15px; width:100%"
+                class="shadow-lg"
+                style="margin-bottom:20px; width:100%"
               >
                 <b-icon icon="clock" aria-hidden="true"></b-icon> Aktuelle
                 Anträge
@@ -45,6 +47,7 @@
                 size="lg"
                 variant="outline-primary"
                 v-on:click="allApplication"
+                class="shadow-lg"
                 style="margin-bottom:30px; width:100%"
               >
                 <b-icon icon="file-earmark-zip" aria-hidden="true"></b-icon>
@@ -154,11 +157,27 @@
           </b-row>
         </b-container>
       </b-col>
-      <b-col id="news-main-cont" cols="12" md="4">
+      <b-col id="news-main-cont" class="d-none d-md-block" cols="12" md="4">
         <b-container id="news-cont" class="shadow-xl">
           <b-row id="news-row-heading" align-h="center">
             <b-col cols="12">
               <h2 id="news-h2">Neuigkeiten</h2>
+            </b-col>
+            <NewsElement
+              class="news-elem"
+              v-for="snews in news"
+              v-bind:key="snews.id"
+              v-bind:snews="snews"
+              v-on:change-component="changeComponent"
+            />
+          </b-row>
+        </b-container>
+      </b-col>
+      <b-col id="news-main-cont-mobile" class="d-block d-md-none" cols="12" md="4">
+        <b-container id="news-cont-mobile" class="shadow-lg" fluid>
+          <b-row id="news-row-heading-mobile" align-h="center">
+            <b-col cols="12">
+              <h2 id="news-h2-mobile">Neuigkeiten</h2>
             </b-col>
             <NewsElement
               class="news-elem"
