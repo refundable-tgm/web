@@ -7,13 +7,19 @@
             <b-col cols="12" md="6">
               <h1 id="new-application-heading">Neuen Antrag erstellen</h1>
             </b-col>
-            <div class="col-12 col-md-6" >
-              <button type="button" class="btn btn-outline-primary float-right" v-on:click="index()">Startseite</button>
+            <div class="col-12 col-md-6">
+              <b-button variant="outline-primary" class="float-right" v-on:click="index()">
+                <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
+              </b-button>
+              
             </div>
           </b-row>
           <b-row>
             <b-col cols="12">
-              <b-breadcrumb style="background-color:white" :items="items"></b-breadcrumb>
+              <b-breadcrumb
+                style="background-color: white"
+                :items="items"
+              ></b-breadcrumb>
             </b-col>
           </b-row>
           <b-row id="na-srow" align-h="center" align-v="center">
@@ -30,7 +36,12 @@
                 </b-row>
               </b-container>
               <b-container id="na-elem-2" class="na-elem shadow-xl">
-                <b-row class="na-elem-sr" align-h="center" align-v="center" v-on:click="other()">
+                <b-row
+                  class="na-elem-sr"
+                  align-h="center"
+                  align-v="center"
+                  v-on:click="other()"
+                >
                   <b-col cols="12">
                     <h2 class="na-elem-h">Fortbildung, etc.</h2>
                   </b-col>
@@ -51,12 +62,7 @@ export default {
       this.$emit("change-component", component, back, application);
     },
     checkClick() {
-      if (
-        window
-          .getSelection()
-          .toString()
-          .trim() === ""
-      ) {
+      if (window.getSelection().toString().trim() === "") {
         return true;
       } else {
         return false;
@@ -76,7 +82,7 @@ export default {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
-    }
+    },
   },
   data() {
     return {
@@ -91,10 +97,10 @@ export default {
         //},
         {
           text: "Antrag Übersicht",
-          active: true
-        }
-      ]
+          active: true,
+        },
+      ],
     };
-  }
+  },
 };
 </script>
