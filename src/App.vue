@@ -39,6 +39,7 @@
       v-if="currentComponent == 'Escorts'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:escorts="escortsdata"
     />
     <OtherCause
       v-if="currentComponent == 'OtherCause'"
@@ -100,7 +101,8 @@ export default {
       data: Object,
       //currentHeader: Header,
       //currentFooter: Footer,
-      currentComponent: ""
+      currentComponent: "",
+      escortsdata: Object
     };
   },
   methods: {
@@ -114,7 +116,12 @@ export default {
         this.data = response.data;
       });
     },
-    changeComponent(component, back = true, application = null) {
+    changeComponent(
+      component,
+      back = true,
+      application = null,
+      escortsdata = null
+    ) {
       switch (component) {
         case "Login":
           this.change("Login", back);
@@ -155,7 +162,8 @@ export default {
           break;
 
         case "Escorts":
-          this.change("Escorts", back);
+          this.loadEscortsData(escortsdata);
+          this.change("Escorts", false);
           console.log("ESCORTS!");
           break;
 
@@ -185,16 +193,53 @@ export default {
     },
     change(page, back = true) {
       this.currentComponent = page;
+      window.scrollTo(0, 0);
       if (back) {
         if (window.history.state !== page) {
           window.history.pushState(page, null);
         }
+        this.setCookie(page);
       }
-      this.setCookie(page);
     },
     loadApplication(application) {
       if (application) console.log("egal");
       console.log("Load Application data from backend");
+    },
+    loadEscortsData(escortsdata) {
+      let output = [];
+      let options = [];
+      for (let i = 0; i < escortsdata.class.length; i++) {
+        options.push(
+          JSON.parse(
+            '{"item":"' + i + '", "name":"' + escortsdata.class[i] + '"}'
+          )
+        );
+      }
+      for (let i = 0; i < escortsdata.teacher.length; i++) {
+        output.push(
+          JSON.parse(
+            '{"options":[],"name":"' +
+              this.getFullName(escortsdata.teacher[i]) +
+              '","startDate":"' +
+              escortsdata.startDate +
+              '","endDate":"' +
+              escortsdata.endDate +
+              '","startTime":"' +
+              escortsdata.startTime +
+              '","endTime":"' +
+              escortsdata.endTime +
+              '","selected":""}'
+          )
+        );
+        output[i].options = options;
+      }
+      escortsdata.output = output;
+      this.escortsdata = escortsdata;
+    },
+    getFullName(shortName) {
+      console.log("Request für " + shortName + " um vollen Namen zu bekommen");
+      //Request an Michi um einen vollen Namen zu bekommen
+      return shortName;
     },
     generateState(state) {
       let output = "";

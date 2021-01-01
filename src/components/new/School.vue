@@ -11,7 +11,7 @@
               <b-button
                 variant="outline-primary"
                 class="float-right"
-                v-on:click="index()"
+                v-on:click="index"
               >
                 <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
               </b-button>
@@ -36,8 +36,10 @@
                 description="Geben Sie die Bezeichnung der Schulveranstaltung ein."
                 label="Bezeichnung"
                 label-for="bezeichnung"
+                v-model="data.description"
               >
-                <b-form-input id="bezeichnung"></b-form-input>
+                <b-form-input id="bezeichnung" v-model="data.description">
+                </b-form-input>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -51,7 +53,7 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="value"
+                  v-model="data.startDate"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -68,7 +70,7 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="value"
+                  v-model="data.startTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -85,7 +87,7 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="value"
+                  v-model="data.endDate"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -102,7 +104,7 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="value"
+                  v-model="data.endTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -120,7 +122,7 @@
                 <b-form-tags
                   id="begl"
                   input-id="tags-pills"
-                  v-model="value"
+                  v-model="data.teacher"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -140,7 +142,7 @@
                 <b-form-tags
                   id="kl"
                   input-id="tags-pills"
-                  v-model="value"
+                  v-model="data.class"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -160,8 +162,9 @@
                 <b-form-input
                   id="aschueler"
                   type="number"
-                  min="1"
+                  min="0"
                   max="3000"
+                  v-model="data.count_student_male"
                 ></b-form-input>
               </b-form-group>
               <b-form-group
@@ -177,8 +180,9 @@
                 <b-form-input
                   id="aschuelerin"
                   type="number"
-                  min="1"
+                  min="0"
                   max="3000"
+                  v-model="data.count_student_female"
                 ></b-form-input>
               </b-form-group>
               <b-form-group
@@ -196,10 +200,11 @@
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
+                  v-model="data.notes"
                 ></b-form-textarea>
               </b-form-group>
               <center>
-                <button v-on:click="next()" class="blueish-gradiant">
+                <button v-on:click="next" class="blueish-gradiant">
                   weiter
                 </button>
               </center>
@@ -214,8 +219,13 @@
 export default {
   name: "NewApplication",
   methods: {
-    changeComponent(component, back = true, application = null) {
-      this.$emit("change-component", component, back, application);
+    changeComponent(
+      component,
+      back = true,
+      application = null,
+      escortsdata = null
+    ) {
+      this.$emit("change-component", component, back, application, escortsdata);
     },
     checkClick() {
       if (
@@ -229,23 +239,15 @@ export default {
         return false;
       }
     },
-    school() {
-      if (this.checkClick()) {
-        this.changeComponent("School");
-      }
-    },
-    other() {
-      if (this.checkClick()) {
-        this.changeComponent("Others");
-      }
-    },
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
     },
     next() {
-      if (this.checkClick()) [this.changeComponent("Escorts")];
+      if (this.checkClick()) {
+        this.changeComponent("Escorts", true, null, this.data);
+      }
     }
   },
   data() {
@@ -263,7 +265,19 @@ export default {
           text: "Schulveranstaltung - Allg. Infos",
           active: true
         }
-      ]
+      ],
+      data: {
+        description: "",
+        teacher: [],
+        class: [],
+        startDate: "",
+        startTime: "",
+        endDate: "",
+        endTime: "",
+        count_student_male: 0,
+        count_student_female: 0,
+        notes: ""
+      }
     };
   }
 };

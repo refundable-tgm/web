@@ -11,7 +11,7 @@
               <b-button
                 variant="outline-primary"
                 class="float-right"
-                v-on:click="index()"
+                v-on:click="index"
               >
                 <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
               </b-button>
@@ -95,8 +95,6 @@
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
               </b-form-group>
-              
-              
               <b-form-group
                 id="grund"
                 label-cols-sm="4"
@@ -106,6 +104,7 @@
                 description="Wählen Sie Ihren Grund aus."
                 label="Gründe"
                 label-for="gr"
+                v-model="selected"
               >
                 <b-form-radio-group
                   id="gr"
@@ -126,6 +125,7 @@
                 description="Geben Sie den Grund an."
                 label="Sonstiger Grund"
                 label-for="son"
+                v-if="selected == 'D'"
               >
                 <b-form-input id="son"></b-form-input>
               </b-form-group>
@@ -138,6 +138,7 @@
                 description="Geben Sie den Titel des Dienstauftrages ein."
                 label="Titel"
                 label-for="tit"
+                v-if="selected == 'B'"
               >
                 <b-form-input id="tit"></b-form-input>
               </b-form-group>
@@ -150,6 +151,7 @@
                 description="Geben Sie die GZ des Dienstauftrages ein."
                 label="GZ"
                 label-for="gzn"
+                v-if="selected == 'B'"
               >
                 <b-form-input id="gzn" type="number"></b-form-input>
               </b-form-group>
@@ -201,23 +203,10 @@ export default {
         return false;
       }
     },
-    school() {
-      if (this.checkClick()) {
-        this.changeComponent("School");
-      }
-    },
-    other() {
-      if (this.checkClick()) {
-        this.changeComponent("Others");
-      }
-    },
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
-    },
-    next() {
-      if (this.checkClick()) [this.changeComponent("Escorts")];
     }
   },
   data() {

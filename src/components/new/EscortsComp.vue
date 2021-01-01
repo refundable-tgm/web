@@ -2,7 +2,9 @@
   <b-container fluid>
     <b-row>
       <b-col cols="12">
-        <center><h2>Ganzer Name</h2></center>
+        <center>
+          <h2>{{ escort.name }}</h2>
+        </center>
 
         <b-form-group
           id="startd"
@@ -16,7 +18,8 @@
         >
           <b-form-datepicker
             id="std"
-            v-model="value"
+            v-model="escort.startDate"
+            v-on:input="changeStartDate"
             class="mb-2"
             placeholder="Datum auswählen"
           ></b-form-datepicker>
@@ -33,7 +36,8 @@
         >
           <b-form-timepicker
             id="stz"
-            v-model="value"
+            v-model="escort.startTime"
+            v-on:input="changeStartTime"
             locale="de"
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
@@ -50,7 +54,8 @@
         >
           <b-form-datepicker
             id="end"
-            v-model="value"
+            v-model="escort.endDate"
+            v-on:input="changeEndDate"
             class="mb-2"
             placeholder="Datum auswählen"
           ></b-form-datepicker>
@@ -67,7 +72,8 @@
         >
           <b-form-timepicker
             id="enz"
-            v-model="value"
+            v-model="escort.endTime"
+            v-on:input="changeEndTime"
             locale="de"
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
@@ -83,9 +89,10 @@
           label-for="gr"
         >
           <b-form-radio-group
-            id="gr"
-            v-model="selected"
-            :options="options"
+            :id="escort.id"
+            v-model="escort.selected"
+            v-on:change="changeSelected"
+            :options="escort.options"
             class="mb-3"
             value-field="item"
             text-field="name"
@@ -99,15 +106,28 @@
 
 <script>
 export default {
+  props: ["escort", "index"],
   data() {
     return {
-      selected: "B",
-      options: [
-        { item: "A", name: "L1" },
-        { item: "B", name: "L2" },
-        { item: "D", name: "L3" },
-      ],
+      selected: ""
     };
   },
+  methods: {
+    changeStartTime() {
+      this.$emit("startTime", this.index, this.escort.startTime);
+    },
+    changeStartDate() {
+      this.$emit("startDate", this.index, this.escort.startDate);
+    },
+    changeEndDate() {
+      this.$emit("endDate", this.index, this.escort.endDate);
+    },
+    changeEndTime() {
+      this.$emit("endTime", this.index, this.escort.endTime);
+    },
+    changeSelected() {
+      this.$emit("selected", this.index, this.escort.selected);
+    }
+  }
 };
 </script>

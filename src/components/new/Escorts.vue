@@ -11,7 +11,7 @@
               <b-button
                 variant="outline-primary"
                 class="float-right"
-                v-on:click="index()"
+                v-on:click="index"
               >
                 <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
               </b-button>
@@ -27,12 +27,19 @@
           </b-row>
           <b-row align-h="center">
             <b-col cols="12" md="8">
-              <EscortsComp />
-              <EscortsComp />
-              <EscortsComp />
-              <EscortsComp />
+              <EscortsComp
+                v-for="(escort, index) in escorts.output"
+                v-bind:escort="escort"
+                v-bind:index="index"
+                v-bind:key="escort.id"
+                v-on:startDate="changeStartDate"
+                v-on:endDate="changeEndDate"
+                v-on:startTime="changeStartTime"
+                v-on:endTime="changeEndTime"
+                v-on:selected="changeSelected"
+              />
               <center>
-                <button v-on:click="index()" class="blueish-gradiant">
+                <button v-on:click="einreichen" class="blueish-gradiant">
                   Einreichen
                 </button>
               </center>
@@ -51,6 +58,7 @@ export default {
   components: {
     EscortsComp
   },
+  props: ["escorts"],
   methods: {
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
@@ -67,23 +75,36 @@ export default {
         return false;
       }
     },
-    school() {
-      if (this.checkClick()) {
-        this.changeComponent("School");
-      }
-    },
-    other() {
-      if (this.checkClick()) {
-        this.changeComponent("Others");
-      }
-    },
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
     },
-    next() {
-      if (this.checkClick()) [this.changeComponent("Escorts")];
+    einreichen() {
+      if (this.checkClick()) {
+        //Zeugs an Michi schicken und so formatieren, dass Michi was damit anfangen kann
+        this.changeComponent("Index");
+      }
+    },
+    changeStartDate(index, newStartDate) {
+      console.log(newStartDate);
+      this.escorts.output[index].startDate = newStartDate;
+    },
+    changeEndDate(index, newEndDate) {
+      console.log(newEndDate);
+      this.escorts.output[index].endDate = newEndDate;
+    },
+    changeStartTime(index, newStartTime) {
+      console.log(newStartTime);
+      this.escorts.output[index].startTime = newStartTime;
+    },
+    changeEndTime(index, newEndTime) {
+      console.log(newEndTime);
+      this.escorts.output[index].endTime = newEndTime;
+    },
+    changeSelected(index, newSelected) {
+      console.log(newSelected);
+      this.escorts.output[index].selected = newSelected;
     }
   },
   data() {
