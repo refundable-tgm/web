@@ -218,7 +218,12 @@ export default {
       this.$emit("change-component", component, back, application);
     },
     checkClick() {
-      if (window.getSelection().toString().trim() === "") {
+      if (
+        window
+          .getSelection()
+          .toString()
+          .trim() === ""
+      ) {
         return true;
       } else {
         return false;
@@ -241,7 +246,7 @@ export default {
     },
     next() {
       if (this.checkClick()) [this.changeComponent("Escorts")];
-    },
+    }
   },
   data() {
     return {
@@ -252,14 +257,14 @@ export default {
         //},
         {
           text: "Antrag Übersicht",
-          href: "#",
+          href: "#"
         },
         {
           text: "Schulveranstaltung - Allg. Infos",
-          active: true,
-        },
-      ],
+          active: true
+        }
+      ]
     };
-  },
+  }
 };
 </script>

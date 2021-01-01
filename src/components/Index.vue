@@ -173,7 +173,12 @@
           </b-row>
         </b-container>
       </b-col>
-      <b-col id="news-main-cont-mobile" class="d-block d-md-none" cols="12" md="4">
+      <b-col
+        id="news-main-cont-mobile"
+        class="d-block d-md-none"
+        cols="12"
+        md="4"
+      >
         <b-container id="news-cont-mobile" class="shadow-lg" fluid>
           <b-row id="news-row-heading-mobile" align-h="center">
             <b-col cols="12">
@@ -199,13 +204,13 @@ import NewsElement from "@/components/NewsElement.vue";
 export default {
   name: "Index",
   components: {
-    NewsElement,
+    NewsElement
   },
   props: ["url"],
   data() {
     return {
       news: "",
-      maxnews: 10,
+      maxnews: 10
     };
   },
   methods: {
@@ -223,7 +228,7 @@ export default {
         { id: "7", title: "TEST 7", description: "Das ist nur Test Nr. 7" },
         { id: "8", title: "TEST 8", description: "Das ist nur Test Nr. 8" },
         { id: "9", title: "TEST 9", description: "Das ist nur Test Nr. 9" },
-        { id: "10", title: "TEST 10", description: "Das ist nur Test Nr. 10" },
+        { id: "10", title: "TEST 10", description: "Das ist nur Test Nr. 10" }
       ];
       this.news = this.cutNews(back);
     },
@@ -263,16 +268,21 @@ export default {
       }
     },
     checkClick() {
-      if (window.getSelection().toString().trim() === "") {
+      if (
+        window
+          .getSelection()
+          .toString()
+          .trim() === ""
+      ) {
         return true;
       } else {
         return false;
       }
-    },
+    }
   },
   created() {
     this.setNews();
-  },
+  }
 };
 </script>
 <style lang="scss">

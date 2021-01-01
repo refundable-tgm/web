@@ -30,6 +30,16 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
     />
+    <OtherCause
+      v-if="currentComponent == 'OtherCause'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
+    <Workshop
+      v-if="currentComponent == 'Workshop'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
   </div>
 </template>
 
@@ -41,6 +51,8 @@ import NewApplication from "@/components/NewApplication.vue";
 import School from "@/components/new/School.vue";
 import Others from "@/components/new/Others.vue";
 import Escorts from "@/components/new/Escorts.vue";
+import OtherCause from "@/components/new/OtherCause.vue";
+import Workshop from "@/components/new/Workshop.vue";
 
 export default {
   components: {
@@ -49,7 +61,9 @@ export default {
     NewApplication,
     School,
     Others,
-    Escorts
+    Escorts,
+    OtherCause,
+    Workshop
   },
   data() {
     return {
@@ -115,6 +129,16 @@ export default {
         case "Escorts":
           this.change("Escorts", back);
           console.log("ESCORTS!");
+          break;
+
+        case "OtherCause":
+          this.change("OtherCause", back);
+          console.log("OTHERCAUSE!");
+          break;
+
+        case "Workshop":
+          this.change("Workshop", back);
+          console.log("WORKSHOP!");
           break;
 
         default:

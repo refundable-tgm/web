@@ -142,7 +142,7 @@
 
 /* -- Index -- */
 
-.dh{
+.dh {
   text-align: center;
   font-size: 1.5rem;
 }
@@ -173,7 +173,6 @@
 #new {
   border-radius: 6rem 6rem 0 0;
 }
-
 
 #all {
   border-radius: 0 0 6rem 6rem;
@@ -241,7 +240,6 @@
   min-height: 100px;
 }
 
-
 #news-cont {
   overflow-y: scroll;
   scrollbar-width: thin;
@@ -281,7 +279,6 @@
   scrollbar-width: thin;
   padding-left: 3rem;
   padding-right: 3rem;
-  
 }
 
 #news-cont-mobile::-webkit-scrollbar {
@@ -336,7 +333,6 @@
   cursor: pointer;
 }
 
-
 .news-elem-row:hover {
   background-color: rgb(214, 214, 214);
   box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.144);
@@ -360,7 +356,7 @@
 }
 
 #na-srow {
-  margin-top: 15%;
+  margin-top: 10%;
   margin-bottom: 5%;
 }
 
@@ -379,15 +375,20 @@
   transform: translateY(3px);
 }
 
+#school-button{
+  border-radius: 3rem 3rem 0 0;
+}
+
 #na-elem-2 {
   margin-top: 2rem;
+  border-radius: 0 0 3rem 3rem;
 }
 
 .na-elem-sr {
   height: 100%;
 }
 
-.na-elem-h{
+.na-elem-h {
   text-align: center;
 }
 
