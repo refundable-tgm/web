@@ -11,7 +11,7 @@
               <b-button
                 variant="outline-primary"
                 class="float-right"
-                v-on:click="index()"
+                v-on:click="index"
               >
                 <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
               </b-button>
@@ -37,7 +37,7 @@
                 label="Titel"
                 label-for="tit"
               >
-                <b-form-input id="tit"></b-form-input>
+                <b-form-input id="tit" v-model="title"></b-form-input>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -51,7 +51,7 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="value"
+                  v-model="startDate"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -68,7 +68,7 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="value"
+                  v-model="startTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -85,7 +85,7 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="value"
+                  v-model="endDate"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -102,7 +102,7 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="value"
+                  v-model="endTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -122,6 +122,7 @@
                   type="number"
                   min="1"
                   max="3000"
+                  v-model="phNumber"
                 ></b-form-input>
               </b-form-group>
               <b-form-group
@@ -134,7 +135,7 @@
                 label="Veranstalter"
                 label-for="ver"
               >
-                <b-form-input id="ver"></b-form-input>
+                <b-form-input id="ver" v-model="veran"></b-form-input>
               </b-form-group>
               <b-form-group
                 id="art"
@@ -165,8 +166,9 @@
                 description="Geben Sie Sonstige Art ein."
                 label="Sonstige Art"
                 label-for="son"
+                v-if="selected == 'D'"
               >
-                <b-form-input id="son"></b-form-input>
+                <b-form-input id="son" v-model="son"></b-form-input>
               </b-form-group>
               <b-form-group
                 id="anmerkung"
@@ -183,10 +185,11 @@
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
+                  v-model="notes"
                 ></b-form-textarea>
               </b-form-group>
               <center>
-                <button v-on:click="index()" class="blueish-gradiant">
+                <button v-on:click="einreichen" class="blueish-gradiant">
                   Einreichen
                 </button>
               </center>
@@ -216,23 +219,28 @@ export default {
         return false;
       }
     },
-    school() {
-      if (this.checkClick()) {
-        this.changeComponent("School");
-      }
-    },
-    other() {
-      if (this.checkClick()) {
-        this.changeComponent("Others");
-      }
-    },
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
     },
-    next() {
-      if (this.checkClick()) [this.changeComponent("Escorts")];
+    einreichen() {
+      if (this.checkClick()) {
+        /*
+        Variablen:
+          this.title
+          this.startDate
+          this.startTime
+          this.endDate
+          this.endTime
+          this.phNumber
+          this.veran
+          this.selected
+          this.son (Wenn Sonstiges angedrückt ist)
+          this.notes
+        */
+        this.changeComponent("Index");
+      }
     }
   },
   data() {
