@@ -221,10 +221,12 @@
 }
 
 #media-main-cont {
+  /**height: 83vh;**/
   height: 100vh;
 }
 
 #media-row {
+  /**height: 83vh;**/
   height: 100vh;
 }
 

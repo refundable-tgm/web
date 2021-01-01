@@ -132,7 +132,7 @@
       <b-col id="media-main-cont" cols="12" md="4" class="d-none d-md-block">
         <b-container class="">
           <b-row id="media-row" align-h="center" align-v="center">
-            <img
+            <!--<img
               id="profile"
               v-on:click="logout"
               src="@/assets/account.jpg"
@@ -141,19 +141,28 @@
               data-toggle="tooltip"
               data-placement="top"
               title="Klicken Sie hier um sich ausloggen zu können!"
-            />
+            />-->
+
+            <img src="@/assets/logo.svg" alt="" id="logo" class="img-fluid" />
             <img
               src="@/assets/brainstorming.jpg"
               class="img-fluid"
               id="dash-img"
               alt="Illustration von arbeitenden Personen"
             />
-            <img
-              src="@/assets/logo.svg"
-              alt=""
-              id="logo"
-              class="img-fluid shadow-lg rounded-circle"
-            />
+            <b-button
+              v-on:click="admin"
+              class="shadow-lg"
+              variant="outline-info"
+              style="margin-right:1rem"
+              >Admin Ansicht</b-button
+            >
+            <b-button
+              v-on:click="logout"
+              class="shadow-lg"
+              variant="outline-danger"
+              >Abmelden</b-button
+            >
           </b-row>
         </b-container>
       </b-col>
