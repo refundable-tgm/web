@@ -9,12 +9,23 @@
             </b-col>
             <b-col cols="12">
               <b-button
-                variant="outline-primary"
+                variant="outline-danger"
                 class="shadow-lg"
                 v-on:click="logout"
-                style="margin-top:0px; margin-bottom:40px; width:100%"
+                style="margin-top:0px; margin-bottom:20px; width:100%"
               >
                 <b-icon icon="person" aria-hidden="true"></b-icon> Ausloggen
+              </b-button>
+            </b-col>
+
+            <b-col cols="12">
+              <b-button
+                variant="outline-primary"
+                class="shadow-lg"
+                v-on:click="admin"
+                style="margin-top:0px; margin-bottom:40px; width:100%"
+              >
+                Admin Ansicht
               </b-button>
             </b-col>
 
