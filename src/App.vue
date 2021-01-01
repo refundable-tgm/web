@@ -50,6 +50,16 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
     />
+    <ApplicationView
+      v-if="currentComponent == 'ApplicationView'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
+    <ApplicationSearch
+      v-if="currentComponent == 'ApplicationSearch'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
   </div>
 </template>
 
@@ -60,6 +70,8 @@ import Login from "@/components/Login.vue";
 import NewApplication from "@/components/NewApplication.vue";
 import AllApplication from "@/components/AllApplication.vue";
 import CurrentApplication from "@/components/CurrentApplication.vue";
+import ApplicationView from "@/components/ApplicationView.vue";
+import ApplicationSearch from "@/components/ApplicationSearch.vue";
 import School from "@/components/new/School.vue";
 import Others from "@/components/new/Others.vue";
 import Escorts from "@/components/new/Escorts.vue";
@@ -76,6 +88,8 @@ export default {
     Escorts,
     AllApplication,
     CurrentApplication,
+    ApplicationView,
+    ApplicationSearch,
     OtherCause,
     Workshop
   },
@@ -153,6 +167,14 @@ export default {
         case "Workshop":
           this.change("Workshop", back);
           console.log("WORKSHOP!");
+          break;
+        case "ApplicationView":
+          this.change("ApplicationView", back);
+          console.log("APPLICATIONVIEW!");
+          break;
+        case "ApplicationSearch":
+          this.change("ApplicationSearch", back);
+          console.log("APPLICATIONSEARCH!");
           break;
 
         default:
