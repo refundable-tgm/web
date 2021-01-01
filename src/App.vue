@@ -15,6 +15,16 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
     />
+    <AllApplication
+      v-if="currentComponent == 'AllApplication'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
+    <CurrentApplication
+      v-if="currentComponent == 'CurrentApplication'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
     <School
       v-if="currentComponent == 'School'"
       v-on:change-component="changeComponent"
@@ -48,6 +58,8 @@ import axios from "axios";
 import Index from "@/components/Index.vue";
 import Login from "@/components/Login.vue";
 import NewApplication from "@/components/NewApplication.vue";
+import AllApplication from "@/components/AllApplication.vue";
+import CurrentApplication from "@/components/CurrentApplication.vue";
 import School from "@/components/new/School.vue";
 import Others from "@/components/new/Others.vue";
 import Escorts from "@/components/new/Escorts.vue";
@@ -62,6 +74,8 @@ export default {
     School,
     Others,
     Escorts,
+    AllApplication,
+    CurrentApplication,
     OtherCause,
     Workshop
   },
@@ -107,12 +121,12 @@ export default {
           break;
 
         case "AllApplication":
-          //this.change("allApplication", back);
+          this.change("AllApplication", back);
           console.log("ALL APPLICATIONS!");
           break;
 
         case "CurrentApplication":
-          //this.change("currentApplication", back);
+          this.change("CurrentApplication", back);
           console.log("CURRENT APPLICATIONS!");
           break;
 
