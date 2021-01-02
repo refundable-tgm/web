@@ -302,9 +302,9 @@ export default {
     next() {
       if (this.checkClick()) {
         if (this.validInputs) {
-          let exkursLength = this.calculateLength();
-          console.log(exkursLength);
-          //this.changeComponent("Escorts", true, null, this.data);
+          this.calculateLength();
+          // Daten an Michi senden und so formatieren, dass Michi was damit anfangen kann
+          this.changeComponent("Escorts", true, null, this.data);
         } else {
           this.makeToast();
           if (this.Time === null) this.Time = false;
@@ -320,14 +320,13 @@ export default {
       let end = new Date(this.data.endDate + "T" + this.data.endTime);
       let diff = end.getTime() - start.getTime();
       let days = diff / (1000 * 3600 * 24);
-      // Nachfragen!!
-      if (days < 1) {
-        return "1";
+      if (days <= 1) {
+        this.exkursLength = "1";
       } else {
-        if (days >= 1 && days < 3) {
-          return "2-3";
+        if (days > 1 && days <= 3) {
+          this.exkursLength = "2-3";
         } else {
-          return ">3";
+          this.exkursLength = ">3";
         }
       }
     },
@@ -420,7 +419,8 @@ export default {
         endTime: "",
         count_student_male: 0,
         count_student_female: 0,
-        notes: ""
+        notes: "",
+        exkursLength: 0
       },
       validInputs: false,
       Time: null,
