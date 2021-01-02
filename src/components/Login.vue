@@ -79,6 +79,7 @@
 <script>
 export default {
   name: "Login",
+  props: ["forward"],
   data() {
     return {
       email: "",
@@ -92,9 +93,20 @@ export default {
         console.log("Login!");
         console.log(this.email);
         console.log(this.password);
-        this.$emit("change-component", "Index");
-        //Wenn Login failed:
-        //Eine Meldung an den User, dass etwas (nicht spezifisch) nicht stimmt
+
+        switch (this.forward.name) {
+          case "ApplicationSearch":
+            this.$emit("change-component", this.forward.name);
+            break;
+          case "ApplicationView":
+            this.$emit("change-component", this.forward.name, true, this.forward.id);
+            break;
+          default:
+            this.$emit("change-component", "Index");
+            //Wenn Login failed:
+            //Eine Meldung an den User, dass etwas (nicht spezifisch) nicht stimmt
+            break;
+        }
       }
     },
     forgot() {

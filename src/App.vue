@@ -4,6 +4,7 @@
       v-if="currentComponent == 'Login'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:forward="forward"
     />
     <Index
       v-if="currentComponent == 'Index'"
@@ -109,7 +110,8 @@ export default {
       //currentHeader: Header,
       //currentFooter: Footer,
       currentComponent: "",
-      escortsdata: Object
+      escortsdata: Object,
+      forward: ""
     };
   },
   methods: {
@@ -307,6 +309,43 @@ export default {
         this.changeComponent(this.generateState(e.state), false);
       }
     });
+    if (
+      window.location.href.substring(
+        window.location.href.lastIndexOf("/") + 1,
+        window.location.href.lastIndexOf("/") + 7
+      ) === "viewer"
+    ) {
+      if (window.location.href.lastIndexOf("?uid=") >= 0) {
+        let id = window.location.href.substring(
+          window.location.href.lastIndexOf("=") + 1,
+          window.location.href.length
+        );
+        let tmp1 = false;
+        if(tmp1) {
+          // Wenn eine Session da ist, hol den Antrag und zeig ihn an
+          this.changeComponent("ApplicationView", true, id);
+        } else {
+          this.forward = {
+            name: "ApplicationView",
+            id: id
+          }
+          this.changeComponent("Login");
+          // Wenn keine Session da ist --> zeig die Login Seite an --> nach erfolgreichem Login --> Zeig Antrag an
+        }
+      } else {
+        let tmp2 = false;
+        if(tmp2) {
+          // Wenn eine Session da ist, zeig die Application Search Seite an
+          this.changeComponent("ApplicationSearch");
+        } else {
+          // Wenn keine Session da ist, zeig die Login Seite an und nach erfolgreichem Login die Application Search Seite
+          this.forward = {
+            name: "ApplicationSearch"
+          }
+          this.changeComponent("Login");
+        }
+      }
+    }
     if (this.checkCookie()) {
       var c = this.getCookie();
       if (c == this.generateState(window.history.state)) {
