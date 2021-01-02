@@ -220,11 +220,7 @@
                 ></b-form-textarea>
               </b-form-group>
               <center>
-                <button
-                  :disabled="!validInputs"
-                  v-on:click="einreichen()"
-                  class="blueish-gradiant"
-                >
+                <button v-on:click="einreichen()" class="blueish-gradiant">
                   Einreichen
                 </button>
               </center>
@@ -337,10 +333,29 @@ export default {
           break;
       }
     },
+    makeToast() {
+      this.$bvToast.toast(
+        "Es wurden nicht allen Begleitern eine Klasse zugewiesen!",
+        {
+          title: "Ein Fehler ist aufgetreten!",
+          autoHideDelay: 2500,
+          appendToast: false,
+        variant: 'danger'
+        }
+      );
+    },
     einreichen() {
       if (this.checkClick()) {
-        // Zeugs an Michi schicken
-        this.changeComponent("Index");
+        if (this.validInputs) {
+          // Daten an Michi senden
+          this.changeComponent("Index");
+        } else {
+          this.makeToast();
+          if (this.Time === null) this.Time = false;
+          if (this.Titel === null) this.Titel = false;
+          if (this.GZset === null) this.GZset = false;
+          if (this.Sonstiges === null) this.Sonstiges = false;
+        }
       }
     }
   },

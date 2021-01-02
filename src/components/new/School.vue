@@ -251,11 +251,7 @@
                 ></b-form-textarea>
               </b-form-group>
               <center>
-                <button
-                  :disabled="!validInputs"
-                  v-on:click="next"
-                  class="blueish-gradiant"
-                >
+                <button v-on:click="next" class="blueish-gradiant">
                   weiter
                 </button>
               </center>
@@ -295,9 +291,26 @@ export default {
         this.changeComponent("Index");
       }
     },
+    makeToast() {
+      this.$bvToast.toast("Es wurden nicht alle Felder richtig ausgefüllt!", {
+        title: "Ein Fehler ist aufgetreten!",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: 'danger'
+      });
+    },
     next() {
       if (this.checkClick()) {
-        this.changeComponent("Escorts", true, null, this.data);
+        if (this.validInputs) {
+          this.changeComponent("Escorts", true, null, this.data);
+        } else {
+          this.makeToast();
+          if (this.Time === null) this.Time = false;
+          if (this.Desc === null) this.Desc = false;
+          if (this.Teacher === null) this.Teacher = false;
+          if (this.Students === null) this.Students = false;
+          if (this.Class === null) this.Class = false;
+        }
       }
     },
     checkDesc() {

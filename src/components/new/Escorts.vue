@@ -44,11 +44,7 @@
                 v-on:validTime="validateTime"
               />
               <center>
-                <button
-                  :disabled="!allSelected || !validTime"
-                  v-on:click="einreichen"
-                  class="blueish-gradiant"
-                >
+                <button v-on:click="einreichen" class="blueish-gradiant">
                   Einreichen
                 </button>
               </center>
@@ -91,8 +87,12 @@ export default {
     },
     einreichen() {
       if (this.checkClick()) {
-        //Zeugs an Michi schicken und so formatieren, dass Michi was damit anfangen kann
-        this.changeComponent("Index");
+        if (this.allSelected && this.validTime) {
+          //Zeugs an Michi schicken und so formatieren, dass Michi was damit anfangen kann
+          this.changeComponent("Index");
+        } else {
+          this.makeToast();
+        }
       }
     },
     changeStartDate(index, newStartDate) {
@@ -122,6 +122,17 @@ export default {
     },
     validateTime(newValidTime) {
       this.validTime = newValidTime;
+    },
+    makeToast() {
+      this.$bvToast.toast(
+        "Es wurden nicht allen Begleitern eine Klasse zugewiesen!",
+        {
+          title: "Ein Fehler ist aufgetreten!",
+          autoHideDelay: 2500,
+          appendToast: false,
+        variant: 'danger'
+        }
+      );
     }
   },
   data() {
