@@ -8,14 +8,14 @@
         <b-button
           variant="outline-primary"
           class="float-right"
-          v-on:click="index()"
+          v-on:click="index"
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
         <b-button
           variant="outline-primary"
           class="float-right"
-          v-on:click="index()"
+          v-on:click="newApplication"
           style="margin-right:20px"
         >
           <b-icon icon="plus" aria-hidden="true"></b-icon> Neuer Antrag
@@ -194,6 +194,32 @@ export default {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
+    },
+    newApplication() {
+      if (this.checkClick()) {
+        this.changeComponent("NewApplication");
+      }
+    },
+    changeComponent(component, back = true, application = null) {
+      this.$emit("change-component", component, back, application);
+    },
+    checkClick() {
+      if (
+        window
+          .getSelection()
+          .toString()
+          .trim() === ""
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    index() {
+      console.log("INDEX!");
+      if (this.checkClick) {
+        this.changeComponent("Index");
+      }
     }
   }
 };
