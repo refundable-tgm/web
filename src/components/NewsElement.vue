@@ -47,7 +47,7 @@ export default {
   methods: {
     linkToApplication(application) {
       if (this.checkClick()) {
-        this.$emit("change-component", "Application", true, application);
+        this.$emit("change-component", "ApplicationView", true, application);
       }
     },
     checkClick() {
