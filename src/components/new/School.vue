@@ -296,13 +296,15 @@ export default {
         title: "Ein Fehler ist aufgetreten!",
         autoHideDelay: 2500,
         appendToast: false,
-        variant: 'danger'
+        variant: "danger"
       });
     },
     next() {
       if (this.checkClick()) {
         if (this.validInputs) {
-          this.changeComponent("Escorts", true, null, this.data);
+          let exkursLength = this.calculateLength();
+          console.log(exkursLength);
+          //this.changeComponent("Escorts", true, null, this.data);
         } else {
           this.makeToast();
           if (this.Time === null) this.Time = false;
@@ -310,6 +312,22 @@ export default {
           if (this.Teacher === null) this.Teacher = false;
           if (this.Students === null) this.Students = false;
           if (this.Class === null) this.Class = false;
+        }
+      }
+    },
+    calculateLength() {
+      let start = new Date(this.data.startDate + "T" + this.data.startTime);
+      let end = new Date(this.data.endDate + "T" + this.data.endTime);
+      let diff = end.getTime() - start.getTime();
+      let days = diff / (1000 * 3600 * 24);
+      // Nachfragen!!
+      if (days < 1) {
+        return "1";
+      } else {
+        if (days >= 1 && days < 3) {
+          return "2-3";
+        } else {
+          return ">3";
         }
       }
     },

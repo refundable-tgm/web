@@ -219,14 +219,6 @@ export default {
     },
     loadEscortsData(escortsdata) {
       let output = [];
-      let options = [];
-      for (let i = 0; i < escortsdata.class.length; i++) {
-        options.push(
-          JSON.parse(
-            '{"item":"' + i + '", "name":"' + escortsdata.class[i] + '"}'
-          )
-        );
-      }
       for (let i = 0; i < escortsdata.teacher.length; i++) {
         output.push(
           JSON.parse(
@@ -243,7 +235,6 @@ export default {
               '","selected":""}'
           )
         );
-        output[i].options = options;
       }
       escortsdata.output = output;
       this.escortsdata = escortsdata;

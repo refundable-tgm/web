@@ -128,7 +128,7 @@
             :id="index + 'rg'"
             v-model="escort.selected"
             v-on:change="changeSelected"
-            :options="escort.options"
+            :options="options"
             class="mb-3"
             value-field="item"
             text-field="name"
@@ -148,7 +148,12 @@ export default {
       selected: "",
       validTime: null,
       outBaseTime: true,
-      negTime: true
+      negTime: true,
+      options: [
+        {item:"A", name:"L1"},
+        {item:"B", name:"L2"},
+        {item:"C", name:"L3"}
+      ]
     };
   },
   methods: {
