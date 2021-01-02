@@ -170,7 +170,7 @@ export default {
 
         case "Escorts":
           this.loadEscortsData(escortsdata);
-          this.change("Escorts", false);
+          this.change("Escorts", back, false);
           console.log("ESCORTS!");
           break;
 
@@ -202,13 +202,15 @@ export default {
         //this.change("Login", back)
       }
     },
-    change(page, back = true) {
+    change(page, back = true, cookie = true) {
       this.currentComponent = page;
       window.scrollTo(0, 0);
       if (back) {
         if (window.history.state !== page) {
           window.history.pushState(page, null);
         }
+      }
+      if (cookie) {
         this.setCookie(page);
       }
     },
