@@ -37,7 +37,15 @@
                 label="Titel"
                 label-for="tit"
               >
-                <b-form-input id="tit" v-model="title"></b-form-input>
+                <b-form-input
+                  id="tit"
+                  v-model="title"
+                  :state="Titel"
+                  v-on:input="checkTitel"
+                ></b-form-input>
+                <b-form-invalid-feedback id="titel-feedback">
+                  Kein Titel angegeben!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -52,9 +60,14 @@
                 <b-form-datepicker
                   id="std"
                   v-model="startDate"
+                  :state="Time"
+                  v-on:input="checkTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
+                <b-form-invalid-feedback id="std-feedback">
+                  Start der Fortbildung muss vor dem Ende der Fortbildung sein!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="startz"
@@ -69,9 +82,14 @@
                 <b-form-timepicker
                   id="stz"
                   v-model="startTime"
+                  :state="Time"
+                  v-on:input="checkTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
+                <b-form-invalid-feedback id="stz-feedback">
+                  Start der Fortbildung muss vor dem Ende der Fortbildung sein!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="endd"
@@ -86,9 +104,14 @@
                 <b-form-datepicker
                   id="end"
                   v-model="endDate"
+                  :state="Time"
+                  v-on:input="checkTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
+                <b-form-invalid-feedback id="end-feedback">
+                  Start der Fortbildung muss vor dem Ende der Fortbildung sein!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="endz"
@@ -103,9 +126,14 @@
                 <b-form-timepicker
                   id="enz"
                   v-model="endTime"
+                  :state="Time"
+                  v-on:input="checkTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
+                <b-form-invalid-feedback id="enz-feedback">
+                  Start der Fortbildung muss vor dem Ende der Fortbildung sein!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="phzahl"
@@ -123,7 +151,12 @@
                   min="1"
                   max="3000"
                   v-model="phNumber"
+                  :state="PhZahl"
+                  v-on:input="checkPhZahl"
                 ></b-form-input>
+                <b-form-invalid-feedback id="phz-feedback">
+                  Keine PH-Zahl angegeben!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="veran"
@@ -135,8 +168,16 @@
                 label="Veranstalter"
                 label-for="ver"
               >
-                <b-form-input id="ver" v-model="veran"></b-form-input>
+                <b-form-input
+                  id="ver"
+                  v-model="veran"
+                  :state="Veranstalter"
+                  v-on:input="checkVeranstalter"
+                ></b-form-input>
               </b-form-group>
+              <b-form-invalid-feedback id="ver-feedback">
+                Kein Veranstalter angegeben!
+              </b-form-invalid-feedback>
               <b-form-group
                 id="art"
                 label-cols-sm="4"
@@ -151,6 +192,7 @@
                   id="ar"
                   v-model="selected"
                   :options="options"
+                  v-on:input="checkSelected"
                   class="mb-3"
                   value-field="item"
                   text-field="name"
@@ -168,7 +210,12 @@
                 label-for="son"
                 v-if="selected == 'D'"
               >
-                <b-form-input id="son" v-model="son"></b-form-input>
+                <b-form-input
+                  id="son"
+                  v-model="son"
+                  :state="Sonstiges"
+                  v-on:input="checkSonstiges"
+                ></b-form-input>
               </b-form-group>
               <b-form-group
                 id="anmerkung"
@@ -189,7 +236,11 @@
                 ></b-form-textarea>
               </b-form-group>
               <center>
-                <button v-on:click="einreichen" class="blueish-gradiant">
+                <button
+                  :disabled="!validInputs"
+                  v-on:click="einreichen"
+                  class="blueish-gradiant"
+                >
                   Einreichen
                 </button>
               </center>
@@ -241,6 +292,90 @@ export default {
         */
         this.changeComponent("Index");
       }
+    },
+    checkTime() {
+      if (
+        this.startDate !== "" &&
+        this.startTime !== "" &&
+        this.endDate !== "" &&
+        this.endTime !== ""
+      ) {
+        let start = new Date(this.startDate + "T" + this.startTime);
+        let end = new Date(this.endDate + "T" + this.endTime);
+        if (end - start <= 0) {
+          this.Time = false;
+        } else {
+          this.Time = true;
+        }
+        this.checkInputs();
+      }
+    },
+    checkTitel() {
+      if (this.title === "") {
+        this.Titel = false;
+      } else {
+        this.Titel = true;
+      }
+      this.checkInputs();
+    },
+    checkPhZahl() {
+      if (this.phNumber === "") {
+        this.PhZahl = false;
+      } else {
+        this.PhZahl = true;
+      }
+      this.checkInputs();
+    },
+    checkVeranstalter() {
+      if (this.veran === "") {
+        this.Veranstalter = false;
+      } else {
+        this.Veranstalter = true;
+      }
+      this.checkInputs();
+    },
+    checkSelected() {
+      if (this.selected !== "") {
+        this.isSelected = true;
+      } else {
+        this.isSelected = false;
+      }
+      this.checkInputs();
+    },
+    checkSonstiges() {
+      if (this.son === "") {
+        this.Sonstiges = false;
+      } else {
+        this.Sonstiges = true;
+      }
+      this.checkInputs();
+    },
+    checkInputs() {
+      if (this.selected === "D") {
+        if (
+          this.Time === true &&
+          this.Titel === true &&
+          this.PhZahl === true &&
+          this.Veranstalter === true &&
+          this.Sonstiges === true
+        ) {
+          this.validInputs = true;
+        } else {
+          this.validInputs = false;
+        }
+      } else {
+        if (
+          this.Time === true &&
+          this.Titel === true &&
+          this.PhZahl === true &&
+          this.Veranstalter === true &&
+          this.isSelected === true
+        ) {
+          this.validInputs = true;
+        } else {
+          this.validInputs = false;
+        }
+      }
     }
   },
   data() {
@@ -259,13 +394,29 @@ export default {
           active: true
         }
       ],
-      selected: "B",
+      selected: "",
       options: [
         { item: "A", name: "Seminar" },
         { item: "B", name: "Tagung" },
         { item: "C", name: "Lehrgang" },
         { item: "D", name: "Sonstiges" }
-      ]
+      ],
+      validInputs: false,
+      Titel: null,
+      Time: null,
+      PhZahl: null,
+      Veranstalter: null,
+      isSelected: false,
+      Sonstiges: null,
+      title: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
+      phNumber: "",
+      veran: "",
+      son: "",
+      notes: ""
     };
   }
 };

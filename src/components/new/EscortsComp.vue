@@ -7,7 +7,7 @@
         </center>
 
         <b-form-group
-          id="startd"
+          :id="index + 'sdg'"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -17,15 +17,24 @@
           label-for="std"
         >
           <b-form-datepicker
-            id="std"
+            :id="index + 'sdp'"
             v-model="escort.startDate"
             v-on:input="changeStartDate"
+            :state="validTime"
             class="mb-2"
             placeholder="Datum auswählen"
           ></b-form-datepicker>
+          <b-form-invalid-feedback :id="index + 'sdp-feedback'">
+            <a v-if="outBaseTime">
+              Die Daten müssen zwischen Start und Ende der Exkursion sein!</a
+            ><br />
+            <a v-if="negTime">
+              Das Startdatum darf nicht nach dem Enddatum sein!
+            </a>
+          </b-form-invalid-feedback>
         </b-form-group>
         <b-form-group
-          id="startz"
+          :id="index + 'stg'"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -35,15 +44,24 @@
           label-for="stz"
         >
           <b-form-timepicker
-            id="stz"
+            :id="index + 'stp'"
             v-model="escort.startTime"
             v-on:input="changeStartTime"
+            :state="validTime"
             locale="de"
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
+          <b-form-invalid-feedback :id="index + 'stp-feedback'">
+            <a v-if="outBaseTime">
+              Die Daten müssen zwischen Start und Ende der Exkursion sein!</a
+            ><br />
+            <a v-if="negTime">
+              Das Startdatum darf nicht nach dem Enddatum sein!
+            </a>
+          </b-form-invalid-feedback>
         </b-form-group>
         <b-form-group
-          id="endd"
+          :id="index + 'edg'"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -53,15 +71,24 @@
           label-for="end"
         >
           <b-form-datepicker
-            id="end"
+            :id="index + 'edp'"
             v-model="escort.endDate"
             v-on:input="changeEndDate"
+            :state="validTime"
             class="mb-2"
             placeholder="Datum auswählen"
           ></b-form-datepicker>
+          <b-form-invalid-feedback :id="index + 'edp-feedback'">
+            <a v-if="outBaseTime">
+              Die Daten müssen zwischen Start und Ende der Exkursion sein!</a
+            ><br />
+            <a v-if="negTime">
+              Das Startdatum darf nicht nach dem Enddatum sein!
+            </a>
+          </b-form-invalid-feedback>
         </b-form-group>
         <b-form-group
-          id="endz"
+          :id="index + 'etg'"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -71,15 +98,24 @@
           label-for="enz"
         >
           <b-form-timepicker
-            id="enz"
+            :id="index + 'etp'"
             v-model="escort.endTime"
             v-on:input="changeEndTime"
+            :state="validTime"
             locale="de"
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
+          <b-form-invalid-feedback :id="index + 'etp-feedback'">
+            <a v-if="outBaseTime">
+              Die Daten müssen zwischen Start und Ende der Exkursion sein!</a
+            ><br />
+            <a v-if="negTime">
+              Das Startdatum darf nicht nach dem Enddatum sein!
+            </a>
+          </b-form-invalid-feedback>
         </b-form-group>
         <b-form-group
-          id="gruppe"
+          :id="index + 'gruppe'"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -89,7 +125,7 @@
           label-for="gr"
         >
           <b-form-radio-group
-            :id="escort.id"
+            :id="index + 'rg'"
             v-model="escort.selected"
             v-on:change="changeSelected"
             :options="escort.options"
@@ -106,28 +142,69 @@
 
 <script>
 export default {
-  props: ["escort", "index"],
+  props: ["escort", "index", "bsd", "bst", "bed", "bet"],
   data() {
     return {
-      selected: ""
+      selected: "",
+      validTime: null,
+      outBaseTime: true,
+      negTime: true
     };
   },
   methods: {
     changeStartTime() {
+      this.checkInputs();
       this.$emit("startTime", this.index, this.escort.startTime);
     },
     changeStartDate() {
+      this.checkInputs();
       this.$emit("startDate", this.index, this.escort.startDate);
     },
     changeEndDate() {
+      this.checkInputs();
       this.$emit("endDate", this.index, this.escort.endDate);
     },
     changeEndTime() {
+      this.checkInputs();
       this.$emit("endTime", this.index, this.escort.endTime);
     },
     changeSelected() {
       this.$emit("selected", this.index, this.escort.selected);
+    },
+    checkInputs() {
+      if (
+        this.escort.startDate !== "" &&
+        this.escort.startTime !== "" &&
+        this.escort.endDate !== "" &&
+        this.escort.endTime !== ""
+      ) {
+        let start = new Date(
+          this.escort.startDate + "T" + this.escort.startTime
+        );
+        let end = new Date(this.escort.endDate + "T" + this.escort.endTime);
+        let baseStart = new Date(this.bsd + "T" + this.bst);
+        let baseEnd = new Date(this.bed + "T" + this.bet);
+        if (start >= baseStart && end <= baseEnd) {
+          this.outBaseTime = false;
+          if (end - start <= 0) {
+            this.negTime = true;
+            this.validTime = false;
+          } else {
+            this.negTime = false;
+            this.validTime = true;
+          }
+        } else {
+          this.outBaseTime = true;
+          this.validTime = false;
+        }
+      } else {
+        this.validTime = null;
+      }
+      this.$emit("validTime", this.validTime);
     }
+  },
+  mounted() {
+    this.checkInputs();
   }
 };
 </script>

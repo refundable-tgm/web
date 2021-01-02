@@ -304,7 +304,11 @@ export default {
   },
   created() {
     window.addEventListener("popstate", e => {
-      this.changeComponent(this.generateState(e.state), false);
+      if (this.generateState(e.state) === "Escorts") {
+        this.changeComponent("School", false);
+      } else {
+        this.changeComponent(this.generateState(e.state), false);
+      }
     });
     if (this.checkCookie()) {
       var c = this.getCookie();

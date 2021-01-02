@@ -36,10 +36,17 @@
                 description="Geben Sie die Bezeichnung der Schulveranstaltung ein."
                 label="Bezeichnung"
                 label-for="bezeichnung"
-                v-model="data.description"
               >
-                <b-form-input id="bezeichnung" v-model="data.description">
+                <b-form-input
+                  id="bezeichnung"
+                  v-model="data.description"
+                  :state="Desc"
+                  v-on:input="checkDesc"
+                >
                 </b-form-input>
+                <b-form-invalid-feedback id="bezeichnung-feedback">
+                  Keine Bezeichnung angegeben!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -54,9 +61,14 @@
                 <b-form-datepicker
                   id="std"
                   v-model="data.startDate"
+                  :state="Time"
+                  v-on:input="checkTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
+                <b-form-invalid-feedback id="std-feedback">
+                  Start der Exkursion muss vor dem Ende der Exkursion sein!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="startz"
@@ -71,9 +83,14 @@
                 <b-form-timepicker
                   id="stz"
                   v-model="data.startTime"
+                  :state="Time"
+                  v-on:input="checkTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
+                <b-form-invalid-feedback id="stz-feedback">
+                  Start der Exkursion muss vor dem Ende der Exkursion sein!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="endd"
@@ -88,9 +105,14 @@
                 <b-form-datepicker
                   id="end"
                   v-model="data.endDate"
+                  :state="Time"
+                  v-on:input="checkTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
+                <b-form-invalid-feedback id="end-feedback">
+                  Start der Exkursion muss vor dem Ende der Exkursion sein!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="endz"
@@ -105,9 +127,14 @@
                 <b-form-timepicker
                   id="enz"
                   v-model="data.endTime"
+                  :state="Time"
+                  v-on:input="checkTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
+                <b-form-invalid-feedback id="enz-feedback">
+                  Start der Exkursion muss vor dem Ende der Exkursion sein!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="begleit"
@@ -123,11 +150,16 @@
                   id="begl"
                   input-id="tags-pills"
                   v-model="data.teacher"
+                  :state="Teacher"
+                  v-on:input="checkTeacher"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
                   placeholder="Einträge durch Leerzeichen trennen"
                 ></b-form-tags>
+                <b-form-invalid-feedback id="begl-feedback">
+                  Keine Begleitpersonen angegeben!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="klassen"
@@ -143,11 +175,16 @@
                   id="kl"
                   input-id="tags-pills"
                   v-model="data.class"
+                  :state="Class"
+                  v-on:input="checkClass"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
                   placeholder="Einträge durch Leerzeichen trennen"
                 ></b-form-tags>
+                <b-form-invalid-feedback id="kl-feedback">
+                  Keine Jahrgänge angegeben!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="schueler"
@@ -165,7 +202,12 @@
                   min="0"
                   max="3000"
                   v-model="data.count_student_male"
+                  :state="Students"
+                  v-on:input="checkStudents"
                 ></b-form-input>
+                <b-form-invalid-feedback id="aschueler-feedback">
+                  Keine Schüler/Schülerinnen angegeben!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="schuelerinnen"
@@ -183,7 +225,12 @@
                   min="0"
                   max="3000"
                   v-model="data.count_student_female"
+                  :state="Students"
+                  v-on:input="checkStudents"
                 ></b-form-input>
+                <b-form-invalid-feedback id="aschuelerin-feedback">
+                  Keine Schüler/Schülerinnen angegeben!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="anmerkung"
@@ -204,7 +251,11 @@
                 ></b-form-textarea>
               </b-form-group>
               <center>
-                <button v-on:click="next" class="blueish-gradiant">
+                <button
+                  :disabled="!validInputs"
+                  v-on:click="next"
+                  class="blueish-gradiant"
+                >
                   weiter
                 </button>
               </center>
@@ -248,6 +299,68 @@ export default {
       if (this.checkClick()) {
         this.changeComponent("Escorts", true, null, this.data);
       }
+    },
+    checkDesc() {
+      if (this.data.description === "") {
+        this.Desc = false;
+      } else {
+        this.Desc = true;
+      }
+      this.checkInputs();
+    },
+    checkTeacher() {
+      if (this.data.teacher.length === 0) {
+        this.Teacher = false;
+      } else {
+        this.Teacher = true;
+      }
+      this.checkInputs();
+    },
+    checkClass() {
+      if (this.data.class.length === 0) {
+        this.Class = false;
+      } else {
+        this.Class = true;
+      }
+      this.checkInputs();
+    },
+    checkStudents() {
+      if (this.data.count_student_male + this.data.count_student_female <= 0) {
+        this.Students = false;
+      } else {
+        this.Students = true;
+      }
+      this.checkInputs();
+    },
+    checkTime() {
+      if (
+        this.data.startDate !== "" &&
+        this.data.startTime !== "" &&
+        this.data.endDate !== "" &&
+        this.data.endTime !== ""
+      ) {
+        let start = new Date(this.data.startDate + "T" + this.data.startTime);
+        let end = new Date(this.data.endDate + "T" + this.data.endTime);
+        if (end - start <= 0) {
+          this.Time = false;
+        } else {
+          this.Time = true;
+        }
+        this.checkInputs();
+      }
+    },
+    checkInputs() {
+      if (
+        this.Time === true &&
+        this.Desc === true &&
+        this.Teacher === true &&
+        this.Class === true &&
+        this.Students === true
+      ) {
+        this.validInputs = true;
+      } else {
+        this.validInputs = false;
+      }
     }
   },
   data() {
@@ -277,7 +390,13 @@ export default {
         count_student_male: 0,
         count_student_female: 0,
         notes: ""
-      }
+      },
+      validInputs: false,
+      Time: null,
+      Desc: null,
+      Teacher: null,
+      Class: null,
+      Students: null
     };
   }
 };
