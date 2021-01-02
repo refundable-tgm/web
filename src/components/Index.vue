@@ -287,6 +287,11 @@ export default {
         this.changeComponent("CurrentApplication");
       }
     },
+    admin() {
+      if (this.checkClick()) {
+        this.changeComponent("AdminDashboard");
+      }
+    },
     checkClick() {
       if (
         window

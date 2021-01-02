@@ -61,6 +61,11 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
     />
+    <AdminDashboard
+      v-if="currentComponent == 'AdminDashboard'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
   </div>
 </template>
 
@@ -78,6 +83,7 @@ import Others from "@/components/new/Others.vue";
 import Escorts from "@/components/new/Escorts.vue";
 import OtherCause from "@/components/new/OtherCause.vue";
 import Workshop from "@/components/new/Workshop.vue";
+import AdminDashboard from "@/components/admin/AdminDashboard.vue";
 
 export default {
   components: {
@@ -92,7 +98,8 @@ export default {
     ApplicationView,
     ApplicationSearch,
     OtherCause,
-    Workshop
+    Workshop,
+    AdminDashboard
   },
   data() {
     return {
@@ -183,6 +190,10 @@ export default {
         case "ApplicationSearch":
           this.change("ApplicationSearch", back);
           console.log("APPLICATIONSEARCH!");
+          break;
+        case "AdminDashboard":
+          this.change("AdminDashboard", back);
+          console.log("ADMINDASHBOARD!");
           break;
 
         default:
