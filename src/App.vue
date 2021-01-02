@@ -138,9 +138,10 @@ export default {
           this.change("Index", back);
           break;
 
-        case "Application":
+        case "ApplicationView":
           this.loadApplication(application);
-          this.change("Application", back);
+          this.change("ApplicationView", back);
+          console.log("APPLICATIONVIEW!");
           break;
 
         case "NewApplication":
@@ -182,10 +183,6 @@ export default {
         case "Workshop":
           this.change("Workshop", back);
           console.log("WORKSHOP!");
-          break;
-        case "ApplicationView":
-          this.change("ApplicationView", back);
-          console.log("APPLICATIONVIEW!");
           break;
         case "ApplicationSearch":
           this.change("ApplicationSearch", back);
