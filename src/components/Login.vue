@@ -1,5 +1,6 @@
 <template>
   <b-container fluid>
+    <CookieRequest />
     <b-row align-v="center" align-h="center" class="template-main-row">
       <b-col cols="12" md="6">
         <b-container>
@@ -77,7 +78,11 @@
   </b-container>
 </template>
 <script>
+import CookieRequest from '@/components/CookieRequest.vue'
 export default {
+  components: {
+    CookieRequest
+  },
   name: "Login",
   props: ["forward"],
   data() {
