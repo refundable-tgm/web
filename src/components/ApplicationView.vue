@@ -22,7 +22,7 @@
         </b-button>
       </div>
     </b-row>
-    <b-row align-h="center" align-v="center">
+    <b-row align-h="center" align-v="center" style="margin-top:1rem;margin-bottom:3rem">
       <b-col cols="12">
         <Progress/>
       </b-col>

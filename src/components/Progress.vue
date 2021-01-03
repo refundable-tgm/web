@@ -1,6 +1,6 @@
 <template>
-  <b-container fluid >
-    <b-card class="shadow-lg">
+  <b-container fluid style="padding:0">
+    <b-card class="shadow-lg" style="margin:0">
       <b-row align-h="center">
         <b-col cols="12" style="height: fit-content">
           <ul id="progressbar" class="text-center">
