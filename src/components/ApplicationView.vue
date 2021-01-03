@@ -22,9 +22,13 @@
         </b-button>
       </div>
     </b-row>
-    <b-row align-h="center" align-v="center" style="margin-top:1rem;margin-bottom:3rem">
+    <b-row
+      align-h="center"
+      align-v="center"
+      style="margin-top:1rem;margin-bottom:3rem"
+    >
       <b-col cols="12">
-        <Progress/>
+        <Progress />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -51,25 +55,27 @@
           </template>
 
           <template #cell(actions)="row">
-            <b-button size="sm" @click="row.toggleDetails">
-              Bearbeitung {{ row.detailsShowing ? "schließen" : "öffnen" }}
+            <b-button variant="outline-secondary" size="sm" @click="row.toggleDetails" style="margin-right:1rem">
+              <b-icon icon="file-earmark-text"></b-icon> PDF öffnen
+            </b-button>
+            <b-button variant="outline-secondary" size="sm" @click="row.toggleDetails">
+               <b-icon icon="pencil-square"></b-icon> Bearbeitung {{ row.detailsShowing ? "schließen" : "öffnen" }}
             </b-button>
           </template>
 
           <template #row-details="row">
             <b-card>
-              <ul>
-                <li v-for="(value, key) in row.item" :key="key">
-                  {{ key }}: {{ value }}
-                </li>
-              </ul>
+              <SchoolGeneral v-if="row.item.title == 'Allgemeine Infos'" />
+              <SchoolEscorts v-if="row.item.title == 'Begleitformular'" />
+              <Others v-if="row.item.title == 'Abwesenheitsformular'" />
+              <Workshop v-if="row.item.title == 'Fortbildung'" />
             </b-card>
           </template>
         </b-table>
       </b-col>
     </b-row>
 
-    <b-row>
+    <b-row style="margin-bottom:2rem">
       <b-col cols="12">
         <b-button
           variant="outline-danger"
@@ -136,9 +142,17 @@
 
 <script>
 import Progress from "@/components/Progress.vue";
+import SchoolGeneral from "@/components/applicationViewComponents/SchoolGeneral.vue";
+import SchoolEscorts from "@/components/applicationViewComponents/SchoolEscorts.vue";
+import Others from "@/components/applicationViewComponents/Others.vue";
+import Workshop from "@/components/applicationViewComponents/Workshop.vue";
 export default {
-  components:{
-    Progress,
+  components: {
+    Others,
+    Workshop,
+    SchoolEscorts,
+    SchoolGeneral,
+    Progress
   },
   data() {
     return {
@@ -147,7 +161,15 @@ export default {
           title: "Allgemeine Infos"
         },
         {
-          title: "Begleitpersonen"
+          title: "Begleitformular"
+        }
+        ,
+        {
+          title: "Fortbildung"
+        }
+        ,
+        {
+          title: "Abwesenheitsformular"
         }
       ],
       fields: [
@@ -232,16 +254,23 @@ export default {
       console.log("INDEX!");
       if (this.checkClick) {
         this.changeComponent("Index");
-        this.changeURL("Index")
+        this.changeURL("Index");
       }
     },
     delAn() {
       console.log("Delete this Antrag!");
     },
     changeURL(nextpage) {
-      if(window.location.href.indexOf('/viewer') >= 0) {
-          history.replaceState(nextpage, null, window.location.href.substring(0,window.location.href.indexOf('/viewer')));
-        }
+      if (window.location.href.indexOf("/viewer") >= 0) {
+        history.replaceState(
+          nextpage,
+          null,
+          window.location.href.substring(
+            0,
+            window.location.href.indexOf("/viewer")
+          )
+        );
+      }
     }
   }
 };

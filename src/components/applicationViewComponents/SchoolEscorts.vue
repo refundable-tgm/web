@@ -2,8 +2,27 @@
   <b-container fluid>
     <b-row>
       <b-col cols="12">
-        <center><h2>Ganzer Name</h2></center>
-
+        <b-form-group
+          id="titel"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie den Titel der zugehörigen Schulveranstaltung ein."
+          label="Schulveranstaltung"
+          label-for="tit"
+          v-if="selected == 'B'"
+        >
+          <b-form-input
+            id="tit"
+            v-model="title"
+            :state="Titel"
+            v-on:input="checkTitel"
+          ></b-form-input>
+          <b-form-invalid-feedback id="titel-feedback">
+            Kein Titel angegeben!
+          </b-form-invalid-feedback>
+        </b-form-group>
         <b-form-group
           id="startd"
           label-cols-sm="4"

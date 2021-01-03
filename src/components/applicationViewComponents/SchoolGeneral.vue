@@ -176,11 +176,6 @@
                   no-resize
                 ></b-form-textarea>
               </b-form-group>
-              <center>
-                <button v-on:click="next()" class="blueish-gradiant">
-                  weiter
-                </button>
-              </center>
             </b-col>
           </b-row>
         </b-container>

@@ -197,11 +197,6 @@
                   v-model="notes"
                 ></b-form-textarea>
               </b-form-group>
-              <center>
-                <button v-on:click="einreichen" class="blueish-gradiant">
-                  Einreichen
-                </button>
-              </center>
             </b-col>
           </b-row>
         </b-container>
@@ -318,7 +313,7 @@ export default {
           title: "Ein Fehler ist aufgetreten!",
           autoHideDelay: 2500,
           appendToast: false,
-        variant: 'danger'
+          variant: "danger"
         }
       );
     },

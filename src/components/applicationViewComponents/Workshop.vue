@@ -163,11 +163,6 @@
                   no-resize
                 ></b-form-textarea>
               </b-form-group>
-              <center>
-                <button v-on:click="index()" class="blueish-gradiant">
-                  Einreichen
-                </button>
-              </center>
             </b-col>
           </b-row>
         </b-container>
