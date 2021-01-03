@@ -72,6 +72,11 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
     />
+    <PageNotFound
+      v-if="currentComponent == 'PageNotFound'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
   </div>
 </template>
 
@@ -92,8 +97,11 @@ import Workshop from "@/components/new/Workshop.vue";
 import AdminDashboard from "@/components/admin/AdminDashboard.vue";
 import Progress from "@/components/Progress.vue";
 
+import PageNotFound from "@/components/PageNotFound.vue";
+
 export default {
   components: {
+    PageNotFound,
     Progress,
     Index,
     Login,
@@ -205,6 +213,11 @@ export default {
         case "Progress":
           this.change("Progress", back);
           console.log("PROGRESS!");
+          break;
+
+        case "PageNotFound":
+          this.change("PageNotFound", back);
+          console.log("PAGENOTFOUND!");
           break;
 
         default:
