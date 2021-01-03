@@ -99,7 +99,12 @@ export default {
             this.$emit("change-component", this.forward.name);
             break;
           case "ApplicationView":
-            this.$emit("change-component", this.forward.name, true, this.forward.id);
+            this.$emit(
+              "change-component",
+              this.forward.name,
+              true,
+              this.forward.id
+            );
             break;
           default:
             this.$emit("change-component", "Index");
