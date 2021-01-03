@@ -8,19 +8,23 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home
+    component: Home,
+    props: { pathing: "base" }
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: "/viewer",
+    name: "Viewer",
+    component: Home,
+    props: route => ({ query: route.query.uid })
   }
 ];
-
+/*
+{
+    path: "*",
+    name: "NotFound",
+    component: NotFound
+  }
+*/
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
