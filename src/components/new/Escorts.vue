@@ -125,7 +125,7 @@ export default {
     },
     makeToast() {
       this.$bvToast.toast(
-        "Es wurden nicht allen Begleitern eine Klasse zugewiesen!",
+        "Es wurden nicht alle Felder richtig ausgefüllt!",
         {
           title: "Ein Fehler ist aufgetreten!",
           autoHideDelay: 2500,

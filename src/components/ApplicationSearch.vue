@@ -51,6 +51,7 @@ export default {
     newApplication() {
       if (this.checkClick()) {
         this.changeComponent("NewApplication");
+        this.changeURL("NewApplication");
       }
     },
     changeComponent(component, back = true, application = null) {
@@ -71,7 +72,13 @@ export default {
     index() {
       if (this.checkClick) {
         this.changeComponent("Index");
+        this.changeURL("Index");
       }
+    },
+    changeURL(nextpage) {
+      if(window.location.href.indexOf('/viewer') >= 0) {
+          history.replaceState(nextpage, null, window.location.href.substring(0,window.location.href.indexOf('/viewer')));
+        }
     }
   }
 };
