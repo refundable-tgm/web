@@ -22,7 +22,11 @@
         </b-button>
       </div>
     </b-row>
-
+    <b-row align-h="center" align-v="center">
+      <b-col cols="12">
+        <Progress/>
+      </b-col>
+    </b-row>
     <b-row style="margin-top:2rem">
       <b-col cols="12">
         <!-- Main table element -->
@@ -131,7 +135,11 @@
 </template>
 
 <script>
+import Progress from "@/components/Progress.vue";
 export default {
+  components:{
+    Progress,
+  },
   data() {
     return {
       items: [

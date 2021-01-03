@@ -67,6 +67,11 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
     />
+    <Progress
+      v-if="currentComponent == 'Progress'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+    />
   </div>
 </template>
 
@@ -85,9 +90,11 @@ import Escorts from "@/components/new/Escorts.vue";
 import OtherCause from "@/components/new/OtherCause.vue";
 import Workshop from "@/components/new/Workshop.vue";
 import AdminDashboard from "@/components/admin/AdminDashboard.vue";
+import Progress from "@/components/Progress.vue";
 
 export default {
   components: {
+    Progress,
     Index,
     Login,
     NewApplication,
@@ -194,6 +201,10 @@ export default {
         case "AdminDashboard":
           this.change("AdminDashboard", back);
           console.log("ADMINDASHBOARD!");
+          break;
+        case "Progress":
+          this.change("Progress", back);
+          console.log("PROGRESS!");
           break;
 
         default:
