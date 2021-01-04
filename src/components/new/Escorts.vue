@@ -43,6 +43,7 @@
                 v-on:selected="changeSelected"
                 v-on:validTime="validateTime"
               />
+              <TravelApplication />
               <center>
                 <button v-on:click="einreichen" class="blueish-gradiant">
                   Einreichen
@@ -57,10 +58,12 @@
 </template>
 <script>
 import EscortsComp from "@/components/new/EscortsComp.vue";
+import TravelApplication from "@/components/new/TravelApplication.vue";
 
 export default {
   name: "NewApplication",
   components: {
+    TravelApplication,
     EscortsComp
   },
   props: ["escorts"],

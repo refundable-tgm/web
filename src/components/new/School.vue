@@ -137,6 +137,51 @@
                 </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
+                id="treff"
+                label-cols-sm="4"
+                label-cols-lg="3"
+                content-cols-sm
+                content-cols-lg="7"
+                description="Geben Sie die genaue Startadresse der Schulveranstaltung ein."
+                label="Startadresse"
+                
+                label-for="ta"
+              >
+                <b-form-input
+                  id="ta"
+                  placeholder="Wexstraße 19-23, 1200 Wien, Österreich"
+                  v-model="data.description"
+                  :state="Desc"
+                  v-on:input="checkDesc"
+                >
+                </b-form-input>
+                <b-form-invalid-feedback id="bezeichnung-feedback">
+                  Keine Bezeichnung angegeben!
+                </b-form-invalid-feedback>
+              </b-form-group>
+              <b-form-group
+                id="ziel"
+                label-cols-sm="4"
+                label-cols-lg="3"
+                content-cols-sm
+                content-cols-lg="7"
+                description="Geben Sie die genaue Zieladresse der Schulveranstaltung ein."
+                label="Zieladresse"
+                label-for="za"
+              >
+                <b-form-input
+                  id="za"
+                  placeholder="Straße & Nr., Postleitzahl & Ort, Land"
+                  v-model="data.description"
+                  :state="Desc"
+                  v-on:input="checkDesc"
+                >
+                </b-form-input>
+                <b-form-invalid-feedback id="bezeichnung-feedback">
+                  Keine Bezeichnung angegeben!
+                </b-form-invalid-feedback>
+              </b-form-group>
+              <b-form-group
                 id="begleit"
                 label-cols-sm="4"
                 label-cols-lg="3"
