@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import PageNotFound from "../components/PageNotFound.vue"
 
 Vue.use(VueRouter);
 
@@ -16,14 +17,15 @@ const routes = [
     name: "Viewer",
     component: Home,
     props: route => ({ query: route.query.uid })
+  },
+  {
+    path: "*",
+    name: "NotFound",
+    component: PageNotFound
   }
 ];
 /*
-{
-    path: "*",
-    name: "NotFound",
-    component: NotFound
-  }
+
 */
 const router = new VueRouter({
   mode: "history",

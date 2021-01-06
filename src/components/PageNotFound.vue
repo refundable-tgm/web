@@ -37,13 +37,22 @@
 <script>
 export default {
   methods: {
-    changeComponent(component, back = true, application = null) {
-      this.$emit("change-component", component, back, application);
-    },
     index() {
       console.log("INDEX!");
-      if (this.checkClick) {
-        this.changeComponent("Index");
+      if (this.checkClick()) {
+        this.$emit("toIndex");
+      }
+    },
+    checkClick() {
+      if (
+        window
+          .getSelection()
+          .toString()
+          .trim() === ""
+      ) {
+        return true;
+      } else {
+        return false;
       }
     }
   }
