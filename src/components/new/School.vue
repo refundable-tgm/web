@@ -144,19 +144,18 @@
                 content-cols-lg="7"
                 description="Geben Sie die genaue Startadresse der Schulveranstaltung ein."
                 label="Startadresse"
-                
                 label-for="ta"
               >
                 <b-form-input
                   id="ta"
                   placeholder="Wexstraße 19-23, 1200 Wien, Österreich"
-                  v-model="data.description"
-                  :state="Desc"
-                  v-on:input="checkDesc"
+                  v-model="data.start"
+                  :state="Start"
+                  v-on:input="checkStart"
                 >
                 </b-form-input>
                 <b-form-invalid-feedback id="bezeichnung-feedback">
-                  Keine Bezeichnung angegeben!
+                  Keine Startadresse angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
@@ -172,13 +171,13 @@
                 <b-form-input
                   id="za"
                   placeholder="Straße & Nr., Postleitzahl & Ort, Land"
-                  v-model="data.description"
-                  :state="Desc"
-                  v-on:input="checkDesc"
+                  v-model="data.ziel"
+                  :state="Ziel"
+                  v-on:input="checkZiel"
                 >
                 </b-form-input>
                 <b-form-invalid-feedback id="bezeichnung-feedback">
-                  Keine Bezeichnung angegeben!
+                  Keine Zieladresse angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
@@ -357,6 +356,8 @@ export default {
           if (this.Teacher === null) this.Teacher = false;
           if (this.Students === null) this.Students = false;
           if (this.Class === null) this.Class = false;
+          if (this.Start === null) this.Start = false;
+          if (this.Ziel === null) this.Ziel = false;
         }
       }
     },
@@ -424,13 +425,29 @@ export default {
         this.checkInputs();
       }
     },
+    checkStart() {
+      if (this.data.start === "") {
+        this.Start = false;
+      } else {
+        this.Start = true;
+      }
+    },
+    checkZiel() {
+      if (this.data.ziel === "") {
+        this.Ziel = false;
+      } else {
+        this.Ziel = true;
+      }
+    },
     checkInputs() {
       if (
         this.Time === true &&
         this.Desc === true &&
         this.Teacher === true &&
         this.Class === true &&
-        this.Students === true
+        this.Students === true &&
+        this.Start === true &&
+        this.Ziel === true
       ) {
         this.validInputs = true;
       } else {
@@ -462,6 +479,8 @@ export default {
         startTime: "",
         endDate: "",
         endTime: "",
+        start: "",
+        ziel: "",
         count_student_male: 0,
         count_student_female: 0,
         notes: "",
@@ -472,7 +491,9 @@ export default {
       Desc: null,
       Teacher: null,
       Class: null,
-      Students: null
+      Students: null,
+      Start: null,
+      Ziel: null
     };
   }
 };
