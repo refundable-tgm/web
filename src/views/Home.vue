@@ -12,6 +12,7 @@
       v-if="currentComponent == 'Index'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:admin="admin"
     />
     <NewApplication
       v-if="currentComponent == 'NewApplication'"
@@ -130,7 +131,8 @@ export default {
       currentComponent: "",
       escortsdata: Object,
       forward: "",
-      cookies: false
+      cookies: false,
+      admin: false
     };
   },
   methods: {
@@ -323,7 +325,7 @@ export default {
     },
     useCookie(cookie) {
       this.cookies = cookie;
-      console.log("Cookies: "+cookie);
+      console.log("Cookies: " + cookie);
     }
   },
   created() {

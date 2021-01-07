@@ -22,7 +22,8 @@
               <b-button
                 variant="outline-primary"
                 class="shadow-lg"
-                v-on:click="admin"
+                v-on:click="adminclick"
+                v-if="admin"
                 style="margin-top:0px; margin-bottom:40px; width:100%"
               >
                 Admin Ansicht
@@ -162,7 +163,8 @@
               alt="Illustration von arbeitenden Personen"
             />
             <b-button
-              v-on:click="admin"
+              v-on:click="adminclick"
+              v-if="admin"
               class="shadow-lg"
               variant="outline-info"
               style="margin-right:1rem"
@@ -226,7 +228,7 @@ export default {
   components: {
     NewsElement
   },
-  props: ["url"],
+  props: ["url", "admin"],
   data() {
     return {
       news: "",
@@ -287,7 +289,7 @@ export default {
         this.changeComponent("CurrentApplication");
       }
     },
-    admin() {
+    adminclick() {
       if (this.checkClick()) {
         this.changeComponent("AdminDashboard");
       }
