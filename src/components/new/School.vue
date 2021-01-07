@@ -19,10 +19,14 @@
           </b-row>
           <b-row>
             <b-col cols="12">
-              <b-breadcrumb
-                style="background-color: white"
-                :items="items"
-              ></b-breadcrumb>
+              <b-breadcrumb style="background-color: white">
+                <b-breadcrumb-item v-on:click="uebersicht"
+                  >Antrag Übersicht</b-breadcrumb-item
+                >
+                <b-breadcrumb-item active
+                  >Schulveranstaltung - Allg. Infos</b-breadcrumb-item
+                >
+              </b-breadcrumb>
             </b-col>
           </b-row>
           <b-row align-h="center">
@@ -439,6 +443,14 @@ export default {
         this.Ziel = true;
       }
     },
+    newapp() {
+      this.changeComponent("NewApplication");
+    },
+    uebersicht() {
+      if (this.checkClick()) {
+        this.changeComponent("NewApplication");
+      }
+    },
     checkInputs() {
       if (
         this.Time === true &&
@@ -464,7 +476,8 @@ export default {
         //},
         {
           text: "Antrag Übersicht",
-          href: "#"
+          //href: "#",
+          onclick: this.newapp
         },
         {
           text: "Schulveranstaltung - Allg. Infos",

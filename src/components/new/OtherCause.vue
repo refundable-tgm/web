@@ -21,8 +21,14 @@
             <b-col cols="12">
               <b-breadcrumb
                 style="background-color: white"
-                :items="items"
-              ></b-breadcrumb>
+              >
+              <b-breadcrumb-item v-on:click="workshop"
+                  >Fortbildung, etc</b-breadcrumb-item
+                >
+                <b-breadcrumb-item active
+                  >Anderer Grund</b-breadcrumb-item
+                >
+              </b-breadcrumb>
             </b-col>
           </b-row>
           <b-row align-h="center">
@@ -344,6 +350,11 @@ export default {
         }
       );
     },
+    workshop() {
+      if (this.checkClick()) {
+        this.changeComponent("Others");
+      }
+    },
     einreichen() {
       if (this.checkClick()) {
         if (this.validInputs) {
@@ -361,20 +372,6 @@ export default {
   },
   data() {
     return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Fortbildung, etc",
-          href: "#"
-        },
-        {
-          text: "Anderer Grund",
-          active: true
-        }
-      ],
       selected: "",
       options: [
         { item: "A", name: "Pflegefreistellung" },

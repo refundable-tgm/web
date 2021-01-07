@@ -21,8 +21,14 @@
             <b-col cols="12">
               <b-breadcrumb
                 style="background-color: white"
-                :items="items"
-              ></b-breadcrumb>
+              >
+              <b-breadcrumb-item v-on:click="workshop"
+                  >Fortbildung, etc</b-breadcrumb-item
+                >
+                <b-breadcrumb-item active
+                  >Fortbildung</b-breadcrumb-item
+                >
+              </b-breadcrumb>
             </b-col>
           </b-row>
           <b-row align-h="center">
@@ -324,6 +330,11 @@ export default {
         this.checkInputs();
       }
     },
+    workshop() {
+      if (this.checkClick()) {
+        this.changeComponent("Others");
+      }
+    },
     checkTitel() {
       if (this.title === "") {
         this.Titel = false;
@@ -394,20 +405,6 @@ export default {
   },
   data() {
     return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Fortbildung, etc",
-          href: "#"
-        },
-        {
-          text: "Fortbildung",
-          active: true
-        }
-      ],
       selected: "",
       options: [
         { item: "A", name: "Seminar" },

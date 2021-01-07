@@ -19,10 +19,10 @@
           </b-row>
           <b-row>
             <b-col cols="12">
-              <b-breadcrumb
-                style="background-color: white"
-                :items="items"
-              ></b-breadcrumb>
+              <b-breadcrumb style="background-color: white">
+                <b-breadcrumb-item v-on:click="uebersicht">Antrag Übersicht</b-breadcrumb-item>
+                <b-breadcrumb-item active>Fortbildung, etc</b-breadcrumb-item>
+              </b-breadcrumb>
             </b-col>
           </b-row>
           <b-row id="na-srow" align-h="center" align-v="center">
@@ -90,25 +90,12 @@ export default {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
+    },
+    uebersicht() {
+      if (this.checkClick()) {
+        this.changeComponent("NewApplication");
+      }
     }
-  },
-  data() {
-    return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        //{
-        //  text: "Manage",
-        //  href: "#"
-        //},
-        {
-          text: "Antrag Übersicht",
-          active: true
-        }
-      ]
-    };
   }
 };
 </script>

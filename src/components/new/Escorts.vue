@@ -21,8 +21,17 @@
             <b-col cols="12">
               <b-breadcrumb
                 style="background-color: white"
-                :items="items"
-              ></b-breadcrumb>
+              >
+              <b-breadcrumb-item v-on:click="uebersicht"
+                  >Antrag Übersicht</b-breadcrumb-item
+                >
+                <b-breadcrumb-item v-on:click="school"
+                  >Schulveranstaltung - Allg. Infos</b-breadcrumb-item
+                >
+                <b-breadcrumb-item active
+                  >Begleitpersonal</b-breadcrumb-item
+                >
+                </b-breadcrumb>
             </b-col>
           </b-row>
           <b-row align-h="center">
@@ -126,6 +135,16 @@ export default {
     validateTime(newValidTime) {
       this.validTime = newValidTime;
     },
+    school() {
+      if (this.checkClick()) {
+        this.changeComponent("School");
+      }
+    },
+    uebersicht() {
+      if (this.checkClick()) {
+        this.changeComponent("NewApplication");
+      }
+    },
     makeToast() {
       this.$bvToast.toast(
         "Es wurden nicht alle Felder richtig ausgefüllt!",
@@ -137,30 +156,6 @@ export default {
         }
       );
     }
-  },
-  data() {
-    return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Antrag Übersicht",
-          href: "#"
-        },
-        {
-          text: "Schulveranstaltung - Allg. Infos",
-          href: "#"
-        },
-        {
-          text: "Begleitpersonal",
-          active: true
-        }
-      ],
-      allSelected: false,
-      validTime: false
-    };
   }
 };
 </script>
