@@ -132,7 +132,8 @@ export default {
       escortsdata: Object,
       forward: "",
       cookies: false,
-      admin: false
+      admin: true,
+      logged: false
     };
   },
   methods: {
@@ -325,7 +326,6 @@ export default {
     },
     useCookie(cookie) {
       this.cookies = cookie;
-      console.log("Cookies: " + cookie);
     }
   },
   created() {
@@ -366,16 +366,17 @@ export default {
           this.changeComponent("Login");
         }
       }
-    }
-    if (this.checkCookie()) {
-      var c = this.getCookie();
-      if (c == this.generateState(window.history.state)) {
-        this.changeComponent(c, false);
-      } else {
-        this.changeComponent(c);
-      }
     } else {
-      this.changeComponent("Login");
+      if (this.checkCookie()) {
+        var c = this.getCookie();
+        if (c == this.generateState(window.history.state)) {
+          this.changeComponent(c, false);
+        } else {
+          this.changeComponent(c);
+        }
+      } else {
+        this.changeComponent("Login");
+      }
     }
   }
 };

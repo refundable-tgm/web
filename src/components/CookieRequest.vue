@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     validateCookies() {
-      this.showBottom = false;
       this.$emit("requestAnswer", true);
     }
   }

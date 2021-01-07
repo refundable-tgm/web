@@ -34,9 +34,9 @@
           label-for="search"
         >
           <b-input-group id="search" prepend="Antrags ID" class="mt-3">
-            <b-form-input></b-form-input>
+            <b-form-input v-model="searching"></b-form-input>
             <b-input-group-append>
-              <b-button variant="info">Suchen</b-button>
+              <b-button v-on:click="search" variant="info">Suchen</b-button>
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
@@ -47,6 +47,11 @@
 
 <script>
 export default {
+  data() {
+    return {
+      searching: ""
+    };
+  },
   methods: {
     newApplication() {
       if (this.checkClick()) {
@@ -70,15 +75,47 @@ export default {
       }
     },
     index() {
-      if (this.checkClick) {
+      if (this.checkClick()) {
         this.changeComponent("Index");
         this.changeURL("Index");
       }
     },
-    changeURL(nextpage) {
-      if(window.location.href.indexOf('/viewer') >= 0) {
-          history.replaceState(nextpage, null, window.location.href.substring(0,window.location.href.indexOf('/viewer')));
+    makeToast() {
+      this.$bvToast.toast("Es wurde keine ID eingegeben!", {
+        title: "Ein Fehler ist aufgetreten!",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    requestApplication() {
+      return { response: 200 };
+    },
+    search() {
+      if (this.checkClick()) {
+        if (this.searching === "") {
+          this.makeToast();
+        } else {
+          // Anfrage an Michi nach Application von this.searching
+          let application = this.requestApplication();
+          if (application.response === 200) {
+            this.changeComponent("ApplicationView", application);
+            this.changeURL("ApplicationView");
+          }
         }
+      }
+    },
+    changeURL(nextpage) {
+      if (window.location.href.indexOf("/viewer") >= 0) {
+        history.replaceState(
+          nextpage,
+          null,
+          window.location.href.substring(
+            0,
+            window.location.href.indexOf("/viewer")
+          )
+        );
+      }
     }
   }
 };

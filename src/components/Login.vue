@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <CookieRequest v-on:requestAnswer="requestAnswer" v-if="!cookieset"/>
+    <CookieRequest v-on:requestAnswer="requestAnswer" v-if="!setcookie" />
     <b-row align-v="center" align-h="center" class="template-main-row">
       <b-col cols="12" md="6">
         <b-container>
@@ -84,38 +84,43 @@ export default {
     CookieRequest
   },
   name: "Login",
-  props: ["forward","cookieset"],
+  props: ["forward", "cookieset"],
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      setcookie: false
     };
   },
   methods: {
     login() {
       if (this.checkClick()) {
-        // Login Request an Michi
-        console.log("Login!");
-        console.log(this.email);
-        console.log(this.password);
+        if (this.cookieset === true) {
+          // Login Request an Michi
+          console.log("Login!");
+          console.log(this.email);
+          console.log(this.password);
 
-        switch (this.forward.name) {
-          case "ApplicationSearch":
-            this.$emit("change-component", this.forward.name);
-            break;
-          case "ApplicationView":
-            this.$emit(
-              "change-component",
-              this.forward.name,
-              true,
-              this.forward.id
-            );
-            break;
-          default:
-            this.$emit("change-component", "Index");
-            //Wenn Login failed:
-            //Eine Meldung an den User, dass etwas (nicht spezifisch) nicht stimmt
-            break;
+          switch (this.forward.name) {
+            case "ApplicationSearch":
+              this.$emit("change-component", this.forward.name);
+              break;
+            case "ApplicationView":
+              this.$emit(
+                "change-component",
+                this.forward.name,
+                true,
+                this.forward.id
+              );
+              break;
+            default:
+              this.$emit("change-component", "Index");
+              //Wenn Login failed:
+              //Eine Meldung an den User, dass etwas (nicht spezifisch) nicht stimmt
+              break;
+          }
+        } else {
+          this.makeToast();
         }
       }
     },
@@ -124,6 +129,14 @@ export default {
         // Passwort vergessen
         console.log("Passwort vergessen!");
       }
+    },
+    makeToast() {
+      this.$bvToast.toast("Bitte akzeptieren Sie unsere Cookies!", {
+        title: "Ein Fehler ist aufgetreten!",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     checkClick() {
       if (
@@ -138,8 +151,12 @@ export default {
       }
     },
     requestAnswer(answer) {
+      this.setcookie = answer;
       this.$emit("requestAnswer", answer);
     }
+  },
+  mounted() {
+    this.setcookie = this.cookieset;
   }
 };
 </script>
