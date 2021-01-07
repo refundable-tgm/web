@@ -9,14 +9,14 @@
         <b-button
           variant="outline-danger"
           class="float-right"
-          v-on:click="index"
+          v-on:click="logout"
         >
           Abmelden
         </b-button>
         <b-button
           variant="outline-primary"
           class="float-right"
-          v-on:click="newApplication"
+          v-on:click="normal"
           style="margin-right:20px"
         >
           Normale Ansicht
@@ -268,6 +268,34 @@ export default {
     },
     clearSelected() {
       this.$refs.selectableTable.clearSelected();
+    },
+    normal() {
+      if(this.checkClick()) {
+        this.changeComponent("Index");
+      }
+    },
+    logout() {
+      if(this.checkClick()) {
+        /*
+      Implement the logout function with the backend
+      */
+        this.changeComponent("Login");
+      }
+    },
+    changeComponent(component, back = true, application = null) {
+      this.$emit("change-component", component, back, application);
+    },
+    checkClick() {
+      if (
+        window
+          .getSelection()
+          .toString()
+          .trim() === ""
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 };
