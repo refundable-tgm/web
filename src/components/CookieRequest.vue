@@ -9,7 +9,10 @@
     >
       Diese Seite <b>benötigt</b> Cookies um zu funktionieren. Dies sind nur
       funktionelle Cookies, wir sammeln Ihre Daten <b>nicht</b>. Alle benötigten
-      Cookies <b-button variant="success" @click="validateCookies()">akzeptieren</b-button>
+      Cookies
+      <b-button variant="success" @click="validateCookies()"
+        >akzeptieren</b-button
+      >
     </b-alert>
   </div>
 </template>
@@ -23,10 +26,10 @@ export default {
     };
   },
   methods: {
-      validateCookies(){
-          this.showBottom = false;
-          this.cookies = true;
-      }
+    validateCookies() {
+      this.showBottom = false;
+      this.$emit("requestAnswer", true);
+    }
   }
 };
 </script>

@@ -5,6 +5,8 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:forward="forward"
+      v-on:requestAnswer="useCookie"
+      v-bind:cookieset="cookies"
     />
     <Index
       v-if="currentComponent == 'Index'"
@@ -127,7 +129,8 @@ export default {
       //currentFooter: Footer,
       currentComponent: "",
       escortsdata: Object,
-      forward: ""
+      forward: "",
+      cookies: false
     };
   },
   methods: {
@@ -310,11 +313,17 @@ export default {
       return "";
     },
     setCookie(value) {
-      var d = new Date();
-      d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
-      var expires = "expires=" + d.toUTCString();
-      document.cookie =
-        "current=" + value + ";" + expires + ";SameSite=Strict;path=/";
+      if (this.cookies) {
+        var d = new Date();
+        d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
+        var expires = "expires=" + d.toUTCString();
+        document.cookie =
+          "current=" + value + ";" + expires + ";SameSite=Strict;path=/";
+      }
+    },
+    useCookie(cookie) {
+      this.cookies = cookie;
+      console.log("Cookies: "+cookie);
     }
   },
   created() {

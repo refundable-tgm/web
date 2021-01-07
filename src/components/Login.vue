@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <CookieRequest />
+    <CookieRequest v-on:requestAnswer="requestAnswer" v-if="!cookieset"/>
     <b-row align-v="center" align-h="center" class="template-main-row">
       <b-col cols="12" md="6">
         <b-container>
@@ -78,13 +78,13 @@
   </b-container>
 </template>
 <script>
-import CookieRequest from '@/components/CookieRequest.vue'
+import CookieRequest from "@/components/CookieRequest.vue";
 export default {
   components: {
     CookieRequest
   },
   name: "Login",
-  props: ["forward"],
+  props: ["forward","cookieset"],
   data() {
     return {
       email: "",
@@ -136,6 +136,9 @@ export default {
       } else {
         return false;
       }
+    },
+    requestAnswer(answer) {
+      this.$emit("requestAnswer", answer);
     }
   }
 };

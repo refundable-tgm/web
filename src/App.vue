@@ -1,6 +1,6 @@
 <template>
   <div id="main-content">
-    <router-view v-on:toIndex="toIndex()"/>
+    <router-view v-on:toIndex="toIndex()" />
   </div>
 </template>
 
@@ -11,5 +11,5 @@ export default {
       this.$router.push("/");
     }
   }
-}
+};
 </script>
