@@ -141,6 +141,8 @@
 }
 
 /* -- Index -- */
+#menu-h2 {
+}
 
 .dh {
   text-align: center;
@@ -148,11 +150,14 @@
 }
 
 #dash-main-cont {
-  height: 80vh;
+  height: 70vh;
 }
 
 #dash-row {
-  height: 80vh;
+  height: 70vh;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  padding-bottom: 1.5rem;
 }
 
 .dash-elem {
@@ -170,12 +175,20 @@
   transform: translateY(3px);
 }
 
+#dash-row {
+  border-radius: 6rem 6rem 6rem 6rem;
+}
+
 #new {
-  border-radius: 6rem 6rem 0 0;
+  border-radius: 6rem 6rem 6rem 6rem;
 }
 
 #all {
-  border-radius: 0 0 6rem 6rem;
+  border-radius: 6rem 6rem 6rem 6rem;
+}
+
+#current {
+  border-radius: 6rem 6rem 6rem 6rem;
 }
 
 #news-main-cont {
@@ -183,7 +196,7 @@
 }
 
 #news-main-cont-mobile {
-  height: 70vh;
+  height: fit-content;
   margin-bottom: 30px;
 }
 
@@ -277,7 +290,6 @@
 }
 
 #news-cont-mobile {
-  overflow-y: scroll;
   scrollbar-width: thin;
   padding-left: 3rem;
   padding-right: 3rem;
@@ -377,7 +389,7 @@
   transform: translateY(3px);
 }
 
-#school-button{
+#school-button {
   border-radius: 3rem 3rem 0 0;
 }
 

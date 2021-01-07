@@ -1,6 +1,76 @@
 <template>
   <b-container fluid>
     <b-row id="index-row" align-h="center" align-v="center">
+      <!-- <b-col class="d-block d-md-none" cols="12">
+        <b-container fluid>
+          <b-row align-v="center" align-h="center">
+            <b-col cols="12">
+              <center><h1 style="margin-top:10px;">Dashboard</h1></center>
+            </b-col>
+            <b-col cols="12">
+              <b-button
+                variant="outline-danger"
+                class="shadow-lg"
+                v-on:click="logout"
+                style="margin-top:0px; margin-bottom:20px; width:100%"
+              >
+                <b-icon icon="person" aria-hidden="true"></b-icon> Ausloggen
+              </b-button>
+            </b-col>
+
+            <b-col cols="12">
+              <b-button
+                variant="outline-primary"
+                class="shadow-lg"
+                v-on:click="adminclick"
+                v-if="admin"
+                style="margin-top:0px; margin-bottom:40px; width:100%"
+              >
+                Admin Ansicht
+              </b-button>
+            </b-col>
+
+            <b-col cols="12"
+              ><b-button
+                size="lg"
+                variant="outline-primary"
+                v-on:click="newApplication"
+                class="shadow-lg"
+                style="margin-bottom:20px; width:100%"
+              >
+                <b-icon icon="plus-circle" aria-hidden="true"></b-icon> Neuer
+                Antrag
+              </b-button></b-col
+            >
+            <b-col cols="12"
+              ><b-button
+                size="lg"
+                variant="outline-primary"
+                v-on:click="currentApplication"
+                class="shadow-lg"
+                style="margin-bottom:20px; width:100%"
+              >
+                <b-icon icon="clock" aria-hidden="true"></b-icon> Aktuelle
+                Anträge
+              </b-button></b-col
+            >
+            <b-col cols="12"
+              ><b-button
+                size="lg"
+                variant="outline-primary"
+                v-on:click="allApplication"
+                class="shadow-lg"
+                style="margin-bottom:30px; width:100%"
+              >
+                <b-icon icon="file-earmark-zip" aria-hidden="true"></b-icon>
+                Alle Anträge
+              </b-button></b-col
+            >
+          </b-row>
+        </b-container>
+      </b-col> -->
+
+      <!-- DASH MOBILE -->
       <b-col class="d-block d-md-none" cols="12">
         <b-container fluid>
           <b-row align-v="center" align-h="center">
@@ -69,13 +139,18 @@
           </b-row>
         </b-container>
       </b-col>
+
+      <!-- DASH PC -->
       <b-col id="dash-main-cont" class="d-none d-md-block" cols="12" md="4">
         <b-container>
-          <b-row id="dash-row" align-v="center" align-h="center">
+          <b-row id="dash-row" align-v="center" align-h="center" class="shadow-xl">
+            <b-col cols="12">
+              <center><h2 id="menu-h2">Menü</h2></center>
+            </b-col>
             <b-col
               id="new"
               cols="12"
-              class="shadow-xl dash-elem"
+              class="shadow-lg dash-elem"
               v-on:click="newApplication"
             >
               <b-container style="height: 100%">
@@ -97,7 +172,7 @@
             <b-col
               id="current"
               cols="12"
-              class="shadow-xl dash-elem"
+              class="shadow-lg dash-elem"
               v-on:click="currentApplication"
             >
               <b-container style="height: 100%">
@@ -119,7 +194,7 @@
             <b-col
               id="all"
               cols="12"
-              class="shadow-xl dash-elem"
+              class="shadow-lg dash-elem"
               v-on:click="allApplication"
             >
               <b-container style="height: 100%">
@@ -141,6 +216,8 @@
           </b-row>
         </b-container>
       </b-col>
+
+      <!-- MEDIA - ONLY ON  -->
       <b-col id="media-main-cont" cols="12" md="4" class="d-none d-md-block">
         <b-container class="">
           <b-row id="media-row" align-h="center" align-v="center">
@@ -179,6 +256,8 @@
           </b-row>
         </b-container>
       </b-col>
+
+      <!-- NEWS PC -->
       <b-col id="news-main-cont" class="d-none d-md-block" cols="12" md="4">
         <b-container id="news-cont" class="shadow-xl">
           <b-row id="news-row-heading" align-h="center">
@@ -195,6 +274,8 @@
           </b-row>
         </b-container>
       </b-col>
+
+      <!-- NEWS MOBILE -->
       <b-col
         id="news-main-cont-mobile"
         class="d-block d-md-none"
