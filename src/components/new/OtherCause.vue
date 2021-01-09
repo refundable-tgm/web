@@ -19,15 +19,11 @@
           </b-row>
           <b-row>
             <b-col cols="12">
-              <b-breadcrumb
-                style="background-color: white"
-              >
-              <b-breadcrumb-item v-on:click="workshop"
+              <b-breadcrumb style="background-color: white">
+                <b-breadcrumb-item v-on:click="workshop"
                   >Fortbildung, etc</b-breadcrumb-item
                 >
-                <b-breadcrumb-item active
-                  >Anderer Grund</b-breadcrumb-item
-                >
+                <b-breadcrumb-item active>Anderer Grund</b-breadcrumb-item>
               </b-breadcrumb>
             </b-col>
           </b-row>
@@ -346,7 +342,7 @@ export default {
           title: "Ein Fehler ist aufgetreten!",
           autoHideDelay: 2500,
           appendToast: false,
-        variant: 'danger'
+          variant: "danger"
         }
       );
     },

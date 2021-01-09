@@ -20,7 +20,9 @@
           <b-row>
             <b-col cols="12">
               <b-breadcrumb style="background-color: white">
-                <b-breadcrumb-item v-on:click="uebersicht">Antrag Übersicht</b-breadcrumb-item>
+                <b-breadcrumb-item v-on:click="uebersicht"
+                  >Antrag Übersicht</b-breadcrumb-item
+                >
                 <b-breadcrumb-item active>Fortbildung, etc</b-breadcrumb-item>
               </b-breadcrumb>
             </b-col>

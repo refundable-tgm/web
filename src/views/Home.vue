@@ -156,6 +156,7 @@ export default {
       switch (component) {
         case "Login":
           this.change("Login", back);
+          this.deleteCookie();
           break;
 
         case "Index":
@@ -326,6 +327,16 @@ export default {
     },
     useCookie(cookie) {
       this.cookies = cookie;
+    },
+    deleteCookie() {
+      if (this.cookies) {
+        var d = new Date();
+        var expires = "expires=" + d.toUTCString();
+        var value = this.getCookie();
+        console.log(value);
+        document.cookie =
+          "current=" + value + ";" + expires + ";SameSite=Strict;path=/";
+      }
     }
   },
   created() {
@@ -368,6 +379,7 @@ export default {
       }
     } else {
       if (this.checkCookie()) {
+        this.useCookie(true);
         var c = this.getCookie();
         if (c == this.generateState(window.history.state)) {
           this.changeComponent(c, false);

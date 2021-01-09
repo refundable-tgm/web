@@ -143,7 +143,12 @@
       <!-- DASH PC -->
       <b-col id="dash-main-cont" class="d-none d-md-block" cols="12" md="4">
         <b-container>
-          <b-row id="dash-row" align-v="center" align-h="center" class="shadow-xl">
+          <b-row
+            id="dash-row"
+            align-v="center"
+            align-h="center"
+            class="shadow-xl"
+          >
             <b-col cols="12">
               <center><h2 id="menu-h2">Menü</h2></center>
             </b-col>

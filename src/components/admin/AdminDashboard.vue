@@ -270,12 +270,12 @@ export default {
       this.$refs.selectableTable.clearSelected();
     },
     normal() {
-      if(this.checkClick()) {
+      if (this.checkClick()) {
         this.changeComponent("Index");
       }
     },
     logout() {
-      if(this.checkClick()) {
+      if (this.checkClick()) {
         /*
       Implement the logout function with the backend
       */
