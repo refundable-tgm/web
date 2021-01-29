@@ -173,6 +173,7 @@ export default {
   mounted() {
     // Set the initial number of items
     this.loadData();
+    this.checkStatus();
   },
   methods: {
     info(item, index, button) {
@@ -206,6 +207,25 @@ export default {
     },
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
+    },
+    checkStatus() {
+      //if only one is active, then redirect to specific application
+      let actives = 0;
+      let currentapp;
+      for(let i = 0;i<this.items.length;i++) {
+        if(this.items[i].active) {
+          actives++;
+          currentapp=this.items[i];
+        }
+      }
+      if(actives === 1) {
+        history.replaceState(
+          "ApplicationView",
+          null,
+          null
+        );
+        this.viewApplication(currentapp);
+      }
     },
     checkClick() {
       if (
