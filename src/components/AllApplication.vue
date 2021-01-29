@@ -70,10 +70,10 @@
       </template>
 
       <template #cell(actions)="row">
-        <b-button size="sm" @click="row.toggleDetails" class="mr-1">
+        <b-button size="sm" @click="showInfo(row.item, row.index, $event.target)" class="mr-1">
           Schnelle Information
         </b-button>
-        <b-button size="sm" @click="info(row.item, row.index, $event.target)">
+        <b-button size="sm" @click="info(row.item)">
           Antrag Betrachten
         </b-button>
       </template>
@@ -199,14 +199,14 @@ export default {
     this.loadData();
   },
   methods: {
-    info(item, index, button) {
-      //this.infoModal.title = `Row index: ${index}`;
-      //this.infoModal.content = JSON.stringify(item, null, 2);
-      //this.$root.$emit("bv::show::modal", this.infoModal.id, button);
-      index.toString();
-      button.toString();
+    info(item) {
       console.log(item);
       this.viewApplication(item);
+    },
+    showInfo(item, index, button) {
+      this.infoModal.title = `Row index: ${index}`;
+      this.infoModal.content = JSON.stringify(item, null, 2);
+      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
     loadData() {
       //TODO: Load Data from Backend
