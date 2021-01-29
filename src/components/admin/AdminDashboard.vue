@@ -57,7 +57,7 @@
     <b-button size="sm" @click="clearSelected" style="margin-right:1rem"
       >Auswahl löschen</b-button
     >
-    <b-button size="sm" @click="clearSelected">Auswahl drucken</b-button>
+    <b-button size="sm" @click="printSelected">Auswahl drucken</b-button>
     <!-- Main table element -->
     <b-table
       striped
@@ -299,6 +299,10 @@ export default {
     },
     onRowSelected(items) {
       this.selected = items;
+    },
+    printSelected() {
+      console.log(this.selected);
+      window.open('Link des PDFs');
     },
     selectAllRows() {
       this.$refs.selectableTable.selectAllRows();
