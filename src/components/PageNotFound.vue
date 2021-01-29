@@ -18,7 +18,7 @@
             überprüfen Sie die <b-badge>URL</b-badge>, die Sie eingegeben haben
             oder begeben Sie sich zurück auf die<br />
             <b-button variant="outline-success" v-on:click="index()"
-              >Startseite</b-button
+              >Webseite</b-button
             >
           </p>
         </center>
