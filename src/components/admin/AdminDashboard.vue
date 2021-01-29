@@ -64,8 +64,6 @@
       :select-mode="selectMode"
       :items="items"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
       :filter="filter"
       :filter-included-fields="filterOn"
       :sort-by.sync="sortBy"
@@ -94,7 +92,7 @@
         <b-badge variant="primary">{{ data.item.kind.toUpperCase() }}</b-badge>
       </template>
       <template #cell(actions)="row">
-        <b-button size="sm" @click="row.toggleDetails">
+        <b-button size="sm" @click="info(row.item)">
           Antrag betrachten
         </b-button>
       </template>
@@ -246,10 +244,13 @@ export default {
     this.totalRows = this.items.length;
   },
   methods: {
-    info(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`;
-      this.infoModal.content = JSON.stringify(item, null, 2);
-      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+    info(item) {
+      console.log(item);
+      this.viewApplication(item);
+    },
+    viewApplication(app) {
+      // Nur die ID verwenden beim übergeben!
+      this.changeComponent("ApplicationView", true, app);
     },
     resetInfoModal() {
       this.infoModal.title = "";
