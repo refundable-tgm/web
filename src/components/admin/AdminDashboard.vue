@@ -89,7 +89,9 @@
       </template>
 
       <template #cell(kind)="data">
-        <b-badge variant="primary">{{ data.item.kind.toUpperCase() }}</b-badge>
+        <b-badge :variant="getKindVariant(data.item.kind)">{{
+          data.item.kind.toUpperCase()
+        }}</b-badge>
       </template>
       <template #cell(actions)="row">
         <b-button size="sm" @click="info(row.item)">
@@ -97,7 +99,9 @@
         </b-button>
       </template>
       <template #cell(status)="data">
-        <b-badge variant="info">{{ data.item.status.toUpperCase() }}</b-badge>
+        <b-badge :variant="getStateVariant(data.item.status)">{{
+          data.item.status.toUpperCase()
+        }}</b-badge>
       </template>
       <template #cell(from)="data">
         <b-badge variant="secondary">{{
@@ -247,6 +251,38 @@ export default {
     info(item) {
       console.log(item);
       this.viewApplication(item);
+    },
+    getStateVariant(status) {
+      //TODO: Weitere States hinzufügen
+      switch (status.toLowerCase()) {
+        case "akzeptierungsphase":
+          return "secondary";
+        case "rechnungsphase":
+          return "success";
+        case "abgelehnt":
+          return "danger";
+        case "":
+          return "";
+        default:
+          return "primary";
+      }
+    },
+    getKindVariant(kind) {
+      //TODO: Weitere Arten hinzufügen
+      switch (kind.toLowerCase()) {
+        case "schulveranstaltung":
+          return "secondary";
+        case "fortbildung":
+          return "info";
+        case "dienstauftrag":
+          return "success";
+        case "krankschreibung":
+          return "warning";
+        case "pflegefreistellung":
+          return "dark";
+        default:
+          return "primary";
+      }
     },
     viewApplication(app) {
       // Nur die ID verwenden beim übergeben!
