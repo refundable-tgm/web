@@ -55,8 +55,6 @@
     <b-table
       :items="items"
       :fields="fields"
-      :current-page="currentPage"
-      :per-page="perPage"
       :filter="filter"
       :filter-included-fields="filterOn"
       :sort-by.sync="sortBy"
@@ -72,14 +70,10 @@
       </template>
 
       <template #cell(actions)="row">
-        <b-button
-          size="sm"
-          @click="info(row.item, row.index, $event.target)"
-          class="mr-1"
-        >
+        <b-button size="sm" @click="row.toggleDetails" class="mr-1">
           Schnelle Information
         </b-button>
-        <b-button size="sm" @click="row.toggleDetails">
+        <b-button size="sm" @click="info(row.item, row.index, $event.target)">
           Antrag Betrachten
         </b-button>
       </template>
@@ -202,13 +196,23 @@ export default {
   },
   mounted() {
     // Set the initial number of items
-    this.totalRows = this.items.length;
+    this.loadData();
   },
   methods: {
     info(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`;
-      this.infoModal.content = JSON.stringify(item, null, 2);
-      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+      //this.infoModal.title = `Row index: ${index}`;
+      //this.infoModal.content = JSON.stringify(item, null, 2);
+      //this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+      index.toString();
+      button.toString();
+      console.log(item);
+      this.viewApplication(item);
+    },
+    loadData() {
+      //TODO: Load Data from Backend
+      console.log("data loaded");
+      //Sobald geladen dann der Code in der nächsten Zeile:
+      this.totalRows = this.items.length;
     },
     resetInfoModal() {
       this.infoModal.title = "";
@@ -249,6 +253,10 @@ export default {
       if (this.checkClick) {
         this.changeComponent("Index");
       }
+    },
+    viewApplication(app) {
+      // Nur die ID verwenden beim übergeben!
+      this.changeComponent("ApplicationView", true, app);
     }
   }
 };
