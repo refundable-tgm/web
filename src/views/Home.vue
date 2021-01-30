@@ -5,6 +5,7 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:forward="forward"
+      v-bind:apikey="mapsapi"
       v-on:requestAnswer="useCookie"
       v-bind:cookieset="cookies"
     />
@@ -12,73 +13,87 @@
       v-if="currentComponent == 'Index'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
       v-bind:admin="admin"
     />
     <NewApplication
       v-if="currentComponent == 'NewApplication'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <AllApplication
       v-if="currentComponent == 'AllApplication'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <CurrentApplication
       v-if="currentComponent == 'CurrentApplication'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <School
       v-if="currentComponent == 'School'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <Others
       v-if="currentComponent == 'Others'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <Escorts
       v-if="currentComponent == 'Escorts'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
       v-bind:escorts="escortsdata"
     />
     <OtherCause
       v-if="currentComponent == 'OtherCause'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <Workshop
       v-if="currentComponent == 'Workshop'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <ApplicationView
       v-if="currentComponent == 'ApplicationView'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <ApplicationSearch
       v-if="currentComponent == 'ApplicationSearch'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <AdminDashboard
       v-if="currentComponent == 'AdminDashboard'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <Progress
       v-if="currentComponent == 'Progress'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
     <PageNotFound
       v-if="currentComponent == 'PageNotFound'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:apikey="mapsapi"
     />
   </div>
 </template>
@@ -124,7 +139,9 @@ export default {
   data() {
     return {
       // url is the link from the REST-API
+      // mapsapi ist he key for the Google Maps API
       url: "Michi Link",
+      mapsapi: "AIzaSyDP340IZ-7pK7-jDmoILtWg0xrcwrXYDJc",
       data: Object,
       //currentHeader: Header,
       //currentFooter: Footer,
