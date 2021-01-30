@@ -302,7 +302,7 @@ export default {
     },
     printSelected() {
       console.log(this.selected);
-      window.open('Link des PDFs');
+      window.open("Link des PDFs");
     },
     selectAllRows() {
       this.$refs.selectableTable.selectAllRows();

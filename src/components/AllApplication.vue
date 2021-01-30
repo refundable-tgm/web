@@ -70,7 +70,11 @@
       </template>
 
       <template #cell(actions)="row">
-        <b-button size="sm" @click="showInfo(row.item, row.index, $event.target)" class="mr-1">
+        <b-button
+          size="sm"
+          @click="showInfo(row.item, row.index, $event.target)"
+          class="mr-1"
+        >
           Schnelle Information
         </b-button>
         <b-button size="sm" @click="info(row.item)">
