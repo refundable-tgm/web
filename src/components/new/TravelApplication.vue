@@ -75,7 +75,7 @@
             :aria-describedby="ariaDescribedby"
             name="radio-sub-component"
           >
-            <b-form-radio value="first">Dienstselle</b-form-radio>
+            <b-form-radio value="first">Dienststelle</b-form-radio>
             <b-form-radio value="second">Wohnung*</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
@@ -236,24 +236,6 @@ export default {
   },
   data() {
     return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Antrag Übersicht",
-          href: "#"
-        },
-        {
-          text: "Schulveranstaltung - Allg. Infos",
-          href: "#"
-        },
-        {
-          text: "Begleitpersonal",
-          active: true
-        }
-      ],
       data: {
         description: "",
         teacher: [],

@@ -302,9 +302,6 @@
                 <button v-on:click="next" class="blueish-gradiant">
                   weiter
                 </button>
-                <button v-on:click="calculateDistance" class="blueish-gradiant">
-                  calc
-                </button>
               </center>
             </b-col>
           </b-row>
