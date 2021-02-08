@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <CookieRequest v-on:requestAnswer="requestAnswer" v-if="!setcookie" />
+    <CookieRequest :key="componentKey" v-on:requestAnswer="requestAnswer" v-if="!setcookie" />
     <b-row align-v="center" align-h="center" class="template-main-row">
       <b-col cols="12" md="6">
         <b-container>
@@ -89,7 +89,8 @@ export default {
     return {
       email: "",
       password: "",
-      setcookie: false
+      setcookie: false,
+      componentKey: 0
     };
   },
   methods: {
@@ -120,7 +121,9 @@ export default {
               break;
           }
         } else {
+          this.forceRender();
           this.makeToast();
+
         }
       }
     },
@@ -129,6 +132,9 @@ export default {
         // Passwort vergessen
         console.log("Passwort vergessen!");
       }
+    },
+    forceRender() {
+      this.componentKey += 1;
     },
     makeToast() {
       this.$bvToast.toast("Bitte akzeptieren Sie unsere Cookies!", {
