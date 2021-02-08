@@ -286,7 +286,7 @@ export default {
     },
     viewApplication(app) {
       // Nur die ID verwenden beim übergeben!
-      this.changeComponent("ApplicationView", true, app);
+      this.changeComponent("ApplicationAdminView", true, app);
     },
     resetInfoModal() {
       this.infoModal.title = "";

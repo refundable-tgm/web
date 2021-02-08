@@ -27,6 +27,20 @@
     </b-row>
   </b-container>
 </template>
+<script>
+export default {
+  props: ["progress"],
+  methods: {
+    loadProgress() {
+      console.log(this.progress);
+    }
+  },
+  mounted() {
+    this.loadProgress();
+  }
+};
+</script>
+
 <style lang="scss" scoped>
 .track {
   position: relative;

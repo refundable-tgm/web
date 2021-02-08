@@ -83,6 +83,12 @@
       v-bind:url="url"
       v-bind:apikey="mapsapi"
     />
+    <ApplicationAdminView
+      v-if="currentComponent == 'ApplicationAdminView'"
+      v-on:change-component="changeComponent"
+      v-bind:url="url"
+      v-bind:apikey="mapsapi"
+    />
     <Progress
       v-if="currentComponent == 'Progress'"
       v-on:change-component="changeComponent"
@@ -114,8 +120,8 @@ import OtherCause from "@/components/new/OtherCause.vue";
 import Workshop from "@/components/new/Workshop.vue";
 import AdminDashboard from "@/components/admin/AdminDashboard.vue";
 import Progress from "@/components/Progress.vue";
-
 import PageNotFound from "@/components/PageNotFound.vue";
+import ApplicationAdminView from "@/components/admin/ApplicationAdminView.vue";
 
 export default {
   components: {
@@ -133,7 +139,8 @@ export default {
     ApplicationSearch,
     OtherCause,
     Workshop,
-    AdminDashboard
+    AdminDashboard,
+    ApplicationAdminView
   },
   props: ["pathing", "query"],
   data() {
@@ -242,6 +249,11 @@ export default {
         case "PageNotFound":
           this.change("PageNotFound", back);
           console.log("PAGENOTFOUND!");
+          break;
+
+        case "ApplicationAdminView":
+          this.change("ApplicationAdminView", back);
+          console.log("APPLICATIONADMINVIEW!");
           break;
 
         default:
