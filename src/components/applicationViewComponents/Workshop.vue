@@ -15,7 +15,7 @@
                 label="Titel"
                 label-for="tit"
               >
-                <b-form-input id="tit"></b-form-input>
+                <b-form-input id="tit" :readonly="readonly"></b-form-input>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -30,6 +30,7 @@
                 <b-form-datepicker
                   id="std"
                   v-model="value"
+                  :readonly="readonly"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -47,6 +48,7 @@
                 <b-form-timepicker
                   id="stz"
                   v-model="value"
+                  :readonly="readonly"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -64,6 +66,7 @@
                 <b-form-datepicker
                   id="end"
                   v-model="value"
+                  :readonly="readonly"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -81,6 +84,7 @@
                 <b-form-timepicker
                   id="enz"
                   v-model="value"
+                  :readonly="readonly"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -97,6 +101,7 @@
               >
                 <b-form-input
                   id="phz"
+                  :readonly="readonly"
                   type="number"
                   min="1"
                   max="3000"
@@ -112,7 +117,7 @@
                 label="Veranstalter"
                 label-for="ver"
               >
-                <b-form-input id="ver"></b-form-input>
+                <b-form-input id="ver" :readonly="readonly"></b-form-input>
               </b-form-group>
               <b-form-group
                 id="art"
@@ -127,6 +132,7 @@
                 <b-form-radio-group
                   id="ar"
                   v-model="selected"
+                  :disabled="readonly"
                   :options="options"
                   class="mb-3"
                   value-field="item"
@@ -144,7 +150,7 @@
                 label="Sonstige Art"
                 label-for="son"
               >
-                <b-form-input id="son"></b-form-input>
+                <b-form-input id="son" :readonly="readonly"></b-form-input>
               </b-form-group>
               <b-form-group
                 id="anmerkung"
@@ -158,6 +164,7 @@
               >
                 <b-form-textarea
                   id="an"
+                  :readonly="readonly"
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
@@ -230,7 +237,8 @@ export default {
         { item: "B", name: "Tagung" },
         { item: "C", name: "Lehrgang" },
         { item: "D", name: "Sonstiges" }
-      ]
+      ],
+      readonly: true
     };
   }
 };

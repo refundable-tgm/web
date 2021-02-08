@@ -17,6 +17,7 @@
             id="tit"
             v-model="title"
             :state="Titel"
+            :readonly="readonly"
             v-on:input="checkTitel"
           ></b-form-input>
           <b-form-invalid-feedback id="titel-feedback">
@@ -36,6 +37,7 @@
           <b-form-datepicker
             id="std"
             v-model="value"
+            :readonly="readonly"
             class="mb-2"
             placeholder="Datum auswählen"
           ></b-form-datepicker>
@@ -53,6 +55,7 @@
           <b-form-timepicker
             id="stz"
             v-model="value"
+            :readonly="readonly"
             locale="de"
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
@@ -70,6 +73,7 @@
           <b-form-datepicker
             id="end"
             v-model="value"
+            :readonly="readonly"
             class="mb-2"
             placeholder="Datum auswählen"
           ></b-form-datepicker>
@@ -87,6 +91,7 @@
           <b-form-timepicker
             id="enz"
             v-model="value"
+            :readonly="readonly"
             locale="de"
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
@@ -104,6 +109,7 @@
           <b-form-radio-group
             id="gr"
             v-model="selected"
+            :disabled="readonly"
             :options="options"
             class="mb-3"
             value-field="item"
@@ -125,7 +131,8 @@ export default {
         { item: "A", name: "L1" },
         { item: "B", name: "L2" },
         { item: "D", name: "L3" }
-      ]
+      ],
+      readonly: true
     };
   }
 };

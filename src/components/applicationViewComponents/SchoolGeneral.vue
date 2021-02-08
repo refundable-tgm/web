@@ -15,7 +15,7 @@
                 label="Bezeichnung"
                 label-for="bezeichnung"
               >
-                <b-form-input id="bezeichnung"></b-form-input>
+                <b-form-input id="bezeichnung" :readonly="readonly"></b-form-input>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -30,6 +30,7 @@
                 <b-form-datepicker
                   id="std"
                   v-model="value"
+                  :readonly="readonly"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -47,6 +48,7 @@
                 <b-form-timepicker
                   id="stz"
                   v-model="value"
+                  :readonly="readonly"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -64,6 +66,7 @@
                 <b-form-datepicker
                   id="end"
                   v-model="value"
+                  :readonly="readonly"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -81,6 +84,7 @@
                 <b-form-timepicker
                   id="enz"
                   v-model="value"
+                  :readonly="readonly"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -99,6 +103,7 @@
                   id="begl"
                   input-id="tags-pills"
                   v-model="value"
+                  :readonly="readonly"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -119,6 +124,7 @@
                   id="kl"
                   input-id="tags-pills"
                   v-model="value"
+                  :readonly="readonly"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -137,6 +143,7 @@
               >
                 <b-form-input
                   id="aschueler"
+                  :readonly="readonly"
                   type="number"
                   min="1"
                   max="3000"
@@ -154,6 +161,7 @@
               >
                 <b-form-input
                   id="aschuelerin"
+                  :readonly="readonly"
                   type="number"
                   min="1"
                   max="3000"
@@ -171,6 +179,7 @@
               >
                 <b-form-textarea
                   id="an"
+                  :readonly="readonly"
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
@@ -236,7 +245,8 @@ export default {
           text: "Schulveranstaltung - Allg. Infos",
           active: true
         }
-      ]
+      ],
+      readonly: true
     };
   }
 };

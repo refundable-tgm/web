@@ -19,6 +19,7 @@
                   id="std"
                   v-model="startDate"
                   :state="Time"
+                  :readonly="readonly"
                   v-on:input="checkTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
@@ -41,6 +42,7 @@
                   id="stz"
                   v-model="startTime"
                   :state="Time"
+                  :readonly="readonly"
                   v-on:input="checkTime"
                   locale="de"
                   placeholder="Zeit auswählen"
@@ -63,6 +65,7 @@
                   id="end"
                   v-model="endDate"
                   :state="Time"
+                  :readonly="readonly"
                   v-on:input="checkTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
@@ -85,6 +88,7 @@
                   id="enz"
                   v-model="endTime"
                   :state="Time"
+                  :readonly="readonly"
                   v-on:input="checkTime"
                   locale="de"
                   placeholder="Zeit auswählen"
@@ -107,6 +111,7 @@
                   id="gr"
                   v-model="selected"
                   :options="options"
+                  :disabled="readonly"
                   v-on:input="checkSelected"
                   class="mb-3"
                   value-field="item"
@@ -129,6 +134,7 @@
                   id="son"
                   v-model="son"
                   :state="Sonstiges"
+                  :readonly="readonly"
                   v-on:input="checkSonstiges"
                 >
                 </b-form-input>
@@ -151,6 +157,7 @@
                   id="tit"
                   v-model="title"
                   :state="Titel"
+                  :readonly="readonly"
                   v-on:input="checkTitel"
                 ></b-form-input>
                 <b-form-invalid-feedback id="titel-feedback">
@@ -173,6 +180,7 @@
                   type="number"
                   v-model="gz"
                   :state="GZset"
+                  :readonly="readonly"
                   v-on:input="checkGZ"
                 ></b-form-input>
                 <b-form-invalid-feedback id="gzn-feedback">
@@ -195,6 +203,7 @@
                   rows="3"
                   no-resize
                   v-model="notes"
+                  :readonly="readonly"
                 ></b-form-textarea>
               </b-form-group>
             </b-col>
@@ -368,7 +377,8 @@ export default {
       title: "",
       gz: "",
       son: "",
-      notes: ""
+      notes: "",
+      readonly: true
     };
   }
 };
