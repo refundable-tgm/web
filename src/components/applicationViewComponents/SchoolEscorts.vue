@@ -16,9 +16,7 @@
           <b-form-input
             id="tit"
             v-model="title"
-            :state="Titel"
             :readonly="readonly"
-            v-on:input="checkTitel"
           ></b-form-input>
           <b-form-invalid-feedback id="titel-feedback">
             Kein Titel angegeben!
@@ -36,7 +34,7 @@
         >
           <b-form-datepicker
             id="std"
-            v-model="value"
+            v-model="startDate"
             :readonly="readonly"
             class="mb-2"
             placeholder="Datum auswählen"
@@ -54,7 +52,7 @@
         >
           <b-form-timepicker
             id="stz"
-            v-model="value"
+            v-model="startTime"
             :readonly="readonly"
             locale="de"
             placeholder="Zeit auswählen"
@@ -72,7 +70,7 @@
         >
           <b-form-datepicker
             id="end"
-            v-model="value"
+            v-model="endDate"
             :readonly="readonly"
             class="mb-2"
             placeholder="Datum auswählen"
@@ -90,7 +88,7 @@
         >
           <b-form-timepicker
             id="enz"
-            v-model="value"
+            v-model="endTime"
             :readonly="readonly"
             locale="de"
             placeholder="Zeit auswählen"
@@ -132,6 +130,11 @@ export default {
         { item: "B", name: "L2" },
         { item: "D", name: "L3" }
       ],
+      title: "hi",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
       readonly: true
     };
   }

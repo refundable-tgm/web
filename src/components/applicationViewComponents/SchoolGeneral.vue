@@ -15,7 +15,11 @@
                 label="Bezeichnung"
                 label-for="bezeichnung"
               >
-                <b-form-input id="bezeichnung" :readonly="readonly"></b-form-input>
+                <b-form-input
+                  id="bezeichnung"
+                  v-model="bez"
+                  :readonly="readonly"
+                ></b-form-input>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -29,7 +33,7 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="value"
+                  v-model="startDate"
                   :readonly="readonly"
                   class="mb-2"
                   placeholder="Datum auswählen"
@@ -47,7 +51,7 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="value"
+                  v-model="startTime"
                   :readonly="readonly"
                   locale="de"
                   placeholder="Zeit auswählen"
@@ -65,7 +69,7 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="value"
+                  v-model="endDate"
                   :readonly="readonly"
                   class="mb-2"
                   placeholder="Datum auswählen"
@@ -83,7 +87,7 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="value"
+                  v-model="endTime"
                   :readonly="readonly"
                   locale="de"
                   placeholder="Zeit auswählen"
@@ -102,7 +106,7 @@
                 <b-form-tags
                   id="begl"
                   input-id="tags-pills"
-                  v-model="value"
+                  v-model="beg"
                   :readonly="readonly"
                   tag-variant="primary"
                   tag-pills
@@ -123,7 +127,7 @@
                 <b-form-tags
                   id="kl"
                   input-id="tags-pills"
-                  v-model="value"
+                  v-model="kla"
                   :readonly="readonly"
                   tag-variant="primary"
                   tag-pills
@@ -144,8 +148,9 @@
                 <b-form-input
                   id="aschueler"
                   :readonly="readonly"
+                  v-model="schueler"
                   type="number"
-                  min="1"
+                  min="0"
                   max="3000"
                 ></b-form-input>
               </b-form-group>
@@ -161,9 +166,10 @@
               >
                 <b-form-input
                   id="aschuelerin"
+                  v-model="schuelerinnen"
                   :readonly="readonly"
                   type="number"
-                  min="1"
+                  min="0"
                   max="3000"
                 ></b-form-input>
               </b-form-group>
@@ -180,6 +186,7 @@
                 <b-form-textarea
                   id="an"
                   :readonly="readonly"
+                  v-model="an"
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
@@ -211,23 +218,10 @@ export default {
         return false;
       }
     },
-    school() {
-      if (this.checkClick()) {
-        this.changeComponent("School");
-      }
-    },
-    other() {
-      if (this.checkClick()) {
-        this.changeComponent("Others");
-      }
-    },
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
-    },
-    next() {
-      if (this.checkClick()) [this.changeComponent("Escorts")];
     }
   },
   data() {
@@ -246,6 +240,16 @@ export default {
           active: true
         }
       ],
+      bez: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
+      schueler: 0,
+      schuelerinnen: 0,
+      an: "",
+      kla: [],
+      beg: [],
       readonly: true
     };
   }

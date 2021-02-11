@@ -48,7 +48,7 @@
             <b-button
               variant="outline-secondary"
               size="sm"
-              @click="row.toggleDetails"
+              @click="openPDF(row.item)"
               style="margin-right:1rem"
             >
               <b-icon icon="file-earmark-text"></b-icon> PDF öffnen
@@ -212,6 +212,9 @@ export default {
   methods: {
     closeAntrag() {
       this.$refs["close-modal"].show();
+    },
+    openPDF(item) {
+      console.log(item);
     },
     hideClose() {
       this.$refs["close-modal"].hide();

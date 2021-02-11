@@ -18,15 +18,10 @@
                 <b-form-datepicker
                   id="std"
                   v-model="startDate"
-                  :state="Time"
                   :readonly="readonly"
-                  v-on:input="checkTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
-                <b-form-invalid-feedback id="std-feedback">
-                  Start der Fortbildung muss vor dem Ende der Fortbildung sein!
-                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="startz"
@@ -41,15 +36,10 @@
                 <b-form-timepicker
                   id="stz"
                   v-model="startTime"
-                  :state="Time"
                   :readonly="readonly"
-                  v-on:input="checkTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
-                <b-form-invalid-feedback id="stz-feedback">
-                  Start der Fortbildung muss vor dem Ende der Fortbildung sein!
-                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="endd"
@@ -64,15 +54,10 @@
                 <b-form-datepicker
                   id="end"
                   v-model="endDate"
-                  :state="Time"
                   :readonly="readonly"
-                  v-on:input="checkTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
-                <b-form-invalid-feedback id="end-feedback">
-                  Start der Fortbildung muss vor dem Ende der Fortbildung sein!
-                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="endz"
@@ -87,15 +72,10 @@
                 <b-form-timepicker
                   id="enz"
                   v-model="endTime"
-                  :state="Time"
                   :readonly="readonly"
-                  v-on:input="checkTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
-                <b-form-invalid-feedback id="enz-feedback">
-                  Start der Fortbildung muss vor dem Ende der Fortbildung sein!
-                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="grund"
@@ -112,7 +92,6 @@
                   v-model="selected"
                   :options="options"
                   :disabled="readonly"
-                  v-on:input="checkSelected"
                   class="mb-3"
                   value-field="item"
                   text-field="name"
@@ -130,17 +109,8 @@
                 label-for="son"
                 v-if="selected == 'D'"
               >
-                <b-form-input
-                  id="son"
-                  v-model="son"
-                  :state="Sonstiges"
-                  :readonly="readonly"
-                  v-on:input="checkSonstiges"
-                >
+                <b-form-input id="son" v-model="son" :readonly="readonly">
                 </b-form-input>
-                <b-form-invalid-feedback id="sonst-feedback">
-                  Kein Sonstiger Grund angegeben!
-                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="titel"
@@ -156,13 +126,8 @@
                 <b-form-input
                   id="tit"
                   v-model="title"
-                  :state="Titel"
                   :readonly="readonly"
-                  v-on:input="checkTitel"
                 ></b-form-input>
-                <b-form-invalid-feedback id="titel-feedback">
-                  Kein Titel angegeben!
-                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="gz"
@@ -179,13 +144,8 @@
                   id="gzn"
                   type="number"
                   v-model="gz"
-                  :state="GZset"
                   :readonly="readonly"
-                  v-on:input="checkGZ"
                 ></b-form-input>
-                <b-form-invalid-feedback id="gzn-feedback">
-                  Keine GZ angegeben!
-                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="anmerkung"
@@ -237,84 +197,6 @@ export default {
         this.changeComponent("Index");
       }
     },
-    checkTime() {
-      if (
-        this.startDate !== "" &&
-        this.startTime !== "" &&
-        this.endDate !== "" &&
-        this.endTime !== ""
-      ) {
-        let start = new Date(this.startDate + "T" + this.startTime);
-        let end = new Date(this.endDate + "T" + this.endTime);
-        if (end - start <= 0) {
-          this.Time = false;
-        } else {
-          this.Time = true;
-        }
-        this.checkInputs();
-      }
-    },
-    checkSelected() {
-      if (this.selected !== "") {
-        this.isSelected = true;
-      } else {
-        this.isSelected = false;
-      }
-      this.checkInputs();
-    },
-    checkTitel() {
-      if (this.title === "") {
-        this.Titel = false;
-      } else {
-        this.Titel = true;
-      }
-      this.checkInputs();
-    },
-    checkGZ() {
-      if (this.gz === "") {
-        this.GZset = false;
-      } else {
-        this.GZset = true;
-      }
-      this.checkInputs();
-    },
-    checkSonstiges() {
-      if (this.son === "") {
-        this.Sonstiges = false;
-      } else {
-        this.Sonstiges = true;
-      }
-      this.checkInputs();
-    },
-    checkInputs() {
-      switch (this.selected) {
-        case "B":
-          if (
-            this.Time === true &&
-            this.Titel === true &&
-            this.GZset === true
-          ) {
-            this.validInputs = true;
-          } else {
-            this.validInputs = false;
-          }
-          break;
-        case "D":
-          if (this.Time === true && this.Sonstiges === true) {
-            this.validInputs = true;
-          } else {
-            this.validInputs = false;
-          }
-          break;
-        default:
-          if (this.Time === true && this.isSelected === true) {
-            this.validInputs = true;
-          } else {
-            this.validInputs = false;
-          }
-          break;
-      }
-    },
     makeToast() {
       this.$bvToast.toast(
         "Es wurden nicht allen Begleitern eine Klasse zugewiesen!",
@@ -325,20 +207,6 @@ export default {
           variant: "danger"
         }
       );
-    },
-    einreichen() {
-      if (this.checkClick()) {
-        if (this.validInputs) {
-          // Daten an Michi senden
-          this.changeComponent("Index");
-        } else {
-          this.makeToast();
-          if (this.Time === null) this.Time = false;
-          if (this.Titel === null) this.Titel = false;
-          if (this.GZset === null) this.GZset = false;
-          if (this.Sonstiges === null) this.Sonstiges = false;
-        }
-      }
     }
   },
   data() {
@@ -364,12 +232,6 @@ export default {
         { item: "C", name: "Arzttermin" },
         { item: "D", name: "Sonstiges" }
       ],
-      validInputs: false,
-      Time: null,
-      isSelected: null,
-      Titel: null,
-      GZset: null,
-      Sonstiges: null,
       startDate: "",
       startTime: "",
       endDate: "",

@@ -15,7 +15,11 @@
                 label="Titel"
                 label-for="tit"
               >
-                <b-form-input id="tit" :readonly="readonly"></b-form-input>
+                <b-form-input
+                  id="tit"
+                  v-model="title"
+                  :readonly="readonly"
+                ></b-form-input>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -29,7 +33,7 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="value"
+                  v-model="startDate"
                   :readonly="readonly"
                   class="mb-2"
                   placeholder="Datum auswählen"
@@ -47,7 +51,7 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="value"
+                  v-model="startTime"
                   :readonly="readonly"
                   locale="de"
                   placeholder="Zeit auswählen"
@@ -65,7 +69,7 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="value"
+                  v-model="endDate"
                   :readonly="readonly"
                   class="mb-2"
                   placeholder="Datum auswählen"
@@ -83,7 +87,7 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="value"
+                  v-model="endTime"
                   :readonly="readonly"
                   locale="de"
                   placeholder="Zeit auswählen"
@@ -101,6 +105,7 @@
               >
                 <b-form-input
                   id="phz"
+                  v-model="phz"
                   :readonly="readonly"
                   type="number"
                   min="1"
@@ -117,7 +122,11 @@
                 label="Veranstalter"
                 label-for="ver"
               >
-                <b-form-input id="ver" :readonly="readonly"></b-form-input>
+                <b-form-input
+                  id="ver"
+                  v-model="ver"
+                  :readonly="readonly"
+                ></b-form-input>
               </b-form-group>
               <b-form-group
                 id="art"
@@ -150,7 +159,11 @@
                 label="Sonstige Art"
                 label-for="son"
               >
-                <b-form-input id="son" :readonly="readonly"></b-form-input>
+                <b-form-input
+                  id="son"
+                  v-model="son"
+                  :readonly="readonly"
+                ></b-form-input>
               </b-form-group>
               <b-form-group
                 id="anmerkung"
@@ -165,6 +178,7 @@
                 <b-form-textarea
                   id="an"
                   :readonly="readonly"
+                  v-model="an"
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
@@ -180,41 +194,6 @@
 <script>
 export default {
   name: "NewApplication",
-  methods: {
-    changeComponent(component, back = true, application = null) {
-      this.$emit("change-component", component, back, application);
-    },
-    checkClick() {
-      if (
-        window
-          .getSelection()
-          .toString()
-          .trim() === ""
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    school() {
-      if (this.checkClick()) {
-        this.changeComponent("School");
-      }
-    },
-    other() {
-      if (this.checkClick()) {
-        this.changeComponent("Others");
-      }
-    },
-    index() {
-      if (this.checkClick()) {
-        this.changeComponent("Index");
-      }
-    },
-    next() {
-      if (this.checkClick()) [this.changeComponent("Escorts")];
-    }
-  },
   data() {
     return {
       items: [
@@ -238,6 +217,15 @@ export default {
         { item: "C", name: "Lehrgang" },
         { item: "D", name: "Sonstiges" }
       ],
+      title: "",
+      an: "",
+      phz: "",
+      ver: "",
+      son: "",
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
       readonly: true
     };
   }
