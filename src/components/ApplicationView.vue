@@ -38,8 +38,6 @@
           striped
           :items="items"
           :fields="fields"
-          :current-page="currentPage"
-          :per-page="perPage"
           :filter="filter"
           :filter-included-fields="filterOn"
           :sort-by.sync="sortBy"
@@ -55,7 +53,7 @@
           </template>
 
           <template #cell(actions)="row">
-            <b-button variant="outline-secondary" size="sm" @click="row.toggleDetails" style="margin-right:1rem">
+            <b-button variant="outline-secondary" size="sm" @click="openPDF(row.item)" style="margin-right:1rem">
               <b-icon icon="file-earmark-text"></b-icon> PDF öffnen
             </b-button>
             <b-button variant="outline-secondary" size="sm" @click="row.toggleDetails">
@@ -211,6 +209,9 @@ export default {
   methods: {
     closeAntrag() {
       this.$refs["close-modal"].show();
+    },
+    openPDF(item) {
+      console.log(item);
     },
     hideClose() {
       this.$refs["close-modal"].hide();
