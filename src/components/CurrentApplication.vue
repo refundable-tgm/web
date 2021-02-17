@@ -175,7 +175,6 @@ export default {
     }
   },
   mounted() {
-    // Set the initial number of items
     this.loadData();
     this.checkStatus();
   },
@@ -185,14 +184,19 @@ export default {
       this.viewApplication(item);
     },
     showInfo(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`;
-      this.infoModal.content = JSON.stringify(item, null, 2);
+      //this.infoModal.title = `Row index: ${index}`;
+      this.infoModal.title = item.title;
+      let leiter = "Leiter: " + item.leader;
+      let date = "Einreichdatum: " + item.edate;
+      let status = "Status: " + item.status;
+      this.infoModal.content = leiter + "\n" + date + "\n" + status;
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
     loadData() {
       //TODO: Load Data from Backend
       console.log("data loaded");
       //Sobald geladen dann der Code in der nächsten Zeile:
+      // Set the initial number of items
       this.totalRows = this.items.length;
     },
     resetInfoModal() {
