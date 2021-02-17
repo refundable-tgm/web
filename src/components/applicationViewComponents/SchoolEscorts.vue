@@ -15,12 +15,10 @@
         >
           <b-form-input
             id="tit"
-            v-model="title"
+            v-model="data.bez"
             :readonly="readonly"
+            @input="updateData"
           ></b-form-input>
-          <b-form-invalid-feedback id="titel-feedback">
-            Kein Titel angegeben!
-          </b-form-invalid-feedback>
         </b-form-group>
         <b-form-group
           id="startd"
@@ -34,8 +32,9 @@
         >
           <b-form-datepicker
             id="std"
-            v-model="startDate"
+            v-model="data.startDate"
             :readonly="readonly"
+            @input="updateData"
             class="mb-2"
             placeholder="Datum auswählen"
           ></b-form-datepicker>
@@ -52,8 +51,9 @@
         >
           <b-form-timepicker
             id="stz"
-            v-model="startTime"
+            v-model="data.startTime"
             :readonly="readonly"
+            @input="updateData"
             locale="de"
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
@@ -70,8 +70,9 @@
         >
           <b-form-datepicker
             id="end"
-            v-model="endDate"
+            v-model="data.endDate"
             :readonly="readonly"
+            @input="updateData"
             class="mb-2"
             placeholder="Datum auswählen"
           ></b-form-datepicker>
@@ -88,8 +89,9 @@
         >
           <b-form-timepicker
             id="enz"
-            v-model="endTime"
+            v-model="data.endTime"
             :readonly="readonly"
+            @input="updateData"
             locale="de"
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
@@ -109,6 +111,7 @@
             v-model="selected"
             :disabled="readonly"
             :options="options"
+            @input="updateData"
             class="mb-3"
             value-field="item"
             text-field="name"
@@ -122,20 +125,24 @@
 
 <script>
 export default {
+  props: ["data","readonly"],
+  methods: {
+    updateData() {
+      this.data.groupe = this.selected;
+      this.$emit('update', this.data);
+    }
+  },
+  mounted() {
+    this.selected = this.data.groupe;
+  },
   data() {
     return {
-      selected: "B",
+      selected: "",
       options: [
         { item: "A", name: "L1" },
         { item: "B", name: "L2" },
         { item: "D", name: "L3" }
-      ],
-      title: "hi",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
-      readonly: true
+      ]
     };
   }
 };

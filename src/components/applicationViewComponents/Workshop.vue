@@ -17,8 +17,9 @@
               >
                 <b-form-input
                   id="tit"
-                  v-model="title"
+                  v-model="data.bez"
                   :readonly="readonly"
+                  @input="updateData"
                 ></b-form-input>
               </b-form-group>
               <b-form-group
@@ -33,8 +34,9 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="startDate"
+                  v-model="data.startDate"
                   :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -51,8 +53,9 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="startTime"
+                  v-model="data.startTime"
                   :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -69,8 +72,9 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="endDate"
+                  v-model="data.endDate"
                   :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -87,8 +91,9 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="endTime"
+                  v-model="data.endTime"
                   :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -105,8 +110,9 @@
               >
                 <b-form-input
                   id="phz"
-                  v-model="phz"
+                  v-model="data.phz"
                   :readonly="readonly"
+                  @input="updateData"
                   type="number"
                   min="1"
                   max="3000"
@@ -124,8 +130,9 @@
               >
                 <b-form-input
                   id="ver"
-                  v-model="ver"
+                  v-model="data.veran"
                   :readonly="readonly"
+                  @input="updateData"
                 ></b-form-input>
               </b-form-group>
               <b-form-group
@@ -140,7 +147,8 @@
               >
                 <b-form-radio-group
                   id="ar"
-                  v-model="selected"
+                  v-model="data.type"
+                  @input="updateData"
                   :disabled="readonly"
                   :options="options"
                   class="mb-3"
@@ -161,7 +169,8 @@
               >
                 <b-form-input
                   id="son"
-                  v-model="son"
+                  v-model="data.son"
+                  @input="updateData"
                   :readonly="readonly"
                 ></b-form-input>
               </b-form-group>
@@ -178,7 +187,8 @@
                 <b-form-textarea
                   id="an"
                   :readonly="readonly"
-                  v-model="an"
+                  v-model="data.notes"
+                  @input="updateData"
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
@@ -194,40 +204,26 @@
 <script>
 export default {
   name: "NewApplication",
+  props: ["data", "readonly"],
   data() {
     return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Fortbildung, etc",
-          href: "#"
-        },
-        {
-          text: "Fortbildung",
-          active: true
-        }
-      ],
-      selected: "B",
+      selected: "",
       options: [
         { item: "A", name: "Seminar" },
         { item: "B", name: "Tagung" },
         { item: "C", name: "Lehrgang" },
         { item: "D", name: "Sonstiges" }
-      ],
-      title: "",
-      an: "",
-      phz: "",
-      ver: "",
-      son: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
-      readonly: true
+      ]
     };
+  },
+  mounted() {
+    this.selected = this.data.type;
+  },
+  methods: {
+    updateData() {
+      this.data.type = this.selected;
+      this.$emit('update', this.data);
+    }
   }
 };
 </script>

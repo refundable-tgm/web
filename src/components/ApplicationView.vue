@@ -2,7 +2,7 @@
   <b-container fluid>
     <b-row align-v="center" align-h="center">
       <b-col cols="12" md="6">
-        <h1 id="new-application-heading">Antrag für Xy</h1>
+        <h1 id="new-application-heading">Antrag für {{ title }}</h1>
       </b-col>
       <div class="col-12 col-md-6">
         <b-button
@@ -28,7 +28,7 @@
       style="margin-top:1rem;margin-bottom:3rem"
     >
       <b-col cols="12">
-        <Progress />
+        <Progress v-bind:progress="progress" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -53,20 +53,50 @@
           </template>
 
           <template #cell(actions)="row">
-            <b-button variant="outline-secondary" size="sm" @click="openPDF(row.item)" style="margin-right:1rem">
+            <b-button
+              variant="outline-secondary"
+              size="sm"
+              @click="openPDF(row.item)"
+              style="margin-right:1rem"
+            >
               <b-icon icon="file-earmark-text"></b-icon> PDF öffnen
             </b-button>
-            <b-button variant="outline-secondary" size="sm" @click="row.toggleDetails">
-               <b-icon icon="pencil-square"></b-icon> Bearbeitung {{ row.detailsShowing ? "schließen" : "öffnen" }}
+            <b-button
+              variant="outline-secondary"
+              size="sm"
+              @click="row.toggleDetails"
+            >
+              <b-icon icon="pencil-square"></b-icon> Bearbeitung
+              {{ row.detailsShowing ? "schließen" : "öffnen" }}
             </b-button>
           </template>
 
           <template #row-details="row">
             <b-card>
-              <SchoolGeneral v-if="row.item.title == 'Allgemeine Infos'" />
-              <SchoolEscorts v-if="row.item.title == 'Begleitformular'" />
-              <Others v-if="row.item.title == 'Abwesenheitsformular'" />
-              <Workshop v-if="row.item.title == 'Fortbildung'" />
+              <SchoolGeneral
+                v-bind:readonly="readonly"
+                v-bind:data="sgdata"
+                v-on:update="updateSG"
+                v-if="row.item.title == 'Allgemeine Infos'"
+              />
+              <SchoolEscorts
+                v-bind:readonly="readonly"
+                v-bind:data="sedata"
+                v-on:update="updateSE"
+                v-if="row.item.title == 'Begleitformular'"
+              />
+              <Others
+                v-bind:readonly="readonly"
+                v-bind:data="odata"
+                v-on:update="updateO"
+                v-if="row.item.title == 'Abwesenheitsformular'"
+              />
+              <Workshop
+                v-bind:readonly="readonly"
+                v-bind:data="wdata"
+                v-on:update="updateW"
+                v-if="row.item.title == 'Fortbildung'"
+              />
             </b-card>
           </template>
         </b-table>
@@ -139,6 +169,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import Progress from "@/components/Progress.vue";
 import SchoolGeneral from "@/components/applicationViewComponents/SchoolGeneral.vue";
 import SchoolEscorts from "@/components/applicationViewComponents/SchoolEscorts.vue";
@@ -152,6 +183,7 @@ export default {
     SchoolGeneral,
     Progress
   },
+  props: ["url", "appid", "user"],
   data() {
     return {
       items: [
@@ -160,12 +192,10 @@ export default {
         },
         {
           title: "Begleitformular"
-        }
-        ,
+        },
         {
           title: "Fortbildung"
-        }
-        ,
+        },
         {
           title: "Abwesenheitsformular"
         }
@@ -189,7 +219,14 @@ export default {
         id: "info-modal",
         title: "",
         content: ""
-      }
+      },
+      readonly: false,
+      title: "",
+      progress: { type: "sl", data: 1, current: 0 },
+      sgdata: {},
+      sedata: {},
+      odata: {},
+      wdata: {}
     };
   },
   computed: {
@@ -203,15 +240,128 @@ export default {
     }
   },
   mounted() {
+    this.loadData();
     // Set the initial number of items
     this.totalRows = this.items.length;
   },
   methods: {
+    loadData() {
+      axios
+        .get(this.url + "/application/getApplication?id=" + this.appid)
+        .then((response, status) => {
+          status.toString();
+          var application = response.data;
+          var startDate = application.startTimeStamp
+            .toISOString()
+            .split("T")[0];
+          var startTime = application.startTimeStamp
+            .toISOString()
+            .split("T")[1];
+          var endDate = application.endTimeStamp.toISOString().split("T")[0];
+          var endTime = application.endTimeStamp.toISOString().split("T")[1];
+          switch (application.type) {
+            case 0:
+              if (application.role === "Ersteller") {
+                this.progress.type = "sl";
+                this.progress.data = 0;
+                this.progress.current = 1;
+                this.sgdata = {
+                  bez: application.school.name,
+                  startDate: startDate,
+                  startTime: startTime,
+                  endDate: endDate,
+                  endTime: endTime,
+                  an: application.school.note,
+                  schueler: application.school.malestudents,
+                  schuelerinnen: application.school.femalestudents,
+                  kla: application.school.jahrgaenge,
+                  beg: application.school.begleit
+                };
+              } else {
+                this.items.splice(0,1);
+                this.progress.type = "se";
+                this.progress.data = 0;
+                this.progress.current = 1;
+                this.sedata = {
+                  bez: application.begleit.name,
+                  startDate: startDate,
+                  startTime: startTime,
+                  endDate: endDate,
+                  endTime: endTime,
+                  groupe: application.begleit.teachergroupe
+                };
+              }
+              break;
+            case 1:
+              this.progress.type = "ws";
+              this.progress.data = 0;
+              this.progress.current = 1;
+              this.wdata = {
+                bez: application.name,
+                startDate: startDate,
+                startTime: startTime,
+                endDate: endDate,
+                endTime: endTime,
+                notes: application.note,
+                type: application.art,
+                phz: application.phzahl,
+                veran: application.veranstalter,
+                son: application.sonstiges
+              };
+              break;
+            case 2 || 3 || 4 || 5:
+              this.progress.type = "af";
+              this.progress.data = 0;
+              this.progress.current = 1;
+              this.odata = {
+                startDate: startDate,
+                startTime: startTime,
+                endDate: endDate,
+                endTime: endTime,
+                an: application.note,
+                reason: application.reason,
+                gz: application.gz,
+                son: application.sonstiges,
+                bez: application.bez
+              };
+              break;
+            default:
+              this.progress.type = "";
+              this.progress.data = 0;
+              this.progress.current = 0;
+              break;
+          }
+          this.title = application.title;
+          if (application.status === "Abgelehnt") this.readonly = false;
+          else this.readonly = true;
+
+          /*
+          TODO:
+          - update variable progress to application ?
+          */
+        });
+    },
     closeAntrag() {
       this.$refs["close-modal"].show();
     },
     openPDF(item) {
       console.log(item);
+    },
+    updateSG(data) {
+      console.log("UPDATE SG");
+      this.sgdata = data;
+    },
+    updateSE(data) {
+      console.log("UPDATE SE");
+      this.sedata = data;
+    },
+    updateO(data) {
+      console.log("UPDATE O");
+      this.odata = data;
+    },
+    updateW(data) {
+      console.log("UPDATE W");
+      this.wdata = data;
     },
     hideClose() {
       this.$refs["close-modal"].hide();

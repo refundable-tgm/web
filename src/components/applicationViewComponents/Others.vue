@@ -17,8 +17,9 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="startDate"
+                  v-model="data.startDate"
                   :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -35,8 +36,9 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="startTime"
+                  v-model="data.startTime"
                   :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -53,8 +55,9 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="endDate"
+                  v-model="data.endDate"
                   :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -71,8 +74,9 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="endTime"
+                  v-model="data.endTime"
                   :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -90,6 +94,7 @@
                 <b-form-radio-group
                   id="gr"
                   v-model="selected"
+                  @input="updateData"
                   :options="options"
                   :disabled="readonly"
                   class="mb-3"
@@ -109,7 +114,7 @@
                 label-for="son"
                 v-if="selected == 'D'"
               >
-                <b-form-input id="son" v-model="son" :readonly="readonly">
+                <b-form-input id="son" @input="updateData" v-model="data.son" :readonly="readonly">
                 </b-form-input>
               </b-form-group>
               <b-form-group
@@ -125,8 +130,9 @@
               >
                 <b-form-input
                   id="tit"
-                  v-model="title"
+                  v-model="data.bez"
                   :readonly="readonly"
+                  @input="updateData"
                 ></b-form-input>
               </b-form-group>
               <b-form-group
@@ -143,8 +149,9 @@
                 <b-form-input
                   id="gzn"
                   type="number"
-                  v-model="gz"
+                  v-model="data.gz"
                   :readonly="readonly"
+                  @input="updateData"
                 ></b-form-input>
               </b-form-group>
               <b-form-group
@@ -162,8 +169,9 @@
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
-                  v-model="notes"
+                  v-model="data.an"
                   :readonly="readonly"
+                  @input="updateData"
                 ></b-form-textarea>
               </b-form-group>
             </b-col>
@@ -176,71 +184,25 @@
 <script>
 export default {
   name: "NewApplication",
+  props: ["data","readonly"],
   methods: {
-    changeComponent(component, back = true, application = null) {
-      this.$emit("change-component", component, back, application);
-    },
-    checkClick() {
-      if (
-        window
-          .getSelection()
-          .toString()
-          .trim() === ""
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    index() {
-      if (this.checkClick()) {
-        this.changeComponent("Index");
-      }
-    },
-    makeToast() {
-      this.$bvToast.toast(
-        "Es wurden nicht allen Begleitern eine Klasse zugewiesen!",
-        {
-          title: "Ein Fehler ist aufgetreten!",
-          autoHideDelay: 2500,
-          appendToast: false,
-          variant: "danger"
-        }
-      );
+    updateData() {
+      this.data.reason = this.selected;
+      this.$emit('update', this.data);
     }
+  },
+  mounted() {
+    this.selected = this.data.reason;
   },
   data() {
     return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Fortbildung, etc",
-          href: "#"
-        },
-        {
-          text: "Anderer Grund",
-          active: true
-        }
-      ],
       selected: "",
       options: [
         { item: "A", name: "Pflegefreistellung" },
         { item: "B", name: "Dienstauftrag" },
         { item: "C", name: "Arzttermin" },
         { item: "D", name: "Sonstiges" }
-      ],
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
-      title: "",
-      gz: "",
-      son: "",
-      notes: "",
-      readonly: true
+      ]
     };
   }
 };

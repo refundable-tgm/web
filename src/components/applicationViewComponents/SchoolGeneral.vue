@@ -17,8 +17,9 @@
               >
                 <b-form-input
                   id="bezeichnung"
-                  v-model="bez"
+                  v-model="data.bez"
                   :readonly="readonly"
+                  @input="updateData"
                 ></b-form-input>
               </b-form-group>
               <b-form-group
@@ -33,8 +34,9 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="startDate"
+                  v-model="data.startDate"
                   :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -51,8 +53,9 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="startTime"
+                  v-model="data.startTime"
                   :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -69,8 +72,9 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="endDate"
+                  v-model="data.endDate"
                   :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -87,8 +91,9 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="endTime"
+                  v-model="data.endTime"
                   :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -106,8 +111,9 @@
                 <b-form-tags
                   id="begl"
                   input-id="tags-pills"
-                  v-model="beg"
+                  v-model="data.beg"
                   :readonly="readonly"
+                  @input="updateData"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -127,8 +133,9 @@
                 <b-form-tags
                   id="kl"
                   input-id="tags-pills"
-                  v-model="kla"
+                  v-model="data.kla"
                   :readonly="readonly"
+                  @input="updateData"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -148,7 +155,8 @@
                 <b-form-input
                   id="aschueler"
                   :readonly="readonly"
-                  v-model="schueler"
+                  v-model="data.schueler"
+                  @input="updateData"
                   type="number"
                   min="0"
                   max="3000"
@@ -166,8 +174,9 @@
               >
                 <b-form-input
                   id="aschuelerin"
-                  v-model="schuelerinnen"
+                  v-model="data.schuelerinnen"
                   :readonly="readonly"
+                  @input="updateData"
                   type="number"
                   min="0"
                   max="3000"
@@ -186,7 +195,8 @@
                 <b-form-textarea
                   id="an"
                   :readonly="readonly"
-                  v-model="an"
+                  v-model="data.an"
+                  @input="updateData"
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
@@ -202,56 +212,11 @@
 <script>
 export default {
   name: "NewApplication",
+  props: ["data","readonly"],
   methods: {
-    changeComponent(component, back = true, application = null) {
-      this.$emit("change-component", component, back, application);
-    },
-    checkClick() {
-      if (
-        window
-          .getSelection()
-          .toString()
-          .trim() === ""
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    index() {
-      if (this.checkClick()) {
-        this.changeComponent("Index");
-      }
+    updateData() {
+      this.$emit('update', this.data);
     }
-  },
-  data() {
-    return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Antrag Übersicht",
-          href: "#"
-        },
-        {
-          text: "Schulveranstaltung - Allg. Infos",
-          active: true
-        }
-      ],
-      bez: "",
-      startDate: "",
-      startTime: "",
-      endDate: "",
-      endTime: "",
-      schueler: 0,
-      schuelerinnen: 0,
-      an: "",
-      kla: [],
-      beg: [],
-      readonly: true
-    };
   }
 };
 </script>
