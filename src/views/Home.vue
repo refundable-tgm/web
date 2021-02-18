@@ -8,6 +8,7 @@
       v-bind:apikey="mapsapi"
       v-on:requestAnswer="useCookie"
       v-bind:cookieset="cookies"
+      v-on:login="login"
     />
     <Index
       v-if="currentComponent == 'Index'"
@@ -15,36 +16,42 @@
       v-bind:url="url"
       v-bind:apikey="mapsapi"
       v-bind:admin="admin"
+      v-bind:user="user"
     />
     <NewApplication
       v-if="currentComponent == 'NewApplication'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <AllApplication
       v-if="currentComponent == 'AllApplication'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <CurrentApplication
       v-if="currentComponent == 'CurrentApplication'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <School
       v-if="currentComponent == 'School'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <Others
       v-if="currentComponent == 'Others'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <Escorts
       v-if="currentComponent == 'Escorts'"
@@ -52,54 +59,62 @@
       v-bind:url="url"
       v-bind:apikey="mapsapi"
       v-bind:escorts="escortsdata"
+      v-bind:user="user"
     />
     <OtherCause
       v-if="currentComponent == 'OtherCause'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <Workshop
       v-if="currentComponent == 'Workshop'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <ApplicationView
       v-if="currentComponent == 'ApplicationView'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:appid="appid"
+      v-bind:user="user"
     />
     <ApplicationSearch
       v-if="currentComponent == 'ApplicationSearch'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <AdminDashboard
       v-if="currentComponent == 'AdminDashboard'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <ApplicationAdminView
       v-if="currentComponent == 'ApplicationAdminView'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <Progress
       v-if="currentComponent == 'Progress'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:apikey="mapsapi"
+      v-bind:user="user"
     />
     <PageNotFound
       v-if="currentComponent == 'PageNotFound'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
-      v-bind:apikey="mapsapi"
     />
   </div>
 </template>
@@ -146,18 +161,18 @@ export default {
   data() {
     return {
       // url is the link from the REST-API
-      // mapsapi ist he key for the Google Maps API
+      // mapsapi is the key for the Google Maps API
       url: "Michi Link",
       mapsapi: "AIzaSyDP340IZ-7pK7-jDmoILtWg0xrcwrXYDJc",
       data: Object,
-      //currentHeader: Header,
-      //currentFooter: Footer,
       currentComponent: "",
       escortsdata: Object,
       forward: "",
       cookies: false,
       admin: true,
-      logged: false
+      logged: false,
+      appid: "",
+      user: ""
     };
   },
   methods: {
@@ -275,8 +290,10 @@ export default {
       }
     },
     loadApplication(application) {
-      if (application) console.log("egal");
-      console.log("Load Application data from backend");
+      this.appid = application;
+    },
+    login(user) {
+      this.user = user;
     },
     loadEscortsData(escortsdata) {
       let output = [];

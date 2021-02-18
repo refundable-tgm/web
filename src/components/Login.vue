@@ -1,6 +1,10 @@
 <template>
   <b-container fluid>
-    <CookieRequest :key="componentKey" v-on:requestAnswer="requestAnswer" v-if="!setcookie" />
+    <CookieRequest
+      :key="componentKey"
+      v-on:requestAnswer="requestAnswer"
+      v-if="!setcookie"
+    />
     <b-row align-v="center" align-h="center" class="template-main-row">
       <b-col cols="12" md="6">
         <b-container>
@@ -101,6 +105,8 @@ export default {
           console.log("Login!");
           console.log(this.email);
           console.log(this.password);
+          //Userid getten von dem request
+          this.$emit("login", user);
 
           switch (this.forward.name) {
             case "ApplicationSearch":
@@ -123,7 +129,6 @@ export default {
         } else {
           this.forceRender();
           this.makeToast();
-
         }
       }
     },
