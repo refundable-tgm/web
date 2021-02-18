@@ -292,8 +292,9 @@ export default {
     loadApplication(application) {
       this.appid = application;
     },
-    login(user) {
+    login(user, admin) {
       this.user = user;
+      this.admin = admin;
     },
     loadEscortsData(escortsdata) {
       let output = [];

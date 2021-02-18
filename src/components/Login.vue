@@ -106,7 +106,7 @@ export default {
           console.log(this.email);
           console.log(this.password);
           //Userid getten von dem request
-          this.$emit("login", user);
+          this.$emit("login", 'user', 'admin');
 
           switch (this.forward.name) {
             case "ApplicationSearch":
