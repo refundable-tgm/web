@@ -113,6 +113,7 @@ export default {
     return {
       items: [
         {
+          id: 3456,
           title: "Sommersportwoche",
           leader: "Stefan Zakall",
           edate: "2019-10-10",
@@ -121,6 +122,7 @@ export default {
           _rowVariant: "danger"
         },
         {
+          id: 4567,
           title: "Sprachreise",
           leader: "Stefan Zakall",
           edate: "2020-12-12",

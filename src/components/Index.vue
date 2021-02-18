@@ -307,7 +307,7 @@
 </template>
 <script>
 import NewsElement from "@/components/NewsElement.vue";
-import axios from "axios"
+import axios from "axios";
 
 export default {
   name: "Index",
@@ -323,10 +323,12 @@ export default {
   },
   methods: {
     setNews() {
-      axios.get(this.url + "/news?user="+this.user).then((response, status) => {
-        status.toString();
-        this.news = this.cutNews(response.data);
-      });
+      axios
+        .get(this.url + "/news?user=" + this.user)
+        .then((response, status) => {
+          status.toString();
+          this.news = this.cutNews(response.data);
+        });
       /*var back = [
         { id: "1", title: "TEST 1", description: "Das ist nur Test Nr. 1" },
         { id: "2", title: "TEST 2", description: "Das ist nur Test Nr. 2" },

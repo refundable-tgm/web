@@ -131,7 +131,9 @@
   </b-container>
 </template>
 <script>
+import axios from "axios";
 export default {
+  props: ["url", "user"],
   data() {
     return {
       selectMode: "multi",
@@ -244,10 +246,20 @@ export default {
     }
   },
   mounted() {
-    // Set the initial number of items
-    this.totalRows = this.items.length;
+    this.loadData();
   },
   methods: {
+    loadData() {
+      axios
+        .get(this.url + "/getAllAdminApplications?user=" + this.user)
+        .then(response => {
+          var data = response.data;
+          //Hier noch Daten formatieren, falls nicht alles passt
+          this.items = data;
+          this.totalRows = this.items.length;
+        });
+      // Set the initial number of items
+    },
     info(item) {
       console.log(item);
       this.viewApplication(item);

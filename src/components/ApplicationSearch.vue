@@ -46,7 +46,9 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  props: ["url", "user"],
   data() {
     return {
       searching: ""
@@ -89,16 +91,20 @@ export default {
       });
     },
     requestApplication() {
-      return { response: 200 };
+      axios
+        .get(this.url + "/application/getApplication?id=" + this.searching)
+        .then(response => {
+          var data = response.data;
+          return data.id;
+        });
     },
     search() {
       if (this.checkClick()) {
         if (this.searching === "") {
           this.makeToast();
         } else {
-          // Anfrage an Michi nach Application von this.searching
           let application = this.requestApplication();
-          if (application.response === 200) {
+          if (application.id !== -1) {
             this.changeComponent("ApplicationView", application);
             this.changeURL("ApplicationView");
           }
