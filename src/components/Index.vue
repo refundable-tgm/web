@@ -307,14 +307,14 @@
 </template>
 <script>
 import NewsElement from "@/components/NewsElement.vue";
-//import axios from "axios"
+import axios from "axios"
 
 export default {
   name: "Index",
   components: {
     NewsElement
   },
-  props: ["url", "admin"],
+  props: ["url", "admin", "user"],
   data() {
     return {
       news: "",
@@ -323,10 +323,11 @@ export default {
   },
   methods: {
     setNews() {
-      /*axios.get(this.url + "/news").then((response) => {
+      axios.get(this.url + "/news?user="+this.user).then((response, status) => {
+        status.toString();
         this.news = this.cutNews(response.data);
-      });*/
-      var back = [
+      });
+      /*var back = [
         { id: "1", title: "TEST 1", description: "Das ist nur Test Nr. 1" },
         { id: "2", title: "TEST 2", description: "Das ist nur Test Nr. 2" },
         { id: "3", title: "TEST 3", description: "Das ist nur Test Nr. 3" },
@@ -338,7 +339,7 @@ export default {
         { id: "9", title: "TEST 9", description: "Das ist nur Test Nr. 9" },
         { id: "10", title: "TEST 10", description: "Das ist nur Test Nr. 10" }
       ];
-      this.news = this.cutNews(back);
+      this.news = this.cutNews(back);*/
     },
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);

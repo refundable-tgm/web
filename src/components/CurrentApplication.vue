@@ -106,7 +106,9 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  props: ["user", "url"],
   data() {
     return {
       items: [
@@ -194,10 +196,32 @@ export default {
     },
     loadData() {
       //TODO: Load Data from Backend
-      console.log("data loaded");
-      //Sobald geladen dann der Code in der nächsten Zeile:
-      // Set the initial number of items
-      this.totalRows = this.items.length;
+      axios
+        .get(this.url + "/getActiveApplications?user=" + this.user)
+        .then((response, status) => {
+          var data = response.data;
+          status.toString();
+          for (let i = 0; i < data.length; i++) {
+            switch (data[i].status) {
+              case "Angenommen":
+                data[i]._rowVariant = "success";
+                break;
+              case "In Bearbeitung":
+                data[i]._rowVariant = "warning";
+                break;
+              case "Abgelehnt":
+                data[i]._rowVariant = "danger";
+                break;
+              default:
+                data[i]._rowVariant = "danger";
+                break;
+            }
+          }
+          this.items = data;
+          // Set the initial number of items
+          this.totalRows = this.items.length;
+          console.log("data loaded");
+        });
     },
     resetInfoModal() {
       this.infoModal.title = "";
