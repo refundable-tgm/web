@@ -12,10 +12,7 @@
           label-for="zud"
           id="zu"
         >
-          <b-form-checkbox-group
-            id="zud"
-            stacked
-          >
+          <b-form-checkbox-group id="zud" stacked>
             <b-form-checkbox value="a1"
               >Amtl. Buisnesskarte erhalten</b-form-checkbox
             >
@@ -69,8 +66,7 @@
             <b-input-group-text id="km-addon-1" slot="append"
               ><span>km</span></b-input-group-text
             >
-            <b-form-input  id="km-pkw" type="number">
-            </b-form-input>
+            <b-form-input id="km-pkw" type="number"> </b-form-input>
           </b-input-group>
         </b-form-group>
         <b-form-group
@@ -87,8 +83,7 @@
             <b-input-group-text id="mitfahrer-addon-1" slot="append"
               ><span>Mitfahrer</span></b-input-group-text
             >
-            <b-form-input  id="mit-num" type="number">
-            </b-form-input>
+            <b-form-input id="mit-num" type="number"> </b-form-input>
           </b-input-group>
         </b-form-group>
 
@@ -102,8 +97,7 @@
           label="Mitfahrer X Name"
           label-for="mit-nam-x"
         >
-          <b-form-input  id="mit-nam-x" type="text">
-          </b-form-input>
+          <b-form-input id="mit-nam-x" type="text"> </b-form-input>
         </b-form-group>
 
         <b-form-group
@@ -116,8 +110,7 @@
           label="Zu kürzende Tagesgebühr"
           label-for="tag-kuerz"
         >
-          <b-form-input  id="tag-kuerz" type="number">
-          </b-form-input>
+          <b-form-input id="tag-kuerz" type="number"> </b-form-input>
         </b-form-group>
 
         <b-form-group
@@ -134,8 +127,7 @@
             <b-input-group-text id="stk-addon-1" slot="append"
               ><span>Stück</span></b-input-group-text
             >
-            <b-form-input  id="frueh" type="number">
-            </b-form-input>
+            <b-form-input id="frueh" type="number"> </b-form-input>
           </b-input-group>
         </b-form-group>
 
@@ -153,8 +145,7 @@
             <b-input-group-text id="stk-addon-2" slot="append"
               ><span>Stück</span></b-input-group-text
             >
-            <b-form-input  id="mittag" type="number">
-            </b-form-input>
+            <b-form-input id="mittag" type="number"> </b-form-input>
           </b-input-group>
         </b-form-group>
 
@@ -172,11 +163,102 @@
             <b-input-group-text id="stk-addon-3" slot="append"
               ><span>Stück</span></b-input-group-text
             >
-            <b-form-input  id="abend" type="number">
-            </b-form-input>
+            <b-form-input id="abend" type="number"> </b-form-input>
           </b-input-group>
         </b-form-group>
+        <b-form-group
+          id="belg"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Fügen Sie Belege per Klick oder Drag and Drop hinzu"
+          label="Belege"
+          label-for="bel"
+        >
+          <b-form-file multiple id="bel">
+            <template slot="file-name" slot-scope="{ names }">
+              <b-badge variant="dark">{{ names[0] }}</b-badge>
+              <b-badge v-if="names.length > 1" variant="dark" class="ml-1">
+                + {{ names.length - 1 }} More files
+              </b-badge>
+            </template>
+          </b-form-file>
+        </b-form-group>
+
+        <b-table striped :items="items" stacked="md" show-empty small>
+          <template #cell(index)="data">
+            {{ data.index + 1 }}
+          </template>
+          <!-- A custom formatted column -->
+          <template #cell(date)="data">
+            {{ data.item.date }}
+          </template>
+
+          <template #cell(start)="data">
+            <b-form-timepicker
+                  locale="de"
+                  placeholder="Zeit auswählen"
+                ></b-form-timepicker>
+            {{ data.item.start }}
+          </template>
+
+          <template #cell(end)="data">
+            {{ data.item.end }}
+          </template>
+
+          <template #cell(kind)="data">
+            <b-form-input ></b-form-input>
+            {{ data.item.kind }}
+          </template>
+          <template #cell(km)="data">
+            {{ data.item.km }}
+          </template>
+          <template #cell(daycharge)="data">
+            {{ data.item.daycharge }}
+          </template>
+          <template #cell(sleepcharge)="data">
+            {{ data.item.sleepcharge }}
+          </template>
+          <template #cell(othercosts)="data">
+            {{ data.item.othercosts }}
+          </template>
+        </b-table>
       </b-col>
     </b-row>
   </b-container>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      fields: [
+        'index',
+        { key: 'date', label: 'Tag' },
+        { key: 'start', label: 'Beginn' },
+        { key: 'end', label: 'Ende' },
+        { key: 'kind', label: 'Art des Gebührenanspruches' },
+        { key: 'km', label: 'Gesamtkilometer' },
+        { key: 'travelcosts', label: 'Reisekosten' },
+        { key: 'daycharge', label: 'Tagesgebühr' },
+        { key: 'sleepcharge', label: 'Nächtigungsgebühr' },
+        { key: 'othercosts', label: 'Sonstige Nebenkosten' }
+      ],
+      items: [
+        {
+          date: '17.10.',
+          begin: '8:00',
+          end: '18:00',
+          kind: 'Tagesgebühr',
+          km: '',
+          travelcosts: '20,20',
+          daycharge: '13,20',
+          sleepcharge: '',
+          othercosts: ''
+        }
+      ]
+    };
+  }
+};
+</script>
