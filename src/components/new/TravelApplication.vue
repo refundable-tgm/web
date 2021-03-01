@@ -161,7 +161,7 @@
             name="radio-sub-component"
           >
             <b-form-radio value="first">Nein</b-form-radio>
-            <b-form-radio value="second">JA</b-form-radio>
+            <b-form-radio value="second">Ja</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
         <b-form-group
@@ -193,7 +193,7 @@
             name="radio-sub-component"
           >
             <b-form-radio value="first">Nein</b-form-radio>
-            <b-form-radio value="second">JA</b-form-radio>
+            <b-form-radio value="second">Ja</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
         <b-form-group
