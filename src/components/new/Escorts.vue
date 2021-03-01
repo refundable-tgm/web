@@ -56,6 +56,7 @@
                   v-on:update="updateTravel"
                 />
               </div>
+              <TravelBill />
               <center>
                 <button v-on:click="einreichen" class="blueish-gradiant">
                   Einreichen
@@ -71,12 +72,14 @@
 <script>
 import EscortsComp from "@/components/new/EscortsComp.vue";
 import TravelApplication from "@/components/new/TravelApplication.vue";
+import TravelBill from "@/components/new/TravelBill.vue"
 
 export default {
   name: "NewApplication",
   components: {
     TravelApplication,
-    EscortsComp
+    EscortsComp,
+    TravelBill
   },
   props: ["escorts", "user"],
   data() {
