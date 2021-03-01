@@ -82,7 +82,7 @@ export default {
   data() {
     return {
       travelData: []
-    }
+    };
   },
   methods: {
     changeComponent(component, back = true, application = null) {
@@ -115,7 +115,8 @@ export default {
       this.escorts.output[index].reisekosten = data.reisekosten;
       this.escorts.output[index].reisekosten_von = data.reisekosten_von;
       this.escorts.output[index].aufenthaltskosten = data.aufenthaltskosten;
-      this.escorts.output[index].aufenthaltskosten_von = data.aufenthaltskosten_von;
+      this.escorts.output[index].aufenthaltskosten_von =
+        data.aufenthaltskosten_von;
       this.escorts.output[index].sonstige_kosten = data.sonstige_kosten;
       this.escorts.output[index].geschaetzte_kosten = data.geschaetzte_kosten;
     },
