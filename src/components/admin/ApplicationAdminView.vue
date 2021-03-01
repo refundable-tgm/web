@@ -83,7 +83,7 @@
           @click="closeAntrag"
           class="float-right"
           ><b-icon icon="file-earmark-excel"></b-icon> Antrag
-          schließen</b-button
+          ablehnen</b-button
         >
         <b-button
           variant="outline-success"
