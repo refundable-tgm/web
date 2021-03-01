@@ -19,40 +19,39 @@
           </b-row>
           <b-row>
             <b-col cols="12">
-              <b-breadcrumb
-                style="background-color: white"
-              >
-              <b-breadcrumb-item v-on:click="uebersicht"
+              <b-breadcrumb style="background-color: white">
+                <b-breadcrumb-item v-on:click="uebersicht"
                   >Antrag Übersicht</b-breadcrumb-item
                 >
                 <b-breadcrumb-item v-on:click="school"
                   >Schulveranstaltung - Allg. Infos</b-breadcrumb-item
                 >
-                <b-breadcrumb-item active
-                  >Begleitpersonal</b-breadcrumb-item
-                >
-                </b-breadcrumb>
+                <b-breadcrumb-item active>Begleitpersonal</b-breadcrumb-item>
+              </b-breadcrumb>
             </b-col>
           </b-row>
           <b-row align-h="center">
             <b-col cols="12" md="8">
-              <EscortsComp
+              <div
                 v-for="(escort, index) in escorts.output"
-                v-bind:escort="escort"
-                v-bind:index="index"
-                v-bind:bsd="escorts.startDate"
-                v-bind:bst="escorts.startTime"
-                v-bind:bed="escorts.endDate"
-                v-bind:bet="escorts.endTime"
                 v-bind:key="escort.id"
-                v-on:startDate="changeStartDate"
-                v-on:endDate="changeEndDate"
-                v-on:startTime="changeStartTime"
-                v-on:endTime="changeEndTime"
-                v-on:selected="changeSelected"
-                v-on:validTime="validateTime"
-              />
-              <TravelApplication />
+              >
+                <EscortsComp
+                  v-bind:escort="escort"
+                  v-bind:index="index"
+                  v-bind:bsd="escorts.startDate"
+                  v-bind:bst="escorts.startTime"
+                  v-bind:bed="escorts.endDate"
+                  v-bind:bet="escorts.endTime"
+                  v-on:startDate="changeStartDate"
+                  v-on:endDate="changeEndDate"
+                  v-on:startTime="changeStartTime"
+                  v-on:endTime="changeEndTime"
+                  v-on:selected="changeSelected"
+                  v-on:validTime="validateTime"
+                />
+                <TravelApplication />
+              </div>
               <center>
                 <button v-on:click="einreichen" class="blueish-gradiant">
                   Einreichen
@@ -99,12 +98,8 @@ export default {
     },
     einreichen() {
       if (this.checkClick()) {
-        if (this.allSelected && this.validTime) {
-          //Zeugs an Michi schicken und so formatieren, dass Michi was damit anfangen kann
-          this.changeComponent("Index");
-        } else {
-          this.makeToast();
-        }
+        //Zeugs an Michi schicken und so formatieren, dass Michi was damit anfangen kann
+        this.changeComponent("Index");
       }
     },
     changeStartDate(index, newStartDate) {
@@ -123,15 +118,6 @@ export default {
       this.escorts.output[index].selected = newSelected;
       this.checkifAllSelected();
     },
-    checkifAllSelected() {
-      for (let i = 0; i < this.escorts.output.length; i++) {
-        if (this.escorts.output[i].selected === "") {
-          this.allSelected = false;
-          return;
-        }
-      }
-      this.allSelected = true;
-    },
     validateTime(newValidTime) {
       this.validTime = newValidTime;
     },
@@ -144,17 +130,6 @@ export default {
       if (this.checkClick()) {
         this.changeComponent("NewApplication");
       }
-    },
-    makeToast() {
-      this.$bvToast.toast(
-        "Es wurden nicht alle Felder richtig ausgefüllt!",
-        {
-          title: "Ein Fehler ist aufgetreten!",
-          autoHideDelay: 2500,
-          appendToast: false,
-        variant: 'danger'
-        }
-      );
     }
   }
 };
