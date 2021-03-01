@@ -353,7 +353,6 @@ export default {
       if (this.checkClick()) {
         if (this.validInputs) {
           this.calculateLength();
-          // Daten an Michi senden und so formatieren, dass Michi was damit anfangen kann
           this.changeComponent("Escorts", true, null, this.data);
         } else {
           this.makeToast();
@@ -395,15 +394,7 @@ export default {
       let end = new Date(this.data.endDate + "T" + this.data.endTime);
       let diff = end.getTime() - start.getTime();
       let days = diff / (1000 * 3600 * 24);
-      if (days <= 1) {
-        this.exkursLength = "1";
-      } else {
-        if (days > 1 && days <= 3) {
-          this.exkursLength = "2-3";
-        } else {
-          this.exkursLength = ">3";
-        }
-      }
+      this.data.exkursLength = Math.ceil(days);
     },
     checkDesc() {
       if (this.data.description === "") {

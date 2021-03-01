@@ -49,6 +49,8 @@
                   v-on:endTime="changeEndTime"
                   v-on:selected="changeSelected"
                   v-on:validTime="validateTime"
+                  v-on:startadresse="changeStartAdresse"
+                  v-on:meetingpoint="changeMeetingPoint"
                 />
                 <TravelApplication
                   v-bind:escort="escort"
@@ -72,7 +74,8 @@
 <script>
 import EscortsComp from "@/components/new/EscortsComp.vue";
 import TravelApplication from "@/components/new/TravelApplication.vue";
-import TravelBill from "@/components/new/TravelBill.vue"
+import TravelBill from "@/components/new/TravelBill.vue";
+//import axios from "axios"
 
 export default {
   name: "NewApplication",
@@ -81,7 +84,7 @@ export default {
     EscortsComp,
     TravelBill
   },
-  props: ["escorts", "user"],
+  props: ["escorts", "user", "url"],
   data() {
     return {
       travelData: []
@@ -111,42 +114,115 @@ export default {
     updateTravel(index, data) {
       this.escorts.output[index].personalnummer = data.personalnummer;
       this.escorts.output[index].transport = data.transport;
-      this.escorts.output[index].ausgangspuunkt = data.ausgangspuunkt;
+      this.escorts.output[index].ausgangspunkt = data.ausgangspunkt;
       this.escorts.output[index].endpunkt = data.endpunkt;
+      this.escorts.output[index].reason1 = data.reason1;
       this.escorts.output[index].reason = data.reason;
       this.escorts.output[index].bonus_meilen = data.bonus_meilen;
       this.escorts.output[index].reisekosten = data.reisekosten;
-      this.escorts.output[index].reisekosten_von = data.reisekosten_von;
       this.escorts.output[index].aufenthaltskosten = data.aufenthaltskosten;
-      this.escorts.output[index].aufenthaltskosten_von =
-        data.aufenthaltskosten_von;
+      this.escorts.output[index].von = data.von;
       this.escorts.output[index].sonstige_kosten = data.sonstige_kosten;
       this.escorts.output[index].geschaetzte_kosten = data.geschaetzte_kosten;
     },
     einreichen() {
       if (this.checkClick()) {
+        var teachers = [];
+        var business = [];
+        for (let i = 0; i < this.escorts.output.length; i++) {
+          teachers.push({
+            AttendanceFrom: new Date(
+              this.escorts.output[i].startDate +
+                "T" +
+                this.escorts.output[i].startTime
+            ).toISOString(),
+            AttendanceTill: new Date(
+              this.escorts.output[i].endDate +
+                "T" +
+                this.escorts.output[i].endTime
+            ).toISOString(),
+            MeetingPoint: this.escorts.output[i].meetingpoint,
+            Name: this.escorts.output[i].name,
+            Role: this.escorts.output[i].role,
+            Group: this.escorts.output[i].selected,
+            Shortname: this.escorts.output[i].shortname,
+            StartAddress: this.escorts.output[i].startadresse
+          });
+          var otherteachers = [];
+          for (let j = 0; j < this.escorts.output.length; j++)
+            otherteachers.push(this.escorts.output[j].shortname);
+          otherteachers.splice(i, 1);
+          var bonus1;
+          var bonus2;
+          if(this.escorts.output[i].bonus_meilen[0] === "0" || this.escorts.output[i].bonus_meilen[1] === "0") bonus1 = true;
+          if(this.escorts.output[i].bonus_meilen[0] === "1" || this.escorts.output[i].bonus_meilen[1] === "1") bonus2 = true;
+          business.push({
+            ID: i,
+            Staffnr: this.escorts.output[i].personalnummer,
+            TripBeginTime: new Date(
+              this.escorts.startDate + "T" + this.escorts.startTime
+            ).toISOString(),
+            TripEndTime: new Date(
+              this.escorts.endDate + "T" + this.escorts.endTime
+            ).toISOString(),
+            ServiceBeginTime: new Date(
+              this.escorts.output[i].startDate +
+                "T" +
+                this.escorts.output[i].startTime
+            ).toISOString(),
+            ServiceEndTime: new Date(
+              this.escorts.output[i].endDate +
+                "T" +
+                this.escorts.output[i].endTime
+            ).toISOString(),
+            TripGoal: this.escorts.ziel,
+            TravelPurpose: this.escorts.output[i].reason1,
+            TravelMode: this.escorts.output[i].transport,
+            StartingPoint: this.escorts.output[i].ausgangspunkt,
+            EndPoint: this.escorts.output[i].endpunkt,
+            Reasoning: this.escorts.output[i].reason,
+            OtherParticipants: otherteachers,
+            BonusMileConfirmation1: bonus1,
+            BonusMileConfirmation2: bonus2,
+            TravelCostsPayedBySomeone: this.escorts.output[i].reisekosten,
+            StayingCostsPayedBySomeone: this.escorts.output[i]
+              .aufenthaltskosten,
+            PayedByWhom: this.escorts.output[i].von,
+            OtherCosts: this.escorts.output[i].sonstige_kosten,
+            EstimatedCosts: this.escorts.output[i].geschaetzte_kosten
+          });
+        }
         var data = {
-          name: this.escorts.description,
-          type: 0,
-          startTimeStamp: new Date(
+          Name: this.escorts.description,
+          Kind: 4,
+          MiscellaneousReason: "",
+          Progress: 1,
+          StartTime: new Date(
             this.escorts.startDate + "T" + this.escorts.startTime
-          ),
-          endTimeStamp: new Date(
+          ).toISOString(),
+          EndTime: new Date(
             this.escorts.endDate + "T" + this.escorts.endTime
-          ),
-          anmerkung: this.escorts.notes,
-          zielAdresse: this.escorts.end,
-          startAdresse: this.escorts.start,
-          leader: this.user,
-          escorts: this.escorts.teacher,
-          classes: this.escorts.class,
-          count_student_male: this.escorts.count_student_male,
-          count_student_female: this.escorts.count_student_female,
-          length: this.escorts.exkursLength,
-          teacher: this.escorts.output
+          ).toISOString(),
+          Notes: this.escorts.notes,
+          StartAddress: this.escorts.start,
+          DestinationAddress: this.escorts.ziel,
+          SchoolEventDetails: {
+            Classes: this.escorts.class,
+            AmountMaleStudent: this.escorts.count_student_male,
+            AmountFemaleStudent: this.escorts.count_student_female,
+            DurationInDays: this.escorts.exkursLength,
+            Teachers: teachers
+          },
+          BusinessTripApplications: business
+
+          //leader: this.user,
+          //escorts: this.escorts.teacher,
         };
         //Anpassen
         console.log(data);
+        /*axios.post(this.url + "/createExkurs", token, data).then((response) => {
+          response.toString();
+        })*/
         //Zeugs an Michi schicken und so formatieren, dass Michi was damit anfangen kann
         //this.changeComponent("Index");
       }
@@ -166,6 +242,14 @@ export default {
     changeSelected(index, newSelected) {
       this.escorts.output[index].selected = newSelected;
     },
+    changeStartAdresse(index, newStartAdresse) {
+      this.escorts.output[index].startadresse = newStartAdresse;
+      console.log("Update");
+    },
+    changeMeetingPoint(index, newMeetingPoint) {
+      this.escorts.output[index].meetingpoint = newMeetingPoint;
+      console.log("Update2");
+    },
     validateTime(newValidTime) {
       this.validTime = newValidTime;
     },
@@ -178,6 +262,22 @@ export default {
       if (this.checkClick()) {
         this.changeComponent("NewApplication");
       }
+    }
+  },
+  mounted() {
+    for(let i = 0;i<this.escorts.output.length;i++) {
+      this.escorts.output[i].personalnummer = null;
+      this.escorts.output[i].transport = null;
+      this.escorts.output[i].ausgangspunkt = null;
+      this.escorts.output[i].endpunkt = null;
+      this.escorts.output[i].reason1 = null;
+      this.escorts.output[i].reason = null;
+      this.escorts.output[i].bonus_meilen = [];
+      this.escorts.output[i].reisekosten = null;
+      this.escorts.output[i].aufenthaltskosten = null;
+      this.escorts.output[i].von = null;
+      this.escorts.output[i].sonstige_kosten = null;
+      this.escorts.output[i].geschaetzte_kosten = null;
     }
   }
 };

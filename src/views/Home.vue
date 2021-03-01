@@ -296,13 +296,33 @@ export default {
       this.user = user;
       this.admin = admin;
     },
+    getLeader() {
+      /*axios.get(this.url + "/getTeacher?id=" + this.user).then((response) => {
+        let data = response.data;
+        return {name:data.Longname,short:data.Short}
+      });*/
+      return {longname:'Ryan Foster', short: 'rfoster'}
+    },
     loadEscortsData(escortsdata) {
-      let output = [];
+      let leader = this.getLeader();
+      let output = [{
+        name: leader.longname,
+        shortname: leader.short,
+        startDate: escortsdata.startDate,
+        endDate: escortsdata.endDate,
+        startTime: escortsdata.startTime,
+        endTime: escortsdata.endTime,
+        selected:"",
+        startadresse: "",
+        meetingpoint: "",
+        role: 0
+      }];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
         output.push(
           JSON.parse(
             '{"name":"' +
               this.getFullName(escortsdata.teacher[i]) +
+              '","shortname":"'+ escortsdata.teacher[i] +
               '","startDate":"' +
               escortsdata.startDate +
               '","endDate":"' +
@@ -311,7 +331,7 @@ export default {
               escortsdata.startTime +
               '","endTime":"' +
               escortsdata.endTime +
-              '","selected":""}'
+              '","selected":"","role":1, "startadresse":"","meetingpoint":""}'
           )
         );
       }

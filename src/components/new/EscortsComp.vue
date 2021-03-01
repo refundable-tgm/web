@@ -3,7 +3,7 @@
     <b-row>
       <b-col cols="12">
         <center>
-          <h2>{{ longname }}</h2>
+          <h2>{{ escort.name }}</h2>
         </center>
 
         <b-form-group
@@ -135,13 +135,46 @@
             disabled-field="notEnabled"
           ></b-form-radio-group>
         </b-form-group>
+        <b-form-group
+          :id="index + 'sa'"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie Ihre Startadresse für diese Schulveranstaltung ein."
+          label="Startadresse"
+          label-for="Startadresse"
+        >
+          <b-form-input
+            :id="index + 'startadresse'"
+            v-model="escort.startadresse"
+            v-on:input="changeStartAdresse"
+          >
+          </b-form-input>
+        </b-form-group>
+        <b-form-group
+          :id="index + 'mp'"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie den Treffpunkt für diese Schulveranstaltung ein."
+          label="Treffpunkt"
+          label-for="treffpunkt"
+        >
+          <b-form-input
+            :id="index + 'meetingpoint'"
+            v-model="escort.meetingpoint"
+            v-on:input="changeMeetingPoint"
+          >
+          </b-form-input>
+        </b-form-group>
       </b-col>
     </b-row>
   </b-container>
 </template>
 
 <script>
-import axios from "axios";
 export default {
   props: ["url", "escort", "index", "bsd", "bst", "bed", "bet"],
   data() {
@@ -152,13 +185,21 @@ export default {
       outBaseTime: true,
       negTime: true,
       options: [
-        { item: "A", name: "L1" },
-        { item: "B", name: "L2" },
-        { item: "C", name: "L3" }
+        { item: 1, name: "L1" },
+        { item: 2, name: "L2" },
+        { item: 3, name: "L3" }
       ]
     };
   },
   methods: {
+    changeStartAdresse() {
+      this.checkInputs();
+      this.$emit("startadresse", this.index, this.escort.startadresse)
+    },
+    changeMeetingPoint() {
+      this.checkInputs();
+      this.$emit("meetingpoint", this.index, this.escort.meetingpoint)
+    },
     changeStartTime() {
       this.checkInputs();
       this.$emit("startTime", this.index, this.escort.startTime);
@@ -211,12 +252,6 @@ export default {
     }
   },
   mounted() {
-    axios
-      .get(this.url + "/getLongName?name=" + this.escort.name)
-      .then(response => {
-        var data = response.data;
-        this.longname = data.long;
-      });
     this.checkInputs();
   }
 };
