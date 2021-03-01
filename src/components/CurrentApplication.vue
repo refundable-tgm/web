@@ -106,11 +106,14 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  props: ["user", "url"],
   data() {
     return {
       items: [
         {
+          id: 3456,
           title: "Sommersportwoche",
           leader: "Stefan Zakall",
           edate: "2019-10-10",
@@ -119,6 +122,7 @@ export default {
           _rowVariant: "danger"
         },
         {
+          id: 4567,
           title: "Sprachreise",
           leader: "Stefan Zakall",
           edate: "2020-12-12",
@@ -175,7 +179,6 @@ export default {
     }
   },
   mounted() {
-    // Set the initial number of items
     this.loadData();
     this.checkStatus();
   },
@@ -185,15 +188,42 @@ export default {
       this.viewApplication(item);
     },
     showInfo(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`;
-      this.infoModal.content = JSON.stringify(item, null, 2);
+      //this.infoModal.title = `Row index: ${index}`;
+      this.infoModal.title = item.title;
+      let leiter = "Leiter: " + item.leader;
+      let date = "Einreichdatum: " + item.edate;
+      let status = "Status: " + item.status;
+      this.infoModal.content = leiter + "\n" + date + "\n" + status;
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
     loadData() {
       //TODO: Load Data from Backend
-      console.log("data loaded");
-      //Sobald geladen dann der Code in der nächsten Zeile:
-      this.totalRows = this.items.length;
+      axios
+        .get(this.url + "/getActiveApplications?user=" + this.user)
+        .then((response, status) => {
+          var data = response.data;
+          status.toString();
+          for (let i = 0; i < data.length; i++) {
+            switch (data[i].status) {
+              case "Angenommen":
+                data[i]._rowVariant = "success";
+                break;
+              case "In Bearbeitung":
+                data[i]._rowVariant = "warning";
+                break;
+              case "Abgelehnt":
+                data[i]._rowVariant = "danger";
+                break;
+              default:
+                data[i]._rowVariant = "danger";
+                break;
+            }
+          }
+          this.items = data;
+          // Set the initial number of items
+          this.totalRows = this.items.length;
+          console.log("data loaded");
+        });
     },
     resetInfoModal() {
       this.infoModal.title = "";

@@ -20,7 +20,7 @@
       style="margin-top:1rem;margin-bottom:3rem"
     >
       <b-col cols="12">
-        <Progress />
+        <Progress v-bind:progress="progress" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -30,8 +30,6 @@
           striped
           :items="items"
           :fields="fields"
-          :current-page="currentPage"
-          :per-page="perPage"
           :filter="filter"
           :filter-included-fields="filterOn"
           :sort-by.sync="sortBy"
@@ -50,7 +48,7 @@
             <b-button
               variant="outline-secondary"
               size="sm"
-              @click="row.toggleDetails"
+              @click="openPDF(row.item)"
               style="margin-right:1rem"
             >
               <b-icon icon="file-earmark-text"></b-icon> PDF öffnen
@@ -193,7 +191,8 @@ export default {
         id: "info-modal",
         title: "",
         content: ""
-      }
+      },
+      progress: undefined
     };
   },
   computed: {
@@ -213,6 +212,9 @@ export default {
   methods: {
     closeAntrag() {
       this.$refs["close-modal"].show();
+    },
+    openPDF(item) {
+      console.log(item);
     },
     hideClose() {
       this.$refs["close-modal"].hide();

@@ -15,7 +15,12 @@
                 label="Bezeichnung"
                 label-for="bezeichnung"
               >
-                <b-form-input id="bezeichnung"></b-form-input>
+                <b-form-input
+                  id="bezeichnung"
+                  v-model="data.bez"
+                  :readonly="readonly"
+                  @input="updateData"
+                ></b-form-input>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -29,7 +34,9 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="value"
+                  v-model="data.startDate"
+                  :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -46,7 +53,9 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="value"
+                  v-model="data.startTime"
+                  :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -63,7 +72,9 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="value"
+                  v-model="data.endDate"
+                  :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -80,7 +91,9 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="value"
+                  v-model="data.endTime"
+                  :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -98,7 +111,9 @@
                 <b-form-tags
                   id="begl"
                   input-id="tags-pills"
-                  v-model="value"
+                  v-model="data.beg"
+                  :readonly="readonly"
+                  @input="updateData"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -118,7 +133,9 @@
                 <b-form-tags
                   id="kl"
                   input-id="tags-pills"
-                  v-model="value"
+                  v-model="data.kla"
+                  :readonly="readonly"
+                  @input="updateData"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -137,8 +154,11 @@
               >
                 <b-form-input
                   id="aschueler"
+                  :readonly="readonly"
+                  v-model="data.schueler"
+                  @input="updateData"
                   type="number"
-                  min="1"
+                  min="0"
                   max="3000"
                 ></b-form-input>
               </b-form-group>
@@ -154,8 +174,11 @@
               >
                 <b-form-input
                   id="aschuelerin"
+                  v-model="data.schuelerinnen"
+                  :readonly="readonly"
+                  @input="updateData"
                   type="number"
-                  min="1"
+                  min="0"
                   max="3000"
                 ></b-form-input>
               </b-form-group>
@@ -171,6 +194,9 @@
               >
                 <b-form-textarea
                   id="an"
+                  :readonly="readonly"
+                  v-model="data.an"
+                  @input="updateData"
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
@@ -186,58 +212,11 @@
 <script>
 export default {
   name: "NewApplication",
+  props: ["data","readonly"],
   methods: {
-    changeComponent(component, back = true, application = null) {
-      this.$emit("change-component", component, back, application);
-    },
-    checkClick() {
-      if (
-        window
-          .getSelection()
-          .toString()
-          .trim() === ""
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    school() {
-      if (this.checkClick()) {
-        this.changeComponent("School");
-      }
-    },
-    other() {
-      if (this.checkClick()) {
-        this.changeComponent("Others");
-      }
-    },
-    index() {
-      if (this.checkClick()) {
-        this.changeComponent("Index");
-      }
-    },
-    next() {
-      if (this.checkClick()) [this.changeComponent("Escorts")];
+    updateData() {
+      this.$emit('update', this.data);
     }
-  },
-  data() {
-    return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Antrag Übersicht",
-          href: "#"
-        },
-        {
-          text: "Schulveranstaltung - Allg. Infos",
-          active: true
-        }
-      ]
-    };
   }
 };
 </script>

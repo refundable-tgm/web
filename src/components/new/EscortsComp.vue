@@ -3,7 +3,7 @@
     <b-row>
       <b-col cols="12">
         <center>
-          <h2>{{ escort.name }}</h2>
+          <h2>{{ longname }}</h2>
         </center>
 
         <b-form-group
@@ -141,18 +141,20 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  props: ["escort", "index", "bsd", "bst", "bed", "bet"],
+  props: ["url", "escort", "index", "bsd", "bst", "bed", "bet"],
   data() {
     return {
       selected: "",
+      longname: "",
       validTime: null,
       outBaseTime: true,
       negTime: true,
       options: [
-        {item:"A", name:"L1"},
-        {item:"B", name:"L2"},
-        {item:"C", name:"L3"}
+        { item: "A", name: "L1" },
+        { item: "B", name: "L2" },
+        { item: "C", name: "L3" }
       ]
     };
   },
@@ -209,6 +211,12 @@ export default {
     }
   },
   mounted() {
+    axios
+      .get(this.url + "/getLongName?name=" + this.escort.name)
+      .then(response => {
+        var data = response.data;
+        this.longname = data.long;
+      });
     this.checkInputs();
   }
 };

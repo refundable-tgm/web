@@ -15,7 +15,12 @@
                 label="Titel"
                 label-for="tit"
               >
-                <b-form-input id="tit"></b-form-input>
+                <b-form-input
+                  id="tit"
+                  v-model="data.bez"
+                  :readonly="readonly"
+                  @input="updateData"
+                ></b-form-input>
               </b-form-group>
               <b-form-group
                 id="startd"
@@ -29,7 +34,9 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="value"
+                  v-model="data.startDate"
+                  :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -46,7 +53,9 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="value"
+                  v-model="data.startTime"
+                  :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -63,7 +72,9 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="value"
+                  v-model="data.endDate"
+                  :readonly="readonly"
+                  @input="updateData"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -80,7 +91,9 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="value"
+                  v-model="data.endTime"
+                  :readonly="readonly"
+                  @input="updateData"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -97,6 +110,9 @@
               >
                 <b-form-input
                   id="phz"
+                  v-model="data.phz"
+                  :readonly="readonly"
+                  @input="updateData"
                   type="number"
                   min="1"
                   max="3000"
@@ -112,7 +128,12 @@
                 label="Veranstalter"
                 label-for="ver"
               >
-                <b-form-input id="ver"></b-form-input>
+                <b-form-input
+                  id="ver"
+                  v-model="data.veran"
+                  :readonly="readonly"
+                  @input="updateData"
+                ></b-form-input>
               </b-form-group>
               <b-form-group
                 id="art"
@@ -126,7 +147,9 @@
               >
                 <b-form-radio-group
                   id="ar"
-                  v-model="selected"
+                  v-model="data.type"
+                  @input="updateData"
+                  :disabled="readonly"
                   :options="options"
                   class="mb-3"
                   value-field="item"
@@ -144,7 +167,12 @@
                 label="Sonstige Art"
                 label-for="son"
               >
-                <b-form-input id="son"></b-form-input>
+                <b-form-input
+                  id="son"
+                  v-model="data.son"
+                  @input="updateData"
+                  :readonly="readonly"
+                ></b-form-input>
               </b-form-group>
               <b-form-group
                 id="anmerkung"
@@ -158,6 +186,9 @@
               >
                 <b-form-textarea
                   id="an"
+                  :readonly="readonly"
+                  v-model="data.notes"
+                  @input="updateData"
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
@@ -173,58 +204,10 @@
 <script>
 export default {
   name: "NewApplication",
-  methods: {
-    changeComponent(component, back = true, application = null) {
-      this.$emit("change-component", component, back, application);
-    },
-    checkClick() {
-      if (
-        window
-          .getSelection()
-          .toString()
-          .trim() === ""
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    school() {
-      if (this.checkClick()) {
-        this.changeComponent("School");
-      }
-    },
-    other() {
-      if (this.checkClick()) {
-        this.changeComponent("Others");
-      }
-    },
-    index() {
-      if (this.checkClick()) {
-        this.changeComponent("Index");
-      }
-    },
-    next() {
-      if (this.checkClick()) [this.changeComponent("Escorts")];
-    }
-  },
+  props: ["data", "readonly"],
   data() {
     return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Fortbildung, etc",
-          href: "#"
-        },
-        {
-          text: "Fortbildung",
-          active: true
-        }
-      ],
-      selected: "B",
+      selected: "",
       options: [
         { item: "A", name: "Seminar" },
         { item: "B", name: "Tagung" },
@@ -232,6 +215,15 @@ export default {
         { item: "D", name: "Sonstiges" }
       ]
     };
+  },
+  mounted() {
+    this.selected = this.data.type;
+  },
+  methods: {
+    updateData() {
+      this.data.type = this.selected;
+      this.$emit('update', this.data);
+    }
   }
 };
 </script>

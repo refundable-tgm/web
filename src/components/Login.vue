@@ -1,6 +1,10 @@
 <template>
   <b-container fluid>
-    <CookieRequest v-on:requestAnswer="requestAnswer" v-if="!setcookie" />
+    <CookieRequest
+      :key="componentKey"
+      v-on:requestAnswer="requestAnswer"
+      v-if="!setcookie"
+    />
     <b-row align-v="center" align-h="center" class="template-main-row">
       <b-col cols="12" md="6">
         <b-container>
@@ -79,17 +83,19 @@
 </template>
 <script>
 import CookieRequest from "@/components/CookieRequest.vue";
+import axios from "axios";
 export default {
   components: {
     CookieRequest
   },
   name: "Login",
-  props: ["forward", "cookieset"],
+  props: ["url", "forward", "cookieset"],
   data() {
     return {
       email: "",
       password: "",
-      setcookie: false
+      setcookie: false,
+      componentKey: 0
     };
   },
   methods: {
@@ -100,12 +106,48 @@ export default {
           console.log("Login!");
           console.log(this.email);
           console.log(this.password);
-
+          // Userid getten von dem request
+          axios
+            .get(
+              this.url + "/login?mail=" + this.email + ",pswd=" + this.password
+            )
+            .then(response => {
+              if (response.success) {
+                // Wenn login stimmt:
+                switch (this.forward.name) {
+                  case "ApplicationSearch":
+                    this.$emit("login", response.user, response.admin);
+                    this.$emit("change-component", this.forward.name);
+                    break;
+                  case "ApplicationView":
+                    this.$emit("login", response.user, response.admin);
+                    this.$emit(
+                      "change-component",
+                      this.forward.name,
+                      true,
+                      this.forward.id
+                    );
+                    break;
+                  default:
+                    this.$emit("login", response.user, response.admin);
+                    this.$emit("change-component", "Index");
+                    //Wenn Login failed:
+                    //Eine Meldung an den User, dass etwas (nicht spezifisch) nicht stimmt
+                    break;
+                }
+              } else {
+                // Wenn login nicht stimmt:
+                this.loginFailed();
+              }
+            });
+          // Temporär, damit man sich einloggen kann
           switch (this.forward.name) {
             case "ApplicationSearch":
+              //this.$emit("login", response.user, response.admin);
               this.$emit("change-component", this.forward.name);
               break;
             case "ApplicationView":
+              //this.$emit("login", response.user, response.admin);
               this.$emit(
                 "change-component",
                 this.forward.name,
@@ -114,12 +156,15 @@ export default {
               );
               break;
             default:
+              //this.$emit("login", response.user, response.admin);
               this.$emit("change-component", "Index");
               //Wenn Login failed:
               //Eine Meldung an den User, dass etwas (nicht spezifisch) nicht stimmt
               break;
           }
+          // Temporär ende, damit man sich einloggen kann
         } else {
+          this.forceRender();
           this.makeToast();
         }
       }
@@ -130,8 +175,19 @@ export default {
         console.log("Passwort vergessen!");
       }
     },
+    forceRender() {
+      this.componentKey += 1;
+    },
     makeToast() {
       this.$bvToast.toast("Bitte akzeptieren Sie unsere Cookies!", {
+        title: "Ein Fehler ist aufgetreten!",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    loginFailed() {
+      this.$bvToast.toast("Username oder Passwort ist nicht korrekt", {
         title: "Ein Fehler ist aufgetreten!",
         autoHideDelay: 2500,
         appendToast: false,

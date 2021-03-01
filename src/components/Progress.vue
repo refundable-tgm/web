@@ -5,28 +5,354 @@
   >
     <b-row align-h="center">
       <b-col cols="12">
-        <div class="track">
-          <div class="step active">
-            <span class="icon"> <i class="fa fa-check"></i> </span>
+        <div v-if="type === 'sl'" class="track">
+          <div
+            :class="{
+              active: dataprogress >= 1 && excla != 1,
+              fail: excla == 1
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 1 && excla != 1,
+                  'fa-circle': dataprogress < 1 && excla != 1,
+                  'fa-exclamation': excla == 1
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate"
+              >Dienstreiseantrag eingereicht</span
+            >
+          </div>
+          <div
+            :class="{
+              active: dataprogress >= 2 && excla != 2,
+              fail: excla == 2
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 2 && excla != 2,
+                  'fa-circle': dataprogress < 2 && excla != 2,
+                  'fa-exclamation': excla == 2
+                }"
+                class="fa"
+              ></i>
+            </span>
             <span class="text text-truncate">Von Begleitern bestätigt</span>
           </div>
-          <div class="step active">
-            <span class="icon"> <i class="fa fa-check"></i> </span>
-            <span class="text text-truncate">Von AV bestätigt</span>
+          <div
+            :class="{
+              active: dataprogress >= 3 && excla != 3,
+              fail: excla == 3
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 3 && excla != 3,
+                  'fa-circle': dataprogress < 3 && excla != 3,
+                  'fa-exclamation': excla == 3
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Von AV akzeptiert</span>
           </div>
-          <div class="step fail">
-            <span class="icon"> <i class="fa fa-exclamation"></i> </span>
+          <div
+            :class="{
+              active: dataprogress >= 4 && excla != 4,
+              fail: excla == 4
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 4 && excla != 4,
+                  'fa-circle': dataprogress < 4 && excla != 4,
+                  'fa-exclamation': excla == 4
+                }"
+                class="fa"
+              ></i>
+            </span>
             <span class="text text-truncate">Rechnungen eingereicht</span>
           </div>
-          <div class="step">
-            <span class="icon"> <i class="fa fa-circle"></i> </span>
-            <span class="text text-truncate">Rechnungsstelle bestätigt</span>
+          <div
+            :class="{
+              active: dataprogress >= 5 && excla != 5,
+              fail: excla == 5
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 5 && excla != 5,
+                  'fa-circle': dataprogress < 5 && excla != 5,
+                  'fa-exclamation': excla == 5
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate"
+              >Von Rechnungsstelle akzeptiert</span
+            >
+          </div>
+        </div>
+        <div v-if="type === 'se'" class="track">
+          <div
+            :class="{
+              active: dataprogress >= 1 && excla != 1,
+              fail: excla == 1
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 1 && excla != 1,
+                  'fa-circle': dataprogress < 1 && excla != 1,
+                  'fa-exclamation': excla == 1
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Von Ihnen bestätigt</span>
+          </div>
+          <div
+            :class="{
+              active: dataprogress >= 2 && excla != 2,
+              fail: excla == 2
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 2 && excla != 2,
+                  'fa-circle': dataprogress < 2 && excla != 2,
+                  'fa-exclamation': excla == 2
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Anträge eingereicht</span>
+          </div>
+          <div
+            :class="{
+              active: dataprogress >= 3 && excla != 3,
+              fail: excla == 3
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 3 && excla != 3,
+                  'fa-circle': dataprogress < 3 && excla != 3,
+                  'fa-exclamation': excla == 3
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Von AV akzeptiert</span>
+          </div>
+          <div
+            :class="{
+              active: dataprogress >= 4 && excla != 4,
+              fail: excla == 4
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 4 && excla != 4,
+                  'fa-circle': dataprogress < 4 && excla != 4,
+                  'fa-exclamation': excla == 4
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Rechnungen eingereicht</span>
+          </div>
+          <div
+            :class="{
+              active: dataprogress >= 5 && excla != 5,
+              fail: excla == 5
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 5 && excla != 5,
+                  'fa-circle': dataprogress < 5 && excla != 5,
+                  'fa-exclamation': excla == 5
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate"
+              >Von Rechnungsstelle akzeptiert</span
+            >
+          </div>
+        </div>
+        <div v-if="type === 'ws'" class="track">
+          <div
+            :class="{
+              active: dataprogress >= 1 && excla != 1,
+              fail: excla == 1
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 1 && excla != 1,
+                  'fa-circle': dataprogress < 1 && excla != 1,
+                  'fa-exclamation': excla == 1
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Anträge eingereicht</span>
+          </div>
+          <div
+            :class="{
+              active: dataprogress >= 2 && excla != 2,
+              fail: excla == 2
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 2 && excla != 2,
+                  'fa-circle': dataprogress < 2 && excla != 2,
+                  'fa-exclamation': excla == 2
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Von AV akzeptiert</span>
+          </div>
+          <div
+            :class="{
+              active: dataprogress >= 3 && excla != 3,
+              fail: excla == 3
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 3 && excla != 3,
+                  'fa-circle': dataprogress < 3 && excla != 3,
+                  'fa-exclamation': excla == 3
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Rechnungen eingereicht</span>
+          </div>
+          <div
+            :class="{
+              active: dataprogress >= 4 && excla != 4,
+              fail: excla == 4
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 4 && excla != 4,
+                  'fa-circle': dataprogress < 4 && excla != 4,
+                  'fa-exclamation': excla == 4
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">
+              Von Rechnungsstelle akzeptiert</span
+            >
+          </div>
+        </div>
+        <div v-if="type === 'af'" class="track">
+          <div
+            :class="{
+              active: dataprogress >= 1 && excla != 1,
+              fail: excla == 1
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 1 && excla != 1,
+                  'fa-circle': dataprogress < 1 && excla != 1,
+                  'fa-exclamation': excla == 1
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Anträge eingereicht</span>
+          </div>
+          <div
+            :class="{
+              active: dataprogress >= 2 && excla != 2,
+              fail: excla == 2
+            }"
+            class="step"
+          >
+            <span class="icon">
+              <i
+                :class="{
+                  'fa-check': dataprogress >= 2 && excla != 2,
+                  'fa-circle': dataprogress < 2 && excla != 2,
+                  'fa-exclamation': excla == 2
+                }"
+                class="fa"
+              ></i>
+            </span>
+            <span class="text text-truncate">Von AV akzeptiert</span>
           </div>
         </div>
       </b-col>
     </b-row>
   </b-container>
 </template>
+<script>
+export default {
+  props: ["progress"],
+  data() {
+    return {
+      type: null,
+      dataprogress: -1,
+      excla: -1
+    };
+  },
+  methods: {
+    loadProgress() {
+      console.log(this.progress);
+      this.type = this.progress.type;
+      this.dataprogress = this.progress.data;
+      this.excla = this.progress.current;
+    }
+  },
+  mounted() {
+    this.loadProgress();
+  }
+};
+</script>
+
 <style lang="scss" scoped>
 .track {
   position: relative;
