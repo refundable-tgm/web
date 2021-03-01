@@ -301,7 +301,7 @@ export default {
       for (let i = 0; i < escortsdata.teacher.length; i++) {
         output.push(
           JSON.parse(
-            '{"options":[],"name":"' +
+            '{"name":"' +
               this.getFullName(escortsdata.teacher[i]) +
               '","startDate":"' +
               escortsdata.startDate +

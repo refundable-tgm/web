@@ -50,7 +50,11 @@
                   v-on:selected="changeSelected"
                   v-on:validTime="validateTime"
                 />
-                <TravelApplication />
+                <TravelApplication
+                  v-bind:escort="escort"
+                  v-bind:index="index"
+                  v-on:update="updateTravel"
+                />
               </div>
               <center>
                 <button v-on:click="einreichen" class="blueish-gradiant">
@@ -75,6 +79,11 @@ export default {
     EscortsComp
   },
   props: ["escorts", "user"],
+  data() {
+    return {
+      travelData: []
+    }
+  },
   methods: {
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
@@ -96,13 +105,31 @@ export default {
         this.changeComponent("Index");
       }
     },
+    updateTravel(index, data) {
+      this.escorts.output[index].personalnummer = data.personalnummer;
+      this.escorts.output[index].transport = data.transport;
+      this.escorts.output[index].ausgangspuunkt = data.ausgangspuunkt;
+      this.escorts.output[index].endpunkt = data.endpunkt;
+      this.escorts.output[index].reason = data.reason;
+      this.escorts.output[index].bonus_meilen = data.bonus_meilen;
+      this.escorts.output[index].reisekosten = data.reisekosten;
+      this.escorts.output[index].reisekosten_von = data.reisekosten_von;
+      this.escorts.output[index].aufenthaltskosten = data.aufenthaltskosten;
+      this.escorts.output[index].aufenthaltskosten_von = data.aufenthaltskosten_von;
+      this.escorts.output[index].sonstige_kosten = data.sonstige_kosten;
+      this.escorts.output[index].geschaetzte_kosten = data.geschaetzte_kosten;
+    },
     einreichen() {
       if (this.checkClick()) {
         var data = {
           name: this.escorts.description,
           type: 0,
-          startTimeStamp: new Date(this.escorts.startDate + "T" + this.escorts.startTime),
-          endTimeStamp: new Date(this.escorts.endDate + "T" + this.escorts.endTime),
+          startTimeStamp: new Date(
+            this.escorts.startDate + "T" + this.escorts.startTime
+          ),
+          endTimeStamp: new Date(
+            this.escorts.endDate + "T" + this.escorts.endTime
+          ),
           anmerkung: this.escorts.notes,
           zielAdresse: this.escorts.end,
           startAdresse: this.escorts.start,
@@ -112,10 +139,12 @@ export default {
           count_student_male: this.escorts.count_student_male,
           count_student_female: this.escorts.count_student_female,
           length: this.escorts.exkursLength,
-          escortsdata: []
-        }
+          teacher: this.escorts.output
+        };
+        //Anpassen
+        console.log(data);
         //Zeugs an Michi schicken und so formatieren, dass Michi was damit anfangen kann
-        this.changeComponent("Index");
+        //this.changeComponent("Index");
       }
     },
     changeStartDate(index, newStartDate) {
@@ -132,7 +161,6 @@ export default {
     },
     changeSelected(index, newSelected) {
       this.escorts.output[index].selected = newSelected;
-      this.checkifAllSelected();
     },
     validateTime(newValidTime) {
       this.validTime = newValidTime;

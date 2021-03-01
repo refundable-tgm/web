@@ -3,7 +3,7 @@
     <b-row align-h="center">
       <b-col cols="12">
         <b-form-group
-          id="pnum"
+          c
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -13,11 +13,10 @@
           label-for="pn"
         >
           <b-form-input
-            id="pn"
+            :id="index + 'pn'"
             type="number"
-            v-model="data.description"
-            :state="Desc"
-            v-on:input="checkDesc"
+            v-model="data.personalnummer"
+            v-on:input="update"
           >
           </b-form-input>
           <b-form-invalid-feedback id="bezeichnung-feedback">
@@ -32,13 +31,13 @@
           description="Geben Sie die Fortbewegungsart an."
           label="Fortbewegungsart"
           label-for="tp"
-          id="transport"
+          :id="index + 'transport'"
         >
           <b-form-checkbox-group
-            id="tp"
-            v-model="selected"
-            :aria-describedby="ariaDescribedby"
-            name="flavour-2"
+            :id="index + 'tp'"
+            v-model="data.transport"
+            v-on:change="update"
+            :name="index + 'tp'"
             stacked
           >
             <b-form-checkbox value="a1"
@@ -67,13 +66,13 @@
           description="*nur wenn dadurch niedrigere Kosten anfallen"
           label="Ausgangspunkt"
           label-for="ap"
-          id="ausg"
+          :id="index + 'ausg'"
         >
           <b-form-radio-group
-            id="ap"
-            v-model="selected"
-            :aria-describedby="ariaDescribedby"
-            name="radio-sub-component"
+            :id="index + 'ap'"
+            v-on:change="update"
+            v-model="data.ausgangspunkt"
+            :name="index + 'ap'"
           >
             <b-form-radio value="first">Dienststelle</b-form-radio>
             <b-form-radio value="second">Wohnung*</b-form-radio>
@@ -87,13 +86,13 @@
           description="*nur wenn dadurch niedrigere Kosten anfallen"
           label="Endpunkt"
           label-for="ep"
-          id="endp"
+          :id="index + 'endp'"
         >
           <b-form-radio-group
-            id="ep"
-            v-model="selected"
-            :aria-describedby="ariaDescribedby"
-            name="radio-sub-component"
+            :id="index + 'ep'"
+            v-on:change="update"
+            v-model="data.endpunkt"
+            :name="index + 'ep'"
           >
             <b-form-radio value="first">Dienstselle</b-form-radio>
             <b-form-radio value="second">Wohnung*</b-form-radio>
@@ -107,10 +106,12 @@
           description="Begründung der obigen Faktoren"
           label="Begründung"
           label-for="beg"
-          id="bega"
+          :id="index + 'bega'"
         >
           <b-form-textarea
-            id="beg"
+            :id="index + 'beg'"
+            v-model="data.reason"
+            v-on:input="update"
             placeholder="Begründung"
             rows="3"
             no-resize
@@ -124,13 +125,13 @@
           description="Akzeptieren Sie ggf. die Bedingungen für die Bonus-Meilen"
           label="Bonus-Meilen"
           label-for="bonus"
-          id="bonusm"
+          :id="index + 'bonusm'"
         >
           <b-form-checkbox-group
-            id="bonus"
-            v-model="selected"
-            :aria-describedby="ariaDescribedby"
-            name="flavour-2"
+            :id="index + 'bonus'"
+            v-model="data.bonus_meilen"
+            v-on:change="update"
+            :name="index + 'bonus'"
             stacked
           >
             <b-form-checkbox value="a1"
@@ -152,20 +153,21 @@
           description="Werden Reisekosten von anderen Stellen getragen?"
           label="Reisekosten - andere Stellen"
           label-for="reis"
-          id="reisa"
+          :id="index + 'reisa'"
         >
           <b-form-radio-group
-            id="reis"
-            v-model="selected"
-            :aria-describedby="ariaDescribedby"
-            name="radio-sub-component"
+            :id="index + 'reis'"
+            v-on:change="update"
+            v-model="data.reisekosten"
+            :name="index + 'reis'"
           >
             <b-form-radio value="first">Nein</b-form-radio>
             <b-form-radio value="second">Ja</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
         <b-form-group
-          id="vonreisa"
+          v-if="data.reisekosten === 'second'"
+          :id="index + 'vonreisa'"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -174,7 +176,13 @@
           label="Von"
           label-for="vonreis"
         >
-          <b-form-input id="vonreis" type="text"> </b-form-input>
+          <b-form-input
+            v-model="data.reisekosten_von"
+            v-on:input="update"
+            :id="index + 'vonreis'"
+            type="text"
+          >
+          </b-form-input>
         </b-form-group>
         <b-form-group
           label-cols-sm="4"
@@ -184,20 +192,21 @@
           description="Werden Aufenthaltskosten von anderen Stellen getragen?"
           label="Aufenthaltskosten - andere Stellen"
           label-for="auf"
-          id="aufk"
+          :id="index + 'aufk'"
         >
           <b-form-radio-group
-            id="auf"
-            v-model="selected"
-            :aria-describedby="ariaDescribedby"
-            name="radio-sub-component"
+            :id="index + 'auf'"
+            v-model="data.aufenthaltskosten"
+            v-on:change="update"
+            :name="index + 'auf'"
           >
             <b-form-radio value="first">Nein</b-form-radio>
             <b-form-radio value="second">Ja</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
         <b-form-group
-          id="vonaufk"
+          v-if="data.aufenthaltskosten === 'second'"
+          :id="index + 'vonaufk'"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -206,10 +215,16 @@
           label="Von"
           label-for="vonauf"
         >
-          <b-form-input id="vonauf" type="text"> </b-form-input>
+          <b-form-input
+            v-on:input="update"
+            v-model="data.aufenthaltskosten_von"
+            :id="index + 'vonauf'"
+            type="text"
+          >
+          </b-form-input>
         </b-form-group>
         <b-form-group
-          id="sonstkg"
+          :id="index + 'sonstkg'"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -219,14 +234,20 @@
           label-for="sonstk"
         >
           <b-input-group>
-            <b-input-group-text id="eur-addon-1" slot="append"
+            <b-input-group-text :id="index + 'eur-addon-1'" slot="append"
               ><span>€</span></b-input-group-text
             >
-            <b-form-input id="sonstk" type="number"> </b-form-input>
+            <b-form-input
+              v-on:input="update"
+              v-model="data.sonstige_kosten"
+              :id="index + 'sonstk'"
+              type="number"
+            >
+            </b-form-input>
           </b-input-group>
         </b-form-group>
         <b-form-group
-          id="geschkg"
+          :id="index + 'geschkg'"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -236,10 +257,16 @@
           label-for="geschk"
         >
           <b-input-group>
-            <b-input-group-text id="eur-addon-2" slot="append"
+            <b-input-group-text :id="index + 'eur-addon-2'" slot="append"
               ><span>€</span></b-input-group-text
             >
-            <b-form-input id="geschk" type="number"> </b-form-input>
+            <b-form-input
+              v-model="data.geschaetzte_kosten"
+              v-on:input="update"
+              :id="index + 'geschk'"
+              type="number"
+            >
+            </b-form-input>
           </b-input-group>
         </b-form-group>
       </b-col>
@@ -249,155 +276,28 @@
 <script>
 export default {
   name: "NewApplication",
+  props: ["escort", "index"],
   methods: {
-    changeComponent(
-      component,
-      back = true,
-      application = null,
-      escortsdata = null
-    ) {
-      this.$emit("change-component", component, back, application, escortsdata);
-    },
-    checkClick() {
-      if (
-        window
-          .getSelection()
-          .toString()
-          .trim() === ""
-      ) {
-        return true;
-      } else {
-        return false;
-      }
-    },
-    index() {
-      if (this.checkClick()) {
-        this.changeComponent("Index");
-      }
-    },
-    makeToast() {
-      this.$bvToast.toast("Es wurden nicht alle Felder richtig ausgefüllt!", {
-        title: "Ein Fehler ist aufgetreten!",
-        autoHideDelay: 2500,
-        appendToast: false,
-        variant: "danger"
-      });
-    },
-    next() {
-      if (this.checkClick()) {
-        if (this.validInputs) {
-          this.calculateLength();
-          // Daten an Michi senden und so formatieren, dass Michi was damit anfangen kann
-          this.changeComponent("Escorts", true, null, this.data);
-        } else {
-          this.makeToast();
-          if (this.Time === null) this.Time = false;
-          if (this.Desc === null) this.Desc = false;
-          if (this.Teacher === null) this.Teacher = false;
-          if (this.Students === null) this.Students = false;
-          if (this.Class === null) this.Class = false;
-        }
-      }
-    },
-    calculateLength() {
-      let start = new Date(this.data.startDate + "T" + this.data.startTime);
-      let end = new Date(this.data.endDate + "T" + this.data.endTime);
-      let diff = end.getTime() - start.getTime();
-      let days = diff / (1000 * 3600 * 24);
-      if (days <= 1) {
-        this.exkursLength = "1";
-      } else {
-        if (days > 1 && days <= 3) {
-          this.exkursLength = "2-3";
-        } else {
-          this.exkursLength = ">3";
-        }
-      }
-    },
-    checkDesc() {
-      if (this.data.description === "") {
-        this.Desc = false;
-      } else {
-        this.Desc = true;
-      }
-      this.checkInputs();
-    },
-    checkTeacher() {
-      if (this.data.teacher.length === 0) {
-        this.Teacher = false;
-      } else {
-        this.Teacher = true;
-      }
-      this.checkInputs();
-    },
-    checkClass() {
-      if (this.data.class.length === 0) {
-        this.Class = false;
-      } else {
-        this.Class = true;
-      }
-      this.checkInputs();
-    },
-    checkStudents() {
-      if (this.data.count_student_male + this.data.count_student_female <= 0) {
-        this.Students = false;
-      } else {
-        this.Students = true;
-      }
-      this.checkInputs();
-    },
-    checkTime() {
-      if (
-        this.data.startDate !== "" &&
-        this.data.startTime !== "" &&
-        this.data.endDate !== "" &&
-        this.data.endTime !== ""
-      ) {
-        let start = new Date(this.data.startDate + "T" + this.data.startTime);
-        let end = new Date(this.data.endDate + "T" + this.data.endTime);
-        if (end - start <= 0) {
-          this.Time = false;
-        } else {
-          this.Time = true;
-        }
-        this.checkInputs();
-      }
-    },
-    checkInputs() {
-      if (
-        this.Time === true &&
-        this.Desc === true &&
-        this.Teacher === true &&
-        this.Class === true &&
-        this.Students === true
-      ) {
-        this.validInputs = true;
-      } else {
-        this.validInputs = false;
-      }
+    update() {
+      this.$emit("update", this.index, this.data);
     }
   },
   data() {
     return {
       data: {
-        description: "",
-        teacher: [],
-        class: [],
-        startDate: "",
-        startTime: "",
-        endDate: "",
-        endTime: "",
-        count_student_male: 0,
-        count_student_female: 0,
-        notes: "",
-        exkursLength: 0
-      },
-      validInputs: false,
-      Time: null,
-      Desc: null,
-      Teacher: null,
-      Class: null,
-      Students: null
+        personalnummer: null,
+        transport: [],
+        ausgangspunkt: "",
+        endpunkt: "",
+        reason: "",
+        bonus_meilen: [],
+        reisekosten: null,
+        reisekosten_von: "",
+        aufenthaltskosten: null,
+        aufenthaltskosten_von: "",
+        sonstige_kosten: null,
+        geschaetzte_kosten: null
+      }
     };
   }
 };
