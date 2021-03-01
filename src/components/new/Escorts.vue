@@ -74,7 +74,7 @@ export default {
     TravelApplication,
     EscortsComp
   },
-  props: ["escorts"],
+  props: ["escorts", "user"],
   methods: {
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
@@ -98,6 +98,22 @@ export default {
     },
     einreichen() {
       if (this.checkClick()) {
+        var data = {
+          name: this.escorts.description,
+          type: 0,
+          startTimeStamp: new Date(this.escorts.startDate + "T" + this.escorts.startTime),
+          endTimeStamp: new Date(this.escorts.endDate + "T" + this.escorts.endTime),
+          anmerkung: this.escorts.notes,
+          zielAdresse: this.escorts.end,
+          startAdresse: this.escorts.start,
+          leader: this.user,
+          escorts: this.escorts.teacher,
+          classes: this.escorts.class,
+          count_student_male: this.escorts.count_student_male,
+          count_student_female: this.escorts.count_student_female,
+          length: this.escorts.exkursLength,
+          escortsdata: []
+        }
         //Zeugs an Michi schicken und so formatieren, dass Michi was damit anfangen kann
         this.changeComponent("Index");
       }
