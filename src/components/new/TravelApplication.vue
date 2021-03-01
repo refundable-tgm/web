@@ -99,6 +99,149 @@
             <b-form-radio value="second">Wohnung*</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Begründung der obigen Faktoren"
+          label="Begründung"
+          label-for="beg"
+          id="bega"
+        >
+          <b-form-textarea
+            id="beg"
+            placeholder="Begründung"
+            rows="3"
+            no-resize
+          ></b-form-textarea>
+        </b-form-group>
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Akzeptieren Sie ggf. die Bedingungen für die Bonus-Meilen"
+          label="Bonus-Meilen"
+          label-for="bonus"
+          id="bonusm"
+        >
+          <b-form-checkbox-group
+            id="bonus"
+            v-model="selected"
+            :aria-describedby="ariaDescribedby"
+            name="flavour-2"
+            stacked
+          >
+            <b-form-checkbox value="a1"
+              >Ich bestätige, dass ich anlässlich von Dienstreisen im Rahmen
+              personenbezogener Bonusprogramme erworbene Prämien nicht privat in
+              Anspruch nehme</b-form-checkbox
+            >
+            <b-form-checkbox value="a2"
+              >Für die Dienstreise verwende ich auf meinem Meilenkonto
+              gutgeschriebene, dienstlich erworbene Meilen</b-form-checkbox
+            >
+          </b-form-checkbox-group>
+        </b-form-group>
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Werden Reisekosten von anderen Stellen getragen?"
+          label="Reisekosten - andere Stellen"
+          label-for="reis"
+          id="reisa"
+        >
+          <b-form-radio-group
+            id="reis"
+            v-model="selected"
+            :aria-describedby="ariaDescribedby"
+            name="radio-sub-component"
+          >
+            <b-form-radio value="first">Nein</b-form-radio>
+            <b-form-radio value="second">Ja</b-form-radio>
+          </b-form-radio-group>
+        </b-form-group>
+        <b-form-group
+          id="vonreisa"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Von welcher Stelle werden die Reisekosten getragen?"
+          label="Von"
+          label-for="vonreis"
+        >
+          <b-form-input id="vonreis" type="text"> </b-form-input>
+        </b-form-group>
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Werden Aufenthaltskosten von anderen Stellen getragen?"
+          label="Aufenthaltskosten - andere Stellen"
+          label-for="auf"
+          id="aufk"
+        >
+          <b-form-radio-group
+            id="auf"
+            v-model="selected"
+            :aria-describedby="ariaDescribedby"
+            name="radio-sub-component"
+          >
+            <b-form-radio value="first">Nein</b-form-radio>
+            <b-form-radio value="second">Ja</b-form-radio>
+          </b-form-radio-group>
+        </b-form-group>
+        <b-form-group
+          id="vonaufk"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Von welcher Stelle werden die Aufenthaltskosten getragen?"
+          label="Von"
+          label-for="vonauf"
+        >
+          <b-form-input id="vonauf" type="text"> </b-form-input>
+        </b-form-group>
+        <b-form-group
+          id="sonstkg"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie sonstige Kosten an."
+          label="Sonstige Kosten"
+          label-for="sonstk"
+        >
+          <b-input-group>
+            <b-input-group-text id="eur-addon-1" slot="append"
+              ><span>€</span></b-input-group-text
+            >
+            <b-form-input id="sonstk" type="number"> </b-form-input>
+          </b-input-group>
+        </b-form-group>
+        <b-form-group
+          id="geschkg"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie die geschätzten Kosten an."
+          label="Geschätzte Kosten"
+          label-for="geschk"
+        >
+          <b-input-group>
+            <b-input-group-text id="eur-addon-2" slot="append"
+              ><span>€</span></b-input-group-text
+            >
+            <b-form-input id="geschk" type="number"> </b-form-input>
+          </b-input-group>
+        </b-form-group>
       </b-col>
     </b-row>
   </b-container>
