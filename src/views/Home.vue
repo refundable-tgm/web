@@ -135,7 +135,7 @@
 </template>
 
 <script>
-import axios from "axios";
+//import axios from "axios";
 import Index from "@/components/Index.vue";
 import Login from "@/components/Login.vue";
 import NewApplication from "@/components/NewApplication.vue";
@@ -303,14 +303,15 @@ export default {
       this.admin = admin;
     },
     getLeader() {
-      axios.get(this.url + "/getTeacher?id=" + this.user, {
+      /*axios.get(this.url + "/getTeacher?id=" + this.user, {
         params: {
           token: this.token
         }
       }).then((response) => {
         let data = response.data;
         return {longname:data.Longname,short:data.Short}
-      });
+      });*/
+      return {longname:'Ryan Foster',short:'rfoster'}
     },
     loadEscortsData(escortsdata) {
       let leader = this.getLeader();
@@ -348,14 +349,15 @@ export default {
       this.escortsdata = escortsdata;
     },
     getFullName(shortName) {
-      console.log("Request für " + shortName + " um vollen Namen zu bekommen");
+      /*console.log("Request für " + shortName + " um vollen Namen zu bekommen");
       axios.get(this.url + "/getLongName?name=" + shortName, {
         params: {
           token: this.token
         }
       }).then((response) => {
         return response.data.long;
-      })
+      })*/
+      return shortName;
     },
     generateState(state) {
       let output = "";
