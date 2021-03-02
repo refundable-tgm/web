@@ -12,7 +12,7 @@
           label-for="zud"
           id="zu"
         >
-          <b-form-checkbox-group id="zud" stacked>
+          <b-form-checkbox-group id="zud" v-model="selected" stacked>
             <b-form-checkbox value="a1"
               >Amtl. Buisnesskarte erhalten</b-form-checkbox
             >
@@ -24,7 +24,7 @@
               >Ersatz für Bahnfahrt 2. KL. (Beleg anschließen)</b-form-checkbox
             >
             <b-form-checkbox value="a5"
-              >Amtl. Kilometergelf für eigenen PKW</b-form-checkbox
+              >Amtl. Kilometergeld für eigenen PKW</b-form-checkbox
             >
             <b-form-checkbox value="a6">Mitfahrer</b-form-checkbox>
             <b-form-checkbox value="a7"
@@ -61,6 +61,7 @@
           description="Geben Sie die Anzahl der gefahrenen km mit dem eigenen PKW an"
           label="Eigener PKW km"
           label-for="km-pkw"
+          v-if="selected.includes('a5')"
         >
           <b-input-group>
             <b-input-group-text id="km-addon-1" slot="append"
@@ -78,27 +79,36 @@
           description="Geben Sie die Anzahl der Mitfahrer an"
           label="Mitfahrer Anzahl"
           label-for="mit-num"
+          v-if="selected.includes('a6')"
         >
           <b-input-group>
             <b-input-group-text id="mitfahrer-addon-1" slot="append"
               ><span>Mitfahrer</span></b-input-group-text
             >
-            <b-form-input id="mit-num" type="number"> </b-form-input>
+            <b-form-input
+              id="mit-num"
+              type="number"
+              v-model="anzahl"
+              v-on:change="createMitfahrer"
+            >
+            </b-form-input>
           </b-input-group>
         </b-form-group>
 
-        <b-form-group
-          id="mit-namg-x"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          description="Geben Sie den Namen des X. Mitfahrers an"
-          label="Mitfahrer X Name"
-          label-for="mit-nam-x"
-        >
-          <b-form-input id="mit-nam-x" type="text"> </b-form-input>
-        </b-form-group>
+        <div v-for="fahr in mitfahrer" v-bind:key="fahr.index">
+          <b-form-group
+            id="mit-namg-x"
+            label-cols-sm="4"
+            label-cols-lg="3"
+            content-cols-sm
+            content-cols-lg="7"
+            :description="'Geben Sie den Namen des '+fahr.index+'. Mitfahrers an'"
+            :label="'Mitfahrer ' + fahr.index + ' Name'"
+            label-for="mit-nam-x"
+          >
+            <b-form-input id="mit-nam-x" type="text"> </b-form-input>
+          </b-form-group>
+        </div>
 
         <b-form-group
           id="tag-kuerzg"
@@ -109,6 +119,7 @@
           description="Tagesgebür gemäß §17 zu kürzen um (Anzahl)"
           label="Zu kürzende Tagesgebühr"
           label-for="tag-kuerz"
+          v-if="selected.includes('a11')"
         >
           <b-form-input id="tag-kuerz" type="number"> </b-form-input>
         </b-form-group>
@@ -197,9 +208,9 @@
 
           <template #cell(start)="data">
             <b-form-timepicker
-                  locale="de"
-                  placeholder="Zeit auswählen"
-                ></b-form-timepicker>
+              locale="de"
+              placeholder="Zeit auswählen"
+            ></b-form-timepicker>
             {{ data.item.start }}
           </template>
 
@@ -208,7 +219,6 @@
           </template>
 
           <template #cell(kind)="data">
-            <b-form-input ></b-form-input>
             {{ data.item.kind }}
           </template>
           <template #cell(km)="data">
@@ -234,31 +244,66 @@ export default {
   data() {
     return {
       fields: [
-        'index',
-        { key: 'date', label: 'Tag' },
-        { key: 'start', label: 'Beginn' },
-        { key: 'end', label: 'Ende' },
-        { key: 'kind', label: 'Art des Gebührenanspruches' },
-        { key: 'km', label: 'Gesamtkilometer' },
-        { key: 'travelcosts', label: 'Reisekosten' },
-        { key: 'daycharge', label: 'Tagesgebühr' },
-        { key: 'sleepcharge', label: 'Nächtigungsgebühr' },
-        { key: 'othercosts', label: 'Sonstige Nebenkosten' }
+        "index",
+        { key: "date", label: "Tag" },
+        { key: "start", label: "Beginn" },
+        { key: "end", label: "Ende" },
+        { key: "kind", label: "Art des Gebührenanspruches" },
+        { key: "km", label: "Gesamtkilometer" },
+        { key: "travelcosts", label: "Reisekosten" },
+        { key: "daycharge", label: "Tagesgebühr" },
+        { key: "sleepcharge", label: "Nächtigungsgebühr" },
+        { key: "othercosts", label: "Sonstige Nebenkosten" }
       ],
       items: [
         {
-          date: '17.10.',
-          begin: '8:00',
-          end: '18:00',
-          kind: 'Tagesgebühr',
-          km: '',
-          travelcosts: '20,20',
-          daycharge: '13,20',
-          sleepcharge: '',
-          othercosts: ''
+          date: "17.10.",
+          begin: "8:00",
+          end: "18:00",
+          kind: "Tagesgebühr",
+          km: "",
+          travelcosts: "20,20",
+          daycharge: "13,20",
+          sleepcharge: "",
+          othercosts: ""
         }
-      ]
+      ],
+      selected: [],
+      anzahl: null,
+      mitfahrer: []
     };
+  },
+  methods: {
+    output() {
+      console.log("Output!");
+      console.log(this.selected);
+    },
+    createMitfahrer() {
+      if (this.mitfahrer.length === 0) {
+        for (let i = 0; i < Number(this.anzahl); i++) {
+          this.mitfahrer.push({
+            name: "",
+            index: i+1
+          });
+        }
+      } else {
+        if (this.mitfahrer.length >= Number(this.anzahl)) {
+          this.mitfahrer.splice(
+            this.anzahl,
+            this.mitfahrer.length - Number(this.anzahl)
+          );
+        } else {
+          var tmp = this.mitfahrer[this.mitfahrer.length-1];
+          var length = Number(this.anzahl)-tmp.index;
+          for(let i = 0;i<length;i++) {
+            this.mitfahrer.push({
+              name: "",
+              index: tmp.index+i+1
+            })
+          }
+        }
+      }
+    }
   }
 };
 </script>
