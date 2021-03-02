@@ -314,7 +314,24 @@ export default {
     },
     printSelected() {
       console.log(this.selected);
-      window.open("Link des PDFs");
+      var req = [];
+      for (let i = 0; i < this.selected.length; i++) {
+        req.push({
+          id: this.selected[i].id
+        });
+      }
+      axios.get(this.url +"/getPDFs", {
+        params: {
+          token: this.token,
+          pdfs: req
+        }
+      }).then((response) => {
+        var pdf = response.data.pdf;
+        this.showPDF(pdf);
+      })
+    },
+    showPDF(pdf) {
+      window.open("data:application/pdf;base64,"+pdf);
     },
     selectAllRows() {
       this.$refs.selectableTable.selectAllRows();
