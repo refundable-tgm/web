@@ -33,30 +33,30 @@
           label-for="tp"
           :id="index + 'transport'"
         >
-          <b-form-checkbox-group
+          <b-form-radio-group
             :id="index + 'tp'"
             v-model="data.transport"
             v-on:change="update"
             :name="index + 'tp'"
             stacked
           >
-            <b-form-checkbox value=0
-              >Amtl. Buisnesskarte 2. Kl.</b-form-checkbox
+            <b-form-radio value=0
+              >Amtl. Buisnesskarte 2. Kl.</b-form-radio
             >
-            <b-form-checkbox value=3>Beförderungszuschuss</b-form-checkbox>
-            <b-form-checkbox value=6
-              >Bahn 2. Kl. - gegen Beleg</b-form-checkbox
+            <b-form-radio value=3>Beförderungszuschuss</b-form-radio>
+            <b-form-radio value=6
+              >Bahn 2. Kl. - gegen Beleg</b-form-radio
             >
-            <b-form-checkbox value=8>Schlafwagen</b-form-checkbox>
-            <b-form-checkbox value=1>MitfahrerInnen</b-form-checkbox>
-            <b-form-checkbox value=4>Flug</b-form-checkbox>
-            <b-form-checkbox value=5>Billigflug</b-form-checkbox>
-            <b-form-checkbox value=9>Bus - gegen Beleg</b-form-checkbox>
-            <b-form-checkbox value=2
-              >Amtl. Buisnesskarte / Bahnverrechnung 1. Kl.</b-form-checkbox
+            <b-form-radio value=8>Schlafwagen</b-form-radio>
+            <b-form-radio value=1>MitfahrerInnen</b-form-radio>
+            <b-form-radio value=4>Flug</b-form-radio>
+            <b-form-radio value=5>Billigflug</b-form-radio>
+            <b-form-radio value=9>Bus - gegen Beleg</b-form-radio>
+            <b-form-radio value=2
+              >Amtl. Buisnesskarte / Bahnverrechnung 1. Kl.</b-form-radio
             >
-            <b-form-checkbox value=7>Eigener PKW</b-form-checkbox>
-          </b-form-checkbox-group>
+            <b-form-radio value=7>Eigener PKW</b-form-radio>
+          </b-form-radio-group>
         </b-form-group>
         <b-form-group
           label-cols-sm="4"

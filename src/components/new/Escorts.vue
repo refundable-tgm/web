@@ -125,6 +125,28 @@ export default {
       this.escorts.output[index].sonstige_kosten = data.sonstige_kosten;
       this.escorts.output[index].geschaetzte_kosten = data.geschaetzte_kosten;
     },
+    returnValue(input) {
+      if(input === undefined || input === null || input === "") {
+        return null;
+      } else {
+        return Number(input);
+      }
+    },
+    returnString(input) {
+      if(input === undefined || input === null || input === "") {
+        return null;
+      } else {
+        return input;
+      }
+    },
+    returnBoolean(input) {
+      if(input === undefined || input === null || input === "") {
+        return null
+      } else {
+        if(input==="false") return false;
+        else return true
+      }
+    },
     einreichen() {
       if (this.checkClick()) {
         var teachers = [];
@@ -141,12 +163,12 @@ export default {
                 "T" +
                 this.escorts.output[i].endTime
             ).toISOString(),
-            MeetingPoint: this.escorts.output[i].meetingpoint,
-            Name: this.escorts.output[i].name,
-            Role: this.escorts.output[i].role,
-            Group: this.escorts.output[i].selected,
-            Shortname: this.escorts.output[i].shortname,
-            StartAddress: this.escorts.output[i].startadresse
+            MeetingPoint: this.returnString(this.escorts.output[i].meetingpoint),
+            Name: this.returnString(this.escorts.output[i].name),
+            Role: this.returnValue(this.escorts.output[i].role),
+            Group: this.returnValue(this.escorts.output[i].selected),
+            Shortname: this.returnString(this.escorts.output[i].shortname),
+            StartAddress: this.returnString(this.escorts.output[i].startadresse)
           });
           var otherteachers = [];
           for (let j = 0; j < this.escorts.output.length; j++)
@@ -158,7 +180,7 @@ export default {
           if(this.escorts.output[i].bonus_meilen[0] === "1" || this.escorts.output[i].bonus_meilen[1] === "1") bonus2 = true;
           business.push({
             ID: i,
-            Staffnr: this.escorts.output[i].personalnummer,
+            Staffnr: this.returnValue(this.escorts.output[i].personalnummer),
             TripBeginTime: new Date(
               this.escorts.startDate + "T" + this.escorts.startTime
             ).toISOString(),
@@ -175,27 +197,27 @@ export default {
                 "T" +
                 this.escorts.output[i].endTime
             ).toISOString(),
-            TripGoal: this.escorts.ziel,
-            TravelPurpose: this.escorts.output[i].reason1,
-            TravelMode: this.escorts.output[i].transport,
-            StartingPoint: this.escorts.output[i].ausgangspunkt,
-            EndPoint: this.escorts.output[i].endpunkt,
-            Reasoning: this.escorts.output[i].reason,
+            TripGoal: this.returnString(this.escorts.ziel),
+            TravelPurpose: this.returnString(this.escorts.output[i].reason1),
+            TravelMode: this.returnValue(this.escorts.output[i].transport),
+            StartingPoint: this.returnValue(this.escorts.output[i].ausgangspunkt),
+            EndPoint: this.returnValue(this.escorts.output[i].endpunkt),
+            Reasoning: this.returnString(this.escorts.output[i].reason),
             OtherParticipants: otherteachers,
             BonusMileConfirmation1: bonus1,
             BonusMileConfirmation2: bonus2,
-            TravelCostsPayedBySomeone: this.escorts.output[i].reisekosten,
-            StayingCostsPayedBySomeone: this.escorts.output[i]
-              .aufenthaltskosten,
-            PayedByWhom: this.escorts.output[i].von,
-            OtherCosts: this.escorts.output[i].sonstige_kosten,
-            EstimatedCosts: this.escorts.output[i].geschaetzte_kosten
+            TravelCostsPayedBySomeone: this.returnBoolean(this.escorts.output[i].reisekosten),
+            StayingCostsPayedBySomeone: this.returnBoolean(this.escorts.output[i]
+              .aufenthaltskosten),
+            PayedByWhom: this.returnString(this.escorts.output[i].von),
+            OtherCosts: this.returnValue(this.escorts.output[i].sonstige_kosten),
+            EstimatedCosts: this.returnValue(this.escorts.output[i].geschaetzte_kosten)
           });
         }
         var data = {
-          Name: this.escorts.description,
+          Name: this.returnString(this.escorts.description),
           Kind: 4,
-          MiscellaneousReason: "",
+          MiscellaneousReason: this.returnString(""),
           Progress: 1,
           StartTime: new Date(
             this.escorts.startDate + "T" + this.escorts.startTime
@@ -203,14 +225,14 @@ export default {
           EndTime: new Date(
             this.escorts.endDate + "T" + this.escorts.endTime
           ).toISOString(),
-          Notes: this.escorts.notes,
-          StartAddress: this.escorts.start,
-          DestinationAddress: this.escorts.ziel,
+          Notes: this.returnString(this.escorts.notes),
+          StartAddress: this.returnString(this.escorts.start),
+          DestinationAddress: this.returnString(this.escorts.ziel),
           SchoolEventDetails: {
             Classes: this.escorts.class,
-            AmountMaleStudent: this.escorts.count_student_male,
-            AmountFemaleStudent: this.escorts.count_student_female,
-            DurationInDays: this.escorts.exkursLength,
+            AmountMaleStudent: this.returnValue(this.escorts.count_student_male),
+            AmountFemaleStudent: this.returnValue(this.escorts.count_student_female),
+            DurationInDays: this.returnValue(this.escorts.exkursLength),
             Teachers: teachers
           },
           BusinessTripApplications: business

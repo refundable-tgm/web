@@ -4,6 +4,7 @@
       v-if="currentComponent == 'Login'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:forward="forward"
       v-bind:apikey="mapsapi"
       v-on:requestAnswer="useCookie"
@@ -14,6 +15,7 @@
       v-if="currentComponent == 'Index'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:admin="admin"
       v-bind:user="user"
@@ -22,6 +24,7 @@
       v-if="currentComponent == 'NewApplication'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -29,6 +32,7 @@
       v-if="currentComponent == 'AllApplication'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -36,6 +40,7 @@
       v-if="currentComponent == 'CurrentApplication'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -43,6 +48,7 @@
       v-if="currentComponent == 'School'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -50,6 +56,7 @@
       v-if="currentComponent == 'Others'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -57,6 +64,7 @@
       v-if="currentComponent == 'Escorts'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:escorts="escortsdata"
       v-bind:user="user"
@@ -65,6 +73,7 @@
       v-if="currentComponent == 'OtherCause'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -72,6 +81,7 @@
       v-if="currentComponent == 'Workshop'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -79,6 +89,7 @@
       v-if="currentComponent == 'ApplicationView'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:appid="appid"
       v-bind:user="user"
@@ -87,6 +98,7 @@
       v-if="currentComponent == 'ApplicationSearch'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -94,6 +106,7 @@
       v-if="currentComponent == 'AdminDashboard'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -101,6 +114,7 @@
       v-if="currentComponent == 'ApplicationAdminView'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -108,6 +122,7 @@
       v-if="currentComponent == 'Progress'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
@@ -172,20 +187,11 @@ export default {
       admin: true,
       logged: false,
       appid: "",
-      user: ""
+      user: "",
+      token: ""
     };
   },
   methods: {
-    /*
-      Request function for specific data from the REST-API
-
-      link: The specific data that is requested
-    */
-    getData(link) {
-      axios.get(this.url + "/" + link).then(response => {
-        this.data = response.data;
-      });
-    },
     changeComponent(
       component,
       back = true,
@@ -297,11 +303,14 @@ export default {
       this.admin = admin;
     },
     getLeader() {
-      /*axios.get(this.url + "/getTeacher?id=" + this.user).then((response) => {
+      axios.get(this.url + "/getTeacher?id=" + this.user, {
+        params: {
+          token: this.token
+        }
+      }).then((response) => {
         let data = response.data;
-        return {name:data.Longname,short:data.Short}
-      });*/
-      return {longname:'Ryan Foster', short: 'rfoster'}
+        return {longname:data.Longname,short:data.Short}
+      });
     },
     loadEscortsData(escortsdata) {
       let leader = this.getLeader();
@@ -340,8 +349,13 @@ export default {
     },
     getFullName(shortName) {
       console.log("Request für " + shortName + " um vollen Namen zu bekommen");
-      //Request an Michi um einen vollen Namen zu bekommen
-      return shortName;
+      axios.get(this.url + "/getLongName?name=" + shortName, {
+        params: {
+          token: this.token
+        }
+      }).then((response) => {
+        return response.data.long;
+      })
     },
     generateState(state) {
       let output = "";
