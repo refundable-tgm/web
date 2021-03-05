@@ -323,8 +323,8 @@ export default {
         startTime: escortsdata.startTime,
         endTime: escortsdata.endTime,
         selected:"",
-        startadresse: "",
-        meetingpoint: "",
+        startadresse: escortsdata.start,
+        meetingpoint: escortsdata.start,
         role: 0
       }];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
@@ -341,7 +341,7 @@ export default {
               escortsdata.startTime +
               '","endTime":"' +
               escortsdata.endTime +
-              '","selected":"","role":1, "startadresse":"","meetingpoint":""}'
+              '","selected":"","role":1, "startadresse":"' + escortsdata.start + '","meetingpoint":"' + escortsdata.start + '"}'
           )
         );
       }

@@ -57,8 +57,15 @@
                   v-bind:index="index"
                   v-on:update="updateTravel"
                 />
+                <TravelBill
+                  v-bind:escort="escort"
+                  v-bind:index="index"
+                  v-on:update="updateBill"
+                  v-bind:start="escorts.output[index].startDate"
+                  v-bind:end="escorts.output[index].endDate"
+                />
               </div>
-              <TravelBill />
+
               <center>
                 <button v-on:click="einreichen" class="blueish-gradiant">
                   Einreichen
@@ -75,7 +82,7 @@
 import EscortsComp from "@/components/new/EscortsComp.vue";
 import TravelApplication from "@/components/new/TravelApplication.vue";
 import TravelBill from "@/components/new/TravelBill.vue";
-//import axios from "axios"
+import axios from "axios";
 
 export default {
   name: "NewApplication",
@@ -84,7 +91,7 @@ export default {
     EscortsComp,
     TravelBill
   },
-  props: ["escorts", "user", "url"],
+  props: ["escorts", "user", "url", "token"],
   data() {
     return {
       travelData: []
@@ -111,6 +118,10 @@ export default {
         this.changeComponent("Index");
       }
     },
+    updateBill(index, data) {
+      index.toString();
+      data.toString();  
+    },
     updateTravel(index, data) {
       this.escorts.output[index].personalnummer = data.personalnummer;
       this.escorts.output[index].transport = data.transport;
@@ -126,25 +137,25 @@ export default {
       this.escorts.output[index].geschaetzte_kosten = data.geschaetzte_kosten;
     },
     returnValue(input) {
-      if(input === undefined || input === null || input === "") {
+      if (input === undefined || input === null || input === "") {
         return null;
       } else {
         return Number(input);
       }
     },
     returnString(input) {
-      if(input === undefined || input === null || input === "") {
+      if (input === undefined || input === null || input === "") {
         return null;
       } else {
         return input;
       }
     },
     returnBoolean(input) {
-      if(input === undefined || input === null || input === "") {
-        return null
+      if (input === undefined || input === null || input === "") {
+        return null;
       } else {
-        if(input==="false") return false;
-        else return true
+        if (input === "false") return false;
+        else return true;
       }
     },
     einreichen() {
@@ -163,7 +174,9 @@ export default {
                 "T" +
                 this.escorts.output[i].endTime
             ).toISOString(),
-            MeetingPoint: this.returnString(this.escorts.output[i].meetingpoint),
+            MeetingPoint: this.returnString(
+              this.escorts.output[i].meetingpoint
+            ),
             Name: this.returnString(this.escorts.output[i].name),
             Role: this.returnValue(this.escorts.output[i].role),
             Group: this.returnValue(this.escorts.output[i].selected),
@@ -176,8 +189,16 @@ export default {
           otherteachers.splice(i, 1);
           var bonus1;
           var bonus2;
-          if(this.escorts.output[i].bonus_meilen[0] === "0" || this.escorts.output[i].bonus_meilen[1] === "0") bonus1 = true;
-          if(this.escorts.output[i].bonus_meilen[0] === "1" || this.escorts.output[i].bonus_meilen[1] === "1") bonus2 = true;
+          if (
+            this.escorts.output[i].bonus_meilen[0] === "0" ||
+            this.escorts.output[i].bonus_meilen[1] === "0"
+          )
+            bonus1 = true;
+          if (
+            this.escorts.output[i].bonus_meilen[0] === "1" ||
+            this.escorts.output[i].bonus_meilen[1] === "1"
+          )
+            bonus2 = true;
           business.push({
             ID: i,
             Staffnr: this.returnValue(this.escorts.output[i].personalnummer),
@@ -200,18 +221,27 @@ export default {
             TripGoal: this.returnString(this.escorts.ziel),
             TravelPurpose: this.returnString(this.escorts.output[i].reason1),
             TravelMode: this.returnValue(this.escorts.output[i].transport),
-            StartingPoint: this.returnValue(this.escorts.output[i].ausgangspunkt),
+            StartingPoint: this.returnValue(
+              this.escorts.output[i].ausgangspunkt
+            ),
             EndPoint: this.returnValue(this.escorts.output[i].endpunkt),
             Reasoning: this.returnString(this.escorts.output[i].reason),
             OtherParticipants: otherteachers,
             BonusMileConfirmation1: bonus1,
             BonusMileConfirmation2: bonus2,
-            TravelCostsPayedBySomeone: this.returnBoolean(this.escorts.output[i].reisekosten),
-            StayingCostsPayedBySomeone: this.returnBoolean(this.escorts.output[i]
-              .aufenthaltskosten),
+            TravelCostsPayedBySomeone: this.returnBoolean(
+              this.escorts.output[i].reisekosten
+            ),
+            StayingCostsPayedBySomeone: this.returnBoolean(
+              this.escorts.output[i].aufenthaltskosten
+            ),
             PayedByWhom: this.returnString(this.escorts.output[i].von),
-            OtherCosts: this.returnValue(this.escorts.output[i].sonstige_kosten),
-            EstimatedCosts: this.returnValue(this.escorts.output[i].geschaetzte_kosten)
+            OtherCosts: this.returnValue(
+              this.escorts.output[i].sonstige_kosten
+            ),
+            EstimatedCosts: this.returnValue(
+              this.escorts.output[i].geschaetzte_kosten
+            )
           });
         }
         var data = {
@@ -230,23 +260,24 @@ export default {
           DestinationAddress: this.returnString(this.escorts.ziel),
           SchoolEventDetails: {
             Classes: this.escorts.class,
-            AmountMaleStudent: this.returnValue(this.escorts.count_student_male),
-            AmountFemaleStudent: this.returnValue(this.escorts.count_student_female),
+            AmountMaleStudent: this.returnValue(
+              this.escorts.count_student_male
+            ),
+            AmountFemaleStudent: this.returnValue(
+              this.escorts.count_student_female
+            ),
             DurationInDays: this.returnValue(this.escorts.exkursLength),
             Teachers: teachers
           },
           BusinessTripApplications: business
-
-          //leader: this.user,
-          //escorts: this.escorts.teacher,
         };
-        //Anpassen
         console.log(data);
-        /*axios.post(this.url + "/createExkurs", token, data).then((response) => {
-          response.toString();
-        })*/
-        //Zeugs an Michi schicken und so formatieren, dass Michi was damit anfangen kann
-        //this.changeComponent("Index");
+        axios
+          .post(this.url + "/createExkurs", this.token, data)
+          .then(response => {
+            response.toString();
+            this.changeComponent("Index");
+          });
       }
     },
     changeStartDate(index, newStartDate) {
@@ -287,7 +318,7 @@ export default {
     }
   },
   mounted() {
-    for(let i = 0;i<this.escorts.output.length;i++) {
+    for (let i = 0; i < this.escorts.output.length; i++) {
       this.escorts.output[i].personalnummer = null;
       this.escorts.output[i].transport = null;
       this.escorts.output[i].ausgangspunkt = null;

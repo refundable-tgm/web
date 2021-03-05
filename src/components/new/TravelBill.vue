@@ -12,7 +12,7 @@
           label-for="zud"
           id="zu"
         >
-          <b-form-checkbox-group id="zud" v-model="selected" stacked>
+          <b-form-checkbox-group id="zud" v-model="data.selected" stacked>
             <b-form-checkbox value="a1"
               >Amtl. Buisnesskarte erhalten</b-form-checkbox
             >
@@ -61,7 +61,7 @@
           description="Geben Sie die Anzahl der gefahrenen km mit dem eigenen PKW an"
           label="Eigener PKW km"
           label-for="km-pkw"
-          v-if="selected.includes('a5')"
+          v-if="data.selected.includes('a5')"
         >
           <b-input-group>
             <b-input-group-text id="km-addon-1" slot="append"
@@ -79,7 +79,7 @@
           description="Geben Sie die Anzahl der Mitfahrer an"
           label="Mitfahrer Anzahl"
           label-for="mit-num"
-          v-if="selected.includes('a6')"
+          v-if="data.selected.includes('a6')"
         >
           <b-input-group>
             <b-input-group-text id="mitfahrer-addon-1" slot="append"
@@ -88,21 +88,23 @@
             <b-form-input
               id="mit-num"
               type="number"
-              v-model="anzahl"
+              v-model="data.anzahl"
               v-on:change="createMitfahrer"
             >
             </b-form-input>
           </b-input-group>
         </b-form-group>
 
-        <div v-for="fahr in mitfahrer" v-bind:key="fahr.index">
+        <div v-for="fahr in data.mitfahrer" v-bind:key="fahr.index">
           <b-form-group
             id="mit-namg-x"
             label-cols-sm="4"
             label-cols-lg="3"
             content-cols-sm
             content-cols-lg="7"
-            :description="'Geben Sie den Namen des '+fahr.index+'. Mitfahrers an'"
+            :description="
+              'Geben Sie den Namen des ' + fahr.index + '. Mitfahrers an'
+            "
             :label="'Mitfahrer ' + fahr.index + ' Name'"
             label-for="mit-nam-x"
           >
@@ -119,7 +121,7 @@
           description="Tagesgebür gemäß §17 zu kürzen um (Anzahl)"
           label="Zu kürzende Tagesgebühr"
           label-for="tag-kuerz"
-          v-if="selected.includes('a11')"
+          v-if="data.selected.includes('a11')"
         >
           <b-form-input id="tag-kuerz" type="number"> </b-form-input>
         </b-form-group>
@@ -208,30 +210,61 @@
 
           <template #cell(start)="data">
             <b-form-timepicker
-              locale="de"
-              placeholder="Zeit auswählen"
-            ></b-form-timepicker>
-            {{ data.item.start }}
+                  id="begin"
+                  locale="de"
+                  placeholder="Zeit auswählen"
+                  v-model="data.item.start"
+                ></b-form-timepicker>
           </template>
 
           <template #cell(end)="data">
-            {{ data.item.end }}
+            <b-form-timepicker
+                  id="end"
+                  locale="de"
+                  placeholder="Zeit auswählen"
+                  v-model="data.item.end"
+                ></b-form-timepicker>
           </template>
 
           <template #cell(kind)="data">
             {{ data.item.kind }}
           </template>
           <template #cell(km)="data">
-            {{ data.item.km }}
+            <b-form-input
+              :id="'0'"
+              v-model="data.item.km"
+              type="number"
+            >
+            </b-form-input>
+          </template>
+          <template #cell(travelcosts)="data">
+            <b-form-input
+              :id="'0'"
+              v-model="data.item.travelcosts"
+              v-on:change="calcSum(data.item)"
+            >
+            </b-form-input>
           </template>
           <template #cell(daycharge)="data">
-            {{ data.item.daycharge }}
+            <b-form-input
+              :id="'1'"
+              v-model="data.item.daycharge"
+            >
+            </b-form-input>
           </template>
           <template #cell(sleepcharge)="data">
-            {{ data.item.sleepcharge }}
+            <b-form-input
+              :id="'2'"
+              v-model="data.item.sleepcharge"
+            >
+            </b-form-input>
           </template>
           <template #cell(othercosts)="data">
-            {{ data.item.othercosts }}
+            <b-form-input
+              :id="'3'"
+              v-model="data.item.othercosts"
+            >
+            </b-form-input>
           </template>
         </b-table>
       </b-col>
@@ -241,10 +274,12 @@
 
 <script>
 export default {
+  props: ["start", "end"],
   data() {
     return {
       fields: [
         "index",
+        { key: "num", label: "Laufnummer"},
         { key: "date", label: "Tag" },
         { key: "start", label: "Beginn" },
         { key: "end", label: "Ende" },
@@ -253,56 +288,77 @@ export default {
         { key: "travelcosts", label: "Reisekosten" },
         { key: "daycharge", label: "Tagesgebühr" },
         { key: "sleepcharge", label: "Nächtigungsgebühr" },
-        { key: "othercosts", label: "Sonstige Nebenkosten" }
+        { key: "othercosts", label: "Sonstige Nebenkosten" },
+        { key: "sum", label: "Summe"}
       ],
       items: [
-        {
-          date: "17.10.",
-          begin: "8:00",
-          end: "18:00",
-          kind: "Tagesgebühr",
-          km: "",
-          travelcosts: "20,20",
-          daycharge: "13,20",
-          sleepcharge: "",
-          othercosts: ""
-        }
       ],
-      selected: [],
-      anzahl: null,
-      mitfahrer: []
+      data: {
+        selected: [],
+        anzahl: null,
+        mitfahrer: []
+      }
     };
   },
   methods: {
+    update() {
+      this.$emit("update", this.index, this.data);
+    },
     output() {
-      console.log("Output!");
-      console.log(this.selected);
+      console.log(this.items)
+    },
+    calcSum(item) {
+      item.sum = (Number(item.travelcosts) + Number(item.daycharge) + Number(item.sleepcharge) + Number(item.othercosts));
     },
     createMitfahrer() {
-      if (this.mitfahrer.length === 0) {
-        for (let i = 0; i < Number(this.anzahl); i++) {
-          this.mitfahrer.push({
+      if (this.data.mitfahrer.length === 0) {
+        for (let i = 0; i < Number(this.data.anzahl); i++) {
+          this.data.mitfahrer.push({
             name: "",
-            index: i+1
+            index: i + 1
           });
         }
       } else {
-        if (this.mitfahrer.length >= Number(this.anzahl)) {
-          this.mitfahrer.splice(
-            this.anzahl,
-            this.mitfahrer.length - Number(this.anzahl)
+        if (this.data.mitfahrer.length >= Number(this.data.anzahl)) {
+          this.data.mitfahrer.splice(
+            this.data.anzahl,
+            this.data.mitfahrer.length - Number(this.data.anzahl)
           );
         } else {
-          var tmp = this.mitfahrer[this.mitfahrer.length-1];
-          var length = Number(this.anzahl)-tmp.index;
-          for(let i = 0;i<length;i++) {
-            this.mitfahrer.push({
+          var tmp = this.data.mitfahrer[this.data.mitfahrer.length - 1];
+          var length = Number(this.data.anzahl) - tmp.index;
+          for (let i = 0; i < length; i++) {
+            this.data.mitfahrer.push({
               name: "",
-              index: tmp.index+i+1
-            })
+              index: tmp.index + i + 1
+            });
           }
         }
       }
+    },
+    calculateLength() {
+      let diff = new Date(this.end).getTime() - new Date(this.start).getTime();
+      let days = diff / (1000 * 3600 * 24);
+      return Math.ceil(days);
+    }
+  },
+  mounted() {
+    for(let i = 0;i<=this.calculateLength();i++) {
+      var tmp = new Date(this.start);
+      tmp.setDate(tmp.getDate()+i);
+      this.items.push({
+          index: i,
+          date: tmp.getUTCDate() + "." + (tmp.getUTCMonth()+1) + "." + tmp.getUTCFullYear(),
+          start: "",
+          end: "",
+          kind: "Tagesgebühr",
+          km: "",
+          travelcosts: "",
+          daycharge: "",
+          sleepcharge: "",
+          othercosts: "",
+          sum: ""
+        })
     }
   }
 };

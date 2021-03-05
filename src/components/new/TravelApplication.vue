@@ -3,7 +3,6 @@
     <b-row align-h="center">
       <b-col cols="12">
         <b-form-group
-          c
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
@@ -287,13 +286,13 @@ export default {
       data: {
         personalnummer: null,
         transport: [],
-        ausgangspunkt: "",
-        endpunkt: "",
+        ausgangspunkt: 1,
+        endpunkt: 1,
         reason1: "",
         reason: "",
         bonus_meilen: [],
-        reisekosten: null,
-        aufenthaltskosten: null,
+        reisekosten: false,
+        aufenthaltskosten: false,
         von: "",
         sonstige_kosten: null,
         geschaetzte_kosten: null

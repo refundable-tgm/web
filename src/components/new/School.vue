@@ -311,7 +311,6 @@
   </b-container>
 </template>
 <script>
-import axios from "axios";
 export default {
   name: "NewApplication",
   props: ["apikey"],
@@ -365,26 +364,6 @@ export default {
           if (this.Ziel === null) this.Ziel = false;
         }
       }
-    },
-    calculateDistance() {
-      var origin = "Washington,DC";
-      var destination = "New+York+City,NY";
-      axios
-        .get(
-          "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" +
-            origin +
-            "&destinations=" +
-            destination +
-            "&key=" +
-            this.key
-        )
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch( err => {
-          console.log(err);
-          console.log(err.response.data.error);
-        });
     },
     callback() {
       "x".toString();
@@ -485,21 +464,6 @@ export default {
   },
   data() {
     return {
-      items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        {
-          text: "Antrag Übersicht",
-          //href: "#",
-          onclick: this.newapp
-        },
-        {
-          text: "Schulveranstaltung - Allg. Infos",
-          active: true
-        }
-      ],
       data: {
         description: "",
         teacher: [],
