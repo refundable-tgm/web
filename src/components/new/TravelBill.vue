@@ -212,7 +212,7 @@
             <b-form-timepicker
                   id="begin"
                   locale="de"
-                  placeholder="Zeit auswählen"
+                  placeholder="Zeit"
                   v-model="data.item.start"
                 ></b-form-timepicker>
           </template>
@@ -221,7 +221,7 @@
             <b-form-timepicker
                   id="end"
                   locale="de"
-                  placeholder="Zeit auswählen"
+                  placeholder="Zeit"
                   v-model="data.item.end"
                 ></b-form-timepicker>
           </template>
