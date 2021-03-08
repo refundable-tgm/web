@@ -244,15 +244,27 @@
             </b-form-input>
           </template>
           <template #cell(daycharge)="data">
-            <b-form-input :id="'1'" v-model="data.item.daycharge">
+            <b-form-input
+              :id="'1'"
+              v-model="data.item.daycharge"
+              v-on:change="calcSum(data.item)"
+            >
             </b-form-input>
           </template>
           <template #cell(sleepcharge)="data">
-            <b-form-input :id="'2'" v-model="data.item.sleepcharge">
+            <b-form-input
+              :id="'2'"
+              v-model="data.item.sleepcharge"
+              v-on:change="calcSum(data.item)"
+            >
             </b-form-input>
           </template>
           <template #cell(othercosts)="data">
-            <b-form-input :id="'3'" v-model="data.item.othercosts">
+            <b-form-input
+              :id="'3'"
+              v-model="data.item.othercosts"
+              v-on:change="calcSum(data.item)"
+            >
             </b-form-input>
           </template>
         </b-table>
@@ -270,8 +282,8 @@ export default {
         "index",
         { key: "num", label: "Laufnummer" },
         { key: "date", label: "Tag" },
-        { key: "start", label: "Beginn", tdClass: "zeit" },
-        { key: "end", label: "Ende", class: "zeit" },
+        { key: "start", label: "Beginn" },
+        { key: "end", label: "Ende" },
         { key: "kind", label: "Art des Gebührenanspruches" },
         { key: "km", label: "Gesamtkilometer" },
         { key: "travelcosts", label: "Reisekosten" },
@@ -284,7 +296,12 @@ export default {
       data: {
         selected: [],
         anzahl: null,
-        mitfahrer: []
+        mitfahrer: [],
+        SumTravelCosts: 0,
+        SumDailyCharges: 0,
+        SumNightlyCharges: 0,
+        SumAdditionalCosts: 0,
+        SumOfSums: 0
       }
     };
   },
@@ -301,6 +318,39 @@ export default {
         Number(item.daycharge) +
         Number(item.sleepcharge) +
         Number(item.othercosts);
+      this.calcRows();
+      console.log(this.items);
+      console.log(this.data);
+    },
+    calcRows() {
+      var stc = 0;
+      var sdc = 0;
+      var snc = 0;
+      var sac = 0;
+      var sos = 0;
+      for (let i = 0; i < this.items.length; i++) {
+        if (!isNaN(Number(this.items[i].travelcosts))) {
+          stc += Number(this.items[i].travelcosts);
+        }
+        if (!isNaN(Number(this.items[i].daycharge))) {
+          sdc += Number(this.items[i].daycharge);
+        }
+        if (!isNaN(Number(this.items[i].sleepcharge))) {
+          snc += Number(this.items[i].sleepcharge);
+        }
+        if (!isNaN(Number(this.items[i].othercosts))) {
+          sac += Number(this.items[i].othercosts);
+        }
+        if (!isNaN(Number(this.items[i].sum))) {
+          sos += Number(this.items[i].sum);
+        }
+        console.log(stc + "|" + sdc + "|" + snc + "|" + sac + "|" + sos);
+      }
+      this.data.SumTravelCosts = Number(stc);
+      this.data.SumDailyCharges = Number(sdc);
+      this.data.SumNightlyCharges = Number(snc);
+      this.data.SumAdditionalCosts = Number(sac);
+      this.data.SumOfSums = Number(sos);
     },
     createMitfahrer() {
       if (this.data.mitfahrer.length === 0) {
@@ -360,8 +410,3 @@ export default {
   }
 };
 </script>
-<style>
-.zeit {
-  min-width: 100px;
-}
-</style>
