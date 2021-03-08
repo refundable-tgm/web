@@ -119,8 +119,7 @@ export default {
       }
     },
     updateBill(index, data) {
-      index.toString();
-      data.toString();  
+      this.escorts.output[index].invoices = data;
     },
     updateTravel(index, data) {
       this.escorts.output[index].personalnummer = data.personalnummer;
@@ -160,9 +159,86 @@ export default {
     },
     einreichen() {
       if (this.checkClick()) {
+        var travel = [];
         var teachers = [];
         var business = [];
         for (let i = 0; i < this.escorts.output.length; i++) {
+          var rows = [];
+          for (
+            let j = 0;
+            j < this.escorts.output[i].invoices.items.length;
+            j++
+          ) {
+            rows.push({
+              NR: this.returnValue(
+                this.escorts.output[i].invoices.items[j].index
+              ),
+              Date: this.returnString(
+                this.escorts.output[i].invoices.items[j].date
+              ),
+              Begin: this.returnString(
+                this.escorts.output[i].invoices.items[j].start
+              ),
+              End: this.returnString(
+                this.escorts.output[i].invoices.items[j].end
+              ),
+              Kilometres: this.returnValue(
+                this.escorts.output[i].invoices.items[j].km
+              ),
+              TravelCosts: this.returnValue(
+                this.escorts.output[i].invoices.items[j].travelcosts
+              ),
+              DailyCharges: this.returnValue(
+                this.escorts.output[i].invoices.items[j].daycharge
+              ),
+              NightlyCharges: this.returnValue(
+                this.escorts.output[i].invoices.items[j].sleepcharge
+              ),
+              AdditionalCosts: this.returnValue(
+                this.escorts.output[i].invoices.items[j].othercosts
+              ),
+              Sum: this.returnValue(
+                this.escorts.output[i].invoices.items[j].sum
+              )
+            });
+          }
+          travel.push({
+            ID: i,
+            TripBeginTime: new Date(
+              this.escorts.startDate + "T" + this.escorts.startTime
+            ).toISOString(),
+            TripEndTime: new Date(
+              this.escorts.endDate + "T" + this.escorts.endTime
+            ).toISOString(),
+            Staffnr: this.returnValue(this.escorts.output[i].personalnummer),
+            StartingPoint: this.returnValue(
+              this.escorts.output[i].ausgangspunkt
+            ),
+            EndPoint: this.returnValue(this.escorts.output[i].endpunkt),
+            Breakfasts: this.returnValue(
+              this.escorts.output[i].invoices.breakfast
+            ),
+            Lunches: this.returnValue(this.escorts.output[i].invoices.lunch),
+            Dinners: this.returnValue(this.escorts.output[i].invoices.dinner),
+            Calculation: {
+              Rows: rows,
+              SumTravelCosts: this.returnValue(
+                this.escorts.output[i].invoices.SumTravelCosts
+              ),
+              SumDailyCharges: this.returnValue(
+                this.escorts.output[i].invoices.SumDailyCharges
+              ),
+              SumNightlyCharges: this.returnValue(
+                this.escorts.output[i].invoices.SumNightlyCharges
+              ),
+              SumAdditionalCosts: this.returnValue(
+                this.escorts.output[i].invoices.SumAdditionalCosts
+              ),
+              SumOfSums: this.returnValue(
+                this.escorts.output[i].invoices.SumOfSums
+              )
+            }
+          });
           teachers.push({
             AttendanceFrom: new Date(
               this.escorts.output[i].startDate +
@@ -269,7 +345,8 @@ export default {
             DurationInDays: this.returnValue(this.escorts.exkursLength),
             Teachers: teachers
           },
-          BusinessTripApplications: business
+          BusinessTripApplications: business,
+          TravelInvoices: travel
         };
         console.log(data);
         axios
@@ -297,11 +374,9 @@ export default {
     },
     changeStartAdresse(index, newStartAdresse) {
       this.escorts.output[index].startadresse = newStartAdresse;
-      console.log("Update");
     },
     changeMeetingPoint(index, newMeetingPoint) {
       this.escorts.output[index].meetingpoint = newMeetingPoint;
-      console.log("Update2");
     },
     validateTime(newValidTime) {
       this.validTime = newValidTime;

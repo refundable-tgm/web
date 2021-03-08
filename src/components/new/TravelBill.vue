@@ -67,7 +67,8 @@
             <b-input-group-text id="km-addon-1" slot="append"
               ><span>km</span></b-input-group-text
             >
-            <b-form-input id="km-pkw" type="number"> </b-form-input>
+            <b-form-input v-model="km" id="km-pkw" type="number">
+            </b-form-input>
           </b-input-group>
         </b-form-group>
         <b-form-group
@@ -123,7 +124,8 @@
           label-for="tag-kuerz"
           v-if="data.selected.includes('a11')"
         >
-          <b-form-input id="tag-kuerz" type="number"> </b-form-input>
+          <b-form-input v-model="short" id="tag-kuerz" type="number">
+          </b-form-input>
         </b-form-group>
 
         <b-form-group
@@ -140,7 +142,8 @@
             <b-input-group-text id="stk-addon-1" slot="append"
               ><span>Stück</span></b-input-group-text
             >
-            <b-form-input id="frueh" type="number"> </b-form-input>
+            <b-form-input v-model="data.breakfast" id="frueh" type="number">
+            </b-form-input>
           </b-input-group>
         </b-form-group>
 
@@ -158,7 +161,8 @@
             <b-input-group-text id="stk-addon-2" slot="append"
               ><span>Stück</span></b-input-group-text
             >
-            <b-form-input id="mittag" type="number"> </b-form-input>
+            <b-form-input v-model="data.lunch" id="mittag" type="number">
+            </b-form-input>
           </b-input-group>
         </b-form-group>
 
@@ -176,7 +180,8 @@
             <b-input-group-text id="stk-addon-3" slot="append"
               ><span>Stück</span></b-input-group-text
             >
-            <b-form-input id="abend" type="number"> </b-form-input>
+            <b-form-input v-model="data.dinner" id="abend" type="number">
+            </b-form-input>
           </b-input-group>
         </b-form-group>
         <b-form-group
@@ -189,7 +194,12 @@
           label="Belege"
           label-for="bel"
         >
-          <b-form-file multiple id="bel">
+          <b-form-file
+            multiple
+            id="bel"
+            v-model="invoices"
+            v-on:input="convert"
+          >
             <template slot="file-name" slot-scope="{ names }">
               <b-badge variant="dark">{{ names[0] }}</b-badge>
               <b-badge v-if="names.length > 1" variant="dark" class="ml-1">
@@ -199,7 +209,7 @@
           </b-form-file>
         </b-form-group>
 
-        <b-table striped :items="items" stacked="md" show-empty small>
+        <b-table striped :items="data.items" stacked="md" show-empty small>
           <template #cell(index)="data">
             {{ data.index + 1 }}
           </template>
@@ -215,6 +225,7 @@
               locale="de"
               placeholder="Zeit"
               v-model="data.item.start"
+              v-on="update()"
             ></b-form-timepicker>
           </template>
 
@@ -225,6 +236,7 @@
               locale="de"
               placeholder="Zeit"
               v-model="data.item.end"
+              v-on="update()"
             ></b-form-timepicker>
           </template>
 
@@ -232,14 +244,22 @@
             {{ data.item.kind }}
           </template>
           <template #cell(km)="data">
-            <b-form-input :id="'0'" v-model="data.item.km" type="number">
+            <b-form-input
+              :id="'0'"
+              v-model="data.item.km"
+              v-on="update()"
+              type="number"
+            >
             </b-form-input>
           </template>
           <template #cell(travelcosts)="data">
             <b-form-input
               :id="'0'"
               v-model="data.item.travelcosts"
-              v-on:change="calcSum(data.item)"
+              v-on:change="
+                calcSum(data.item);
+                update();
+              "
             >
             </b-form-input>
           </template>
@@ -247,7 +267,10 @@
             <b-form-input
               :id="'1'"
               v-model="data.item.daycharge"
-              v-on:change="calcSum(data.item)"
+              v-on:change="
+                calcSum(data.item);
+                update();
+              "
             >
             </b-form-input>
           </template>
@@ -255,7 +278,10 @@
             <b-form-input
               :id="'2'"
               v-model="data.item.sleepcharge"
-              v-on:change="calcSum(data.item)"
+              v-on:change="
+                calcSum(data.item);
+                update();
+              "
             >
             </b-form-input>
           </template>
@@ -263,7 +289,10 @@
             <b-form-input
               :id="'3'"
               v-model="data.item.othercosts"
-              v-on:change="calcSum(data.item)"
+              v-on:change="
+                calcSum(data.item);
+                update();
+              "
             >
             </b-form-input>
           </template>
@@ -275,7 +304,7 @@
 
 <script>
 export default {
-  props: ["start", "end"],
+  props: ["start", "end", "index"],
   data() {
     return {
       fields: [
@@ -292,11 +321,18 @@ export default {
         { key: "othercosts", label: "Sonstige Nebenkosten" },
         { key: "sum", label: "Summe" }
       ],
-      items: [],
+      invoices: [],
       data: {
         selected: [],
+        km: null,
+        breakfast: null,
+        lunch: null,
+        dinner: null,
+        short: null,
         anzahl: null,
         mitfahrer: [],
+        beleg: [],
+        items: [],
         SumTravelCosts: 0,
         SumDailyCharges: 0,
         SumNightlyCharges: 0,
@@ -309,9 +345,6 @@ export default {
     update() {
       this.$emit("update", this.index, this.data);
     },
-    output() {
-      console.log(this.items);
-    },
     calcSum(item) {
       item.sum =
         Number(item.travelcosts) +
@@ -319,8 +352,20 @@ export default {
         Number(item.sleepcharge) +
         Number(item.othercosts);
       this.calcRows();
-      console.log(this.items);
-      console.log(this.data);
+    },
+    async convert() {
+      var imgs = [];
+      const toBase64 = file =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = error => reject(error);
+        });
+      for (let i = 0; i < this.invoices.length; i++) {
+        imgs[i] = await toBase64(this.invoices[i]);
+      }
+      this.data.beleg = imgs;
     },
     calcRows() {
       var stc = 0;
@@ -328,23 +373,22 @@ export default {
       var snc = 0;
       var sac = 0;
       var sos = 0;
-      for (let i = 0; i < this.items.length; i++) {
-        if (!isNaN(Number(this.items[i].travelcosts))) {
-          stc += Number(this.items[i].travelcosts);
+      for (let i = 0; i < this.data.items.length; i++) {
+        if (!isNaN(Number(this.data.items[i].travelcosts))) {
+          stc += Number(this.data.items[i].travelcosts);
         }
-        if (!isNaN(Number(this.items[i].daycharge))) {
-          sdc += Number(this.items[i].daycharge);
+        if (!isNaN(Number(this.data.items[i].daycharge))) {
+          sdc += Number(this.data.items[i].daycharge);
         }
-        if (!isNaN(Number(this.items[i].sleepcharge))) {
-          snc += Number(this.items[i].sleepcharge);
+        if (!isNaN(Number(this.data.items[i].sleepcharge))) {
+          snc += Number(this.data.items[i].sleepcharge);
         }
-        if (!isNaN(Number(this.items[i].othercosts))) {
-          sac += Number(this.items[i].othercosts);
+        if (!isNaN(Number(this.data.items[i].othercosts))) {
+          sac += Number(this.data.items[i].othercosts);
         }
-        if (!isNaN(Number(this.items[i].sum))) {
-          sos += Number(this.items[i].sum);
+        if (!isNaN(Number(this.data.items[i].sum))) {
+          sos += Number(this.data.items[i].sum);
         }
-        console.log(stc + "|" + sdc + "|" + snc + "|" + sac + "|" + sos);
       }
       this.data.SumTravelCosts = Number(stc);
       this.data.SumDailyCharges = Number(sdc);
@@ -388,7 +432,7 @@ export default {
     for (let i = 0; i <= this.calculateLength(); i++) {
       var tmp = new Date(this.start);
       tmp.setDate(tmp.getDate() + i);
-      this.items.push({
+      this.data.items.push({
         index: i,
         date:
           tmp.getUTCDate() +

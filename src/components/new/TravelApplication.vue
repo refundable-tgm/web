@@ -39,22 +39,18 @@
             :name="index + 'tp'"
             stacked
           >
-            <b-form-radio value=0
-              >Amtl. Buisnesskarte 2. Kl.</b-form-radio
-            >
-            <b-form-radio value=3>Beförderungszuschuss</b-form-radio>
-            <b-form-radio value=6
-              >Bahn 2. Kl. - gegen Beleg</b-form-radio
-            >
-            <b-form-radio value=8>Schlafwagen</b-form-radio>
-            <b-form-radio value=1>MitfahrerInnen</b-form-radio>
-            <b-form-radio value=4>Flug</b-form-radio>
-            <b-form-radio value=5>Billigflug</b-form-radio>
-            <b-form-radio value=9>Bus - gegen Beleg</b-form-radio>
-            <b-form-radio value=2
+            <b-form-radio value="0">Amtl. Buisnesskarte 2. Kl.</b-form-radio>
+            <b-form-radio value="3">Beförderungszuschuss</b-form-radio>
+            <b-form-radio value="6">Bahn 2. Kl. - gegen Beleg</b-form-radio>
+            <b-form-radio value="8">Schlafwagen</b-form-radio>
+            <b-form-radio value="1">MitfahrerInnen</b-form-radio>
+            <b-form-radio value="4">Flug</b-form-radio>
+            <b-form-radio value="5">Billigflug</b-form-radio>
+            <b-form-radio value="9">Bus - gegen Beleg</b-form-radio>
+            <b-form-radio value="2"
               >Amtl. Buisnesskarte / Bahnverrechnung 1. Kl.</b-form-radio
             >
-            <b-form-radio value=7>Eigener PKW</b-form-radio>
+            <b-form-radio value="7">Eigener PKW</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
         <b-form-group
@@ -92,8 +88,8 @@
             v-model="data.ausgangspunkt"
             :name="index + 'ap'"
           >
-            <b-form-radio value=1>Dienststelle</b-form-radio>
-            <b-form-radio value=0>Wohnung*</b-form-radio>
+            <b-form-radio value="1">Dienststelle</b-form-radio>
+            <b-form-radio value="0">Wohnung*</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
         <b-form-group
@@ -112,8 +108,8 @@
             v-model="data.endpunkt"
             :name="index + 'ep'"
           >
-            <b-form-radio value=1>Dienstselle</b-form-radio>
-            <b-form-radio value=0>Wohnung*</b-form-radio>
+            <b-form-radio value="1">Dienstselle</b-form-radio>
+            <b-form-radio value="0">Wohnung*</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
         <b-form-group
@@ -152,12 +148,12 @@
             :name="index + 'bonus'"
             stacked
           >
-            <b-form-checkbox value=0
+            <b-form-checkbox value="0"
               >Ich bestätige, dass ich anlässlich von Dienstreisen im Rahmen
               personenbezogener Bonusprogramme erworbene Prämien nicht privat in
               Anspruch nehme</b-form-checkbox
             >
-            <b-form-checkbox value=1
+            <b-form-checkbox value="1"
               >Für die Dienstreise verwende ich auf meinem Meilenkonto
               gutgeschriebene, dienstlich erworbene Meilen</b-form-checkbox
             >
@@ -179,8 +175,8 @@
             v-model="data.reisekosten"
             :name="index + 'reis'"
           >
-            <b-form-radio value=false>Nein</b-form-radio>
-            <b-form-radio value=true>Ja</b-form-radio>
+            <b-form-radio value="false">Nein</b-form-radio>
+            <b-form-radio value="true">Ja</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
         <b-form-group
@@ -199,12 +195,14 @@
             v-on:change="update"
             :name="index + 'auf'"
           >
-            <b-form-radio value=false>Nein</b-form-radio>
-            <b-form-radio value=true>Ja</b-form-radio>
+            <b-form-radio value="false">Nein</b-form-radio>
+            <b-form-radio value="true">Ja</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
         <b-form-group
-          v-if="data.aufenthaltskosten === 'true' || data.reisekosten === 'true'"
+          v-if="
+            data.aufenthaltskosten === 'true' || data.reisekosten === 'true'
+          "
           :id="index + 'vonaufk'"
           label-cols-sm="4"
           label-cols-lg="3"
