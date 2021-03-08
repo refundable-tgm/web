@@ -210,31 +210,29 @@
 
           <template #cell(start)="data">
             <b-form-timepicker
-                  id="begin"
-                  locale="de"
-                  placeholder="Zeit"
-                  v-model="data.item.start"
-                ></b-form-timepicker>
+              style="min-width: 100px;"
+              id="begin"
+              locale="de"
+              placeholder="Zeit"
+              v-model="data.item.start"
+            ></b-form-timepicker>
           </template>
 
           <template #cell(end)="data">
             <b-form-timepicker
-                  id="end"
-                  locale="de"
-                  placeholder="Zeit"
-                  v-model="data.item.end"
-                ></b-form-timepicker>
+              style="min-width: 100px;"
+              id="end"
+              locale="de"
+              placeholder="Zeit"
+              v-model="data.item.end"
+            ></b-form-timepicker>
           </template>
 
           <template #cell(kind)="data">
             {{ data.item.kind }}
           </template>
           <template #cell(km)="data">
-            <b-form-input
-              :id="'0'"
-              v-model="data.item.km"
-              type="number"
-            >
+            <b-form-input :id="'0'" v-model="data.item.km" type="number">
             </b-form-input>
           </template>
           <template #cell(travelcosts)="data">
@@ -246,24 +244,15 @@
             </b-form-input>
           </template>
           <template #cell(daycharge)="data">
-            <b-form-input
-              :id="'1'"
-              v-model="data.item.daycharge"
-            >
+            <b-form-input :id="'1'" v-model="data.item.daycharge">
             </b-form-input>
           </template>
           <template #cell(sleepcharge)="data">
-            <b-form-input
-              :id="'2'"
-              v-model="data.item.sleepcharge"
-            >
+            <b-form-input :id="'2'" v-model="data.item.sleepcharge">
             </b-form-input>
           </template>
           <template #cell(othercosts)="data">
-            <b-form-input
-              :id="'3'"
-              v-model="data.item.othercosts"
-            >
+            <b-form-input :id="'3'" v-model="data.item.othercosts">
             </b-form-input>
           </template>
         </b-table>
@@ -279,20 +268,19 @@ export default {
     return {
       fields: [
         "index",
-        { key: "num", label: "Laufnummer"},
+        { key: "num", label: "Laufnummer" },
         { key: "date", label: "Tag" },
-        { key: "start", label: "Beginn" },
-        { key: "end", label: "Ende" },
+        { key: "start", label: "Beginn", tdClass: "zeit" },
+        { key: "end", label: "Ende", class: "zeit" },
         { key: "kind", label: "Art des Gebührenanspruches" },
         { key: "km", label: "Gesamtkilometer" },
         { key: "travelcosts", label: "Reisekosten" },
         { key: "daycharge", label: "Tagesgebühr" },
         { key: "sleepcharge", label: "Nächtigungsgebühr" },
         { key: "othercosts", label: "Sonstige Nebenkosten" },
-        { key: "sum", label: "Summe"}
+        { key: "sum", label: "Summe" }
       ],
-      items: [
-      ],
+      items: [],
       data: {
         selected: [],
         anzahl: null,
@@ -305,10 +293,14 @@ export default {
       this.$emit("update", this.index, this.data);
     },
     output() {
-      console.log(this.items)
+      console.log(this.items);
     },
     calcSum(item) {
-      item.sum = (Number(item.travelcosts) + Number(item.daycharge) + Number(item.sleepcharge) + Number(item.othercosts));
+      item.sum =
+        Number(item.travelcosts) +
+        Number(item.daycharge) +
+        Number(item.sleepcharge) +
+        Number(item.othercosts);
     },
     createMitfahrer() {
       if (this.data.mitfahrer.length === 0) {
@@ -343,23 +335,33 @@ export default {
     }
   },
   mounted() {
-    for(let i = 0;i<=this.calculateLength();i++) {
+    for (let i = 0; i <= this.calculateLength(); i++) {
       var tmp = new Date(this.start);
-      tmp.setDate(tmp.getDate()+i);
+      tmp.setDate(tmp.getDate() + i);
       this.items.push({
-          index: i,
-          date: tmp.getUTCDate() + "." + (tmp.getUTCMonth()+1) + "." + tmp.getUTCFullYear(),
-          start: "",
-          end: "",
-          kind: "Tagesgebühr",
-          km: "",
-          travelcosts: "",
-          daycharge: "",
-          sleepcharge: "",
-          othercosts: "",
-          sum: ""
-        })
+        index: i,
+        date:
+          tmp.getUTCDate() +
+          "." +
+          (tmp.getUTCMonth() + 1) +
+          "." +
+          tmp.getUTCFullYear(),
+        start: "",
+        end: "",
+        kind: "Tagesgebühr",
+        km: "",
+        travelcosts: "",
+        daycharge: "",
+        sleepcharge: "",
+        othercosts: "",
+        sum: ""
+      });
     }
   }
 };
 </script>
+<style>
+.zeit {
+  min-width: 100px;
+}
+</style>
