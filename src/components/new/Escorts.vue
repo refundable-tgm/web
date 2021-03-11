@@ -57,13 +57,6 @@
                   v-bind:index="index"
                   v-on:update="updateTravel"
                 />
-                <TravelBill
-                  v-bind:escort="escort"
-                  v-bind:index="index"
-                  v-on:update="updateBill"
-                  v-bind:start="escorts.output[index].startDate"
-                  v-bind:end="escorts.output[index].endDate"
-                />
               </div>
 
               <center>
@@ -81,15 +74,13 @@
 <script>
 import EscortsComp from "@/components/new/EscortsComp.vue";
 import TravelApplication from "@/components/new/TravelApplication.vue";
-import TravelBill from "@/components/new/TravelBill.vue";
 import axios from "axios";
 
 export default {
   name: "NewApplication",
   components: {
     TravelApplication,
-    EscortsComp,
-    TravelBill
+    EscortsComp
   },
   props: ["escorts", "user", "url", "token"],
   data() {
@@ -117,9 +108,6 @@ export default {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
-    },
-    updateBill(index, data) {
-      this.escorts.output[index].invoices = data;
     },
     updateTravel(index, data) {
       this.escorts.output[index].personalnummer = data.personalnummer;
@@ -159,86 +147,9 @@ export default {
     },
     einreichen() {
       if (this.checkClick()) {
-        var travel = [];
         var teachers = [];
         var business = [];
         for (let i = 0; i < this.escorts.output.length; i++) {
-          var rows = [];
-          for (
-            let j = 0;
-            j < this.escorts.output[i].invoices.items.length;
-            j++
-          ) {
-            rows.push({
-              NR: this.returnValue(
-                this.escorts.output[i].invoices.items[j].index
-              ),
-              Date: this.returnString(
-                this.escorts.output[i].invoices.items[j].date
-              ),
-              Begin: this.returnString(
-                this.escorts.output[i].invoices.items[j].start
-              ),
-              End: this.returnString(
-                this.escorts.output[i].invoices.items[j].end
-              ),
-              Kilometres: this.returnValue(
-                this.escorts.output[i].invoices.items[j].km
-              ),
-              TravelCosts: this.returnValue(
-                this.escorts.output[i].invoices.items[j].travelcosts
-              ),
-              DailyCharges: this.returnValue(
-                this.escorts.output[i].invoices.items[j].daycharge
-              ),
-              NightlyCharges: this.returnValue(
-                this.escorts.output[i].invoices.items[j].sleepcharge
-              ),
-              AdditionalCosts: this.returnValue(
-                this.escorts.output[i].invoices.items[j].othercosts
-              ),
-              Sum: this.returnValue(
-                this.escorts.output[i].invoices.items[j].sum
-              )
-            });
-          }
-          travel.push({
-            ID: i,
-            TripBeginTime: new Date(
-              this.escorts.startDate + "T" + this.escorts.startTime
-            ).toISOString(),
-            TripEndTime: new Date(
-              this.escorts.endDate + "T" + this.escorts.endTime
-            ).toISOString(),
-            Staffnr: this.returnValue(this.escorts.output[i].personalnummer),
-            StartingPoint: this.returnValue(
-              this.escorts.output[i].ausgangspunkt
-            ),
-            EndPoint: this.returnValue(this.escorts.output[i].endpunkt),
-            Breakfasts: this.returnValue(
-              this.escorts.output[i].invoices.breakfast
-            ),
-            Lunches: this.returnValue(this.escorts.output[i].invoices.lunch),
-            Dinners: this.returnValue(this.escorts.output[i].invoices.dinner),
-            Calculation: {
-              Rows: rows,
-              SumTravelCosts: this.returnValue(
-                this.escorts.output[i].invoices.SumTravelCosts
-              ),
-              SumDailyCharges: this.returnValue(
-                this.escorts.output[i].invoices.SumDailyCharges
-              ),
-              SumNightlyCharges: this.returnValue(
-                this.escorts.output[i].invoices.SumNightlyCharges
-              ),
-              SumAdditionalCosts: this.returnValue(
-                this.escorts.output[i].invoices.SumAdditionalCosts
-              ),
-              SumOfSums: this.returnValue(
-                this.escorts.output[i].invoices.SumOfSums
-              )
-            }
-          });
           teachers.push({
             AttendanceFrom: new Date(
               this.escorts.output[i].startDate +
@@ -345,10 +256,8 @@ export default {
             DurationInDays: this.returnValue(this.escorts.exkursLength),
             Teachers: teachers
           },
-          BusinessTripApplications: business,
-          TravelInvoices: travel
+          BusinessTripApplications: business
         };
-        console.log(data);
         axios
           .post(this.url + "/createExkurs", this.token, data)
           .then(response => {

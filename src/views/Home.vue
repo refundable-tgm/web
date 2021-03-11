@@ -135,7 +135,7 @@
 </template>
 
 <script>
-//import axios from "axios";
+import axios from "axios";
 import Index from "@/components/Index.vue";
 import Login from "@/components/Login.vue";
 import NewApplication from "@/components/NewApplication.vue";
@@ -303,15 +303,14 @@ export default {
       this.admin = admin;
     },
     getLeader() {
-      /*axios.get(this.url + "/getTeacher?id=" + this.user, {
+      axios.get(this.url + "/getTeacher?id=" + this.user, {
         params: {
           token: this.token
         }
       }).then((response) => {
         let data = response.data;
         return {longname:data.Longname,short:data.Short}
-      });*/
-      return {longname:'Ryan Foster',short:'rfoster'}
+      });
     },
     loadEscortsData(escortsdata) {
       let leader = this.getLeader();
