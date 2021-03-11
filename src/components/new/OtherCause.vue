@@ -117,7 +117,7 @@
                   Start der Fortbildung muss vor dem Ende der Fortbildung sein!
                 </b-form-invalid-feedback>
               </b-form-group>
-                <b-form-group
+              <b-form-group
                 id="start"
                 label-cols-sm="4"
                 label-cols-lg="3"
@@ -127,15 +127,15 @@
                 label="Startadresse"
                 label-for="sa"
               >
-              <b-form-input
+                <b-form-input
                   id="sa"
                   v-model="start"
                   :state="Start"
                   v-on:input="checkStart"
                 ></b-form-input>
                 <b-form-invalid-feedback id="sa-feedback">
-                Keine Startadresse angegeben!
-              </b-form-invalid-feedback>
+                  Keine Startadresse angegeben!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="end"
@@ -154,8 +154,8 @@
                   v-on:input="checkEnd"
                 ></b-form-input>
                 <b-form-invalid-feedback id="ea-feedback">
-                Keine Zieladresse angegeben!
-              </b-form-invalid-feedback>
+                  Keine Zieladresse angegeben!
+                </b-form-invalid-feedback>
               </b-form-group>
               <b-form-group
                 id="grund"
@@ -262,9 +262,9 @@
                 ></b-form-textarea>
               </b-form-group>
               <TravelApplication
-                  v-bind:escort="escort"
-                  v-bind:index="1"
-                  v-on:update="updateTravel"
+                v-bind:escort="escort"
+                v-bind:index="1"
+                v-on:update="updateTravel"
               />
               <center>
                 <button v-on:click="einreichen()" class="blueish-gradiant">
@@ -279,8 +279,8 @@
   </b-container>
 </template>
 <script>
-import axios from "axios"
-import TravelApplication from "@/components/new/TravelApplication.vue"
+import axios from "axios";
+import TravelApplication from "@/components/new/TravelApplication.vue";
 export default {
   components: {
     TravelApplication
@@ -456,14 +456,16 @@ export default {
       this.teacher.geschaetzte_kosten = data.geschaetzte_kosten;
     },
     getLeader() {
-      axios.get(this.url + "/getTeacher?id=" + this.user, {
-        params: {
-          token: this.token
-        }
-      }).then((response) => {
-        let data = response.data;
-        return {longname:data.Longname,short:data.Short}
-      });
+      axios
+        .get(this.url + "/getTeacher?id=" + this.user, {
+          params: {
+            token: this.token
+          }
+        })
+        .then(response => {
+          let data = response.data;
+          return { longname: data.Longname, short: data.Short };
+        });
     },
     einreichen() {
       if (this.checkClick()) {
@@ -488,21 +490,15 @@ export default {
               this.endDate + "T" + this.endTime
             ).toISOString(),
             ServiceBeginTime: new Date(
-              this.startDate +
-                "T" +
-                this.startTime
+              this.startDate + "T" + this.startTime
             ).toISOString(),
             ServiceEndTime: new Date(
-              this.endDate +
-                "T" +
-                this.endTime
+              this.endDate + "T" + this.endTime
             ).toISOString(),
             TripGoal: this.returnString(this.start),
             TravelPurpose: this.returnString(this.teacher.reason1),
             TravelMode: this.returnValue(this.teacher.transport),
-            StartingPoint: this.returnValue(
-              this.teacher.ausgangspunkt
-            ),
+            StartingPoint: this.returnValue(this.teacher.ausgangspunkt),
             EndPoint: this.returnValue(this.teacher.endpunkt),
             Reasoning: this.returnString(this.teacher.reason),
             OtherParticipants: [],
@@ -515,42 +511,36 @@ export default {
               this.teacher.aufenthaltskosten
             ),
             PayedByWhom: this.returnString(this.teacher.von),
-            OtherCosts: this.returnValue(
-              this.teacher.sonstige_kosten
-            ),
-            EstimatedCosts: this.returnValue(
-              this.teacher.geschaetzte_kosten
-            )
-          }
+            OtherCosts: this.returnValue(this.teacher.sonstige_kosten),
+            EstimatedCosts: this.returnValue(this.teacher.geschaetzte_kosten)
+          };
           var data = {
-          Name: this.returnString(""),
-          Kind: 8,
-          MiscellaneousReason: this.returnString(this.son),
-          Progress: 1,
-          StartTime: new Date(
-            this.startDate + "T" + this.startTime
-          ).toISOString(),
-          EndTime: new Date(
-            this.endDate + "T" + this.endTime
-          ).toISOString(),
-          Notes: this.returnString(this.notes),
-          StartAddress: this.returnString(""),
-          DestinationAddress: this.returnString(""),
-          OtherReasonDetails: {
-            Kind: this.returnValue(this.selected),
+            Name: this.returnString(""),
+            Kind: 8,
             MiscellaneousReason: this.returnString(this.son),
-            ServiceMandateGZ: this.returnValue(this.gz),
-            ServiceMandateTitle: this.returnString(this.title)
-          },
-          BusinessTripApplications: business
-        };
-        
+            Progress: 1,
+            StartTime: new Date(
+              this.startDate + "T" + this.startTime
+            ).toISOString(),
+            EndTime: new Date(this.endDate + "T" + this.endTime).toISOString(),
+            Notes: this.returnString(this.notes),
+            StartAddress: this.returnString(""),
+            DestinationAddress: this.returnString(""),
+            OtherReasonDetails: {
+              Kind: this.returnValue(this.selected),
+              MiscellaneousReason: this.returnString(this.son),
+              ServiceMandateGZ: this.returnValue(this.gz),
+              ServiceMandateTitle: this.returnString(this.title)
+            },
+            BusinessTripApplications: business
+          };
+
           axios
-          .post(this.url + "/createApplication", this.token, data)
-          .then(response => {
-            response.toString();
-            this.changeComponent("Index");
-          });
+            .post(this.url + "/createApplication", this.token, data)
+            .then(response => {
+              response.toString();
+              this.changeComponent("Index");
+            });
         } else {
           this.makeToast();
           if (this.Time === null) this.Time = false;
@@ -594,19 +584,21 @@ export default {
   },
   mounted() {
     let leader = this.getLeader();
-      let output = [{
+    let output = [
+      {
         name: leader.longname,
         shortname: leader.short,
         startDate: this.startDate,
         endDate: this.endDate,
         startTime: this.startTime,
         endTime: this.endTime,
-        selected:"",
+        selected: "",
         startadresse: this.start,
         meetingpoint: this.start,
         role: 0
-      }];
-      this.escort = output;
+      }
+    ];
+    this.escort = output;
   }
 };
 </script>

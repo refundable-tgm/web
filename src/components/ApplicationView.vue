@@ -28,7 +28,7 @@
       style="margin-top:1rem;margin-bottom:3rem"
     >
       <b-col cols="12">
-        <Progress v-bind:progress="progress" />
+        <Progress v-bind:progress="progress" v-bind:kind="kind" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -77,7 +77,7 @@
                 v-bind:readonly="readonly"
                 v-bind:data="sgdata"
                 v-on:update="updateSG"
-                v-if="row.item.title == 'Allgemeine Infos'"
+                v-if="isLeader"
               />
               <SchoolEscorts
                 v-bind:readonly="readonly"
@@ -183,7 +183,7 @@ export default {
     SchoolGeneral,
     Progress
   },
-  props: ["url", "appid", "user"],
+  props: ["url", "appid", "user", "token"],
   data() {
     return {
       items: [
@@ -222,11 +222,10 @@ export default {
       },
       readonly: false,
       title: "",
-      progress: { type: "sl", data: 1, current: 0 },
-      sgdata: {},
-      sedata: {},
-      odata: {},
-      wdata: {}
+      progress: null,
+      kind: null,
+      app: Object,
+      isLeader: null
     };
   },
   computed: {
@@ -247,102 +246,41 @@ export default {
   methods: {
     loadData() {
       axios
-        .get(this.url + "/application/getApplication?id=" + this.appid)
-        .then((response, status) => {
-          status.toString();
-          var application = response.data;
-          var startDate = application.startTimeStamp
-            .toISOString()
-            .split("T")[0];
-          var startTime = application.startTimeStamp
-            .toISOString()
-            .split("T")[1];
-          var endDate = application.endTimeStamp.toISOString().split("T")[0];
-          var endTime = application.endTimeStamp.toISOString().split("T")[1];
-          switch (application.type) {
-            case 0:
-              if (application.role === "Ersteller") {
-                this.progress.type = "sl";
-                this.progress.data = 0;
-                this.progress.current = 1;
-                this.sgdata = {
-                  bez: application.school.name,
-                  startDate: startDate,
-                  startTime: startTime,
-                  endDate: endDate,
-                  endTime: endTime,
-                  an: application.school.note,
-                  schueler: application.school.malestudents,
-                  schuelerinnen: application.school.femalestudents,
-                  kla: application.school.jahrgaenge,
-                  beg: application.school.begleit
-                };
-              } else {
-                this.items.splice(0,1);
-                this.progress.type = "se";
-                this.progress.data = 0;
-                this.progress.current = 1;
-                this.sedata = {
-                  bez: application.begleit.name,
-                  startDate: startDate,
-                  startTime: startTime,
-                  endDate: endDate,
-                  endTime: endTime,
-                  groupe: application.begleit.teachergroupe
-                };
-              }
-              break;
-            case 1:
-              this.progress.type = "ws";
-              this.progress.data = 0;
-              this.progress.current = 1;
-              this.wdata = {
-                bez: application.name,
-                startDate: startDate,
-                startTime: startTime,
-                endDate: endDate,
-                endTime: endTime,
-                notes: application.note,
-                type: application.art,
-                phz: application.phzahl,
-                veran: application.veranstalter,
-                son: application.sonstiges
-              };
-              break;
-            case 2 || 3 || 4 || 5:
-              this.progress.type = "af";
-              this.progress.data = 0;
-              this.progress.current = 1;
-              this.odata = {
-                startDate: startDate,
-                startTime: startTime,
-                endDate: endDate,
-                endTime: endTime,
-                an: application.note,
-                reason: application.reason,
-                gz: application.gz,
-                son: application.sonstiges,
-                bez: application.bez
-              };
-              break;
-            default:
-              this.progress.type = "";
-              this.progress.data = 0;
-              this.progress.current = 0;
-              break;
+        .get(this.url + "/application/getApplication?id=" + this.appid, {
+          params: {
+            token: this.token
           }
-          this.title = application.title;
-          if (application.status === "Abgelehnt") this.readonly = false;
-          else this.readonly = true;
-
-          /*
-          TODO:
-          - update variable progress to application ?
-          */
+        })
+        .then(response => {
+          var application = response.data;
+          if (application.Kind === 4) {
+            if (
+              application.SchoolEventDetails.Teachers[0].Shortname ===
+              this.getCurrentTeacher()
+            ) {
+              this.isLeader = true;
+            } else {
+              this.isLeader = false;
+            }
+          } else {
+            application.toString();
+          }
         });
     },
     closeAntrag() {
       this.$refs["close-modal"].show();
+    },
+    getCurrentTeacher() {
+      axios
+        .get(this.url + "/getTeacher?id=" + this.user, {
+          params: {
+            token: this.token
+          }
+        })
+        .then(response => {
+          let data = response.data;
+          return data.Short;
+        });
     },
     openPDF(item) {
       console.log(item);

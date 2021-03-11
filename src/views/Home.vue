@@ -303,35 +303,40 @@ export default {
       this.admin = admin;
     },
     getLeader() {
-      axios.get(this.url + "/getTeacher?id=" + this.user, {
-        params: {
-          token: this.token
-        }
-      }).then((response) => {
-        let data = response.data;
-        return {longname:data.Longname,short:data.Short}
-      });
+      axios
+        .get(this.url + "/getTeacher?id=" + this.user, {
+          params: {
+            token: this.token
+          }
+        })
+        .then(response => {
+          let data = response.data;
+          return { longname: data.Longname, short: data.Short };
+        });
     },
     loadEscortsData(escortsdata) {
       let leader = this.getLeader();
-      let output = [{
-        name: leader.longname,
-        shortname: leader.short,
-        startDate: escortsdata.startDate,
-        endDate: escortsdata.endDate,
-        startTime: escortsdata.startTime,
-        endTime: escortsdata.endTime,
-        selected:"",
-        startadresse: escortsdata.start,
-        meetingpoint: escortsdata.start,
-        role: 0
-      }];
+      let output = [
+        {
+          name: leader.longname,
+          shortname: leader.short,
+          startDate: escortsdata.startDate,
+          endDate: escortsdata.endDate,
+          startTime: escortsdata.startTime,
+          endTime: escortsdata.endTime,
+          selected: "",
+          startadresse: escortsdata.start,
+          meetingpoint: escortsdata.start,
+          role: 0
+        }
+      ];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
         output.push(
           JSON.parse(
             '{"name":"' +
               this.getFullName(escortsdata.teacher[i]) +
-              '","shortname":"'+ escortsdata.teacher[i] +
+              '","shortname":"' +
+              escortsdata.teacher[i] +
               '","startDate":"' +
               escortsdata.startDate +
               '","endDate":"' +
@@ -340,7 +345,11 @@ export default {
               escortsdata.startTime +
               '","endTime":"' +
               escortsdata.endTime +
-              '","selected":"","role":1, "startadresse":"' + escortsdata.start + '","meetingpoint":"' + escortsdata.start + '"}'
+              '","selected":"","role":1, "startadresse":"' +
+              escortsdata.start +
+              '","meetingpoint":"' +
+              escortsdata.start +
+              '"}'
           )
         );
       }
@@ -348,13 +357,15 @@ export default {
       this.escortsdata = escortsdata;
     },
     getFullName(shortName) {
-      axios.get(this.url + "/getLongName?name=" + shortName, {
-        params: {
-          token: this.token
-        }
-      }).then((response) => {
-        return response.data.long;
-      })
+      axios
+        .get(this.url + "/getLongName?name=" + shortName, {
+          params: {
+            token: this.token
+          }
+        })
+        .then(response => {
+          return response.data.long;
+        });
       return shortName;
     },
     generateState(state) {

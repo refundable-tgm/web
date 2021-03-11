@@ -20,7 +20,7 @@
       style="margin-top:1rem;margin-bottom:3rem"
     >
       <b-col cols="12">
-        <Progress v-bind:progress="progress" />
+        <Progress v-bind:progress="progress" v-bind:kind="kind" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -82,8 +82,7 @@
           id="show-btn"
           @click="closeAntrag"
           class="float-right"
-          ><b-icon icon="file-earmark-excel"></b-icon> Antrag
-          ablehnen</b-button
+          ><b-icon icon="file-earmark-excel"></b-icon> Antrag ablehnen</b-button
         >
         <b-button
           variant="outline-success"
@@ -192,7 +191,8 @@ export default {
         title: "",
         content: ""
       },
-      progress: undefined
+      progress: 0,
+      kind: 7
     };
   },
   computed: {

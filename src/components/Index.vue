@@ -1,6 +1,8 @@
 <template>
-  <b-container fluid> <!-- Container -->
-    <b-row id="index-row" align-h="center" align-v="center"> <!-- Row -->
+  <b-container fluid>
+    <!-- Container -->
+    <b-row id="index-row" align-h="center" align-v="center">
+      <!-- Row -->
       <!-- <b-col class="d-block d-md-none" cols="12">
         <b-container fluid>
           <b-row align-v="center" align-h="center">
@@ -71,21 +73,23 @@
       </b-col> -->
 
       <!-- DASH MOBILE -->
-      <b-col class="d-block d-md-none" cols="12"> <!-- Column -->
+      <b-col class="d-block d-md-none" cols="12">
+        <!-- Column -->
         <b-container fluid>
           <b-row align-v="center" align-h="center">
             <b-col cols="12">
               <center><h1 style="margin-top:10px;">Dashboard</h1></center>
             </b-col>
             <b-col cols="12">
-               <!-- Button -->
-              <b-button 
+              <!-- Button -->
+              <b-button
                 variant="outline-danger"
                 class="shadow-lg"
                 v-on:click="logout"
                 style="margin-top:0px; margin-bottom:20px; width:100%"
               >
-                <b-icon icon="person" aria-hidden="true"></b-icon> Ausloggen  <!-- Icon -->
+                <b-icon icon="person" aria-hidden="true"></b-icon> Ausloggen
+                <!-- Icon -->
               </b-button>
             </b-col>
 

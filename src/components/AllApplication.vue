@@ -252,10 +252,10 @@ export default {
     loadData() {
       axios
         .get(this.url + "/getAllApplications?user=" + this.user, {
-                  params: {
-                    token: this.token
-                  }
-                })
+          params: {
+            token: this.token
+          }
+        })
         .then((response, status) => {
           var data = response.data;
           status.toString();
@@ -279,13 +279,14 @@ export default {
                 })
                 .then(response => {
                   let daten = response.data;
-                  data[i].leader =  daten.Longname;
+                  data[i].leader = daten.Longname;
                 });
             }
             data[i].status = this.loadStatus(data[i].Kind, data[i].Progress);
             data[i].active = this.isActive(data[i].Kind, data[i].Progress);
             data[i].title = data[i].Name;
-            data[i].edate = data[i].BusinessTripApplications[0].DateApplicationFiled;
+            data[i].edate =
+              data[i].BusinessTripApplications[0].DateApplicationFiled;
             if (data[i].kind === 4) {
               switch (data[i].Progress) {
                 case 7:

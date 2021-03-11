@@ -133,7 +133,19 @@
             <span class="text text-truncate">Abgeschlossen</span>
           </div>
         </div>
-        <div v-if="kind === 0 || kind === 1 || kind === 2 || kind === 3 || kind === 5 || kind === 6 || kind === 7 || kind === 8" class="track">
+        <div
+          v-if="
+            kind === 0 ||
+              kind === 1 ||
+              kind === 2 ||
+              kind === 3 ||
+              kind === 5 ||
+              kind === 6 ||
+              kind === 7 ||
+              kind === 8
+          "
+          class="track"
+        >
           <div
             :class="{
               active: progress >= 1
