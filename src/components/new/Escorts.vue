@@ -259,7 +259,7 @@ export default {
           BusinessTripApplications: business
         };
         axios
-          .post(this.url + "/createExkurs", this.token, data)
+          .post(this.url + "/createApplication", this.token, data)
           .then(response => {
             response.toString();
             this.changeComponent("Index");
