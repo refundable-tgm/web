@@ -415,7 +415,7 @@ export default {
             TravelPurpose: this.returnString(this.teacher.reason1),
             TravelMode: this.returnValue(this.teacher.transport),
             StartingPoint: this.returnValue(
-              this.ausgangspunkt
+              this.teacher.ausgangspunkt
             ),
             EndPoint: this.returnValue(this.teacher.endpunkt),
             Reasoning: this.returnString(this.teacher.reason),
@@ -473,19 +473,6 @@ export default {
           if (this.PhZahl == null) this.PhZahl = false;
           if (this.Veranstalter == null) this.Veranstalter = false;
         }
-        /*
-        Variablen:
-          this.title
-          this.startDate
-          this.startTime
-          this.endDate
-          this.endTime
-          this.phNumber
-          this.veran
-          this.selected
-          this.son (Wenn Sonstiges angedrückt ist)
-          this.notes
-        */
       }
     },
     checkTime() {
@@ -621,9 +608,10 @@ export default {
       veran: "",
       son: "",
       notes: "",
-      start: "Wexstraße 19-23, 1200 Wien",
+      start: "",
       end: "",
-      escort: Object
+      escort: Object,
+      teacher: Object
     };
   },
   mounted() {
@@ -638,8 +626,7 @@ export default {
         selected:"",
         startadresse: this.start,
         meetingpoint: this.start,
-        role: 0,
-        teacher: Object
+        role: 0
       }];
       this.escort = output;
   }

@@ -117,6 +117,46 @@
                   Start der Fortbildung muss vor dem Ende der Fortbildung sein!
                 </b-form-invalid-feedback>
               </b-form-group>
+                <b-form-group
+                id="start"
+                label-cols-sm="4"
+                label-cols-lg="3"
+                content-cols-sm
+                content-cols-lg="7"
+                description="Geben Sie die Startadresse ein."
+                label="Startadresse"
+                label-for="sa"
+              >
+              <b-form-input
+                  id="sa"
+                  v-model="start"
+                  :state="Start"
+                  v-on:input="checkStart"
+                ></b-form-input>
+                <b-form-invalid-feedback id="sa-feedback">
+                Keine Startadresse angegeben!
+              </b-form-invalid-feedback>
+              </b-form-group>
+              <b-form-group
+                id="end"
+                label-cols-sm="4"
+                label-cols-lg="3"
+                content-cols-sm
+                content-cols-lg="7"
+                description="Geben Sie die Zieladresse des Antrags ein."
+                label="Antragsadresse"
+                label-for="ea"
+              >
+                <b-form-input
+                  id="ea"
+                  v-model="end"
+                  :state="End"
+                  v-on:input="checkEnd"
+                ></b-form-input>
+                <b-form-invalid-feedback id="ea-feedback">
+                Keine Zieladresse angegeben!
+              </b-form-invalid-feedback>
+              </b-form-group>
               <b-form-group
                 id="grund"
                 label-cols-sm="4"
@@ -147,7 +187,7 @@
                 description="Geben Sie den Grund an."
                 label="Sonstiger Grund"
                 label-for="son"
-                v-if="selected == 'D'"
+                v-if="selected == '8'"
               >
                 <b-form-input
                   id="son"
@@ -169,7 +209,7 @@
                 description="Geben Sie den Titel des Dienstauftrages ein."
                 label="Titel"
                 label-for="tit"
-                v-if="selected == 'B'"
+                v-if="selected == '2'"
               >
                 <b-form-input
                   id="tit"
@@ -190,7 +230,7 @@
                 description="Geben Sie die GZ des Dienstauftrages ein."
                 label="GZ"
                 label-for="gzn"
-                v-if="selected == 'B'"
+                v-if="selected == '2'"
               >
                 <b-form-input
                   id="gzn"
@@ -221,6 +261,11 @@
                   v-model="notes"
                 ></b-form-textarea>
               </b-form-group>
+              <TravelApplication
+                  v-bind:escort="escort"
+                  v-bind:index="1"
+                  v-on:update="updateTravel"
+              />
               <center>
                 <button v-on:click="einreichen()" class="blueish-gradiant">
                   Einreichen
@@ -234,8 +279,14 @@
   </b-container>
 </template>
 <script>
+import axios from "axios"
+import TravelApplication from "@/components/new/TravelApplication.vue"
 export default {
+  components: {
+    TravelApplication
+  },
   name: "NewApplication",
+  props: ["url", "user", "token"],
   methods: {
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
@@ -351,11 +402,155 @@ export default {
         this.changeComponent("Others");
       }
     },
+    checkEnd() {
+      if (this.end === "") {
+        this.End = false;
+      } else {
+        this.End = true;
+      }
+      this.checkInputs();
+    },
+    checkStart() {
+      if (this.start === "") {
+        this.Start = false;
+      } else {
+        this.Start = true;
+      }
+      this.checkInputs();
+    },
+    returnValue(input) {
+      if (input === undefined || input === null || input === "") {
+        return null;
+      } else {
+        return Number(input);
+      }
+    },
+    returnString(input) {
+      if (input === undefined || input === null || input === "") {
+        return null;
+      } else {
+        return input;
+      }
+    },
+    returnBoolean(input) {
+      if (input === undefined || input === null || input === "") {
+        return null;
+      } else {
+        if (input === "false") return false;
+        else return true;
+      }
+    },
+    updateTravel(index, data) {
+      index.toString();
+      this.teacher.personalnummer = data.personalnummer;
+      this.teacher.transport = data.transport;
+      this.teacher.ausgangspunkt = data.ausgangspunkt;
+      this.teacher.endpunkt = data.endpunkt;
+      this.teacher.reason1 = data.reason1;
+      this.teacher.reason = data.reason;
+      this.teacher.bonus_meilen = data.bonus_meilen;
+      this.teacher.reisekosten = data.reisekosten;
+      this.teacher.aufenthaltskosten = data.aufenthaltskosten;
+      this.teacher.von = data.von;
+      this.teacher.sonstige_kosten = data.sonstige_kosten;
+      this.teacher.geschaetzte_kosten = data.geschaetzte_kosten;
+    },
+    getLeader() {
+      axios.get(this.url + "/getTeacher?id=" + this.user, {
+        params: {
+          token: this.token
+        }
+      }).then((response) => {
+        let data = response.data;
+        return {longname:data.Longname,short:data.Short}
+      });
+    },
     einreichen() {
       if (this.checkClick()) {
         if (this.validInputs) {
-          // Daten an Michi senden
-          this.changeComponent("Index");
+          if (
+            this.teacher.bonus_meilen[0] === "0" ||
+            this.teacher.bonus_meilen[1] === "0"
+          )
+            var bonus1 = true;
+          if (
+            this.teacher.bonus_meilen[0] === "1" ||
+            this.teacher.bonus_meilen[1] === "1"
+          )
+            var bonus2 = true;
+          var business = {
+            ID: 0,
+            Staffnr: this.returnValue(this.teacher.personalnummer),
+            TripBeginTime: new Date(
+              this.startDate + "T" + this.startTime
+            ).toISOString(),
+            TripEndTime: new Date(
+              this.endDate + "T" + this.endTime
+            ).toISOString(),
+            ServiceBeginTime: new Date(
+              this.startDate +
+                "T" +
+                this.startTime
+            ).toISOString(),
+            ServiceEndTime: new Date(
+              this.endDate +
+                "T" +
+                this.endTime
+            ).toISOString(),
+            TripGoal: this.returnString(this.start),
+            TravelPurpose: this.returnString(this.teacher.reason1),
+            TravelMode: this.returnValue(this.teacher.transport),
+            StartingPoint: this.returnValue(
+              this.teacher.ausgangspunkt
+            ),
+            EndPoint: this.returnValue(this.teacher.endpunkt),
+            Reasoning: this.returnString(this.teacher.reason),
+            OtherParticipants: [],
+            BonusMileConfirmation1: bonus1,
+            BonusMileConfirmation2: bonus2,
+            TravelCostsPayedBySomeone: this.returnBoolean(
+              this.teacher.reisekosten
+            ),
+            StayingCostsPayedBySomeone: this.returnBoolean(
+              this.teacher.aufenthaltskosten
+            ),
+            PayedByWhom: this.returnString(this.teacher.von),
+            OtherCosts: this.returnValue(
+              this.teacher.sonstige_kosten
+            ),
+            EstimatedCosts: this.returnValue(
+              this.teacher.geschaetzte_kosten
+            )
+          }
+          var data = {
+          Name: this.returnString(""),
+          Kind: 8,
+          MiscellaneousReason: this.returnString(this.son),
+          Progress: 1,
+          StartTime: new Date(
+            this.startDate + "T" + this.startTime
+          ).toISOString(),
+          EndTime: new Date(
+            this.endDate + "T" + this.endTime
+          ).toISOString(),
+          Notes: this.returnString(this.notes),
+          StartAddress: this.returnString(""),
+          DestinationAddress: this.returnString(""),
+          OtherReasonDetails: {
+            Kind: this.returnValue(this.selected),
+            MiscellaneousReason: this.returnString(this.son),
+            ServiceMandateGZ: this.returnValue(this.gz),
+            ServiceMandateTitle: this.returnString(this.title)
+          },
+          BusinessTripApplications: business
+        };
+        
+          axios
+          .post(this.url + "/createApplication", this.token, data)
+          .then(response => {
+            response.toString();
+            this.changeComponent("Index");
+          });
         } else {
           this.makeToast();
           if (this.Time === null) this.Time = false;
@@ -370,10 +565,10 @@ export default {
     return {
       selected: "",
       options: [
-        { item: "A", name: "Pflegefreistellung" },
-        { item: "B", name: "Dienstauftrag" },
-        { item: "C", name: "Arzttermin" },
-        { item: "D", name: "Sonstiges" }
+        { item: "1", name: "Pflegefreistellung" },
+        { item: "2", name: "Dienstauftrag" },
+        { item: "3", name: "Arzttermin" },
+        { item: "8", name: "Sonstiges" }
       ],
       validInputs: false,
       Time: null,
@@ -381,6 +576,8 @@ export default {
       Titel: null,
       GZset: null,
       Sonstiges: null,
+      Start: null,
+      End: null,
       startDate: "",
       startTime: "",
       endDate: "",
@@ -388,8 +585,28 @@ export default {
       title: "",
       gz: "",
       son: "",
-      notes: ""
+      notes: "",
+      start: "",
+      end: "",
+      escort: Object,
+      teacher: Object
     };
+  },
+  mounted() {
+    let leader = this.getLeader();
+      let output = [{
+        name: leader.longname,
+        shortname: leader.short,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        startTime: this.startTime,
+        endTime: this.endTime,
+        selected:"",
+        startadresse: this.start,
+        meetingpoint: this.start,
+        role: 0
+      }];
+      this.escort = output;
   }
 };
 </script>
