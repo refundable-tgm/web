@@ -18,6 +18,7 @@
           class="float-right"
           v-on:click="normal"
           style="margin-right:20px"
+          v-if="!(pek || administration)"
         >
           Normale Ansicht
         </b-button>
@@ -133,7 +134,7 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["url", "user"],
+  props: ["url", "user", "token", "pek", "administration"],
   data() {
     return {
       selectMode: "multi",
@@ -320,18 +321,20 @@ export default {
           id: this.selected[i].id
         });
       }
-      axios.get(this.url +"/getPDFs", {
-        params: {
-          token: this.token,
-          pdfs: req
-        }
-      }).then((response) => {
-        var pdf = response.data.pdf;
-        this.showPDF(pdf);
-      })
+      axios
+        .get(this.url + "/getPDFs", {
+          params: {
+            token: this.token,
+            pdfs: req
+          }
+        })
+        .then(response => {
+          var pdf = response.data.pdf;
+          this.showPDF(pdf);
+        });
     },
     showPDF(pdf) {
-      window.open("data:application/pdf;base64,"+pdf);
+      window.open("data:application/pdf;base64," + pdf);
     },
     selectAllRows() {
       this.$refs.selectableTable.selectAllRows();

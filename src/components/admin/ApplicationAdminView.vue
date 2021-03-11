@@ -9,6 +9,15 @@
           variant="outline-primary"
           class="float-right"
           v-on:click="index"
+          v-if="!(pek || administration)"
+        >
+          <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
+        </b-button>
+        <b-button
+          variant="outline-primary"
+          class="float-right"
+          v-on:click="dashboard"
+          v-if="pek || administration"
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
@@ -148,6 +157,7 @@ import SchoolEscorts from "@/components/applicationViewComponents/SchoolEscorts.
 import Others from "@/components/applicationViewComponents/Others.vue";
 import Workshop from "@/components/applicationViewComponents/Workshop.vue";
 export default {
+  props: ["url", "token", "user", "pek", "administration", "appid"],
   components: {
     Others,
     Workshop,
@@ -255,10 +265,15 @@ export default {
       }
     },
     index() {
-      console.log("INDEX!");
       if (this.checkClick) {
         this.changeComponent("Index");
         this.changeURL("Index");
+      }
+    },
+    dashboard() {
+      if (this.checkClick) {
+        this.changeComponent("AdminDashboard");
+        this.changeURL("AdminDashboard");
       }
     },
     delAn() {

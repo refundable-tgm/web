@@ -106,6 +106,8 @@
       v-if="currentComponent == 'AdminDashboard'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:pek="pek"
+      v-bind:administration="administration"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
@@ -114,6 +116,8 @@
       v-if="currentComponent == 'ApplicationAdminView'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+      v-bind:pek="pek"
+      v-bind:administration="administration"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
@@ -185,6 +189,9 @@ export default {
       forward: "",
       cookies: false,
       admin: true,
+      administration: false,
+      av: false,
+      pek: false,
       logged: false,
       appid: "",
       user: "",
@@ -298,9 +305,15 @@ export default {
     loadApplication(application) {
       this.appid = application;
     },
-    login(user, admin) {
+    login(user, admin, administration, av, pek) {
       this.user = user;
       this.admin = admin;
+      this.administration = administration;
+      this.av = av;
+      this.pek = pek;
+      if (administration || pek) {
+        this.changeComponent("AdminDashboard");
+      }
     },
     getLeader() {
       axios
