@@ -108,29 +108,10 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["user", "url"],
+  props: ["user", "url", "token"],
   data() {
     return {
-      items: [
-        {
-          id: 3456,
-          title: "Sommersportwoche",
-          leader: "Stefan Zakall",
-          edate: "2019-10-10",
-          status: "Abgelehnt",
-          active: true,
-          _rowVariant: "danger"
-        },
-        {
-          id: 4567,
-          title: "Sprachreise",
-          leader: "Stefan Zakall",
-          edate: "2020-12-12",
-          status: "In Bearbeitung",
-          active: true,
-          _rowVariant: "warning"
-        }
-      ],
+      items: [],
       fields: [
         {
           key: "title",
@@ -184,11 +165,9 @@ export default {
   },
   methods: {
     info(item) {
-      console.log(item);
-      this.viewApplication(item);
+      this.viewApplication(item.UUID);
     },
-    showInfo(item, index, button) {
-      //this.infoModal.title = `Row index: ${index}`;
+    showInfo(item, button) {
       this.infoModal.title = item.title;
       let leiter = "Leiter: " + item.leader;
       let date = "Einreichdatum: " + item.edate;
@@ -196,33 +175,130 @@ export default {
       this.infoModal.content = leiter + "\n" + date + "\n" + status;
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
+    isActive(kind, progress) {
+      if (kind === 4) {
+        if (progress > 0 && progress < 7) return true;
+        else return false;
+      } else {
+        if (progress > 0 && progress < 6) return true;
+        else return false;
+      }
+    },
+    loadStatus(kind, progress) {
+      if (kind === 4) {
+        switch (progress) {
+          case 0:
+            return "Abgelehnt";
+          case 1:
+            return "Einreichung";
+          case 2:
+            return "In Bearbeitung";
+          case 3:
+            return "Bestätigt";
+          case 4:
+            return "Läuft...";
+          case 5:
+            return "Kosten ausstehend";
+          case 6:
+            return "Kosten in Bearbeitung";
+          case 7:
+            return "Abgeschlossen";
+          default:
+            return "Abgelehnt";
+        }
+      } else {
+        switch (progress) {
+          case 0:
+            return "Abgelehnt";
+          case 1:
+            return "In Bearbeitung";
+          case 2:
+            return "Bestätigt";
+          case 3:
+            return "Läuft...";
+          case 4:
+            return "Kosten ausstehend";
+          case 5:
+            return "Kosten in Bearbeitung";
+          case 6:
+            return "Abgeschlossen";
+          default:
+            return "Abgelehnt";
+        }
+      }
+    },
     loadData() {
-      //TODO: Load Data from Backend
       axios
-        .get(this.url + "/getActiveApplications?user=" + this.user)
-        .then((response, status) => {
+        .get(this.url + "/getActiveApplications?user=" + this.user, {
+                  params: {
+                    token: this.token
+                  }
+                })
+        .then(response => {
           var data = response.data;
           status.toString();
           for (let i = 0; i < data.length; i++) {
-            switch (data[i].status) {
-              case "Angenommen":
-                data[i]._rowVariant = "success";
-                break;
-              case "In Bearbeitung":
-                data[i]._rowVariant = "warning";
-                break;
-              case "Abgelehnt":
-                data[i]._rowVariant = "danger";
-                break;
-              default:
-                data[i]._rowVariant = "danger";
-                break;
+            if (data[i].Kind === 4) {
+              for (
+                let j = 0;
+                j < data[i].SchoolEventDetails.Teachers.length;
+                j++
+              ) {
+                if (data[i].SchoolEventDetails.Teachers[j].Role === 0) {
+                  data[i].leader = data[i].SchoolEventDetails.Teachers[j].Name;
+                }
+              }
+            } else {
+              axios
+                .get(this.url + "/getTeacher?id=" + this.user, {
+                  params: {
+                    token: this.token
+                  }
+                })
+                .then(response => {
+                  let daten = response.data;
+                  data[i].leader =  daten.Longname;
+                });
+            }
+            data[i].status = this.loadStatus(data[i].Kind, data[i].Progress);
+            data[i].active = this.isActive(data[i].Kind, data[i].Progress);
+            data[i].title = data[i].Name;
+            data[i].edate = data[i].BusinessTripApplications[0].DateApplicationFiled;
+            if (data[i].kind === 4) {
+              switch (data[i].Progress) {
+                case 7:
+                  data[i]._rowVariant = "success";
+                  break;
+                case 1 || 2 || 3 || 4 || 5 || 6:
+                  data[i]._rowVariant = "warning";
+                  break;
+                case 0:
+                  data[i]._rowVariant = "danger";
+                  break;
+                default:
+                  data[i]._rowVariant = "danger";
+                  break;
+              }
+            } else {
+              switch (data[i].progress) {
+                case 2 || 3 || 6:
+                  data[i]._rowVariant = "success";
+                  break;
+                case 1 || 4 || 5:
+                  data[i]._rowVariant = "warning";
+                  break;
+                case 0:
+                  data[i]._rowVariant = "danger";
+                  break;
+                default:
+                  data[i]._rowVariant = "danger";
+                  break;
+              }
             }
           }
           this.items = data;
           // Set the initial number of items
           this.totalRows = this.items.length;
-          console.log("data loaded");
         });
     },
     resetInfoModal() {
@@ -254,7 +330,7 @@ export default {
       }
       if (actives === 1) {
         history.replaceState("ApplicationView", null, null);
-        this.viewApplication(currentapp);
+        this.viewApplication(currentapp.UUID);
       }
     },
     checkClick() {
@@ -270,13 +346,11 @@ export default {
       }
     },
     index() {
-      console.log("INDEX!");
       if (this.checkClick) {
         this.changeComponent("Index");
       }
     },
     viewApplication(app) {
-      // Nur die ID verwenden beim übergeben!
       this.changeComponent("ApplicationView", true, app);
     }
   }

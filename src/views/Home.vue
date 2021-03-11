@@ -348,14 +348,13 @@ export default {
       this.escortsdata = escortsdata;
     },
     getFullName(shortName) {
-      /*console.log("Request für " + shortName + " um vollen Namen zu bekommen");
       axios.get(this.url + "/getLongName?name=" + shortName, {
         params: {
           token: this.token
         }
       }).then((response) => {
         return response.data.long;
-      })*/
+      })
       return shortName;
     },
     generateState(state) {
@@ -415,7 +414,6 @@ export default {
         var d = new Date();
         var expires = "expires=" + d.toUTCString();
         var value = this.getCookie();
-        console.log(value);
         document.cookie =
           "current=" + value + ";" + expires + ";SameSite=Strict;path=/";
       }
@@ -429,11 +427,9 @@ export default {
         this.changeComponent(this.generateState(e.state), false);
       }
     });
-    console.log("NEU");
-    console.log(this.pathing);
-    console.log(this.query);
     if (this.pathing === undefined) {
       if (this.query !== undefined) {
+        // Set tmp1 to true if active token is present
         let tmp1 = false;
         if (tmp1) {
           // Wenn eine Session da ist, hol den Antrag und zeig ihn an
@@ -447,6 +443,7 @@ export default {
           // Wenn keine Session da ist --> zeig die Login Seite an --> nach erfolgreichem Login --> Zeig Antrag an
         }
       } else {
+        // Set tmp2 to true if active token is present
         let tmp2 = false;
         if (tmp2) {
           // Wenn eine Session da ist, zeig die Application Search Seite an
