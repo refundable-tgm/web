@@ -17,7 +17,7 @@
               >
                 <b-form-input
                   id="bezeichnung"
-                  v-model="data.bez"
+                  v-model="data.Name"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -34,9 +34,9 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="data.startDate"
+                  v-model="startDate"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -53,9 +53,9 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="data.startTime"
+                  v-model="startTime"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -72,9 +72,9 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="data.endDate"
+                  v-model="endDate"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -91,9 +91,9 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="data.endTime"
+                  v-model="endTime"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -111,9 +111,9 @@
                 <b-form-tags
                   id="begl"
                   input-id="tags-pills"
-                  v-model="data.beg"
+                  v-model="beg"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateBeg"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -133,7 +133,7 @@
                 <b-form-tags
                   id="kl"
                   input-id="tags-pills"
-                  v-model="data.kla"
+                  v-model="data.SchoolEventDetails.Classes"
                   :readonly="readonly"
                   @input="updateData"
                   tag-variant="primary"
@@ -155,7 +155,7 @@
                 <b-form-input
                   id="aschueler"
                   :readonly="readonly"
-                  v-model="data.schueler"
+                  v-model="data.SchoolEventDetails.AmountMaleStudents"
                   @input="updateData"
                   type="number"
                   min="0"
@@ -174,7 +174,7 @@
               >
                 <b-form-input
                   id="aschuelerin"
-                  v-model="data.schuelerinnen"
+                  v-model="data.SchoolEventDetails.AmountFemaleStudents"
                   :readonly="readonly"
                   @input="updateData"
                   type="number"
@@ -195,7 +195,7 @@
                 <b-form-textarea
                   id="an"
                   :readonly="readonly"
-                  v-model="data.an"
+                  v-model="data.Notes"
                   @input="updateData"
                   placeholder="Anmerkungen"
                   rows="3"
@@ -210,12 +210,98 @@
   </b-container>
 </template>
 <script>
+import axios from "axios";
 export default {
   name: "NewApplication",
-  props: ["data","readonly"],
+  props: ["data", "readonly", "url", "token"],
+  data() {
+    return {
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: "",
+      beg: []
+    };
+  },
   methods: {
     updateData() {
-      this.$emit('update', this.data);
+      this.$emit("update", this.data);
+    },
+    updateBeg() {
+      var teach = [];
+      teach.push(this.data.SchoolEventDetails.Teachers[0]);
+      var found = -1;
+      for (let i = 0; i < this.beg.length; i++) {
+        for (let j = 0; j < this.data.SchoolEventDetails.Teachers.length; j++) {
+          found = -1;
+          if (
+            this.beg[i] === this.data.SchoolEventDetails.Teachers[j].Shortname
+          ) {
+            found = j;
+          }
+        }
+        if (found !== -1) {
+          teach.push(this.data.SchoolEventDetails.Teachers[found]);
+        } else {
+          var l = this.getFullName(this.beg[i]);
+          teach.push({
+            Name: l,
+            Shortname: this.beg[i],
+            AttendanceFrom: "",
+            AttendanceTill: "",
+            Group: "",
+            StartAddress: this.data.StartAddress,
+            MeetingPoint: this.data.StartAddress,
+            Role: 0
+          });
+        }
+      }
+      this.data.SchoolEventDetails.Teachers = teach;
+      this.updateData();
+    },
+    getFullName(shortName) {
+      axios
+        .get(this.url + "/getLongName?name=" + shortName, {
+          params: {
+            token: this.token
+          }
+        })
+        .then(response => {
+          return response.data.long;
+        });
+      return shortName;
+    },
+    updateTime() {
+      var start = new Date(this.startDate);
+      start.setHours(this.startTime.split(":")[0]);
+      start.setMinutes(this.startTime.split(":")[1]);
+      var end = new Date(this.endDate);
+      end.setHours(this.endTime.split(":")[0]);
+      end.setMinutes(this.endTime.split(":")[1]);
+      this.data.StartTime = start;
+      this.data.EndTime = end;
+      this.updateData();
+    }
+  },
+  mounted() {
+    var start = new Date(this.data.StartTime);
+    var end = new Date(this.data.EndTime);
+    this.startDate =
+      start.getUTCFullYear() +
+      "-" +
+      (start.getUTCMonth() + 1) +
+      "-" +
+      start.getDate();
+    this.endDate =
+      end.getUTCFullYear() +
+      "-" +
+      (end.getUTCMonth() + 1) +
+      "-" +
+      end.getDate();
+    this.startTime = start.getHours() + ":" + start.getMinutes();
+    this.endTime = end.getHours() + ":" + end.getMinutes();
+    for (let i = 0; i < this.data.SchoolEventDetails.Teachers.length - 1; i++) {
+      this.beg.push(this.data.SchoolEventDetails.Teachers[i + 1].Shortname);
     }
   }
 };

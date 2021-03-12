@@ -379,7 +379,6 @@ export default {
         .then(response => {
           return response.data.long;
         });
-      return shortName;
     },
     generateState(state) {
       let output = "";

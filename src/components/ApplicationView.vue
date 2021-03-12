@@ -2,7 +2,7 @@
   <b-container fluid>
     <b-row align-v="center" align-h="center">
       <b-col cols="12" md="6">
-        <h1 id="new-application-heading">Antrag für {{ title }}</h1>
+        <h1 id="new-application-heading">Antrag für {{ app.Name }}</h1>
       </b-col>
       <div class="col-12 col-md-6">
         <b-button
@@ -28,7 +28,7 @@
       style="margin-top:1rem;margin-bottom:3rem"
     >
       <b-col cols="12">
-        <Progress v-bind:progress="progress" v-bind:kind="kind" />
+        <Progress v-bind:progress="app.Progress" v-bind:kind="app.Kind" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -74,25 +74,40 @@
           <template #row-details="row">
             <b-card>
               <SchoolGeneral
-                v-bind:readonly="readonly"
-                v-bind:data="sgdata"
+                v-bind:readonly="sgreadonly"
+                v-bind:data="app"
+                v-bind:token="token"
+                v-bind:url="url"
                 v-on:update="updateSG"
-                v-if="isLeader"
+                v-if="isLeader && row.item.title == 'Allgemeine Infos'"
               />
               <SchoolEscorts
-                v-bind:readonly="readonly"
+                v-bind:readonly="sereadonly"
                 v-bind:data="sedata"
                 v-on:update="updateSE"
                 v-if="row.item.title == 'Begleitformular'"
               />
+              <TravelApplication
+                v-bind:readonly="tareadonly"
+                v-if="row.item.title == 'Reiseformular'"
+                v-on:update="updateTA"
+              />
+              <TravelBill
+                v-bind:readonly="tbreadonly"
+                v-if="row.item.title == 'Reiserechnung'"
+                v-bind:index="0"
+                v-bind:start="start"
+                v-bind:end="end"
+                v-on:update="updateTB"
+              />
               <Others
-                v-bind:readonly="readonly"
+                v-bind:readonly="oreadonly"
                 v-bind:data="odata"
                 v-on:update="updateO"
                 v-if="row.item.title == 'Abwesenheitsformular'"
               />
               <Workshop
-                v-bind:readonly="readonly"
+                v-bind:readonly="wreadonly"
                 v-bind:data="wdata"
                 v-on:update="updateW"
                 v-if="row.item.title == 'Fortbildung'"
@@ -107,6 +122,7 @@
       <b-col cols="12">
         <b-button
           variant="outline-danger"
+          v-if="isLeader"
           id="show-btn"
           @click="closeAntrag"
           class="float-right"
@@ -118,6 +134,15 @@
           id="show-btn"
           style="margin-right: 1rem"
           class="float-right"
+          @click="save"
+          :disabled="
+            sgreadonly &&
+              sereadonly &&
+              oreadonly &&
+              wreadonly &&
+              tareadonly &&
+              tbreadonly
+          "
           ><b-icon icon="file-earmark-check"></b-icon> Änderungen
           speichern</b-button
         >
@@ -175,13 +200,17 @@ import SchoolGeneral from "@/components/applicationViewComponents/SchoolGeneral.
 import SchoolEscorts from "@/components/applicationViewComponents/SchoolEscorts.vue";
 import Others from "@/components/applicationViewComponents/Others.vue";
 import Workshop from "@/components/applicationViewComponents/Workshop.vue";
+import TravelApplication from "@/components/new/TravelApplication.vue";
+import TravelBill from "@/components/new/TravelBill.vue";
 export default {
   components: {
     Others,
     Workshop,
     SchoolEscorts,
     SchoolGeneral,
-    Progress
+    Progress,
+    TravelApplication,
+    TravelBill
   },
   props: ["url", "appid", "user", "token"],
   data() {
@@ -198,6 +227,12 @@ export default {
         },
         {
           title: "Abwesenheitsformular"
+        },
+        {
+          title: "Reiseformular"
+        },
+        {
+          title: "Reiserechnung"
         }
       ],
       fields: [
@@ -220,12 +255,23 @@ export default {
         title: "",
         content: ""
       },
-      readonly: false,
       title: "",
-      progress: null,
-      kind: null,
+      progress: 0,
+      kind: 0,
       app: Object,
-      isLeader: null
+      isLeader: false,
+      sgdata: {},
+      sgreadonly: true,
+      sedata: {},
+      sereadonly: true,
+      odata: {},
+      oreadonly: true,
+      wdata: {},
+      wreadonly: true,
+      start: null,
+      end: null,
+      tbreadonly: true,
+      tareadonly: true
     };
   },
   computed: {
@@ -244,6 +290,26 @@ export default {
     this.totalRows = this.items.length;
   },
   methods: {
+    updateSG(data) {
+      this.app = data;
+    },
+    updateSE(sedata) {
+      this.sedata = sedata;
+    },
+    updateO(odata) {
+      this.odata = odata;
+    },
+    updateW(wdata) {
+      this.wdata = wdata;
+    },
+    updateTB(index, data) {
+      index.toString();
+      data.toString();
+    },
+    updateTA(index, data) {
+      index.toString();
+      data.toString();
+    },
     loadData() {
       axios
         .get(this.url + "/application/getApplication?id=" + this.appid, {
@@ -253,6 +319,11 @@ export default {
         })
         .then(response => {
           var application = response.data;
+          this.start = application.StartTime;
+          this.end = application.EndTime;
+          this.progress = application.Progress;
+          this.title = application.Name;
+          this.kind = application.Kind;
           if (application.Kind === 4) {
             if (
               application.SchoolEventDetails.Teachers[0].Shortname ===
@@ -262,13 +333,415 @@ export default {
             } else {
               this.isLeader = false;
             }
-          } else {
-            application.toString();
           }
+          this.setItems(application);
+          this.setReads(application);
         });
+      var application = {
+        UUID: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
+        Name: "Sommersportwoche",
+        Kind: 4,
+        MiscellaneousReason: "",
+        Progress: 1,
+        StartTime: "2021-03-01T18:54:40.035095+01:00",
+        EndTime: "2021-03-03T18:54:40.035095+01:00",
+        Notes: "Sommersportwoche ist cool",
+        StartAddress: "tgm Wien",
+        DestinationAddress: "Hönck Heim",
+        LastChanged: "2021-03-01T18:54:40.035096+01:00",
+        SchoolEventDetails: {
+          Classes: ["5BHIT"],
+          AmountMaleStudents: 0,
+          AmountFemaleStudents: 0,
+          DurationInDays: 0,
+          Teachers: [
+            {
+              Name: "Stefan Zakall",
+              Shortname: "szakall",
+              AttendanceFrom: "2021-03-01T19:00:40.035095+01:00",
+              AttendanceTill: "2021-03-03T17:00:40.035095+01:00",
+              Group: 2,
+              StartAddress: "Wexstraße 19-23, 1200 Wien",
+              MeetingPoint: "Wexstraße 19-23, 1200 Wien",
+              Role: 1
+            }
+          ]
+        },
+        TrainingDetails: {
+          Kind: 0,
+          MiscellaneousReason: "",
+          PH: 0,
+          Organizer: ""
+        },
+        OtherReasonDetails: {
+          Kind: 0,
+          ServiceMandateTitle: "",
+          ServiceMandateGZ: 0,
+          MiscellaneousReason: ""
+        },
+        BusinessTripApplications: [
+          {
+            ID: 0,
+            Staffnr: 0,
+            TripBeginTime: "0001-01-01T00:00:00Z",
+            TripEndTime: "0001-01-01T00:00:00Z",
+            ServiceBeginTime: "0001-01-01T00:00:00Z",
+            ServiceEndTime: "0001-01-01T00:00:00Z",
+            TripGoal: "",
+            TravelPurpose: "",
+            TravelMode: 0,
+            StartingPoint: 0,
+            EndPoint: 0,
+            Reasoning: "",
+            OtherParticipants: null,
+            BonusMileConfirmation1: false,
+            BonusMileConfirmation2: false,
+            TravelCostsPayedBySomeone: false,
+            StayingCostsPayedBySomeone: false,
+            PayedByWhom: "",
+            OtherCosts: 0,
+            EstimatedCosts: 0,
+            DateApplicationFiled: "0001-01-01T00:00:00Z",
+            DateApplicationApproved: "0001-01-01T00:00:00Z",
+            Referee: "",
+            BusinessCardEmittedOutward: false,
+            BusinessCardEmittedReturn: false
+          }
+        ],
+        TravelInvoices: [
+          {
+            ID: 0,
+            TripBeginTime: "0001-01-01T00:00:00Z",
+            TripEndTime: "0001-01-01T00:00:00Z",
+            Staffnr: 0,
+            StartingPoint: "",
+            EndPoint: "",
+            Clerk: "",
+            Reviewer: "",
+            TravelMode: 0,
+            ZI: 0,
+            FilingDate: "0001-01-01T00:00:00Z",
+            ApprovalDate: "0001-01-01T00:00:00Z",
+            DailyChargesMode: 0,
+            ShortenedAmount: 0,
+            NightlyChargesMode: 0,
+            Breakfasts: 0,
+            Lunches: 0,
+            Dinners: 0,
+            OfficialBusinessCardGot: false,
+            TravelGrant: false,
+            ReplacementForAdvantageCard: false,
+            ReplacementForTrainCardClass2: false,
+            KilometreAllowance: false,
+            KilometreAmount: 0,
+            NRAndIdicationsOfParticipants: false,
+            TravelCostsCited: false,
+            NoTravelCosts: false,
+            Calculation: {
+              ID: 0,
+              Rows: null,
+              SumTravelCosts: 0,
+              SumDailyCharges: 0,
+              SumNightlyCharges: 0,
+              SumAdditionalCosts: 0,
+              SumOfSums: 0
+            }
+          }
+        ]
+      };
+      this.app = application;
+      this.start = application.StartTime;
+      this.end = application.EndTime;
+      this.progress = application.Progress;
+      this.title = application.Name;
+      this.kind = application.Kind;
+      if (application.Kind === 4) {
+        var tmp = true;
+        if (tmp) {
+          this.isLeader = true;
+        } else {
+          this.isLeader = false;
+        }
+      }
+      this.setItems(application);
+      this.setReads(application);
+    },
+    save() {
+      console.log(this.sgreadonly);
+      console.log(this.sereadonly);
+      console.log(this.wreadonly);
+      console.log(this.oreadonly);
+      console.log(this.tareadonly);
+      console.log(this.tbreadonly);
+      console.log("Save");
     },
     closeAntrag() {
       this.$refs["close-modal"].show();
+    },
+    setReads(app) {
+      var progress = app.Progress;
+      if (app.Kind === 4) {
+        if (this.isLeader) {
+          switch (progress) {
+            case 0:
+              this.sgreadonly = false;
+              this.sereadonly = false;
+              this.tareadonly = false;
+              this.tbreadonly = true;
+              break;
+            case 1:
+              this.sgreadonly = false;
+              this.sereadonly = false;
+              this.tareadonly = false;
+              this.tbreadonly = true;
+              break;
+            case 2:
+              this.sgreadonly = true;
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 3:
+              this.sgreadonly = true;
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 4:
+              this.sgreadonly = true;
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 5:
+              this.sgreadonly = true;
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = false;
+              break;
+            case 6:
+              this.sgreadonly = true;
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 7:
+              this.sgreadonly = true;
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            default:
+              this.sgreadonly = true;
+              this.sereadonly = true;
+              this.oreadonly = true;
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+          }
+        } else {
+          switch (progress) {
+            case 0:
+              this.sereadonly = false;
+              this.tareadonly = false;
+              this.tbreadonly = true;
+              break;
+            case 1:
+              this.sereadonly = false;
+              this.tareadonly = false;
+              this.tbreadonly = true;
+              break;
+            case 2:
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 3:
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 4:
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 5:
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = false;
+              break;
+            case 6:
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 7:
+              this.sereadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            default:
+              this.sgreadonly = true;
+              this.sereadonly = true;
+              this.oreadonly = true;
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+          }
+        }
+      } else {
+        if (app.Kind === 0) {
+          switch (progress) {
+            case 0:
+              this.wreadonly = false;
+              this.tareadonly = false;
+              this.tbreadonly = true;
+              break;
+            case 1:
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 2:
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 3:
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 4:
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = false;
+              break;
+            case 5:
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 6:
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            default:
+              this.readonly = true;
+              this.sereadonly = true;
+              this.oreadonly = true;
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+          }
+        }
+        if (app.Kind === 8) {
+          switch (progress) {
+            case 0:
+              this.oreadonly = false;
+              this.tareadonly = false;
+              this.tbreadonly = true;
+              break;
+            case 1:
+              this.oreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 2:
+              this.oreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 3:
+              this.oreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 4:
+              this.oreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = false;
+              break;
+            case 5:
+              this.oreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 6:
+              this.oreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            default:
+              this.readonly = true;
+              this.sereadonly = true;
+              this.oreadonly = true;
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+          }
+        }
+      }
+    },
+    setItems(app) {
+      if (app.Kind === 4) {
+        if (this.isLeader) {
+          this.items = [
+            {
+              title: "Allgemeine Infos"
+            },
+            {
+              title: "Begleitformular"
+            },
+            {
+              title: "Reiseformular"
+            },
+            {
+              title: "Reiserechnung"
+            }
+          ];
+        } else {
+          this.items = [
+            {
+              title: "Begleitformular"
+            },
+            {
+              title: "Reiseformular"
+            },
+            {
+              title: "Reiserechnung"
+            }
+          ];
+        }
+      } else {
+        if (app.Kind === 0) {
+          this.items = [
+            {
+              title: "Fortbildung"
+            },
+            {
+              title: "Reiseformular"
+            },
+            {
+              title: "Reiserechnung"
+            }
+          ];
+        } else {
+          this.items = [
+            {
+              title: "Abwesenheitsformular"
+            },
+            {
+              title: "Reiseformular"
+            },
+            {
+              title: "Reiserechnung"
+            }
+          ];
+        }
+      }
     },
     getCurrentTeacher() {
       axios
@@ -284,22 +757,6 @@ export default {
     },
     openPDF(item) {
       console.log(item);
-    },
-    updateSG(data) {
-      console.log("UPDATE SG");
-      this.sgdata = data;
-    },
-    updateSE(data) {
-      console.log("UPDATE SE");
-      this.sedata = data;
-    },
-    updateO(data) {
-      console.log("UPDATE O");
-      this.odata = data;
-    },
-    updateW(data) {
-      console.log("UPDATE W");
-      this.wdata = data;
     },
     hideClose() {
       this.$refs["close-modal"].hide();
