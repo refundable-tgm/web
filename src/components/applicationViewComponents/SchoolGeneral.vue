@@ -99,6 +99,44 @@
                 ></b-form-timepicker>
               </b-form-group>
               <b-form-group
+                id="treff"
+                label-cols-sm="4"
+                label-cols-lg="3"
+                content-cols-sm
+                content-cols-lg="7"
+                description="Geben Sie die genaue Startadresse der Schulveranstaltung ein."
+                label="Startadresse"
+                label-for="ta"
+              >
+                <b-form-input
+                  id="ta"
+                  placeholder="Wexstraße 19-23, 1200 Wien, Österreich"
+                  v-model="data.StartAddress"
+                  :readonly="readonly"
+                  v-on:input="updateData"
+                >
+                </b-form-input>
+              </b-form-group>
+              <b-form-group
+                id="ziel"
+                label-cols-sm="4"
+                label-cols-lg="3"
+                content-cols-sm
+                content-cols-lg="7"
+                description="Geben Sie die genaue Zieladresse der Schulveranstaltung ein."
+                label="Zieladresse"
+                label-for="za"
+              >
+                <b-form-input
+                  id="za"
+                  placeholder="Straße & Nr., Postleitzahl & Ort, Land"
+                  v-model="data.DestinationAddress"
+                  :readonly="readonly"
+                  v-on:input="updateData"
+                >
+                </b-form-input>
+              </b-form-group>
+              <b-form-group
                 id="begleit"
                 label-cols-sm="4"
                 label-cols-lg="3"
@@ -112,7 +150,7 @@
                   id="begl"
                   input-id="tags-pills"
                   v-model="beg"
-                  :readonly="readonly"
+                  :disabled="readonly"
                   @input="updateBeg"
                   tag-variant="primary"
                   tag-pills
@@ -134,7 +172,7 @@
                   id="kl"
                   input-id="tags-pills"
                   v-model="data.SchoolEventDetails.Classes"
-                  :readonly="readonly"
+                  :disabled="readonly"
                   @input="updateData"
                   tag-variant="primary"
                   tag-pills

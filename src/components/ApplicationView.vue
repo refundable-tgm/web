@@ -271,7 +271,9 @@ export default {
       start: null,
       end: null,
       tbreadonly: true,
-      tareadonly: true
+      tareadonly: true,
+      currentTeacher: "",
+      currentTeacherIndex: -1
     };
   },
   computed: {
@@ -342,18 +344,18 @@ export default {
         Name: "Sommersportwoche",
         Kind: 4,
         MiscellaneousReason: "",
-        Progress: 1,
+        Progress: 3,
         StartTime: "2021-03-01T18:54:40.035095+01:00",
         EndTime: "2021-03-03T18:54:40.035095+01:00",
         Notes: "Sommersportwoche ist cool",
-        StartAddress: "tgm Wien",
-        DestinationAddress: "Hönck Heim",
+        StartAddress: "Wexstraße 19-23, 1200 Wien",
+        DestinationAddress: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
         LastChanged: "2021-03-01T18:54:40.035096+01:00",
         SchoolEventDetails: {
           Classes: ["5BHIT"],
-          AmountMaleStudents: 0,
-          AmountFemaleStudents: 0,
-          DurationInDays: 0,
+          AmountMaleStudents: 22,
+          AmountFemaleStudents: 1,
+          DurationInDays: 3,
           Teachers: [
             {
               Name: "Stefan Zakall",
@@ -364,6 +366,16 @@ export default {
               StartAddress: "Wexstraße 19-23, 1200 Wien",
               MeetingPoint: "Wexstraße 19-23, 1200 Wien",
               Role: 1
+            },
+            {
+              Name: "Dominik Dolezal",
+              Shortname: "ddolezal",
+              AttendanceFrom: "2021-03-01T19:00:40.035095+01:00",
+              AttendanceTill: "2021-03-03T17:00:40.035095+01:00",
+              Group: 2,
+              StartAddress: "Wexstraße 19-23, 1200 Wien",
+              MeetingPoint: "Wexstraße 19-23, 1200 Wien",
+              Role: 0
             }
           ]
         },
@@ -455,12 +467,23 @@ export default {
       this.progress = application.Progress;
       this.title = application.Name;
       this.kind = application.Kind;
+      this.currentTeacher = this.getCurrentTeacher();
       if (application.Kind === 4) {
-        var tmp = true;
-        if (tmp) {
+        if (
+          this.currentTeacher ===
+          this.app.SchoolEventDetails.Teachers[0].Shortname
+        ) {
           this.isLeader = true;
         } else {
           this.isLeader = false;
+        }
+        for (let i = 0; i < this.app.SchoolEventDetails.Teachers.length; i++) {
+          if (
+            this.currentTeacher ===
+            this.app.SchoolEventDetails.Teachers[i].Shortname
+          ) {
+            this.currentTeacherIndex = i;
+          }
         }
       }
       this.setItems(application);
@@ -754,6 +777,7 @@ export default {
           let data = response.data;
           return data.Short;
         });
+      return "szakall";
     },
     openPDF(item) {
       console.log(item);
