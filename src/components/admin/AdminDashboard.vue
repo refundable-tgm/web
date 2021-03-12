@@ -91,7 +91,7 @@
 
       <template #cell(kind)="data">
         <b-badge :variant="getKindVariant(data.item.kind)">{{
-          data.item.kind.toUpperCase()
+          loadKind(data.item.kind)
         }}</b-badge>
       </template>
       <template #cell(actions)="row">
@@ -105,9 +105,7 @@
         }}</b-badge>
       </template>
       <template #cell(from)="data">
-        <b-badge variant="secondary">{{
-          data.item.from.toUpperCase()
-        }}</b-badge>
+        <b-badge variant="secondary">{{ data.item.from }}</b-badge>
       </template>
       <template #row-details="row">
         <b-card>
@@ -142,59 +140,11 @@ export default {
       items: [
         {
           title: "a",
-          kind: "Schulveranstaltung",
+          kind: 4,
           status: "Akzeptierungsphase",
           edat: "2020-12-12",
           start: "2021-02-12",
           from: "zaks"
-        },
-        {
-          title: "b",
-          kind: "Fortbildung",
-          status: "Rechnungsphase",
-          edat: "2020-12-13",
-          start: "2021-03-13",
-          from: "dold"
-        },
-        {
-          title: "c",
-          kind: "Dienstauftrag",
-          status: "Rechnungsphase",
-          edat: "2020-12-14",
-          start: "2021-04-22",
-          from: "gram"
-        },
-        {
-          title: "d",
-          kind: "Krankschreibung",
-          status: "Akzeptierungsphase",
-          edat: "2020-12-15",
-          start: "2021-05-14",
-          from: "vitl"
-        },
-        {
-          title: "e",
-          kind: "Schulveranstaltung",
-          status: "Rechnungsphase",
-          edat: "2020-12-16",
-          start: "2021-06-15",
-          from: "fejw"
-        },
-        {
-          title: "f",
-          kind: "Pflegefreistellung",
-          status: "Akzeptierungsphase",
-          edat: "2020-12-17",
-          start: "2021-07-26",
-          from: "krah"
-        },
-        {
-          title: "g",
-          kind: "Schulveranstaltung",
-          status: "Akzeptierungsphase",
-          edat: "2020-12-18",
-          start: "2021-08-17",
-          from: "brah"
         }
       ],
       fields: [
@@ -250,20 +200,108 @@ export default {
     this.loadData();
   },
   methods: {
+    loadKind(kind) {
+      switch (kind) {
+        case 4:
+          return "Schulveranstaltung";
+        case 0:
+          return "Fortbildung";
+        case 2:
+          return "Dienstauftrag";
+        case 3:
+          return "Arzttermin";
+        case 1:
+          return "Pflegefreistellung";
+        case 5:
+          return "Seminar";
+        case 6:
+          return "Tagung";
+        case 7:
+          return "Lehrgang";
+        case 8:
+          return "Sonstiges";
+        default:
+          return "Fehler!";
+      }
+    },
+    loadStatus(kind, progress) {
+      if (kind === 4) {
+        switch (progress) {
+          case 0:
+            return "Abgelehnt";
+          case 1:
+            return "Akzeptierungsphase";
+          case 2:
+            return "Akzeptierungsphase";
+          case 3:
+            return "Akzeptierungsphase";
+          case 4:
+            return "Akzeptierungsphase";
+          case 5:
+            return "Rechnungsphase";
+          case 6:
+            return "Rechnungsphase";
+          case 7:
+            return "Rechnungsphase";
+          default:
+            return "Abgelehnt";
+        }
+      } else {
+        switch (progress) {
+          case 0:
+            return "Abgelehnt";
+          case 1:
+            return "Akzeptierungsphase";
+          case 2:
+            return "Akzeptierungsphase";
+          case 3:
+            return "Akzeptierungsphase";
+          case 4:
+            return "Rechnungsphase";
+          case 5:
+            return "Rechnungsphase";
+          case 6:
+            return "Rechnungsphase";
+          default:
+            return "Abgelehnt";
+        }
+      }
+    },
     loadData() {
       axios
-        .get(this.url + "/getAllAdminApplications?user=" + this.user)
+        .get(this.url + "/getAllAdminApplications?user=" + this.user, {
+          params: {
+            token: this.token
+          }
+        })
         .then(response => {
-          var data = response.data;
-          //Hier noch Daten formatieren, falls nicht alles passt
-          this.items = data;
+          var apps = response.data.applications;
+          for (let i = 0; i < apps.length; i++) {
+            apps[i].title = apps[i].Name;
+            apps[i].status = this.loadStatus(apps[i].Kind, apps[i].Progress);
+            apps[i].edate = this.formatDate(
+              apps[i].BusinessTripApplications[0].DateApplicationFiled
+            );
+            apps[i].start = this.formatDate(apps[i].StartTime);
+            apps[i].from = apps[i].Staffnr;
+          }
+          this.items = apps;
+          // Set the initial number of items
           this.totalRows = this.items.length;
         });
-      // Set the initial number of items
     },
     info(item) {
-      console.log(item);
-      this.viewApplication(item);
+      this.viewApplication(item.UUID);
+    },
+    formatDate(datum) {
+      return (
+        datum.getUTCFullYear() +
+        "-" +
+        datum.getUTCMonth() +
+        1 +
+        "-" +
+        datum.getUTCDate()
+      );
     },
     getStateVariant(status) {
       //TODO: Weitere States hinzufügen
@@ -274,25 +312,30 @@ export default {
           return "success";
         case "abgelehnt":
           return "danger";
-        case "":
-          return "";
         default:
           return "primary";
       }
     },
     getKindVariant(kind) {
-      //TODO: Weitere Arten hinzufügen
-      switch (kind.toLowerCase()) {
-        case "schulveranstaltung":
+      switch (kind) {
+        case 4:
           return "secondary";
-        case "fortbildung":
+        case 0:
           return "info";
-        case "dienstauftrag":
-          return "success";
-        case "krankschreibung":
+        case 2:
           return "warning";
-        case "pflegefreistellung":
+        case 3:
+          return "warning";
+        case 1:
+          return "warning";
+        case 5:
           return "dark";
+        case 6:
+          return "dark";
+        case 7:
+          return "dark";
+        case 8:
+          return "success";
         default:
           return "primary";
       }
@@ -314,7 +357,6 @@ export default {
       this.selected = items;
     },
     printSelected() {
-      console.log(this.selected);
       var req = [];
       for (let i = 0; i < this.selected.length; i++) {
         req.push({
