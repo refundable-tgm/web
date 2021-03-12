@@ -102,25 +102,35 @@ export default {
     login() {
       if (this.checkClick()) {
         if (this.cookieset === true) {
-          // Login Request an Michi
-          console.log("Login!");
-          console.log(this.email);
-          console.log(this.password);
-          // Userid getten von dem request
           axios
             .get(
               this.url + "/login?mail=" + this.email + ",pswd=" + this.password
             )
             .then(response => {
-              if (response.success) {
+              var data = response.data;
+              if (data.success) {
                 // Wenn login stimmt:
                 switch (this.forward.name) {
                   case "ApplicationSearch":
-                    this.$emit("login", response.user, response.admin);
+                    this.$emit(
+                      "login",
+                      data.user,
+                      data.admin,
+                      data.administration,
+                      data.av,
+                      data.pek
+                    );
                     this.$emit("change-component", this.forward.name);
                     break;
                   case "ApplicationView":
-                    this.$emit("login", response.user, response.admin);
+                    this.$emit(
+                      "login",
+                      data.user,
+                      data.admin,
+                      data.administration,
+                      data.av,
+                      data.pek
+                    );
                     this.$emit(
                       "change-component",
                       this.forward.name,
@@ -129,14 +139,17 @@ export default {
                     );
                     break;
                   default:
-                    this.$emit("login", response.user, response.admin);
-                    this.$emit("change-component", "Index");
-                    //Wenn Login failed:
-                    //Eine Meldung an den User, dass etwas (nicht spezifisch) nicht stimmt
+                    this.$emit(
+                      "login",
+                      data.user,
+                      data.admin,
+                      data.administration,
+                      data.av,
+                      data.pek
+                    );
                     break;
                 }
               } else {
-                // Wenn login nicht stimmt:
                 this.loginFailed();
               }
             });
@@ -171,7 +184,7 @@ export default {
     },
     forgot() {
       if (this.checkClick()) {
-        // Passwort vergessen
+        window.open("https://owa.tgm.ac.at");
         console.log("Passwort vergessen!");
       }
     },
