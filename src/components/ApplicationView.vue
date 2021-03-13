@@ -89,16 +89,18 @@
               />
               <TravelApplication
                 v-bind:readonly="tareadonly"
-                v-if="row.item.title == 'Reiseformular'"
+                v-bind:app="tadata"
+                v-bind:index="0"
                 v-on:update="updateTA"
+                v-if="row.item.title == 'Reiseformular'"
               />
               <TravelBill
                 v-bind:readonly="tbreadonly"
-                v-if="row.item.title == 'Reiserechnung'"
                 v-bind:index="0"
                 v-bind:start="start"
                 v-bind:end="end"
                 v-on:update="updateTB"
+                v-if="row.item.title == 'Reiserechnung'"
               />
               <Others
                 v-bind:readonly="oreadonly"
@@ -260,7 +262,6 @@ export default {
       kind: 0,
       app: Object,
       isLeader: false,
-      sgdata: {},
       sgreadonly: true,
       sedata: {},
       sereadonly: true,
@@ -272,6 +273,7 @@ export default {
       end: null,
       tbreadonly: true,
       tareadonly: true,
+      tadata: {},
       currentTeacher: "",
       currentTeacherIndex: -1
     };
@@ -296,7 +298,8 @@ export default {
       this.app = data;
     },
     updateSE(sedata) {
-      this.sedata = sedata;
+      this.app.SchoolEventDetails.Teachers[this.currentTeacherIndex] = sedata;
+      console.log(this.app);
     },
     updateO(odata) {
       this.odata = odata;
@@ -310,7 +313,59 @@ export default {
     },
     updateTA(index, data) {
       index.toString();
-      data.toString();
+      console.log(data);
+      if (data.bonus_meilen[0] === "0" || data.bonus_meilen[1] === "0") {
+        this.app.BusinessTripApplications[
+          this.currentTeacherIndex
+        ].BonusMileConfirmation1 = true;
+      } else {
+        this.app.BusinessTripApplications[
+          this.currentTeacherIndex
+        ].BonusMileConfirmation1 = false;
+      }
+      if (data.bonus_meilen[0] === "1" || data.bonus_meilen[1] === "1") {
+        this.app.BusinessTripApplications[
+          this.currentTeacherIndex
+        ].BonusMileConfirmation2 = true;
+      } else {
+        this.app.BusinessTripApplications[
+          this.currentTeacherIndex
+        ].BonusMileConfirmation2 = false;
+      }
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].Staffnr = this.returnValue(data.personalnummer);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].TravelMode = this.returnValue(data.transport);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].StartingPoint = this.returnValue(data.ausgangspunkt);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].EndPoint = this.returnValue(data.endpunkt);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].Reasoning = this.returnString(data.reason);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].TravelPurpose = this.returnString(data.reason1);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].TravelCostsPayedBySomeone = this.returnBoolean(data.reisekosten);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].StayingCostsPayedBySomeone = this.returnBoolean(data.aufenthaltskosten);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].PayedByWhom = this.returnString(data.von);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].OtherCosts = this.returnValue(data.sonstige_kosten);
+      this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].EstimatedCosts = this.returnValue(data.geschaetzte_kosten);
+      console.log(this.app);
     },
     loadData() {
       axios
@@ -394,27 +449,54 @@ export default {
         BusinessTripApplications: [
           {
             ID: 0,
-            Staffnr: 0,
-            TripBeginTime: "0001-01-01T00:00:00Z",
-            TripEndTime: "0001-01-01T00:00:00Z",
-            ServiceBeginTime: "0001-01-01T00:00:00Z",
-            ServiceEndTime: "0001-01-01T00:00:00Z",
-            TripGoal: "",
-            TravelPurpose: "",
-            TravelMode: 0,
+            Staffnr: 12345,
+            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
+            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
+            ServiceBeginTime: "2021-03-01T19:00:40.035095+01:00",
+            ServiceEndTime: "2021-03-03T17:00:40.035095+01:00",
+            TripGoal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+            TravelPurpose: "Aus Gesundheitsgründen",
+            TravelMode: 2,
             StartingPoint: 0,
             EndPoint: 0,
-            Reasoning: "",
-            OtherParticipants: null,
-            BonusMileConfirmation1: false,
-            BonusMileConfirmation2: false,
+            Reasoning: "Weil es näher ist",
+            OtherParticipants: ["ddolezal"],
+            BonusMileConfirmation1: true,
+            BonusMileConfirmation2: true,
             TravelCostsPayedBySomeone: false,
             StayingCostsPayedBySomeone: false,
             PayedByWhom: "",
-            OtherCosts: 0,
-            EstimatedCosts: 0,
-            DateApplicationFiled: "0001-01-01T00:00:00Z",
-            DateApplicationApproved: "0001-01-01T00:00:00Z",
+            OtherCosts: 10,
+            EstimatedCosts: 20,
+            DateApplicationFiled: "2021-01-01T18:54:40.035095+01:00",
+            DateApplicationApproved: "2021-02-01T18:54:40.035095+01:00",
+            Referee: "",
+            BusinessCardEmittedOutward: false,
+            BusinessCardEmittedReturn: false
+          },
+          {
+            ID: 1,
+            Staffnr: 1234,
+            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
+            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
+            ServiceBeginTime: "2021-03-01T19:00:40.035095+01:00",
+            ServiceEndTime: "2021-03-03T17:00:40.035095+01:00",
+            TripGoal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+            TravelPurpose: "Aus Gründen, die ich nicht nennen möchte",
+            TravelMode: 0,
+            StartingPoint: 0,
+            EndPoint: 0,
+            Reasoning: "Weil es am nähesten ist von allem",
+            OtherParticipants: ["szakall"],
+            BonusMileConfirmation1: true,
+            BonusMileConfirmation2: true,
+            TravelCostsPayedBySomeone: true,
+            StayingCostsPayedBySomeone: false,
+            PayedByWhom: "Firma",
+            OtherCosts: 30,
+            EstimatedCosts: 40,
+            DateApplicationFiled: "2021-01-01T18:54:40.035095+01:00",
+            DateApplicationApproved: "2021-02-01T18:54:40.035095+01:00",
             Referee: "",
             BusinessCardEmittedOutward: false,
             BusinessCardEmittedReturn: false
@@ -423,23 +505,23 @@ export default {
         TravelInvoices: [
           {
             ID: 0,
-            TripBeginTime: "0001-01-01T00:00:00Z",
-            TripEndTime: "0001-01-01T00:00:00Z",
-            Staffnr: 0,
-            StartingPoint: "",
-            EndPoint: "",
+            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
+            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
+            Staffnr: 12345,
+            StartingPoint: "Wexstraße 19-23, 1200 Wien",
+            EndPoint: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
             Clerk: "",
             Reviewer: "",
             TravelMode: 0,
             ZI: 0,
-            FilingDate: "0001-01-01T00:00:00Z",
-            ApprovalDate: "0001-01-01T00:00:00Z",
+            FilingDate: "2021-04-01T18:54:40.035095+01:00",
+            ApprovalDate: "2021-05-01T18:54:40.035095+01:00",
             DailyChargesMode: 0,
             ShortenedAmount: 0,
             NightlyChargesMode: 0,
-            Breakfasts: 0,
-            Lunches: 0,
-            Dinners: 0,
+            Breakfasts: 4,
+            Lunches: 5,
+            Dinners: 6,
             OfficialBusinessCardGot: false,
             TravelGrant: false,
             ReplacementForAdvantageCard: false,
@@ -451,12 +533,124 @@ export default {
             NoTravelCosts: false,
             Calculation: {
               ID: 0,
-              Rows: null,
-              SumTravelCosts: 0,
-              SumDailyCharges: 0,
-              SumNightlyCharges: 0,
-              SumAdditionalCosts: 0,
-              SumOfSums: 0
+              Rows: [
+                {
+                  NR: 0,
+                  Date: "2021-03-01T00:00:00.000000+01:00",
+                  Begin: "2021-03-01T08:00:00.000000+01:00",
+                  End: "2021-03-01T20:00:00.000000+01:00",
+                  Kilometres: 5.4,
+                  TravelCosts: 6,
+                  DailyCharges: 6,
+                  NightlyCharges: 6,
+                  AdditionalCosts: 6,
+                  Sum: 24
+                },
+                {
+                  NR: 1,
+                  Date: "2021-03-02T00:00:00.000000+01:00",
+                  Begin: "2021-03-02T08:00:00.000000+01:00",
+                  End: "2021-03-02T20:00:00.000000+01:00",
+                  Kilometres: 6.4,
+                  TravelCosts: 7,
+                  DailyCharges: 7,
+                  NightlyCharges: 7,
+                  AdditionalCosts: 7,
+                  Sum: 28
+                },
+                {
+                  NR: 2,
+                  Date: "2021-03-03T00:00:00.000000+01:00",
+                  Begin: "2021-03-03T08:00:00.000000+01:00",
+                  End: "2021-03-03T20:00:00.000000+01:00",
+                  Kilometres: 7.4,
+                  TravelCosts: 7,
+                  DailyCharges: 7,
+                  NightlyCharges: 7,
+                  AdditionalCosts: 7,
+                  Sum: 28
+                }
+              ],
+              SumTravelCosts: 20,
+              SumDailyCharges: 20,
+              SumNightlyCharges: 20,
+              SumAdditionalCosts: 20,
+              SumOfSums: 80
+            }
+          },
+          {
+            ID: 1,
+            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
+            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
+            Staffnr: 1234,
+            StartingPoint: "Wexstraße 19-23, 1200 Wien",
+            EndPoint: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+            Clerk: "",
+            Reviewer: "",
+            TravelMode: 0,
+            ZI: 0,
+            FilingDate: "2021-04-01T18:54:40.035095+01:00",
+            ApprovalDate: "2021-05-01T18:54:40.035095+01:00",
+            DailyChargesMode: 0,
+            ShortenedAmount: 0,
+            NightlyChargesMode: 0,
+            Breakfasts: 1,
+            Lunches: 2,
+            Dinners: 3,
+            OfficialBusinessCardGot: false,
+            TravelGrant: false,
+            ReplacementForAdvantageCard: false,
+            ReplacementForTrainCardClass2: false,
+            KilometreAllowance: false,
+            KilometreAmount: 0,
+            NRAndIdicationsOfParticipants: false,
+            TravelCostsCited: false,
+            NoTravelCosts: false,
+            Calculation: {
+              ID: 0,
+              Rows: [
+                {
+                  NR: 0,
+                  Date: "2021-03-01T00:00:00.000000+01:00",
+                  Begin: "2021-03-01T08:00:00.000000+01:00",
+                  End: "2021-03-01T20:00:00.000000+01:00",
+                  Kilometres: 5.4,
+                  TravelCosts: 6,
+                  DailyCharges: 6,
+                  NightlyCharges: 6,
+                  AdditionalCosts: 6,
+                  Sum: 24
+                },
+                {
+                  NR: 1,
+                  Date: "2021-03-02T00:00:00.000000+01:00",
+                  Begin: "2021-03-02T08:00:00.000000+01:00",
+                  End: "2021-03-02T20:00:00.000000+01:00",
+                  Kilometres: 6.4,
+                  TravelCosts: 7,
+                  DailyCharges: 7,
+                  NightlyCharges: 7,
+                  AdditionalCosts: 7,
+                  Sum: 28
+                },
+                {
+                  NR: 2,
+                  Date: "2021-03-03T00:00:00.000000+01:00",
+                  Begin: "2021-03-03T08:00:00.000000+01:00",
+                  End: "2021-03-03T20:00:00.000000+01:00",
+                  Kilometres: 7.4,
+                  TravelCosts: 7,
+                  DailyCharges: 7,
+                  NightlyCharges: 7,
+                  AdditionalCosts: 7,
+                  Sum: 28
+                }
+              ],
+              SumTravelCosts: 20,
+              SumDailyCharges: 20,
+              SumNightlyCharges: 20,
+              SumAdditionalCosts: 20,
+              SumOfSums: 80
             }
           }
         ]
@@ -485,9 +679,37 @@ export default {
             this.currentTeacherIndex = i;
           }
         }
+        this.sedata = this.app.SchoolEventDetails.Teachers[
+          this.currentTeacherIndex
+        ];
+        this.tadata = this.app.BusinessTripApplications[
+          this.currentTeacherIndex
+        ];
       }
       this.setItems(application);
       this.setReads(application);
+    },
+    returnValue(input) {
+      if (input === undefined || input === null || input === "") {
+        return null;
+      } else {
+        return Number(input);
+      }
+    },
+    returnString(input) {
+      if (input === undefined || input === null || input === "") {
+        return null;
+      } else {
+        return input;
+      }
+    },
+    returnBoolean(input) {
+      if (input === undefined || input === null || input === "") {
+        return null;
+      } else {
+        if (input === "false") return false;
+        else return true;
+      }
     },
     save() {
       console.log(this.sgreadonly);
@@ -777,7 +999,7 @@ export default {
           let data = response.data;
           return data.Short;
         });
-      return "szakall";
+      return "ddolezal";
     },
     openPDF(item) {
       console.log(item);

@@ -16,6 +16,7 @@
             type="number"
             v-model="data.personalnummer"
             v-on:input="update"
+            :readonly="readonly"
           >
           </b-form-input>
           <b-form-invalid-feedback id="bezeichnung-feedback">
@@ -35,6 +36,7 @@
           <b-form-radio-group
             :id="index + 'tp'"
             v-model="data.transport"
+            :disabled="readonly"
             v-on:change="update"
             :name="index + 'tp'"
             stacked
@@ -66,6 +68,7 @@
           <b-form-textarea
             :id="index + 'beg1'"
             v-model="data.reason1"
+            :readonly="readonly"
             v-on:input="update"
             placeholder="Begründung"
             rows="3"
@@ -86,6 +89,7 @@
             :id="index + 'ap'"
             v-on:change="update"
             v-model="data.ausgangspunkt"
+            :disabled="readonly"
             :name="index + 'ap'"
           >
             <b-form-radio value="1">Dienststelle</b-form-radio>
@@ -106,6 +110,7 @@
             :id="index + 'ep'"
             v-on:change="update"
             v-model="data.endpunkt"
+            :disabled="readonly"
             :name="index + 'ep'"
           >
             <b-form-radio value="1">Dienstselle</b-form-radio>
@@ -125,6 +130,7 @@
           <b-form-textarea
             :id="index + 'beg'"
             v-model="data.reason"
+            :readonly="readonly"
             v-on:input="update"
             placeholder="Begründung"
             rows="3"
@@ -144,6 +150,7 @@
           <b-form-checkbox-group
             :id="index + 'bonus'"
             v-model="data.bonus_meilen"
+            :disabled="readonly"
             v-on:change="update"
             :name="index + 'bonus'"
             stacked
@@ -173,6 +180,7 @@
             :id="index + 'reis'"
             v-on:change="update"
             v-model="data.reisekosten"
+            :disabled="readonly"
             :name="index + 'reis'"
           >
             <b-form-radio value="false">Nein</b-form-radio>
@@ -192,6 +200,7 @@
           <b-form-radio-group
             :id="index + 'auf'"
             v-model="data.aufenthaltskosten"
+            :disabled="readonly"
             v-on:change="update"
             :name="index + 'auf'"
           >
@@ -215,6 +224,7 @@
           <b-form-input
             v-on:input="update"
             v-model="data.von"
+            :readonly="readonly"
             :id="index + 'vonauf'"
             type="text"
           >
@@ -237,6 +247,7 @@
             <b-form-input
               v-on:input="update"
               v-model="data.sonstige_kosten"
+              :readonly="readonly"
               :id="index + 'sonstk'"
               type="number"
             >
@@ -259,6 +270,7 @@
             >
             <b-form-input
               v-model="data.geschaetzte_kosten"
+              :readonly="readonly"
               v-on:input="update"
               :id="index + 'geschk'"
               type="number"
@@ -273,7 +285,7 @@
 <script>
 export default {
   name: "NewApplication",
-  props: ["escort", "index"],
+  props: ["escort", "index", "readonly", "app"],
   methods: {
     update() {
       this.$emit("update", this.index, this.data);
@@ -296,6 +308,36 @@ export default {
         geschaetzte_kosten: null
       }
     };
+  },
+  mounted() {
+    if (
+      this.readonly == null ||
+      this.readonly == "" ||
+      this.readonly == undefined
+    ) {
+      this.readonly = false;
+    }
+    if (this.app !== null) {
+      this.data.personalnummer = this.app.Staffnr;
+      this.data.transport = this.app.TravelMode;
+      this.data.ausgangspunkt = this.app.StartingPoint;
+      this.data.endpunkt = this.app.EndPoint;
+      this.data.reason = this.app.Reasoning;
+      this.data.reason1 = this.app.TravelPurpose;
+      var bm = [];
+      if (this.app.BonusMileConfirmation1) {
+        bm.push("0");
+      }
+      if (this.app.BonusMileConfirmation2) {
+        bm.push("1");
+      }
+      this.data.bonus_meilen = bm;
+      this.data.reisekosten = "" + this.app.TravelCostsPayedBySomeone;
+      this.data.aufenthaltskosten = "" + this.app.StayingCostsPayedBySomeone;
+      this.data.von = this.app.PayedByWhom;
+      this.data.sonstige_kosten = this.app.OtherCosts;
+      this.data.geschaetzte_kosten = this.app.EstimatedCosts;
+    }
   }
 };
 </script>
