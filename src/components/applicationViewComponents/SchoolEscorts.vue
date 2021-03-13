@@ -3,24 +3,6 @@
     <b-row>
       <b-col cols="12">
         <b-form-group
-          id="titel"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          description="Geben Sie den Titel der zugehörigen Schulveranstaltung ein."
-          label="Schulveranstaltung"
-          label-for="tit"
-          v-if="selected == 2"
-        >
-          <b-form-input
-            id="tit"
-            v-model="data.bez"
-            :readonly="readonly"
-            @input="updateData"
-          ></b-form-input>
-        </b-form-group>
-        <b-form-group
           id="startd"
           label-cols-sm="4"
           label-cols-lg="3"
