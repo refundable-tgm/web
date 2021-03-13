@@ -99,6 +99,7 @@
                 v-bind:index="0"
                 v-bind:start="start"
                 v-bind:end="end"
+                v-bind:app="tbdata"
                 v-on:update="updateTB"
                 v-if="row.item.title == 'Reiserechnung'"
               />
@@ -274,6 +275,7 @@ export default {
       tbreadonly: true,
       tareadonly: true,
       tadata: {},
+      tbdata: {},
       currentTeacher: "",
       currentTeacherIndex: -1
     };
@@ -299,7 +301,6 @@ export default {
     },
     updateSE(sedata) {
       this.app.SchoolEventDetails.Teachers[this.currentTeacherIndex] = sedata;
-      console.log(this.app);
     },
     updateO(odata) {
       this.odata = odata;
@@ -309,11 +310,174 @@ export default {
     },
     updateTB(index, data) {
       index.toString();
-      data.toString();
+      // Es fehlt nur noch die Sachen aus der riesen Liste
+      if (data.selected.includes("a1")) {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].OfficialBusinessCardGot = true;
+      } else {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].OfficialBusinessCardGot = false;
+      }
+      if (data.selected.includes("a2")) {
+        this.app.TravelInvoices[this.currentTeacherIndex].TravelGrant = true;
+      } else {
+        this.app.TravelInvoices[this.currentTeacherIndex].TravelGrant = false;
+      }
+      if (data.selected.includes("a3")) {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].ReplacementForAdvantageCard = true;
+      } else {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].ReplacementForAdvantageCard = false;
+      }
+      if (data.selected.includes("a4")) {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].ReplacementForTrainCardClass2 = true;
+      } else {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].ReplacementForTrainCardClass2 = false;
+      }
+      if (data.selected.includes("a5")) {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].KilometreAllowance = true;
+      } else {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].KilometreAllowance = false;
+      }
+      if (data.selected.includes("a6")) {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].NRAndIdicationsOfParticipants = true;
+      } else {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].NRAndIdicationsOfParticipants = false;
+      }
+      if (data.selected.includes("a7")) {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].TravelCostsCited = true;
+      } else {
+        this.app.TravelInvoices[
+          this.currentTeacherIndex
+        ].TravelCostsCited = true;
+      }
+      if (data.selected.includes("a8")) {
+        this.app.TravelInvoices[this.currentTeacherIndex].NoTravelCosts = true;
+      } else {
+        this.app.TravelInvoices[this.currentTeacherIndex].NoTravelCosts = false;
+      }
+      switch (data.dcm) {
+        case "a1":
+          this.app.TravelInvoices[
+            this.currentTeacherIndex
+          ].DailyChargesMode = 0;
+          break;
+        case "a2":
+          this.app.TravelInvoices[
+            this.currentTeacherIndex
+          ].DailyChargesMode = 1;
+          break;
+        case "a3":
+          this.app.TravelInvoices[
+            this.currentTeacherIndex
+          ].DailyChargesMode = 2;
+          break;
+      }
+      switch (data.ncm) {
+        case "a1":
+          this.app.TravelInvoices[
+            this.currentTeacherIndex
+          ].NightlyChargesMode = 0;
+          break;
+        case "a2":
+          this.app.TravelInvoices[
+            this.currentTeacherIndex
+          ].NightlyChargesMode = 1;
+          break;
+        case "a3":
+          this.app.TravelInvoices[
+            this.currentTeacherIndex
+          ].NightlyChargesMode = 2;
+          break;
+      }
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].TravelMode = this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].TravelMode;
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].ID = this.currentTeacherIndex;
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].TripBeginTime = this.app.StartTime;
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].TripEndTime = this.app.EndTime;
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].Staffnr = this.app.BusinessTripApplications[
+        this.currentTeacherIndex
+      ].Staffnr;
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].StartingPoint = this.app.StartAddress;
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].EndPoint = this.app.DestinationAddress;
+      this.app.TravelInvoices[this.currentTeacherIndex].ShortenedAmount =
+        data.short;
+      this.app.TravelInvoices[this.currentTeacherIndex].Breakfasts =
+        data.breakfast;
+      this.app.TravelInvoices[this.currentTeacherIndex].Lunches = data.lunch;
+      this.app.TravelInvoices[this.currentTeacherIndex].Dinners = data.dinner;
+      this.app.TravelInvoices[this.currentTeacherIndex].KilometreAmount =
+        data.km;
+      this.app.TravelInvoices[this.currentTeacherIndex].Calculation = {};
+      this.app.TravelInvoices[this.currentTeacherIndex].Calculation.ID = 0;
+      this.app.TravelInvoices[this.currentTeacherIndex].Calculation.Rows = [];
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].Calculation.SumTravelCosts = data.SumTravelCosts;
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].Calculation.SumDailyCharges = data.SumDailyCharges;
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].Calculation.SumNightlyCharges = data.SumNightlyCharges;
+      this.app.TravelInvoices[
+        this.currentTeacherIndex
+      ].Calculation.SumAdditionalCosts = data.SumAdditionalCosts;
+      this.app.TravelInvoices[this.currentTeacherIndex].Calculation.SumOfSums =
+        data.SumOfSums;
+      for (let i = 0; i < data.items.length; i++) {
+        this.app.TravelInvoices[this.currentTeacherIndex].Calculation.Rows.push(
+          {
+            NR: this.returnValue(data.items[i].index),
+            Date: this.calcDate(data.items[i].date),
+            Begin: this.calcTime(data.items[i].start),
+            End: this.calcTime(data.items[i].end),
+            Kilometres: this.returnValue(data.items[i].km),
+            TravelCosts: this.returnValue(data.items[i].travelcosts),
+            DailyCharges: this.returnValue(data.items[i].daycharge),
+            NightlyCharges: this.returnValue(data.items[i].sleepcharge),
+            AdditionalCosts: this.returnValue(data.items[i].othercosts),
+            Sum: this.returnValue(data.items[i].sum)
+          }
+        );
+      }
     },
     updateTA(index, data) {
       index.toString();
-      console.log(data);
       if (data.bonus_meilen[0] === "0" || data.bonus_meilen[1] === "0") {
         this.app.BusinessTripApplications[
           this.currentTeacherIndex
@@ -365,7 +529,14 @@ export default {
       this.app.BusinessTripApplications[
         this.currentTeacherIndex
       ].EstimatedCosts = this.returnValue(data.geschaetzte_kosten);
-      console.log(this.app);
+    },
+    calcDate(date) {
+      var tmp = date.split(".");
+      return tmp[2] + "-" + tmp[1] + "-" + tmp[0] + "T00:00:00+01:00";
+    },
+    calcTime(date) {
+      var tmp = date.split(":");
+      return "2000-01-01T" + tmp[0] + ":" + tmp[1] + ":00+01:00";
     },
     loadData() {
       axios
@@ -399,7 +570,7 @@ export default {
         Name: "Sommersportwoche",
         Kind: 4,
         MiscellaneousReason: "",
-        Progress: 3,
+        Progress: 5,
         StartTime: "2021-03-01T18:54:40.035095+01:00",
         EndTime: "2021-03-03T18:54:40.035095+01:00",
         Notes: "Sommersportwoche ist cool",
@@ -516,20 +687,20 @@ export default {
             ZI: 0,
             FilingDate: "2021-04-01T18:54:40.035095+01:00",
             ApprovalDate: "2021-05-01T18:54:40.035095+01:00",
-            DailyChargesMode: 0,
-            ShortenedAmount: 0,
-            NightlyChargesMode: 0,
+            DailyChargesMode: 2,
+            ShortenedAmount: 2000,
+            NightlyChargesMode: 1,
             Breakfasts: 4,
             Lunches: 5,
             Dinners: 6,
-            OfficialBusinessCardGot: false,
-            TravelGrant: false,
-            ReplacementForAdvantageCard: false,
+            OfficialBusinessCardGot: true,
+            TravelGrant: true,
+            ReplacementForAdvantageCard: true,
             ReplacementForTrainCardClass2: false,
-            KilometreAllowance: false,
-            KilometreAmount: 0,
-            NRAndIdicationsOfParticipants: false,
-            TravelCostsCited: false,
+            KilometreAllowance: true,
+            KilometreAmount: 100,
+            NRAndIdicationsOfParticipants: true,
+            TravelCostsCited: true,
             NoTravelCosts: false,
             Calculation: {
               ID: 0,
@@ -539,7 +710,7 @@ export default {
                   Date: "2021-03-01T00:00:00.000000+01:00",
                   Begin: "2021-03-01T08:00:00.000000+01:00",
                   End: "2021-03-01T20:00:00.000000+01:00",
-                  Kilometres: 5.4,
+                  Kilometres: 5,
                   TravelCosts: 6,
                   DailyCharges: 6,
                   NightlyCharges: 6,
@@ -551,7 +722,7 @@ export default {
                   Date: "2021-03-02T00:00:00.000000+01:00",
                   Begin: "2021-03-02T08:00:00.000000+01:00",
                   End: "2021-03-02T20:00:00.000000+01:00",
-                  Kilometres: 6.4,
+                  Kilometres: 6,
                   TravelCosts: 7,
                   DailyCharges: 7,
                   NightlyCharges: 7,
@@ -563,7 +734,7 @@ export default {
                   Date: "2021-03-03T00:00:00.000000+01:00",
                   Begin: "2021-03-03T08:00:00.000000+01:00",
                   End: "2021-03-03T20:00:00.000000+01:00",
-                  Kilometres: 7.4,
+                  Kilometres: 7,
                   TravelCosts: 7,
                   DailyCharges: 7,
                   NightlyCharges: 7,
@@ -591,20 +762,20 @@ export default {
             ZI: 0,
             FilingDate: "2021-04-01T18:54:40.035095+01:00",
             ApprovalDate: "2021-05-01T18:54:40.035095+01:00",
-            DailyChargesMode: 0,
-            ShortenedAmount: 0,
-            NightlyChargesMode: 0,
+            DailyChargesMode: 2,
+            ShortenedAmount: 2000,
+            NightlyChargesMode: 1,
             Breakfasts: 1,
             Lunches: 2,
             Dinners: 3,
-            OfficialBusinessCardGot: false,
-            TravelGrant: false,
-            ReplacementForAdvantageCard: false,
-            ReplacementForTrainCardClass2: false,
-            KilometreAllowance: false,
-            KilometreAmount: 0,
-            NRAndIdicationsOfParticipants: false,
-            TravelCostsCited: false,
+            OfficialBusinessCardGot: true,
+            TravelGrant: true,
+            ReplacementForAdvantageCard: true,
+            ReplacementForTrainCardClass2: true,
+            KilometreAllowance: true,
+            KilometreAmount: 100,
+            NRAndIdicationsOfParticipants: true,
+            TravelCostsCited: true,
             NoTravelCosts: false,
             Calculation: {
               ID: 0,
@@ -614,50 +785,48 @@ export default {
                   Date: "2021-03-01T00:00:00.000000+01:00",
                   Begin: "2021-03-01T08:00:00.000000+01:00",
                   End: "2021-03-01T20:00:00.000000+01:00",
-                  Kilometres: 5.4,
+                  Kilometres: 5,
                   TravelCosts: 6,
-                  DailyCharges: 6,
+                  DailyCharges: 7,
                   NightlyCharges: 6,
                   AdditionalCosts: 6,
-                  Sum: 24
+                  Sum: 25
                 },
                 {
                   NR: 1,
                   Date: "2021-03-02T00:00:00.000000+01:00",
                   Begin: "2021-03-02T08:00:00.000000+01:00",
                   End: "2021-03-02T20:00:00.000000+01:00",
-                  Kilometres: 6.4,
+                  Kilometres: 6,
                   TravelCosts: 7,
                   DailyCharges: 7,
-                  NightlyCharges: 7,
-                  AdditionalCosts: 7,
-                  Sum: 28
+                  NightlyCharges: 8,
+                  AdditionalCosts: 8,
+                  Sum: 30
                 },
                 {
                   NR: 2,
                   Date: "2021-03-03T00:00:00.000000+01:00",
                   Begin: "2021-03-03T08:00:00.000000+01:00",
                   End: "2021-03-03T20:00:00.000000+01:00",
-                  Kilometres: 7.4,
-                  TravelCosts: 7,
-                  DailyCharges: 7,
+                  Kilometres: 7,
+                  TravelCosts: 8,
+                  DailyCharges: 8,
                   NightlyCharges: 7,
                   AdditionalCosts: 7,
-                  Sum: 28
+                  Sum: 30
                 }
               ],
-              SumTravelCosts: 20,
-              SumDailyCharges: 20,
-              SumNightlyCharges: 20,
-              SumAdditionalCosts: 20,
-              SumOfSums: 80
+              SumTravelCosts: 21,
+              SumDailyCharges: 22,
+              SumNightlyCharges: 21,
+              SumAdditionalCosts: 21,
+              SumOfSums: 85
             }
           }
         ]
       };
       this.app = application;
-      this.start = application.StartTime;
-      this.end = application.EndTime;
       this.progress = application.Progress;
       this.title = application.Name;
       this.kind = application.Kind;
@@ -679,13 +848,18 @@ export default {
             this.currentTeacherIndex = i;
           }
         }
+        this.start = this.app.SchoolEventDetails.Teachers[
+          this.currentTeacherIndex
+        ].AttendanceFrom;
+        this.end = this.app.SchoolEventDetails.Teachers[
+          this.currentTeacherIndex
+        ].AttendanceTill;
         this.sedata = this.app.SchoolEventDetails.Teachers[
           this.currentTeacherIndex
         ];
-        this.tadata = this.app.BusinessTripApplications[
-          this.currentTeacherIndex
-        ];
       }
+      this.tadata = this.app.BusinessTripApplications[this.currentTeacherIndex];
+      this.tbdata = this.app.TravelInvoices[this.currentTeacherIndex];
       this.setItems(application);
       this.setReads(application);
     },
@@ -1043,7 +1217,6 @@ export default {
       }
     },
     index() {
-      console.log("INDEX!");
       if (this.checkClick) {
         this.changeComponent("Index");
         this.changeURL("Index");

@@ -12,7 +12,13 @@
           label-for="zud"
           id="zu"
         >
-          <b-form-checkbox-group id="zud" v-model="data.selected" stacked>
+          <b-form-checkbox-group
+            id="zud"
+            v-model="data.selected"
+            v-on:input="update"
+            :disabled="readonly"
+            stacked
+          >
             <b-form-checkbox value="a1"
               >Amtl. Buisnesskarte erhalten</b-form-checkbox
             >
@@ -32,25 +38,53 @@
               anschließen)</b-form-checkbox
             >
             <b-form-checkbox value="a8">Keine Reisekosten</b-form-checkbox>
-            <b-form-checkbox value="a9"
-              >Tagesgebühr nach Tarif I</b-form-checkbox
-            >
-            <b-form-checkbox value="a10"
-              >Tagesgebühr nach Tarif II</b-form-checkbox
-            >
-            <b-form-checkbox value="a11"
-              >Tagesgebühr gemäß §17 zu kürzen</b-form-checkbox
-            >
-            <b-form-checkbox value="a12"
-              >Nächtigungsgebühr Nächtigungen Nachweis</b-form-checkbox
-            >
-            <b-form-checkbox value="a13"
-              >Nächtigungen ohne Nachweis</b-form-checkbox
-            >
-            <b-form-checkbox value="a14"
-              >Keinen Anspruch auf Nächtigungsgebühr</b-form-checkbox
-            >
           </b-form-checkbox-group>
+        </b-form-group>
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie die Art der Tagesgebühr an"
+          label="Tagesgebühr"
+          label-for="ttg"
+          id="tg"
+        >
+          <b-form-radio-group
+            v-model="data.dcm"
+            v-on:change="update"
+            :disabled="readonly"
+          >
+            <b-form-radio value="a1">Tagesgebühr nach Tarif I</b-form-radio>
+            <b-form-radio value="a2">Tagesgebühr nach Tarif II</b-form-radio>
+            <b-form-radio value="a3"
+              >Tagesgebühr gemäß §17 zu kürzen</b-form-radio
+            >
+          </b-form-radio-group>
+        </b-form-group>
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie die Art der Nächtigungsgebühren an"
+          label="Nächtigungsgebühr"
+          label-for="tng"
+          id="ng"
+        >
+          <b-form-radio-group
+            v-model="data.ncm"
+            v-on:change="update"
+            :disabled="readonly"
+          >
+            <b-form-radio value="a1"
+              >Nächtigungsgebühr Nächtigungen Nachweis</b-form-radio
+            >
+            <b-form-radio value="a2">Nächtigungen ohne Nachweis</b-form-radio>
+            <b-form-radio value="a3"
+              >Keinen Anspruch auf Nächtigungsgebühr</b-form-radio
+            >
+          </b-form-radio-group>
         </b-form-group>
         <b-form-group
           id="km-pkwg"
@@ -67,7 +101,13 @@
             <b-input-group-text id="km-addon-1" slot="append"
               ><span>km</span></b-input-group-text
             >
-            <b-form-input v-model="km" id="km-pkw" type="number">
+            <b-form-input
+              :readonly="readonly"
+              v-model="data.km"
+              v-on:input="update"
+              id="km-pkw"
+              type="number"
+            >
             </b-form-input>
           </b-input-group>
         </b-form-group>
@@ -90,7 +130,11 @@
               id="mit-num"
               type="number"
               v-model="data.anzahl"
-              v-on:change="createMitfahrer"
+              v-on:change="
+                createMitfahrer();
+                update();
+              "
+              :readonly="readonly"
             >
             </b-form-input>
           </b-input-group>
@@ -109,7 +153,14 @@
             :label="'Mitfahrer ' + fahr.index + ' Name'"
             label-for="mit-nam-x"
           >
-            <b-form-input id="mit-nam-x" type="text"> </b-form-input>
+            <b-form-input
+              id="mit-nam-x"
+              type="text"
+              :readonly="readonly"
+              v-model="mitfahrer"
+              v-on:input="update"
+            >
+            </b-form-input>
           </b-form-group>
         </div>
 
@@ -122,9 +173,15 @@
           description="Tagesgebür gemäß §17 zu kürzen um (Anzahl)"
           label="Zu kürzende Tagesgebühr"
           label-for="tag-kuerz"
-          v-if="data.selected.includes('a11')"
+          v-if="data.dcm === 'a3'"
         >
-          <b-form-input v-model="short" id="tag-kuerz" type="number">
+          <b-form-input
+            :readonly="readonly"
+            v-model="data.short"
+            v-on:input="update"
+            id="tag-kuerz"
+            type="number"
+          >
           </b-form-input>
         </b-form-group>
 
@@ -142,7 +199,13 @@
             <b-input-group-text id="stk-addon-1" slot="append"
               ><span>Stück</span></b-input-group-text
             >
-            <b-form-input v-model="data.breakfast" id="frueh" type="number">
+            <b-form-input
+              :readonly="readonly"
+              v-model="data.breakfast"
+              v-on:input="update"
+              id="frueh"
+              type="number"
+            >
             </b-form-input>
           </b-input-group>
         </b-form-group>
@@ -161,7 +224,13 @@
             <b-input-group-text id="stk-addon-2" slot="append"
               ><span>Stück</span></b-input-group-text
             >
-            <b-form-input v-model="data.lunch" id="mittag" type="number">
+            <b-form-input
+              :readonly="readonly"
+              v-model="data.lunch"
+              v-on:input="update"
+              id="mittag"
+              type="number"
+            >
             </b-form-input>
           </b-input-group>
         </b-form-group>
@@ -180,7 +249,13 @@
             <b-input-group-text id="stk-addon-3" slot="append"
               ><span>Stück</span></b-input-group-text
             >
-            <b-form-input v-model="data.dinner" id="abend" type="number">
+            <b-form-input
+              :readonly="readonly"
+              v-model="data.dinner"
+              v-on:input="update"
+              id="abend"
+              type="number"
+            >
             </b-form-input>
           </b-input-group>
         </b-form-group>
@@ -199,6 +274,7 @@
             id="bel"
             v-model="invoices"
             v-on:input="convert"
+            :disabled="readonly"
           >
             <template slot="file-name" slot-scope="{ names }">
               <b-badge variant="dark">{{ names[0] }}</b-badge>
@@ -225,7 +301,8 @@
               locale="de"
               placeholder="Zeit"
               v-model="data.item.start"
-              v-on="update()"
+              :readonly="readonly"
+              v-on:input="update()"
             ></b-form-timepicker>
           </template>
 
@@ -236,7 +313,8 @@
               locale="de"
               placeholder="Zeit"
               v-model="data.item.end"
-              v-on="update()"
+              :readonly="readonly"
+              v-on:input="update()"
             ></b-form-timepicker>
           </template>
 
@@ -247,7 +325,8 @@
             <b-form-input
               :id="'0'"
               v-model="data.item.km"
-              v-on="update()"
+              :readonly="readonly"
+              v-on:input="update()"
               type="number"
             >
             </b-form-input>
@@ -260,6 +339,7 @@
                 calcSum(data.item);
                 update();
               "
+              :readonly="readonly"
             >
             </b-form-input>
           </template>
@@ -271,6 +351,7 @@
                 calcSum(data.item);
                 update();
               "
+              :readonly="readonly"
             >
             </b-form-input>
           </template>
@@ -282,6 +363,7 @@
                 calcSum(data.item);
                 update();
               "
+              :readonly="readonly"
             >
             </b-form-input>
           </template>
@@ -293,6 +375,7 @@
                 calcSum(data.item);
                 update();
               "
+              :readonly="readonly"
             >
             </b-form-input>
           </template>
@@ -304,7 +387,7 @@
 
 <script>
 export default {
-  props: ["start", "end", "index"],
+  props: ["start", "end", "index", "readonly", "app"],
   data() {
     return {
       fields: [
@@ -324,6 +407,8 @@ export default {
       invoices: [],
       data: {
         selected: [],
+        dcm: null,
+        ncm: null,
         km: null,
         breakfast: null,
         lunch: null,
@@ -343,6 +428,7 @@ export default {
   },
   methods: {
     update() {
+      this.calcRows();
       this.$emit("update", this.index, this.data);
     },
     calcSum(item) {
@@ -366,6 +452,7 @@ export default {
         imgs[i] = await toBase64(this.invoices[i]);
       }
       this.data.beleg = imgs;
+      this.update();
     },
     calcRows() {
       var stc = 0;
@@ -426,9 +513,19 @@ export default {
       let diff = new Date(this.end).getTime() - new Date(this.start).getTime();
       let days = diff / (1000 * 3600 * 24);
       return Math.ceil(days);
+    },
+    getTimeOfDate(datum) {
+      var tmp = new Date(datum);
+      return tmp.getHours() + ":" + tmp.getMinutes();
     }
   },
   mounted() {
+    if (
+      this.readonly == null ||
+      this.readonly == "" ||
+      this.readonly == undefined
+    )
+      this.readonly = false;
     for (let i = 0; i <= this.calculateLength(); i++) {
       var tmp = new Date(this.start);
       tmp.setDate(tmp.getDate() + i);
@@ -440,17 +537,52 @@ export default {
           (tmp.getUTCMonth() + 1) +
           "." +
           tmp.getUTCFullYear(),
-        start: "",
-        end: "",
+        start: this.getTimeOfDate(this.app.Calculation.Rows[i].Begin),
+        end: this.getTimeOfDate(this.app.Calculation.Rows[i].End),
         kind: "Tagesgebühr",
-        km: "",
-        travelcosts: "",
-        daycharge: "",
-        sleepcharge: "",
-        othercosts: "",
-        sum: ""
+        km: this.app.Calculation.Rows[i].Kilometres,
+        travelcosts: this.app.Calculation.Rows[i].TravelCosts,
+        daycharge: this.app.Calculation.Rows[i].DailyCharges,
+        sleepcharge: this.app.Calculation.Rows[i].NightlyCharges,
+        othercosts: this.app.Calculation.Rows[i].AdditionalCosts,
+        sum: this.app.Calculation.Rows[i].Sum
       });
     }
+    this.data.km = this.app.KilometreAmount;
+    this.data.breakfast = this.app.Breakfasts;
+    this.data.lunch = this.app.Lunches;
+    this.data.dinner = this.app.Dinners;
+    this.data.short = this.app.ShortenedAmount;
+    switch (this.app.DailyChargesMode) {
+      case 0:
+        this.data.dcm = "a1";
+        break;
+      case 1:
+        this.data.dcm = "a2";
+        break;
+      case 2:
+        this.data.dcm = "a3";
+        break;
+    }
+    switch (this.app.NightlyChargesMode) {
+      case 0:
+        this.data.ncm = "a1";
+        break;
+      case 1:
+        this.data.ncm = "a2";
+        break;
+      case 2:
+        this.data.ncm = "a3";
+        break;
+    }
+    if (this.app.OfficialBusinessCardGot) this.data.selected.push("a1");
+    if (this.app.TravelGrant) this.data.selected.push("a2");
+    if (this.app.ReplacementForAdvantageCard) this.data.selected.push("a3");
+    if (this.app.ReplacementForTrainCardClass2) this.data.selected.push("a4");
+    if (this.app.KilometreAllowance) this.data.selected.push("a5");
+    if (this.app.NRAndIdicationsOfParticipants) this.data.selected.push("a6");
+    if (this.app.TravelCostsCited) this.data.selected.push("a7");
+    if (this.app.NoTravelCosts) this.data.selected.push("a8");
   }
 };
 </script>
