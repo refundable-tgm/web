@@ -523,7 +523,7 @@ export default {
             token: this.token
           }
         })
-        .then(response => {
+        .then((response) => {
           this.app = response.data.application;
           this.title = this.app.Name;
           this.kind = this.app.Kind;
@@ -607,7 +607,8 @@ export default {
           params: {
             application: this.app.UUID,
             token: this.token,
-            data: this.app
+            data: this.app,
+            user: this.user
           }
         })
         .then(() => {

@@ -40,52 +40,6 @@
           </b-form-checkbox-group>
         </b-form-group>
         <b-form-group
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          description="Geben Sie die Art der Tagesgebühr an"
-          label="Tagesgebühr"
-          label-for="ttg"
-          id="tg"
-        >
-          <b-form-radio-group
-            v-model="data.dcm"
-            v-on:change="update"
-            :disabled="readonly"
-          >
-            <b-form-radio value="a1">Tagesgebühr nach Tarif I</b-form-radio>
-            <b-form-radio value="a2">Tagesgebühr nach Tarif II</b-form-radio>
-            <b-form-radio value="a3"
-              >Tagesgebühr gemäß §17 zu kürzen</b-form-radio
-            >
-          </b-form-radio-group>
-        </b-form-group>
-        <b-form-group
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          description="Geben Sie die Art der Nächtigungsgebühren an"
-          label="Nächtigungsgebühr"
-          label-for="tng"
-          id="ng"
-        >
-          <b-form-radio-group
-            v-model="data.ncm"
-            v-on:change="update"
-            :disabled="readonly"
-          >
-            <b-form-radio value="a1"
-              >Nächtigungsgebühr Nächtigungen Nachweis</b-form-radio
-            >
-            <b-form-radio value="a2">Nächtigungen ohne Nachweis</b-form-radio>
-            <b-form-radio value="a3"
-              >Keinen Anspruch auf Nächtigungsgebühr</b-form-radio
-            >
-          </b-form-radio-group>
-        </b-form-group>
-        <b-form-group
           id="km-pkwg"
           label-cols-sm="4"
           label-cols-lg="3"
@@ -110,7 +64,28 @@
             </b-form-input>
           </b-input-group>
         </b-form-group>
-
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie die Art der Tagesgebühr an"
+          label="Tagesgebühr"
+          label-for="ttg"
+          id="tg"
+        >
+          <b-form-radio-group
+            v-model="data.dcm"
+            v-on:change="update"
+            :disabled="readonly"
+          >
+            <b-form-radio value="a1">Tagesgebühr nach Tarif I</b-form-radio>
+            <b-form-radio value="a2">Tagesgebühr nach Tarif II</b-form-radio>
+            <b-form-radio value="a3"
+              >Tagesgebühr gemäß §17 zu kürzen</b-form-radio
+            >
+          </b-form-radio-group>
+        </b-form-group>
         <b-form-group
           id="tag-kuerzg"
           label-cols-sm="4"
@@ -130,6 +105,30 @@
             type="number"
           >
           </b-form-input>
+        </b-form-group>
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie die Art der Nächtigungsgebühren an"
+          label="Nächtigungsgebühr"
+          label-for="tng"
+          id="ng"
+        >
+          <b-form-radio-group
+            v-model="data.ncm"
+            v-on:change="update"
+            :disabled="readonly"
+          >
+            <b-form-radio value="a1"
+              >Nächtigungsgebühr Nächtigungen Nachweis</b-form-radio
+            >
+            <b-form-radio value="a2">Nächtigungen ohne Nachweis</b-form-radio>
+            <b-form-radio value="a3"
+              >Keinen Anspruch auf Nächtigungsgebühr</b-form-radio
+            >
+          </b-form-radio-group>
         </b-form-group>
 
         <b-form-group

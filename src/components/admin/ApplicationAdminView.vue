@@ -2,7 +2,7 @@
   <b-container fluid>
     <b-row align-v="center" align-h="center">
       <b-col cols="12" md="6">
-        <h1 id="new-application-heading">Antrag für Xy</h1>
+        <h1 id="new-application-heading">Antrag für {{ app.Name }}</h1>
       </b-col>
       <div class="col-12 col-md-6">
         <b-button
@@ -29,7 +29,7 @@
       style="margin-top:1rem;margin-bottom:3rem"
     >
       <b-col cols="12">
-        <Progress v-bind:progress="progress" v-bind:kind="kind" />
+        <Progress v-bind:progress="app.Progress" v-bind:kind="app.Kind" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -74,10 +74,85 @@
 
           <template #row-details="row">
             <b-card>
-              <SchoolGeneral v-if="row.item.title == 'Allgemeine Infos'" />
-              <SchoolEscorts v-if="row.item.title == 'Begleitformular'" />
-              <Others v-if="row.item.title == 'Abwesenheitsformular'" />
-              <Workshop v-if="row.item.title == 'Fortbildung'" />
+              <SchoolGeneral
+                v-bind:data="app"
+                v-bind:readonly="true"
+                v-if="row.item.title == 'Allgemeine Infos'"
+              />
+              <Others
+                v-bind:data="app"
+                v-bind:readonly="true"
+                v-if="row.item.title == 'Abwesenheitsformular'"
+              />
+              <Workshop
+                v-bind:data="app"
+                v-bind:readonly="true"
+                v-if="row.item.title == 'Fortbildung'"
+              />
+              <TravelApplication
+                v-bind:index="index"
+                v-bind:app="app.BusinessTripApplications[0]"
+                v-bind:readonly="true"
+                v-if="row.item.title == 'Reiseformular'"
+              />
+              <TravelBill
+                v-bind:index="index"
+                v-bind:start="app.StartTime"
+                v-bind:end="app.EndTime"
+                v-bind:app="app.TravelInvoices[0]"
+                v-bind:readonly="true"
+                v-if="row.item.title == 'Reiserechnung'"
+              />
+              <div
+                v-for="(teach, index) in app.SchoolEventDetails.Teachers"
+                v-bind:key="teach.Shortname"
+              >
+                <SchoolEscorts
+                  v-bind:readonly="true"
+                  v-bind:data="app.SchoolEventDetails.Teachers[index]"
+                  v-if="
+                    row.item.title ==
+                      'Begleitformular - ' +
+                        app.SchoolEventDetails.Teachers[index].Shortname
+                  "
+                />
+              </div>
+              <div
+                v-for="(busi, index) in app.BusinessTripApplications"
+                v-bind:key="busi.Staffnr"
+              >
+                <TravelApplication
+                  v-bind:index="index"
+                  v-bind:app="busi"
+                  v-bind:readonly="true"
+                  v-if="
+                    row.item.title ==
+                      'Reiseformular - ' +
+                        app.SchoolEventDetails.Teachers[index].Shortname
+                  "
+                />
+              </div>
+              <div
+                v-for="(bill, index) in app.TravelInvoices"
+                v-bind:key="bill.ID"
+              >
+                <TravelBill
+                  v-bind:index="index"
+                  v-bind:start="
+                    app.SchoolEventDetails.Teachers[index].AttendanceFrom
+                  "
+                  v-bind:end="
+                    app.SchoolEventDetails.Teachers[index].AttendanceTill
+                  "
+                  v-bind:app="bill"
+                  v-bind:readonly="true"
+                  v-if="
+                    row.item.title ==
+                      'Reiserechnung - ' +
+                        app.SchoolEventDetails.Teachers[index].Shortname
+                  "
+                />
+              </div>
             </b-card>
           </template>
         </b-table>
@@ -98,6 +173,7 @@
           id="show-btn"
           style="margin-right: 1rem"
           class="float-right"
+          @click="confirmed"
           ><b-icon icon="file-earmark-check"></b-icon> Antrag annehmen</b-button
         >
       </b-col>
@@ -121,7 +197,11 @@
         ></b-row>
         <b-row>
           <b-col cols="6">
-            <b-button class="mt-2" variant="outline-danger" block @click="delAn"
+            <b-button
+              class="mt-2"
+              variant="outline-danger"
+              block
+              @click="delAn"
               >Antrag ablehnen <b-spinner small type="grow"></b-spinner
             ></b-button>
           </b-col>
@@ -151,11 +231,14 @@
 </template>
 
 <script>
+import axios from "axios";
 import Progress from "@/components/Progress.vue";
 import SchoolGeneral from "@/components/applicationViewComponents/SchoolGeneral.vue";
 import SchoolEscorts from "@/components/applicationViewComponents/SchoolEscorts.vue";
 import Others from "@/components/applicationViewComponents/Others.vue";
 import Workshop from "@/components/applicationViewComponents/Workshop.vue";
+import TravelApplication from "@/components/new/TravelApplication.vue";
+import TravelBill from "@/components/new/TravelBill.vue";
 export default {
   props: ["url", "token", "user", "pek", "administration", "appid"],
   components: {
@@ -163,22 +246,28 @@ export default {
     Workshop,
     SchoolEscorts,
     SchoolGeneral,
-    Progress
+    Progress,
+    TravelApplication,
+    TravelBill
   },
   data() {
     return {
       items: [
         {
-          title: "Allgemeine Infos"
+          title: "Allgemeine Infos",
+          form: "SchoolGeneral"
         },
         {
-          title: "Begleitformular"
+          title: "Begleitformular",
+          form: "SchoolEventTeacherDetails"
         },
         {
-          title: "Fortbildung"
+          title: "Fortbildung",
+          form: "TrainingDetails"
         },
         {
-          title: "Abwesenheitsformular"
+          title: "Abwesenheitsformular",
+          form: "OtherReasonDetails"
         }
       ],
       fields: [
@@ -201,8 +290,7 @@ export default {
         title: "",
         content: ""
       },
-      progress: 0,
-      kind: 7
+      app: Object
     };
   },
   computed: {
@@ -216,12 +304,351 @@ export default {
     }
   },
   mounted() {
+    this.loadData();
     // Set the initial number of items
     this.totalRows = this.items.length;
   },
   methods: {
+    loadData() {
+      axios
+        .get(this.url + "/application/getApplication?id=" + this.appid)
+        .then(response => {
+          this.app = response.data.application;
+        });
+      var application = {
+        UUID: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
+        Name: "Sommersportwoche",
+        Kind: 0,
+        MiscellaneousReason: "",
+        Progress: 4,
+        StartTime: "2021-03-01T18:54:40.035095+01:00",
+        EndTime: "2021-03-03T18:54:40.035095+01:00",
+        Notes: "Sommersportwoche ist cool",
+        StartAddress: "Wexstraße 19-23, 1200 Wien",
+        DestinationAddress: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+        LastChanged: "2021-03-01T18:54:40.035096+01:00",
+        SchoolEventDetails: {
+          Classes: ["5BHIT"],
+          AmountMaleStudents: 22,
+          AmountFemaleStudents: 1,
+          DurationInDays: 3,
+          Teachers: [
+            {
+              Name: "Stefan Zakall",
+              Shortname: "szakall",
+              AttendanceFrom: "2021-03-01T19:00:40.035095+01:00",
+              AttendanceTill: "2021-03-03T17:00:40.035095+01:00",
+              Group: 2,
+              StartAddress: "Wexstraße 19-23, 1200 Wien",
+              MeetingPoint: "Wexstraße 19-23, 1200 Wien",
+              Role: 0
+            },
+            {
+              Name: "Dominik Dolezal",
+              Shortname: "ddolezal",
+              AttendanceFrom: "2021-03-01T19:00:40.035095+01:00",
+              AttendanceTill: "2021-03-03T17:00:40.035095+01:00",
+              Group: 1,
+              StartAddress: "Wexstraße 19-23, 1200 Wien",
+              MeetingPoint: "Wexstraße 19-23, 1200 Wien",
+              Role: 1
+            }
+          ]
+        },
+        TrainingDetails: {
+          Kind: 8,
+          MiscellaneousReason: "Fortbildung im Privatem",
+          PH: 12,
+          Organizer: "PRIA"
+        },
+        OtherReasonDetails: {
+          Kind: 2,
+          ServiceMandateTitle: "Stellung",
+          ServiceMandateGZ: 1234,
+          MiscellaneousReason: "Ist nicht so wichtig"
+        },
+        BusinessTripApplications: [
+          {
+            ID: 0,
+            Staffnr: 12345,
+            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
+            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
+            ServiceBeginTime: "2021-03-01T19:00:40.035095+01:00",
+            ServiceEndTime: "2021-03-03T17:00:40.035095+01:00",
+            TripGoal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+            TravelPurpose: "Aus Gesundheitsgründen",
+            TravelMode: 2,
+            StartingPoint: 0,
+            EndPoint: 0,
+            Reasoning: "Weil es näher ist",
+            OtherParticipants: ["ddolezal"],
+            BonusMileConfirmation1: true,
+            BonusMileConfirmation2: true,
+            TravelCostsPayedBySomeone: false,
+            StayingCostsPayedBySomeone: false,
+            PayedByWhom: "",
+            OtherCosts: 10,
+            EstimatedCosts: 20,
+            DateApplicationFiled: "2021-01-01T18:54:40.035095+01:00",
+            DateApplicationApproved: "2021-02-01T18:54:40.035095+01:00",
+            Referee: "",
+            BusinessCardEmittedOutward: false,
+            BusinessCardEmittedReturn: false
+          },
+          {
+            ID: 1,
+            Staffnr: 1234,
+            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
+            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
+            ServiceBeginTime: "2021-03-01T19:00:40.035095+01:00",
+            ServiceEndTime: "2021-03-03T17:00:40.035095+01:00",
+            TripGoal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+            TravelPurpose: "Aus Gründen, die ich nicht nennen möchte",
+            TravelMode: 0,
+            StartingPoint: 0,
+            EndPoint: 0,
+            Reasoning: "Weil es am nähesten ist von allem",
+            OtherParticipants: ["szakall"],
+            BonusMileConfirmation1: true,
+            BonusMileConfirmation2: true,
+            TravelCostsPayedBySomeone: true,
+            StayingCostsPayedBySomeone: false,
+            PayedByWhom: "Firma",
+            OtherCosts: 30,
+            EstimatedCosts: 40,
+            DateApplicationFiled: "2021-01-01T18:54:40.035095+01:00",
+            DateApplicationApproved: "2021-02-01T18:54:40.035095+01:00",
+            Referee: "",
+            BusinessCardEmittedOutward: false,
+            BusinessCardEmittedReturn: false
+          }
+        ],
+        TravelInvoices: [
+          {
+            ID: 0,
+            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
+            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
+            Staffnr: 12345,
+            StartingPoint: "Wexstraße 19-23, 1200 Wien",
+            EndPoint: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+            TravelMode: 2,
+            FilingDate: "2021-01-01T18:54:40.035095+01:00",
+            DailyChargesMode: 2,
+            ShortenedAmount: 100,
+            NightlyChargesMode: 1,
+            Breakfasts: 4,
+            Lunches: 3,
+            Dinners: 2,
+            OfficialBusinessCardGot: true,
+            TravelGrant: true,
+            ReplacementForAdvantageCard: true,
+            ReplacementForTrainCardClass2: true,
+            KilometreAllowance: true,
+            KilometreAmount: 18,
+            NRAndIndicationsOfParticipants: true,
+            TravelCostsCited: true,
+            NoTravelCosts: true,
+            Calculation: {
+              ID: 0,
+              SumTravelCosts: 18,
+              SumDailyCharges: 18,
+              SumNightlyCharges: 18,
+              SumAdditionalCosts: 18,
+              SumOfSums: 72,
+              Rows: [
+                {
+                  ID: 0,
+                  Date: "2021-03-01T18:54:40.035095+01:00",
+                  Begin: "2021-03-01T08:00:40.035095+01:00",
+                  End: "2021-03-01T20:00:40.035095+01:00",
+                  Kilometres: 5,
+                  TravelCosts: 5,
+                  DailyCharges: 5,
+                  NightlyCharges: 5,
+                  AdditionalCosts: 5,
+                  Sum: 20
+                },
+                {
+                  ID: 1,
+                  Date: "2021-03-02T18:54:40.035095+01:00",
+                  Begin: "2021-03-02T08:00:40.035095+01:00",
+                  End: "2021-03-02T20:00:40.035095+01:00",
+                  Kilometres: 6,
+                  TravelCosts: 6,
+                  DailyCharges: 6,
+                  NightlyCharges: 6,
+                  AdditionalCosts: 6,
+                  Sum: 24
+                },
+                {
+                  ID: 2,
+                  Date: "2021-03-03T18:54:40.035095+01:00",
+                  Begin: "2021-03-03T08:00:40.035095+01:00",
+                  End: "2021-03-03T20:00:40.035095+01:00",
+                  Kilometres: 7,
+                  TravelCosts: 7,
+                  DailyCharges: 7,
+                  NightlyCharges: 7,
+                  AdditionalCosts: 7,
+                  Sum: 28
+                }
+              ]
+            }
+          },
+          {
+            ID: 1,
+            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
+            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
+            Staffnr: 1234,
+            StartingPoint: "Wexstraße 19-23, 1200 Wien",
+            EndPoint: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+            TravelMode: 2,
+            FilingDate: "2021-01-01T18:54:40.035095+01:00",
+            DailyChargesMode: 2,
+            ShortenedAmount: 250,
+            NightlyChargesMode: 1,
+            Breakfasts: 3,
+            Lunches: 4,
+            Dinners: 2,
+            OfficialBusinessCardGot: true,
+            TravelGrant: true,
+            ReplacementForAdvantageCard: true,
+            ReplacementForTrainCardClass2: true,
+            KilometreAllowance: true,
+            KilometreAmount: 18,
+            NRAndIndicationsOfParticipants: true,
+            TravelCostsCited: true,
+            NoTravelCosts: false,
+            Calculation: {
+              ID: 0,
+              SumTravelCosts: 15,
+              SumDailyCharges: 15,
+              SumNightlyCharges: 15,
+              SumAdditionalCosts: 15,
+              SumOfSums: 60,
+              Rows: [
+                {
+                  ID: 0,
+                  Date: "2021-03-01T18:54:40.035095+01:00",
+                  Begin: "2021-03-01T08:00:40.035095+01:00",
+                  End: "2021-03-01T20:00:40.035095+01:00",
+                  Kilometres: 5,
+                  TravelCosts: 4,
+                  DailyCharges: 4,
+                  NightlyCharges: 4,
+                  AdditionalCosts: 4,
+                  Sum: 16
+                },
+                {
+                  ID: 1,
+                  Date: "2021-03-02T18:54:40.035095+01:00",
+                  Begin: "2021-03-02T08:00:40.035095+01:00",
+                  End: "2021-03-02T20:00:40.035095+01:00",
+                  Kilometres: 6,
+                  TravelCosts: 5,
+                  DailyCharges: 5,
+                  NightlyCharges: 5,
+                  AdditionalCosts: 5,
+                  Sum: 20
+                },
+                {
+                  ID: 2,
+                  Date: "2021-03-03T18:54:40.035095+01:00",
+                  Begin: "2021-03-03T08:00:40.035095+01:00",
+                  End: "2021-03-03T20:00:40.035095+01:00",
+                  Kilometres: 7,
+                  TravelCosts: 6,
+                  DailyCharges: 6,
+                  NightlyCharges: 6,
+                  AdditionalCosts: 6,
+                  Sum: 24
+                }
+              ]
+            }
+          }
+        ]
+      };
+      this.app = application;
+      this.setItems(this.app);
+    },
     closeAntrag() {
       this.$refs["close-modal"].show();
+    },
+    setItems(app) {
+      if (app.Kind === 4) {
+        this.items = [
+          {
+            title: "Allgemeine Infos",
+            form: "SchoolEventDetails"
+          }
+        ];
+        for (let i = 0; i < this.app.SchoolEventDetails.Teachers.length; i++) {
+          this.items.push({
+            title:
+              "Begleitformular - " +
+              this.app.SchoolEventDetails.Teachers[i].Shortname,
+            form: "SchoolEventTeacherDetails"
+          });
+        }
+        for (let i = 0; i < this.app.SchoolEventDetails.Teachers.length; i++) {
+          this.items.push({
+            title:
+              "Reiseformular - " +
+              this.app.SchoolEventDetails.Teachers[i].Shortname,
+            form: "BusinessTripApplication"
+          });
+        }
+        if (this.app.Progress >= 5) {
+          for (
+            let i = 0;
+            i < this.app.SchoolEventDetails.Teachers.length;
+            i++
+          ) {
+            this.items.push({
+              title:
+                "Reiserechnung - " +
+                this.app.SchoolEventDetails.Teachers[i].Shortname,
+              form: "TravelInvoice"
+            });
+          }
+        }
+      } else {
+        if (app.Kind === 0) {
+          this.items = [
+            {
+              title: "Fortbildung",
+              form: "TrainingDetails"
+            },
+            {
+              title: "Reiseformular",
+              form: "BusinessTripApplication"
+            }
+          ];
+          if (this.app.Progress >= 4) {
+            this.items.push({
+              title: "Reiserechnung",
+              form: "TravelInvoice"
+            });
+          }
+        } else {
+          this.items = [
+            {
+              title: "Abwesenheitsformular",
+              form: "OtherReasonDetails"
+            },
+            {
+              title: "Reiseformular",
+              form: "BusinessTripApplication"
+            }
+          ];
+          if (this.app.Progress >= 4) {
+            this.items.push({
+              title: "Reiserechnung",
+              form: "TravelInvoice"
+            });
+          }
+        }
+      }
     },
     openPDF(item) {
       console.log(item);
@@ -277,7 +704,15 @@ export default {
       }
     },
     delAn() {
+      //If Progress is at 5 it should be thrown back to Progress 4 -SchoolEvent
+      //If Progress is at 2 it should be thrown back to Progress 0 -Schoolevent
+      //If Progress is at 4 it should be thrown back to Progress 3 -Workshop, etc
+      //If Progress is at 1 it should be thrown back to Progress 0 -Workshop, etc
       console.log("Delete this Antrag!");
+    },
+    confirmed() {
+      //Save the nesessary information from current User reviewing the application in the application
+      //Progress should be counted up => Michi macht das vielleicht?
     },
     changeURL(nextpage) {
       if (window.location.href.indexOf("/viewer") >= 0) {
