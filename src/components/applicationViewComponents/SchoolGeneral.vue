@@ -316,8 +316,8 @@ export default {
       var end = new Date(this.endDate);
       end.setHours(this.endTime.split(":")[0]);
       end.setMinutes(this.endTime.split(":")[1]);
-      this.data.StartTime = start;
-      this.data.EndTime = end;
+      this.data.StartTime = start.toISOString();
+      this.data.EndTime = end.toISOString();
       this.updateData();
     }
   },

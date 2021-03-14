@@ -218,26 +218,7 @@ export default {
   props: ["url", "appid", "user", "token"],
   data() {
     return {
-      items: [
-        {
-          title: "Allgemeine Infos"
-        },
-        {
-          title: "Begleitformular"
-        },
-        {
-          title: "Fortbildung"
-        },
-        {
-          title: "Abwesenheitsformular"
-        },
-        {
-          title: "Reiseformular"
-        },
-        {
-          title: "Reiserechnung"
-        }
-      ],
+      items: [],
       fields: [
         {
           key: "title",
@@ -259,8 +240,6 @@ export default {
         content: ""
       },
       title: "",
-      progress: 0,
-      kind: 0,
       app: Object,
       isLeader: false,
       sgreadonly: true,
@@ -296,21 +275,20 @@ export default {
     this.totalRows = this.items.length;
   },
   methods: {
-    updateSG(data) {
-      this.app = data;
+    updateSG(sgdata) {
+      this.app = sgdata;
     },
     updateSE(sedata) {
       this.app.SchoolEventDetails.Teachers[this.currentTeacherIndex] = sedata;
     },
     updateO(odata) {
-      this.odata = odata;
+      this.app = odata;
     },
     updateW(wdata) {
-      this.wdata = wdata;
+      this.app = wdata;
     },
     updateTB(index, data) {
       index.toString();
-      // Es fehlt nur noch die Sachen aus der riesen Liste
       if (data.selected.includes("a1")) {
         this.app.TravelInvoices[
           this.currentTeacherIndex
@@ -546,22 +524,59 @@ export default {
           }
         })
         .then(response => {
-          var application = response.data;
-          this.start = application.StartTime;
-          this.end = application.EndTime;
-          this.progress = application.Progress;
-          this.title = application.Name;
-          this.kind = application.Kind;
-          if (application.Kind === 4) {
+          this.app = response.data.application;
+          this.title = this.app.Name;
+          this.kind = this.app.Kind;
+          this.currentTeacher = this.getCurrentTeacher();
+          if (this.app.Kind === 4) {
             if (
-              application.SchoolEventDetails.Teachers[0].Shortname ===
-              this.getCurrentTeacher()
+              this.currentTeacher ===
+              this.app.SchoolEventDetails.Teachers[0].Shortname
             ) {
               this.isLeader = true;
             } else {
               this.isLeader = false;
             }
+            for (
+              let i = 0;
+              i < this.app.SchoolEventDetails.Teachers.length;
+              i++
+            ) {
+              if (
+                this.currentTeacher ===
+                this.app.SchoolEventDetails.Teachers[i].Shortname
+              ) {
+                this.currentTeacherIndex = i;
+              }
+            }
+            this.start = this.app.SchoolEventDetails.Teachers[
+              this.currentTeacherIndex
+            ].AttendanceFrom;
+            this.end = this.app.SchoolEventDetails.Teachers[
+              this.currentTeacherIndex
+            ].AttendanceTill;
+            this.sedata = this.app.SchoolEventDetails.Teachers[
+              this.currentTeacherIndex
+            ];
+          } else {
+            this.currentTeacherIndex = 0;
           }
+          if (this.app.Kind === 0) {
+            this.start = this.app.StartTime;
+            this.end = this.app.EndTime;
+            this.isLeader = true;
+            this.wdata = this.app;
+          }
+          if (this.app.Kind === 8) {
+            this.start = this.app.StartTime;
+            this.end = this.app.EndTime;
+            this.isLeader = true;
+            this.odata = this.app;
+          }
+          this.tadata = this.app.BusinessTripApplications[
+            this.currentTeacherIndex
+          ];
+          this.tbdata = this.app.TravelInvoices[this.currentTeacherIndex];
           this.setItems(application);
           this.setReads(application);
         });
@@ -570,7 +585,7 @@ export default {
         Name: "Sommersportwoche",
         Kind: 4,
         MiscellaneousReason: "",
-        Progress: 5,
+        Progress: 0,
         StartTime: "2021-03-01T18:54:40.035095+01:00",
         EndTime: "2021-03-03T18:54:40.035095+01:00",
         Notes: "Sommersportwoche ist cool",
@@ -588,34 +603,34 @@ export default {
               Shortname: "szakall",
               AttendanceFrom: "2021-03-01T19:00:40.035095+01:00",
               AttendanceTill: "2021-03-03T17:00:40.035095+01:00",
-              Group: 2,
+              Group: null,
               StartAddress: "Wexstraße 19-23, 1200 Wien",
               MeetingPoint: "Wexstraße 19-23, 1200 Wien",
-              Role: 1
+              Role: 0
             },
             {
               Name: "Dominik Dolezal",
               Shortname: "ddolezal",
               AttendanceFrom: "2021-03-01T19:00:40.035095+01:00",
               AttendanceTill: "2021-03-03T17:00:40.035095+01:00",
-              Group: 2,
+              Group: null,
               StartAddress: "Wexstraße 19-23, 1200 Wien",
               MeetingPoint: "Wexstraße 19-23, 1200 Wien",
-              Role: 0
+              Role: 1
             }
           ]
         },
         TrainingDetails: {
-          Kind: 0,
-          MiscellaneousReason: "",
-          PH: 0,
-          Organizer: ""
+          Kind: 8,
+          MiscellaneousReason: "Fortbildung im Privatem",
+          PH: 12,
+          Organizer: "PRIA"
         },
         OtherReasonDetails: {
-          Kind: 0,
-          ServiceMandateTitle: "",
-          ServiceMandateGZ: 0,
-          MiscellaneousReason: ""
+          Kind: 2,
+          ServiceMandateTitle: "Stellung",
+          ServiceMandateGZ: 1234,
+          MiscellaneousReason: "Ist nicht so wichtig"
         },
         BusinessTripApplications: [
           {
@@ -673,165 +688,13 @@ export default {
             BusinessCardEmittedReturn: false
           }
         ],
-        TravelInvoices: [
-          {
-            ID: 0,
-            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
-            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
-            Staffnr: 12345,
-            StartingPoint: "Wexstraße 19-23, 1200 Wien",
-            EndPoint: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-            Clerk: "",
-            Reviewer: "",
-            TravelMode: 0,
-            ZI: 0,
-            FilingDate: "2021-04-01T18:54:40.035095+01:00",
-            ApprovalDate: "2021-05-01T18:54:40.035095+01:00",
-            DailyChargesMode: 2,
-            ShortenedAmount: 2000,
-            NightlyChargesMode: 1,
-            Breakfasts: 4,
-            Lunches: 5,
-            Dinners: 6,
-            OfficialBusinessCardGot: true,
-            TravelGrant: true,
-            ReplacementForAdvantageCard: true,
-            ReplacementForTrainCardClass2: false,
-            KilometreAllowance: true,
-            KilometreAmount: 100,
-            NRAndIdicationsOfParticipants: true,
-            TravelCostsCited: true,
-            NoTravelCosts: false,
-            Calculation: {
-              ID: 0,
-              Rows: [
-                {
-                  NR: 0,
-                  Date: "2021-03-01T00:00:00.000000+01:00",
-                  Begin: "2021-03-01T08:00:00.000000+01:00",
-                  End: "2021-03-01T20:00:00.000000+01:00",
-                  Kilometres: 5,
-                  TravelCosts: 6,
-                  DailyCharges: 6,
-                  NightlyCharges: 6,
-                  AdditionalCosts: 6,
-                  Sum: 24
-                },
-                {
-                  NR: 1,
-                  Date: "2021-03-02T00:00:00.000000+01:00",
-                  Begin: "2021-03-02T08:00:00.000000+01:00",
-                  End: "2021-03-02T20:00:00.000000+01:00",
-                  Kilometres: 6,
-                  TravelCosts: 7,
-                  DailyCharges: 7,
-                  NightlyCharges: 7,
-                  AdditionalCosts: 7,
-                  Sum: 28
-                },
-                {
-                  NR: 2,
-                  Date: "2021-03-03T00:00:00.000000+01:00",
-                  Begin: "2021-03-03T08:00:00.000000+01:00",
-                  End: "2021-03-03T20:00:00.000000+01:00",
-                  Kilometres: 7,
-                  TravelCosts: 7,
-                  DailyCharges: 7,
-                  NightlyCharges: 7,
-                  AdditionalCosts: 7,
-                  Sum: 28
-                }
-              ],
-              SumTravelCosts: 20,
-              SumDailyCharges: 20,
-              SumNightlyCharges: 20,
-              SumAdditionalCosts: 20,
-              SumOfSums: 80
-            }
-          },
-          {
-            ID: 1,
-            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
-            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
-            Staffnr: 1234,
-            StartingPoint: "Wexstraße 19-23, 1200 Wien",
-            EndPoint: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-            Clerk: "",
-            Reviewer: "",
-            TravelMode: 0,
-            ZI: 0,
-            FilingDate: "2021-04-01T18:54:40.035095+01:00",
-            ApprovalDate: "2021-05-01T18:54:40.035095+01:00",
-            DailyChargesMode: 2,
-            ShortenedAmount: 2000,
-            NightlyChargesMode: 1,
-            Breakfasts: 1,
-            Lunches: 2,
-            Dinners: 3,
-            OfficialBusinessCardGot: true,
-            TravelGrant: true,
-            ReplacementForAdvantageCard: true,
-            ReplacementForTrainCardClass2: true,
-            KilometreAllowance: true,
-            KilometreAmount: 100,
-            NRAndIdicationsOfParticipants: true,
-            TravelCostsCited: true,
-            NoTravelCosts: false,
-            Calculation: {
-              ID: 0,
-              Rows: [
-                {
-                  NR: 0,
-                  Date: "2021-03-01T00:00:00.000000+01:00",
-                  Begin: "2021-03-01T08:00:00.000000+01:00",
-                  End: "2021-03-01T20:00:00.000000+01:00",
-                  Kilometres: 5,
-                  TravelCosts: 6,
-                  DailyCharges: 7,
-                  NightlyCharges: 6,
-                  AdditionalCosts: 6,
-                  Sum: 25
-                },
-                {
-                  NR: 1,
-                  Date: "2021-03-02T00:00:00.000000+01:00",
-                  Begin: "2021-03-02T08:00:00.000000+01:00",
-                  End: "2021-03-02T20:00:00.000000+01:00",
-                  Kilometres: 6,
-                  TravelCosts: 7,
-                  DailyCharges: 7,
-                  NightlyCharges: 8,
-                  AdditionalCosts: 8,
-                  Sum: 30
-                },
-                {
-                  NR: 2,
-                  Date: "2021-03-03T00:00:00.000000+01:00",
-                  Begin: "2021-03-03T08:00:00.000000+01:00",
-                  End: "2021-03-03T20:00:00.000000+01:00",
-                  Kilometres: 7,
-                  TravelCosts: 8,
-                  DailyCharges: 8,
-                  NightlyCharges: 7,
-                  AdditionalCosts: 7,
-                  Sum: 30
-                }
-              ],
-              SumTravelCosts: 21,
-              SumDailyCharges: 22,
-              SumNightlyCharges: 21,
-              SumAdditionalCosts: 21,
-              SumOfSums: 85
-            }
-          }
-        ]
+        TravelInvoices: []
       };
       this.app = application;
-      this.progress = application.Progress;
-      this.title = application.Name;
-      this.kind = application.Kind;
+      this.title = this.app.Name;
+      this.kind = this.app.Kind;
       this.currentTeacher = this.getCurrentTeacher();
-      if (application.Kind === 4) {
+      if (this.app.Kind === 4) {
         if (
           this.currentTeacher ===
           this.app.SchoolEventDetails.Teachers[0].Shortname
@@ -857,6 +720,18 @@ export default {
         this.sedata = this.app.SchoolEventDetails.Teachers[
           this.currentTeacherIndex
         ];
+      } else {
+        this.currentTeacherIndex = 0;
+      }
+      if (this.app.Kind === 0) {
+        this.start = this.app.StartTime;
+        this.end = this.app.EndTime;
+        this.wdata = this.app;
+      }
+      if (this.app.Kind === 8) {
+        this.start = this.app.StartTime;
+        this.end = this.app.EndTime;
+        this.odata = this.app;
       }
       this.tadata = this.app.BusinessTripApplications[this.currentTeacherIndex];
       this.tbdata = this.app.TravelInvoices[this.currentTeacherIndex];
@@ -886,16 +761,28 @@ export default {
       }
     },
     save() {
-      console.log(this.sgreadonly);
-      console.log(this.sereadonly);
-      console.log(this.wreadonly);
-      console.log(this.oreadonly);
-      console.log(this.tareadonly);
-      console.log(this.tbreadonly);
-      console.log("Save");
+      axios
+        .put(this.url + "/saveApplication", {
+          params: {
+            application: this.app.UUID,
+            token: this.token,
+            data: this.app
+          }
+        })
+        .then(() => {
+          this.saveConfirm();
+        });
     },
     closeAntrag() {
       this.$refs["close-modal"].show();
+    },
+    saveConfirm() {
+      this.$bvToast.toast("Die Änderungen wurden erfolgreich gespeichert!", {
+        title: "Änderungen gespeichert",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "success"
+      });
     },
     setReads(app) {
       var progress = app.Progress;
@@ -1109,28 +996,35 @@ export default {
         if (this.isLeader) {
           this.items = [
             {
-              title: "Allgemeine Infos"
+              title: "Allgemeine Infos",
+              form: "SchoolEventDetails"
             },
             {
-              title: "Begleitformular"
+              title: "Begleitformular",
+              form: "SchoolEventTeacherDetails"
             },
             {
-              title: "Reiseformular"
+              title: "Reiseformular",
+              form: "BusinessTripApplication"
             },
             {
-              title: "Reiserechnung"
+              title: "Reiserechnung",
+              form: "TravelInvoice"
             }
           ];
         } else {
           this.items = [
             {
-              title: "Begleitformular"
+              title: "Begleitformular",
+              form: "SchoolEventTeacherDetails"
             },
             {
-              title: "Reiseformular"
+              title: "Reiseformular",
+              form: "BusinessTripApplication"
             },
             {
-              title: "Reiserechnung"
+              title: "Reiserechnung",
+              form: "TravelInvoice"
             }
           ];
         }
@@ -1138,25 +1032,31 @@ export default {
         if (app.Kind === 0) {
           this.items = [
             {
-              title: "Fortbildung"
+              title: "Fortbildung",
+              form: "TrainingDetails"
             },
             {
-              title: "Reiseformular"
+              title: "Reiseformular",
+              form: "BusinessTripApplication"
             },
             {
-              title: "Reiserechnung"
+              title: "Reiserechnung",
+              form: "TravelInvoice"
             }
           ];
         } else {
           this.items = [
             {
-              title: "Abwesenheitsformular"
+              title: "Abwesenheitsformular",
+              form: "OtherReasonDetails"
             },
             {
-              title: "Reiseformular"
+              title: "Reiseformular",
+              form: "BusinessTripApplication"
             },
             {
-              title: "Reiserechnung"
+              title: "Reiserechnung",
+              form: "TravelInvoice"
             }
           ];
         }
@@ -1173,10 +1073,22 @@ export default {
           let data = response.data;
           return data.Short;
         });
-      return "ddolezal";
+      return "szakall";
     },
     openPDF(item) {
-      console.log(item);
+      axios
+        .get(this.url + "/getPDF", {
+          params: {
+            application: this.app.UUID,
+            form: item.form,
+            user: this.user,
+            token: this.token
+          }
+        })
+        .then(response => {
+          var pdf = response.data.pdf;
+          this.showPDF(pdf);
+        });
     },
     hideClose() {
       this.$refs["close-modal"].hide();
@@ -1185,6 +1097,9 @@ export default {
       this.infoModal.title = `Row index: ${index}`;
       this.infoModal.content = JSON.stringify(item, null, 2);
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
+    },
+    showPDF(pdf) {
+      window.open("data:application/pdf;base64," + pdf);
     },
     resetInfoModal() {
       this.infoModal.title = "";
@@ -1223,7 +1138,16 @@ export default {
       }
     },
     delAn() {
-      console.log("Delete this Antrag!");
+      axios
+        .delete(this.url + "/closeApplication", {
+          params: {
+            application: this.app.UUID,
+            token: this.token
+          }
+        })
+        .then(() => {
+          this.index();
+        });
     },
     changeURL(nextpage) {
       if (window.location.href.indexOf("/viewer") >= 0) {

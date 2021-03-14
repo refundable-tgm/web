@@ -17,9 +17,9 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="data.startDate"
+                  v-model="startDate"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -36,9 +36,9 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="data.startTime"
+                  v-model="startTime"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -55,9 +55,9 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="data.endDate"
+                  v-model="endDate"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -74,9 +74,9 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="data.endTime"
+                  v-model="endTime"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -93,7 +93,7 @@
               >
                 <b-form-radio-group
                   id="gr"
-                  v-model="selected"
+                  v-model="data.OtherReasonDetails.Kind"
                   @input="updateData"
                   :options="options"
                   :disabled="readonly"
@@ -112,9 +112,14 @@
                 description="Geben Sie den Grund an."
                 label="Sonstiger Grund"
                 label-for="son"
-                v-if="selected == 'D'"
+                v-if="data.OtherReasonDetails.Kind === 8"
               >
-                <b-form-input id="son" @input="updateData" v-model="data.son" :readonly="readonly">
+                <b-form-input
+                  id="son"
+                  @input="updateData"
+                  v-model="data.OtherReasonDetails.MiscellaneousReason"
+                  :readonly="readonly"
+                >
                 </b-form-input>
               </b-form-group>
               <b-form-group
@@ -126,11 +131,11 @@
                 description="Geben Sie den Titel des Dienstauftrages ein."
                 label="Titel"
                 label-for="tit"
-                v-if="selected == 'B'"
+                v-if="data.OtherReasonDetails.Kind === 2"
               >
                 <b-form-input
                   id="tit"
-                  v-model="data.bez"
+                  v-model="data.OtherReasonDetails.ServiceMandateTitle"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -144,12 +149,12 @@
                 description="Geben Sie die GZ des Dienstauftrages ein."
                 label="GZ"
                 label-for="gzn"
-                v-if="selected == 'B'"
+                v-if="data.OtherReasonDetails.Kind === 2"
               >
                 <b-form-input
                   id="gzn"
                   type="number"
-                  v-model="data.gz"
+                  v-model="data.OtherReasonDetails.ServiceMandateGZ"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -169,7 +174,7 @@
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
-                  v-model="data.an"
+                  v-model="data.Notes"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-textarea>
@@ -184,25 +189,54 @@
 <script>
 export default {
   name: "NewApplication",
-  props: ["data","readonly"],
+  props: ["data", "readonly"],
   methods: {
     updateData() {
-      this.data.reason = this.selected;
-      this.$emit('update', this.data);
+      this.$emit("update", this.data);
+    },
+    updateTime() {
+      var start = new Date(this.startDate);
+      start.setHours(this.startTime.split(":")[0]);
+      start.setMinutes(this.startTime.split(":")[1]);
+      var end = new Date(this.endDate);
+      end.setHours(this.endTime.split(":")[0]);
+      end.setMinutes(this.endTime.split(":")[1]);
+      this.data.StartTime = start.toISOString();
+      this.data.EndTime = end.toISOString();
+      this.updateData();
     }
   },
   mounted() {
-    this.selected = this.data.reason;
+    var start = new Date(this.data.StartTime);
+    var end = new Date(this.data.EndTime);
+    this.startDate =
+      start.getUTCFullYear() +
+      "-" +
+      (start.getUTCMonth() + 1) +
+      "-" +
+      start.getDate();
+    this.endDate =
+      end.getUTCFullYear() +
+      "-" +
+      (end.getUTCMonth() + 1) +
+      "-" +
+      end.getDate();
+    this.startTime = start.getHours() + ":" + start.getMinutes();
+    this.endTime = end.getHours() + ":" + end.getMinutes();
   },
   data() {
     return {
       selected: "",
       options: [
-        { item: "A", name: "Pflegefreistellung" },
-        { item: "B", name: "Dienstauftrag" },
-        { item: "C", name: "Arzttermin" },
-        { item: "D", name: "Sonstiges" }
-      ]
+        { item: 1, name: "Pflegefreistellung" },
+        { item: 2, name: "Dienstauftrag" },
+        { item: 3, name: "Arzttermin" },
+        { item: 8, name: "Sonstiges" }
+      ],
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: ""
     };
   }
 };

@@ -161,8 +161,8 @@ export default {
       var end = new Date(this.endDate);
       end.setHours(this.endTime.split(":")[0]);
       end.setMinutes(this.endTime.split(":")[1]);
-      this.data.AttendanceFrom = start;
-      this.data.AttendanceTill = end;
+      this.data.AttendanceFrom = start.toISOString();
+      this.data.AttendanceTill = end.toISOString();
       this.updateData();
     }
   },

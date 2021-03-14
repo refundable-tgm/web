@@ -32,7 +32,6 @@
             <b-form-checkbox value="a5"
               >Amtl. Kilometergeld für eigenen PKW</b-form-checkbox
             >
-            <b-form-checkbox value="a6">Mitfahrer</b-form-checkbox>
             <b-form-checkbox value="a7"
               >Angeführte andere Reisekosten (Belege
               anschließen)</b-form-checkbox
@@ -111,58 +110,6 @@
             </b-form-input>
           </b-input-group>
         </b-form-group>
-        <b-form-group
-          id="mit-numg"
-          label-cols-sm="4"
-          label-cols-lg="3"
-          content-cols-sm
-          content-cols-lg="7"
-          description="Geben Sie die Anzahl der Mitfahrer an"
-          label="Mitfahrer Anzahl"
-          label-for="mit-num"
-          v-if="data.selected.includes('a6')"
-        >
-          <b-input-group>
-            <b-input-group-text id="mitfahrer-addon-1" slot="append"
-              ><span>Mitfahrer</span></b-input-group-text
-            >
-            <b-form-input
-              id="mit-num"
-              type="number"
-              v-model="data.anzahl"
-              v-on:change="
-                createMitfahrer();
-                update();
-              "
-              :readonly="readonly"
-            >
-            </b-form-input>
-          </b-input-group>
-        </b-form-group>
-
-        <div v-for="fahr in data.mitfahrer" v-bind:key="fahr.index">
-          <b-form-group
-            id="mit-namg-x"
-            label-cols-sm="4"
-            label-cols-lg="3"
-            content-cols-sm
-            content-cols-lg="7"
-            :description="
-              'Geben Sie den Namen des ' + fahr.index + '. Mitfahrers an'
-            "
-            :label="'Mitfahrer ' + fahr.index + ' Name'"
-            label-for="mit-nam-x"
-          >
-            <b-form-input
-              id="mit-nam-x"
-              type="text"
-              :readonly="readonly"
-              v-model="mitfahrer"
-              v-on:input="update"
-            >
-            </b-form-input>
-          </b-form-group>
-        </div>
 
         <b-form-group
           id="tag-kuerzg"
@@ -414,8 +361,6 @@ export default {
         lunch: null,
         dinner: null,
         short: null,
-        anzahl: null,
-        mitfahrer: [],
         beleg: [],
         items: [],
         SumTravelCosts: 0,
@@ -483,32 +428,6 @@ export default {
       this.data.SumAdditionalCosts = Number(sac);
       this.data.SumOfSums = Number(sos);
     },
-    createMitfahrer() {
-      if (this.data.mitfahrer.length === 0) {
-        for (let i = 0; i < Number(this.data.anzahl); i++) {
-          this.data.mitfahrer.push({
-            name: "",
-            index: i + 1
-          });
-        }
-      } else {
-        if (this.data.mitfahrer.length >= Number(this.data.anzahl)) {
-          this.data.mitfahrer.splice(
-            this.data.anzahl,
-            this.data.mitfahrer.length - Number(this.data.anzahl)
-          );
-        } else {
-          var tmp = this.data.mitfahrer[this.data.mitfahrer.length - 1];
-          var length = Number(this.data.anzahl) - tmp.index;
-          for (let i = 0; i < length; i++) {
-            this.data.mitfahrer.push({
-              name: "",
-              index: tmp.index + i + 1
-            });
-          }
-        }
-      }
-    },
     calculateLength() {
       let diff = new Date(this.end).getTime() - new Date(this.start).getTime();
       let days = diff / (1000 * 3600 * 24);
@@ -517,6 +436,65 @@ export default {
     getTimeOfDate(datum) {
       var tmp = new Date(datum);
       return tmp.getHours() + ":" + tmp.getMinutes();
+    },
+    loadData() {
+      for (let i = 0; i <= this.calculateLength(); i++) {
+        var tmp = new Date(this.start);
+        tmp.setDate(tmp.getDate() + i);
+        this.data.items.push({
+          index: i,
+          date:
+            tmp.getUTCDate() +
+            "." +
+            (tmp.getUTCMonth() + 1) +
+            "." +
+            tmp.getUTCFullYear(),
+          start: this.getTimeOfDate(this.app.Calculation.Rows[i].Begin),
+          end: this.getTimeOfDate(this.app.Calculation.Rows[i].End),
+          kind: "Tagesgebühr",
+          km: this.app.Calculation.Rows[i].Kilometres,
+          travelcosts: this.app.Calculation.Rows[i].TravelCosts,
+          daycharge: this.app.Calculation.Rows[i].DailyCharges,
+          sleepcharge: this.app.Calculation.Rows[i].NightlyCharges,
+          othercosts: this.app.Calculation.Rows[i].AdditionalCosts,
+          sum: this.app.Calculation.Rows[i].Sum
+        });
+      }
+      this.data.km = this.app.KilometreAmount;
+      this.data.breakfast = this.app.Breakfasts;
+      this.data.lunch = this.app.Lunches;
+      this.data.dinner = this.app.Dinners;
+      this.data.short = this.app.ShortenedAmount;
+      switch (this.app.DailyChargesMode) {
+        case 0:
+          this.data.dcm = "a1";
+          break;
+        case 1:
+          this.data.dcm = "a2";
+          break;
+        case 2:
+          this.data.dcm = "a3";
+          break;
+      }
+      switch (this.app.NightlyChargesMode) {
+        case 0:
+          this.data.ncm = "a1";
+          break;
+        case 1:
+          this.data.ncm = "a2";
+          break;
+        case 2:
+          this.data.ncm = "a3";
+          break;
+      }
+      if (this.app.OfficialBusinessCardGot) this.data.selected.push("a1");
+      if (this.app.TravelGrant) this.data.selected.push("a2");
+      if (this.app.ReplacementForAdvantageCard) this.data.selected.push("a3");
+      if (this.app.ReplacementForTrainCardClass2) this.data.selected.push("a4");
+      if (this.app.KilometreAllowance) this.data.selected.push("a5");
+      if (this.app.NRAndIdicationsOfParticipants) this.data.selected.push("a6");
+      if (this.app.TravelCostsCited) this.data.selected.push("a7");
+      if (this.app.NoTravelCosts) this.data.selected.push("a8");
     }
   },
   mounted() {
@@ -524,65 +502,35 @@ export default {
       this.readonly == null ||
       this.readonly == "" ||
       this.readonly == undefined
-    )
+    ) {
       this.readonly = false;
-    for (let i = 0; i <= this.calculateLength(); i++) {
-      var tmp = new Date(this.start);
-      tmp.setDate(tmp.getDate() + i);
-      this.data.items.push({
-        index: i,
-        date:
-          tmp.getUTCDate() +
-          "." +
-          (tmp.getUTCMonth() + 1) +
-          "." +
-          tmp.getUTCFullYear(),
-        start: this.getTimeOfDate(this.app.Calculation.Rows[i].Begin),
-        end: this.getTimeOfDate(this.app.Calculation.Rows[i].End),
-        kind: "Tagesgebühr",
-        km: this.app.Calculation.Rows[i].Kilometres,
-        travelcosts: this.app.Calculation.Rows[i].TravelCosts,
-        daycharge: this.app.Calculation.Rows[i].DailyCharges,
-        sleepcharge: this.app.Calculation.Rows[i].NightlyCharges,
-        othercosts: this.app.Calculation.Rows[i].AdditionalCosts,
-        sum: this.app.Calculation.Rows[i].Sum
-      });
     }
-    this.data.km = this.app.KilometreAmount;
-    this.data.breakfast = this.app.Breakfasts;
-    this.data.lunch = this.app.Lunches;
-    this.data.dinner = this.app.Dinners;
-    this.data.short = this.app.ShortenedAmount;
-    switch (this.app.DailyChargesMode) {
-      case 0:
-        this.data.dcm = "a1";
-        break;
-      case 1:
-        this.data.dcm = "a2";
-        break;
-      case 2:
-        this.data.dcm = "a3";
-        break;
+    if (this.app !== undefined) {
+      this.loadData();
+    } else {
+      for (let i = 0; i <= this.calculateLength(); i++) {
+        var tmp = new Date(this.start);
+        tmp.setDate(tmp.getDate() + i);
+        this.data.items.push({
+          index: i,
+          date:
+            tmp.getUTCDate() +
+            "." +
+            (tmp.getUTCMonth() + 1) +
+            "." +
+            tmp.getUTCFullYear(),
+          start: "",
+          end: "",
+          kind: "Tagesgebühr",
+          km: 0,
+          travelcosts: 0,
+          daycharge: 0,
+          sleepcharge: 0,
+          othercosts: 0,
+          sum: 0
+        });
+      }
     }
-    switch (this.app.NightlyChargesMode) {
-      case 0:
-        this.data.ncm = "a1";
-        break;
-      case 1:
-        this.data.ncm = "a2";
-        break;
-      case 2:
-        this.data.ncm = "a3";
-        break;
-    }
-    if (this.app.OfficialBusinessCardGot) this.data.selected.push("a1");
-    if (this.app.TravelGrant) this.data.selected.push("a2");
-    if (this.app.ReplacementForAdvantageCard) this.data.selected.push("a3");
-    if (this.app.ReplacementForTrainCardClass2) this.data.selected.push("a4");
-    if (this.app.KilometreAllowance) this.data.selected.push("a5");
-    if (this.app.NRAndIdicationsOfParticipants) this.data.selected.push("a6");
-    if (this.app.TravelCostsCited) this.data.selected.push("a7");
-    if (this.app.NoTravelCosts) this.data.selected.push("a8");
   }
 };
 </script>
