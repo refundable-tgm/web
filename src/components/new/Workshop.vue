@@ -438,15 +438,30 @@ export default {
             ).toISOString(),
             EndTime: new Date(this.endDate + "T" + this.endTime).toISOString(),
             Notes: this.returnString(this.notes),
-            StartAddress: this.returnString(""),
-            DestinationAddress: this.returnString(""),
+            StartAddress: this.returnString(this.start),
+            DestinationAddress: this.returnString(this.end),
             TrainingDetails: {
               Kind: this.returnValue(this.selected),
               MiscellaneousReason: this.returnString(this.son),
               PH: this.returnValue(this.phNumber),
               Organizer: this.returnString(this.veran)
             },
-            BusinessTripApplications: business
+            BusinessTripApplications: business,
+            TravelInvoices: [
+              {
+                ID: 0,
+                TripBeginTime: new Date(
+                  this.startDate + "T" + this.startTime
+                ).toISOString(),
+                TripEndTime: new Date(
+                  this.endDate + "T" + this.endTime
+                ).toISOString(),
+                Staffnr: this.returnValue(this.teacher.personalnummer),
+                StartingPoint: this.returnString(this.start),
+                EndPoint: this.returnString(this.end),
+                FilingDate: new Date().toISOString()
+              }
+            ]
           };
 
           axios

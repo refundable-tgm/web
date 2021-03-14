@@ -179,13 +179,21 @@ export default {
           if (
             this.escorts.output[i].bonus_meilen[0] === "0" ||
             this.escorts.output[i].bonus_meilen[1] === "0"
-          )
+          ) {
             bonus1 = true;
+          } else {
+            bonus1 = false;
+          }
+
           if (
             this.escorts.output[i].bonus_meilen[0] === "1" ||
             this.escorts.output[i].bonus_meilen[1] === "1"
-          )
+          ) {
             bonus2 = true;
+          } else {
+            bonus2 = false;
+          }
+
           business.push({
             ID: i,
             Staffnr: this.returnValue(this.escorts.output[i].personalnummer),
@@ -256,10 +264,16 @@ export default {
             DurationInDays: this.returnValue(this.escorts.exkursLength),
             Teachers: teachers
           },
-          BusinessTripApplications: business
+          BusinessTripApplications: business,
+          TravelInvoices: []
         };
         axios
-          .post(this.url + "/createApplication", this.token, data)
+          .post(this.url + "/createApplication", {
+            params: {
+              app: data,
+              token: this.token
+            }
+          })
           .then(response => {
             response.toString();
             this.changeComponent("Index");

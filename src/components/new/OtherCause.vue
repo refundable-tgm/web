@@ -144,7 +144,7 @@
                 content-cols-sm
                 content-cols-lg="7"
                 description="Geben Sie die Zieladresse des Antrags ein."
-                label="Antragsadresse"
+                label="Zieladresse"
                 label-for="ea"
               >
                 <b-form-input
@@ -524,15 +524,30 @@ export default {
             ).toISOString(),
             EndTime: new Date(this.endDate + "T" + this.endTime).toISOString(),
             Notes: this.returnString(this.notes),
-            StartAddress: this.returnString(""),
-            DestinationAddress: this.returnString(""),
+            StartAddress: this.returnString(this.end),
+            DestinationAddress: this.returnString(this.start),
             OtherReasonDetails: {
               Kind: this.returnValue(this.selected),
               MiscellaneousReason: this.returnString(this.son),
               ServiceMandateGZ: this.returnValue(this.gz),
               ServiceMandateTitle: this.returnString(this.title)
             },
-            BusinessTripApplications: business
+            BusinessTripApplications: business,
+            TravelInvoices: [
+              {
+                ID: 0,
+                TripBeginTime: new Date(
+                  this.startDate + "T" + this.startTime
+                ).toISOString(),
+                TripEndTime: new Date(
+                  this.endDate + "T" + this.endTime
+                ).toISOString(),
+                Staffnr: this.returnValue(this.teacher.personalnummer),
+                StartingPoint: this.returnString(this.start),
+                EndPoint: this.returnString(this.end),
+                FilingDate: new Date().toISOString()
+              }
+            ]
           };
 
           axios
