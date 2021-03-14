@@ -111,17 +111,7 @@ export default {
   props: ["url", "user", "token"],
   data() {
     return {
-      items: [
-        {
-          id: 1234,
-          title: "Skiwoche",
-          leader: "Stefan Zakall",
-          edate: "2018-01-12",
-          status: "Angenommen",
-          active: false,
-          _rowVariant: "success"
-        }
-      ],
+      items: [],
       fields: [
         {
           key: "title",

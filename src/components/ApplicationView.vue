@@ -564,179 +564,20 @@ export default {
           if (this.app.Kind === 0) {
             this.start = this.app.StartTime;
             this.end = this.app.EndTime;
-            this.isLeader = true;
             this.wdata = this.app;
           }
           if (this.app.Kind === 8) {
             this.start = this.app.StartTime;
             this.end = this.app.EndTime;
-            this.isLeader = true;
             this.odata = this.app;
           }
           this.tadata = this.app.BusinessTripApplications[
             this.currentTeacherIndex
           ];
           this.tbdata = this.app.TravelInvoices[this.currentTeacherIndex];
-          this.setItems(application);
-          this.setReads(application);
+          this.setItems(this.app);
+          this.setReads(this.app);
         });
-      var application = {
-        UUID: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
-        Name: "Sommersportwoche",
-        Kind: 4,
-        MiscellaneousReason: "",
-        Progress: 0,
-        StartTime: "2021-03-01T18:54:40.035095+01:00",
-        EndTime: "2021-03-03T18:54:40.035095+01:00",
-        Notes: "Sommersportwoche ist cool",
-        StartAddress: "Wexstraße 19-23, 1200 Wien",
-        DestinationAddress: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-        LastChanged: "2021-03-01T18:54:40.035096+01:00",
-        SchoolEventDetails: {
-          Classes: ["5BHIT"],
-          AmountMaleStudents: 22,
-          AmountFemaleStudents: 1,
-          DurationInDays: 3,
-          Teachers: [
-            {
-              Name: "Stefan Zakall",
-              Shortname: "szakall",
-              AttendanceFrom: "2021-03-01T19:00:40.035095+01:00",
-              AttendanceTill: "2021-03-03T17:00:40.035095+01:00",
-              Group: null,
-              StartAddress: "Wexstraße 19-23, 1200 Wien",
-              MeetingPoint: "Wexstraße 19-23, 1200 Wien",
-              Role: 0
-            },
-            {
-              Name: "Dominik Dolezal",
-              Shortname: "ddolezal",
-              AttendanceFrom: "2021-03-01T19:00:40.035095+01:00",
-              AttendanceTill: "2021-03-03T17:00:40.035095+01:00",
-              Group: null,
-              StartAddress: "Wexstraße 19-23, 1200 Wien",
-              MeetingPoint: "Wexstraße 19-23, 1200 Wien",
-              Role: 1
-            }
-          ]
-        },
-        TrainingDetails: {
-          Kind: 8,
-          MiscellaneousReason: "Fortbildung im Privatem",
-          PH: 12,
-          Organizer: "PRIA"
-        },
-        OtherReasonDetails: {
-          Kind: 2,
-          ServiceMandateTitle: "Stellung",
-          ServiceMandateGZ: 1234,
-          MiscellaneousReason: "Ist nicht so wichtig"
-        },
-        BusinessTripApplications: [
-          {
-            ID: 0,
-            Staffnr: 12345,
-            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
-            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
-            ServiceBeginTime: "2021-03-01T19:00:40.035095+01:00",
-            ServiceEndTime: "2021-03-03T17:00:40.035095+01:00",
-            TripGoal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-            TravelPurpose: "Aus Gesundheitsgründen",
-            TravelMode: 2,
-            StartingPoint: 0,
-            EndPoint: 0,
-            Reasoning: "Weil es näher ist",
-            OtherParticipants: ["ddolezal"],
-            BonusMileConfirmation1: true,
-            BonusMileConfirmation2: true,
-            TravelCostsPayedBySomeone: false,
-            StayingCostsPayedBySomeone: false,
-            PayedByWhom: "",
-            OtherCosts: 10,
-            EstimatedCosts: 20,
-            DateApplicationFiled: "2021-01-01T18:54:40.035095+01:00",
-            DateApplicationApproved: "2021-02-01T18:54:40.035095+01:00",
-            Referee: "",
-            BusinessCardEmittedOutward: false,
-            BusinessCardEmittedReturn: false
-          },
-          {
-            ID: 1,
-            Staffnr: 1234,
-            TripBeginTime: "2021-03-01T18:54:40.035095+01:00",
-            TripEndTime: "2021-03-03T18:54:40.035095+01:00",
-            ServiceBeginTime: "2021-03-01T19:00:40.035095+01:00",
-            ServiceEndTime: "2021-03-03T17:00:40.035095+01:00",
-            TripGoal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-            TravelPurpose: "Aus Gründen, die ich nicht nennen möchte",
-            TravelMode: 0,
-            StartingPoint: 0,
-            EndPoint: 0,
-            Reasoning: "Weil es am nähesten ist von allem",
-            OtherParticipants: ["szakall"],
-            BonusMileConfirmation1: true,
-            BonusMileConfirmation2: true,
-            TravelCostsPayedBySomeone: true,
-            StayingCostsPayedBySomeone: false,
-            PayedByWhom: "Firma",
-            OtherCosts: 30,
-            EstimatedCosts: 40,
-            DateApplicationFiled: "2021-01-01T18:54:40.035095+01:00",
-            DateApplicationApproved: "2021-02-01T18:54:40.035095+01:00",
-            Referee: "",
-            BusinessCardEmittedOutward: false,
-            BusinessCardEmittedReturn: false
-          }
-        ],
-        TravelInvoices: []
-      };
-      this.app = application;
-      this.title = this.app.Name;
-      this.kind = this.app.Kind;
-      this.currentTeacher = this.getCurrentTeacher();
-      if (this.app.Kind === 4) {
-        if (
-          this.currentTeacher ===
-          this.app.SchoolEventDetails.Teachers[0].Shortname
-        ) {
-          this.isLeader = true;
-        } else {
-          this.isLeader = false;
-        }
-        for (let i = 0; i < this.app.SchoolEventDetails.Teachers.length; i++) {
-          if (
-            this.currentTeacher ===
-            this.app.SchoolEventDetails.Teachers[i].Shortname
-          ) {
-            this.currentTeacherIndex = i;
-          }
-        }
-        this.start = this.app.SchoolEventDetails.Teachers[
-          this.currentTeacherIndex
-        ].AttendanceFrom;
-        this.end = this.app.SchoolEventDetails.Teachers[
-          this.currentTeacherIndex
-        ].AttendanceTill;
-        this.sedata = this.app.SchoolEventDetails.Teachers[
-          this.currentTeacherIndex
-        ];
-      } else {
-        this.currentTeacherIndex = 0;
-      }
-      if (this.app.Kind === 0) {
-        this.start = this.app.StartTime;
-        this.end = this.app.EndTime;
-        this.wdata = this.app;
-      }
-      if (this.app.Kind === 8) {
-        this.start = this.app.StartTime;
-        this.end = this.app.EndTime;
-        this.odata = this.app;
-      }
-      this.tadata = this.app.BusinessTripApplications[this.currentTeacherIndex];
-      this.tbdata = this.app.TravelInvoices[this.currentTeacherIndex];
-      this.setItems(application);
-      this.setReads(application);
     },
     returnValue(input) {
       if (input === undefined || input === null || input === "") {
@@ -1073,7 +914,6 @@ export default {
           let data = response.data;
           return data.Short;
         });
-      return "szakall";
     },
     openPDF(item) {
       axios
