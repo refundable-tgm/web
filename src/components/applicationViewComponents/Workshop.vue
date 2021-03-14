@@ -17,7 +17,7 @@
               >
                 <b-form-input
                   id="tit"
-                  v-model="data.bez"
+                  v-model="data.Name"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -34,9 +34,9 @@
               >
                 <b-form-datepicker
                   id="std"
-                  v-model="data.startDate"
+                  v-model="startDate"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -53,9 +53,9 @@
               >
                 <b-form-timepicker
                   id="stz"
-                  v-model="data.startTime"
+                  v-model="startTime"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -72,9 +72,9 @@
               >
                 <b-form-datepicker
                   id="end"
-                  v-model="data.endDate"
+                  v-model="endDate"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   class="mb-2"
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
@@ -91,9 +91,9 @@
               >
                 <b-form-timepicker
                   id="enz"
-                  v-model="data.endTime"
+                  v-model="endTime"
                   :readonly="readonly"
-                  @input="updateData"
+                  @input="updateTime"
                   locale="de"
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
@@ -110,7 +110,7 @@
               >
                 <b-form-input
                   id="phz"
-                  v-model="data.phz"
+                  v-model="data.TrainingDetails.PH"
                   :readonly="readonly"
                   @input="updateData"
                   type="number"
@@ -130,7 +130,7 @@
               >
                 <b-form-input
                   id="ver"
-                  v-model="data.veran"
+                  v-model="data.TrainingDetails.Organizer"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -147,7 +147,7 @@
               >
                 <b-form-radio-group
                   id="ar"
-                  v-model="data.type"
+                  v-model="data.TrainingDetails.Kind"
                   @input="updateData"
                   :disabled="readonly"
                   :options="options"
@@ -166,10 +166,11 @@
                 description="Geben Sie Sonstige Art ein."
                 label="Sonstige Art"
                 label-for="son"
+                v-if="data.TrainingDetails.Kind === 8"
               >
                 <b-form-input
                   id="son"
-                  v-model="data.son"
+                  v-model="data.TrainingDetails.MiscellaneousReason"
                   @input="updateData"
                   :readonly="readonly"
                 ></b-form-input>
@@ -187,7 +188,7 @@
                 <b-form-textarea
                   id="an"
                   :readonly="readonly"
-                  v-model="data.notes"
+                  v-model="data.Notes"
                   @input="updateData"
                   placeholder="Anmerkungen"
                   rows="3"
@@ -209,20 +210,49 @@ export default {
     return {
       selected: "",
       options: [
-        { item: "A", name: "Seminar" },
-        { item: "B", name: "Tagung" },
-        { item: "C", name: "Lehrgang" },
-        { item: "D", name: "Sonstiges" }
-      ]
+        { item: 5, name: "Seminar" },
+        { item: 6, name: "Tagung" },
+        { item: 7, name: "Lehrgang" },
+        { item: 8, name: "Sonstiges" }
+      ],
+      startDate: "",
+      startTime: "",
+      endDate: "",
+      endTime: ""
     };
   },
   mounted() {
-    this.selected = this.data.type;
+    var start = new Date(this.data.StartTime);
+    var end = new Date(this.data.EndTime);
+    this.startDate =
+      start.getUTCFullYear() +
+      "-" +
+      (start.getUTCMonth() + 1) +
+      "-" +
+      start.getDate();
+    this.endDate =
+      end.getUTCFullYear() +
+      "-" +
+      (end.getUTCMonth() + 1) +
+      "-" +
+      end.getDate();
+    this.startTime = start.getHours() + ":" + start.getMinutes();
+    this.endTime = end.getHours() + ":" + end.getMinutes();
   },
   methods: {
     updateData() {
-      this.data.type = this.selected;
-      this.$emit('update', this.data);
+      this.$emit("update", this.data);
+    },
+    updateTime() {
+      var start = new Date(this.startDate);
+      start.setHours(this.startTime.split(":")[0]);
+      start.setMinutes(this.startTime.split(":")[1]);
+      var end = new Date(this.endDate);
+      end.setHours(this.endTime.split(":")[0]);
+      end.setMinutes(this.endTime.split(":")[1]);
+      this.data.StartTime = start;
+      this.data.EndTime = end;
+      this.updateData();
     }
   }
 };
