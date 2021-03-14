@@ -137,16 +137,7 @@ export default {
     return {
       selectMode: "multi",
       selected: [],
-      items: [
-        {
-          title: "a",
-          kind: 4,
-          status: "Akzeptierungsphase",
-          edat: "2020-12-12",
-          start: "2021-02-12",
-          from: "zaks"
-        }
-      ],
+      items: [],
       fields: [
         { key: "selected", label: "Ausgewählt" },
         { key: "title", label: "Titel", sortable: true, sortDirection: "desc" },
@@ -341,7 +332,6 @@ export default {
       }
     },
     viewApplication(app) {
-      // Nur die ID verwenden beim übergeben!
       this.changeComponent("ApplicationAdminView", true, app);
     },
     resetInfoModal() {
