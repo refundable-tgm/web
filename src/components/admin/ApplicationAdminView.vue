@@ -197,11 +197,7 @@
         ></b-row>
         <b-row>
           <b-col cols="6">
-            <b-button
-              class="mt-2"
-              variant="outline-danger"
-              block
-              @click="delAn"
+            <b-button class="mt-2" variant="outline-danger" block @click="delAn"
               >Antrag ablehnen <b-spinner small type="grow"></b-spinner
             ></b-button>
           </b-col>
@@ -574,12 +570,27 @@ export default {
     closeAntrag() {
       this.$refs["close-modal"].show();
     },
+    showPDF(pdf) {
+      let pdfWindow = window.open("");
+      var fileName = "PDF";
+      pdfWindow.document.write(
+        "<html<head><title>" +
+          fileName +
+          "</title><style>body{margin: 0px;}iframe{border-width: 0px;}</style></head>"
+      );
+      pdfWindow.document.write(
+        "<body><embed width='100%' height='100%' src='data:application/pdf;base64, " +
+          encodeURI(pdf) +
+          "#toolbar=0&navpanes=0&scrollbar=0'></embed></body></html>"
+      );
+    },
     setItems(app) {
       if (app.Kind === 4) {
         this.items = [
           {
             title: "Allgemeine Infos",
-            form: "SchoolEventDetails"
+            form: "SchoolEventDetails",
+            teacher: 0
           }
         ];
         for (let i = 0; i < this.app.SchoolEventDetails.Teachers.length; i++) {
@@ -587,7 +598,8 @@ export default {
             title:
               "Begleitformular - " +
               this.app.SchoolEventDetails.Teachers[i].Shortname,
-            form: "SchoolEventTeacherDetails"
+            form: "SchoolEventTeacherDetails",
+            teacher: i
           });
         }
         for (let i = 0; i < this.app.SchoolEventDetails.Teachers.length; i++) {
@@ -595,7 +607,8 @@ export default {
             title:
               "Reiseformular - " +
               this.app.SchoolEventDetails.Teachers[i].Shortname,
-            form: "BusinessTripApplication"
+            form: "BusinessTripApplication",
+            teacher: i
           });
         }
         if (this.app.Progress >= 5) {
@@ -608,7 +621,8 @@ export default {
               title:
                 "Reiserechnung - " +
                 this.app.SchoolEventDetails.Teachers[i].Shortname,
-              form: "TravelInvoice"
+              form: "TravelInvoice",
+              teacher: i
             });
           }
         }
@@ -617,7 +631,8 @@ export default {
           this.items = [
             {
               title: "Fortbildung",
-              form: "TrainingDetails"
+              form: "TrainingDetails",
+              teacher: 0
             },
             {
               title: "Reiseformular",
@@ -627,31 +642,47 @@ export default {
           if (this.app.Progress >= 4) {
             this.items.push({
               title: "Reiserechnung",
-              form: "TravelInvoice"
+              form: "TravelInvoice",
+              teacher: 0
             });
           }
         } else {
           this.items = [
             {
               title: "Abwesenheitsformular",
-              form: "OtherReasonDetails"
+              form: "OtherReasonDetails",
+              teacher: 0
             },
             {
               title: "Reiseformular",
-              form: "BusinessTripApplication"
+              form: "BusinessTripApplication",
+              teacher: 0
             }
           ];
           if (this.app.Progress >= 4) {
             this.items.push({
               title: "Reiserechnung",
-              form: "TravelInvoice"
+              form: "TravelInvoice",
+              teacher: 0
             });
           }
         }
       }
     },
     openPDF(item) {
-      console.log(item);
+      axios
+        .get(this.url + "/getAdminPDF", {
+          params: {
+            application: this.app.UUID,
+            form: item.form,
+            teacher: item.teacher,
+            token: this.token
+          }
+        })
+        .then(response => {
+          var pdf = response.data.pdf;
+          this.showPDF(pdf);
+        });
     },
     hideClose() {
       this.$refs["close-modal"].hide();
