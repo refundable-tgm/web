@@ -194,11 +194,11 @@ export default {
   methods: {
     changeStartAdresse() {
       this.checkInputs();
-      this.$emit("startadresse", this.index, this.escort.startadresse)
+      this.$emit("startadresse", this.index, this.escort.startadresse);
     },
     changeMeetingPoint() {
       this.checkInputs();
-      this.$emit("meetingpoint", this.index, this.escort.meetingpoint)
+      this.$emit("meetingpoint", this.index, this.escort.meetingpoint);
     },
     changeStartTime() {
       this.checkInputs();
@@ -234,6 +234,7 @@ export default {
         let baseEnd = new Date(this.bed + "T" + this.bet);
         if (start >= baseStart && end <= baseEnd) {
           this.outBaseTime = false;
+          this.validTime = true;
           if (end - start <= 0) {
             this.negTime = true;
             this.validTime = false;

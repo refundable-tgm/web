@@ -161,9 +161,13 @@ export default {
       var end = new Date(this.endDate);
       end.setHours(this.endTime.split(":")[0]);
       end.setMinutes(this.endTime.split(":")[1]);
-      this.data.AttendanceFrom = start.toISOString();
-      this.data.AttendanceTill = end.toISOString();
+      this.data.AttendanceFrom = this.setTimezone(start);
+      this.data.AttendanceTill = this.setTimezone(end);
       this.updateData();
+    },
+    setTimezone(datum) {
+      datum.setHours(datum.getHours() + 1);
+      return datum.toISOString() + "+01:00";
     }
   },
   mounted() {

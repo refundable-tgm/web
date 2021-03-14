@@ -397,18 +397,18 @@ export default {
           var business = {
             ID: 0,
             Staffnr: this.returnValue(this.teacher.personalnummer),
-            TripBeginTime: new Date(
-              this.startDate + "T" + this.startTime
-            ).toISOString(),
-            TripEndTime: new Date(
-              this.endDate + "T" + this.endTime
-            ).toISOString(),
-            ServiceBeginTime: new Date(
-              this.startDate + "T" + this.startTime
-            ).toISOString(),
-            ServiceEndTime: new Date(
-              this.endDate + "T" + this.endTime
-            ).toISOString(),
+            TripBeginTime: this.setTimezone(
+              new Date(this.startDate + "T" + this.startTime)
+            ),
+            TripEndTime: this.setTimezone(
+              new Date(this.endDate + "T" + this.endTime)
+            ),
+            ServiceBeginTime: this.setTimezone(
+              new Date(this.startDate + "T" + this.startTime)
+            ),
+            ServiceEndTime: this.setTimezone(
+              new Date(this.endDate + "T" + this.endTime)
+            ),
             TripGoal: this.returnString(this.start),
             TravelPurpose: this.returnString(this.teacher.reason1),
             TravelMode: this.returnValue(this.teacher.transport),
@@ -433,10 +433,12 @@ export default {
             Kind: 0,
             MiscellaneousReason: this.returnString(""),
             Progress: 1,
-            StartTime: new Date(
-              this.startDate + "T" + this.startTime
-            ).toISOString(),
-            EndTime: new Date(this.endDate + "T" + this.endTime).toISOString(),
+            StartTime: this.setTimezone(
+              new Date(this.startDate + "T" + this.startTime)
+            ),
+            EndTime: this.setTimezone(
+              new Date(this.endDate + "T" + this.endTime)
+            ),
             Notes: this.returnString(this.notes),
             StartAddress: this.returnString(this.start),
             DestinationAddress: this.returnString(this.end),
@@ -450,20 +452,19 @@ export default {
             TravelInvoices: [
               {
                 ID: 0,
-                TripBeginTime: new Date(
-                  this.startDate + "T" + this.startTime
-                ).toISOString(),
-                TripEndTime: new Date(
-                  this.endDate + "T" + this.endTime
-                ).toISOString(),
+                TripBeginTime: this.setTimezone(
+                  new Date(this.startDate + "T" + this.startTime)
+                ),
+                TripEndTime: this.setTimezone(
+                  new Date(this.endDate + "T" + this.endTime)
+                ),
                 Staffnr: this.returnValue(this.teacher.personalnummer),
                 StartingPoint: this.returnString(this.start),
                 EndPoint: this.returnString(this.end),
-                FilingDate: new Date().toISOString()
+                FilingDate: this.setTimezone(new Date())
               }
             ]
           };
-
           axios
             .post(this.url + "/createApplication", this.token, data)
             .then(response => {
@@ -496,6 +497,10 @@ export default {
         }
         this.checkInputs();
       }
+    },
+    setTimezone(datum) {
+      datum.setHours(datum.getHours() + 1);
+      return datum.toISOString() + "+01:00";
     },
     workshop() {
       if (this.checkClick()) {

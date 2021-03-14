@@ -149,18 +149,36 @@ export default {
       if (this.checkClick()) {
         var teachers = [];
         var business = [];
+        var invoices = [];
         for (let i = 0; i < this.escorts.output.length; i++) {
+          invoices.push({
+            ID: i,
+            TripBeginTime: this.setTimezone(
+              new Date(this.escorts.startDate + "T" + this.escorts.startTime)
+            ),
+            TripEndTime: this.setTimezone(
+              new Date(this.escorts.endDate + "T" + this.escorts.endTime)
+            ),
+            Staffnr: this.returnValue(this.escorts.output[i].personalnummer),
+            StartingPoint: this.returnString(this.escorts.start),
+            EndPoint: this.returnString(this.escorts.ziel),
+            FilingDate: this.setTimezone(new Date())
+          });
           teachers.push({
-            AttendanceFrom: new Date(
-              this.escorts.output[i].startDate +
-                "T" +
-                this.escorts.output[i].startTime
-            ).toISOString(),
-            AttendanceTill: new Date(
-              this.escorts.output[i].endDate +
-                "T" +
-                this.escorts.output[i].endTime
-            ).toISOString(),
+            AttendanceFrom: this.setTimezone(
+              new Date(
+                this.escorts.output[i].startDate +
+                  "T" +
+                  this.escorts.output[i].startTime
+              )
+            ),
+            AttendanceTill: this.setTimezone(
+              new Date(
+                this.escorts.output[i].endDate +
+                  "T" +
+                  this.escorts.output[i].endTime
+              )
+            ),
             MeetingPoint: this.returnString(
               this.escorts.output[i].meetingpoint
             ),
@@ -197,22 +215,26 @@ export default {
           business.push({
             ID: i,
             Staffnr: this.returnValue(this.escorts.output[i].personalnummer),
-            TripBeginTime: new Date(
-              this.escorts.startDate + "T" + this.escorts.startTime
-            ).toISOString(),
-            TripEndTime: new Date(
-              this.escorts.endDate + "T" + this.escorts.endTime
-            ).toISOString(),
-            ServiceBeginTime: new Date(
-              this.escorts.output[i].startDate +
-                "T" +
-                this.escorts.output[i].startTime
-            ).toISOString(),
-            ServiceEndTime: new Date(
-              this.escorts.output[i].endDate +
-                "T" +
-                this.escorts.output[i].endTime
-            ).toISOString(),
+            TripBeginTime: this.setTimezone(
+              new Date(this.escorts.startDate + "T" + this.escorts.startTime)
+            ),
+            TripEndTime: this.setTimezone(
+              new Date(this.escorts.endDate + "T" + this.escorts.endTime)
+            ),
+            ServiceBeginTime: this.setTimezone(
+              new Date(
+                this.escorts.output[i].startDate +
+                  "T" +
+                  this.escorts.output[i].startTime
+              )
+            ),
+            ServiceEndTime: this.setTimezone(
+              new Date(
+                this.escorts.output[i].endDate +
+                  "T" +
+                  this.escorts.output[i].endTime
+              )
+            ),
             TripGoal: this.returnString(this.escorts.ziel),
             TravelPurpose: this.returnString(this.escorts.output[i].reason1),
             TravelMode: this.returnValue(this.escorts.output[i].transport),
@@ -244,12 +266,12 @@ export default {
           Kind: 4,
           MiscellaneousReason: this.returnString(""),
           Progress: 1,
-          StartTime: new Date(
-            this.escorts.startDate + "T" + this.escorts.startTime
-          ).toISOString(),
-          EndTime: new Date(
-            this.escorts.endDate + "T" + this.escorts.endTime
-          ).toISOString(),
+          StartTime: this.setTimezone(
+            new Date(this.escorts.startDate + "T" + this.escorts.startTime)
+          ),
+          EndTime: this.setTimezone(
+            new Date(this.escorts.endDate + "T" + this.escorts.endTime)
+          ),
           Notes: this.returnString(this.escorts.notes),
           StartAddress: this.returnString(this.escorts.start),
           DestinationAddress: this.returnString(this.escorts.ziel),
@@ -265,8 +287,9 @@ export default {
             Teachers: teachers
           },
           BusinessTripApplications: business,
-          TravelInvoices: []
+          TravelInvoices: invoices
         };
+        console.log(data);
         axios
           .post(this.url + "/createApplication", {
             params: {
@@ -282,6 +305,10 @@ export default {
     },
     changeStartDate(index, newStartDate) {
       this.escorts.output[index].startDate = newStartDate;
+    },
+    setTimezone(datum) {
+      datum.setHours(datum.getHours() + 1);
+      return datum.toISOString() + "+01:00";
     },
     changeEndDate(index, newEndDate) {
       this.escorts.output[index].endDate = newEndDate;

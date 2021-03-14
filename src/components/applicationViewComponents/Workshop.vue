@@ -250,9 +250,13 @@ export default {
       var end = new Date(this.endDate);
       end.setHours(this.endTime.split(":")[0]);
       end.setMinutes(this.endTime.split(":")[1]);
-      this.data.StartTime = start.toISOString();
-      this.data.EndTime = end.toISOString();
+      this.data.StartTime = this.setTimezone(start);
+      this.data.EndTime = this.setTimezone(end);
       this.updateData();
+    },
+    setTimezone(datum) {
+      datum.setHours(datum.getHours() + 1);
+      return datum.toISOString() + "+01:00";
     }
   }
 };

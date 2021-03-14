@@ -310,14 +310,7 @@ export default {
     };
   },
   mounted() {
-    if (
-      this.readonly == null ||
-      this.readonly == "" ||
-      this.readonly == undefined
-    ) {
-      this.readonly = false;
-    }
-    if (this.app !== null) {
+    if (this.app !== undefined) {
       this.data.personalnummer = this.app.Staffnr;
       this.data.transport = this.app.TravelMode;
       this.data.ausgangspunkt = this.app.StartingPoint;
