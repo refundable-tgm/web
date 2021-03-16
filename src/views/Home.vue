@@ -451,10 +451,9 @@ export default {
       }
     });
     if (this.pathing === undefined) {
+      let tokenPresent = false; // Set tokenPresent to true if active token is present
       if (this.query !== undefined) {
-        // Set tmp1 to true if active token is present
-        let tmp1 = false;
-        if (tmp1) {
+        if (tokenPresent) {
           // Wenn eine Session da ist, hol den Antrag und zeig ihn an
           this.changeComponent("ApplicationView", true, this.query);
         } else {
@@ -466,9 +465,7 @@ export default {
           // Wenn keine Session da ist --> zeig die Login Seite an --> nach erfolgreichem Login --> Zeig Antrag an
         }
       } else {
-        // Set tmp2 to true if active token is present
-        let tmp2 = false;
-        if (tmp2) {
+        if (tokenPresent) {
           // Wenn eine Session da ist, zeig die Application Search Seite an
           this.changeComponent("ApplicationSearch");
         } else {
