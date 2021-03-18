@@ -199,6 +199,13 @@ export default {
     };
   },
   methods: {
+    /*
+     * Diese Methode ändert die angezeigte Komponente auf die Übegebene
+     * @param component Die neue Komponente, die angezeigt werden soll
+     * @param back Boolean-Wert, der aussagt, ob in die History des Browsers geschrieben werden soll
+     * @param application Der Antrag, welcher angezeigt werden soll
+     * @param escortsdata Die Informationen eines Schulantrags
+     */
     changeComponent(
       component,
       back = true,
@@ -218,78 +225,65 @@ export default {
         case "ApplicationView":
           this.loadApplication(application);
           this.change("ApplicationView", back);
-          console.log("APPLICATIONVIEW!");
           break;
 
         case "NewApplication":
           this.change("NewApplication", back);
-          console.log("NEW APPLICATION!");
           break;
 
         case "AllApplication":
           this.change("AllApplication", back);
-          console.log("ALL APPLICATIONS!");
           break;
 
         case "CurrentApplication":
           this.change("CurrentApplication", back);
-          console.log("CURRENT APPLICATIONS!");
           break;
 
         case "School":
           this.change("School", back);
-          console.log("SCHOOL!");
           break;
 
         case "Others":
           this.change("Others", back);
-          console.log("OTHERS!");
           break;
 
         case "Escorts":
           this.loadEscortsData(escortsdata);
           this.change("Escorts", back, false);
-          console.log("ESCORTS!");
           break;
 
         case "OtherCause":
           this.change("OtherCause", back);
-          console.log("OTHERCAUSE!");
           break;
 
         case "Workshop":
           this.change("Workshop", back);
-          console.log("WORKSHOP!");
           break;
         case "ApplicationSearch":
           this.change("ApplicationSearch", back);
-          console.log("APPLICATIONSEARCH!");
           break;
         case "AdminDashboard":
           this.change("AdminDashboard", back);
-          console.log("ADMINDASHBOARD!");
           break;
         case "Progress":
           this.change("Progress", back);
-          console.log("PROGRESS!");
           break;
 
         case "PageNotFound":
           this.change("PageNotFound", back);
-          console.log("PAGENOTFOUND!");
           break;
 
         case "ApplicationAdminView":
           this.change("ApplicationAdminView", back);
-          console.log("APPLICATIONADMINVIEW!");
           break;
-
-        default:
-          console.log("DEFAULT");
-          console.log(component);
-        //this.change("Login", back)
       }
     },
+    /*
+    * Diese Methode ändert die angezeigte Komponente und schreibt nach Bedarf in die History und die Cookies des Browsers
+    * @param page Die neue Komponente, die angezeigt werden soll
+    * @param back Boolean-Wert, ob in die History des Browsers geschrieben werden soll
+    * @param cookie Boolean-Wert, ob in die Cookies des Browsers geschrieben werden soll
+    */
     change(page, back = true, cookie = true) {
       this.currentComponent = page;
       window.scrollTo(0, 0);
@@ -302,9 +296,21 @@ export default {
         this.setCookie(page);
       }
     },
+    /*
+    * Ändert den derzeitig offenen Antrag
+    * @param application Der neue Antrag, welcher angezeigt werden soll
+    */
     loadApplication(application) {
       this.appid = application;
     },
+    /*
+    * Diese Methode setzt alle notwendigen Werte, wenn sich jemand anmeldet.
+    * @param user Der Nutzer, der sich angemeldet hat
+    * @param admin Boolean-Wert, ob der Benutzer Admin ist
+    * @param administration Boolean-Wert, ob der Benutzer zur Administration gehört
+    * @param av Boolean-Wert, ob der Benutzer AV ist
+    * @param pek Boolean-Wert, ob der Benutzer eine Reiserechnungsabteilung ist
+    */
     login(user, admin, administration, av, pek) {
       this.user = user;
       this.admin = admin;
@@ -315,6 +321,10 @@ export default {
         this.changeComponent("AdminDashboard");
       }
     },
+    /*
+    * Diese Methode gibt den derzeitg angemeldeten Lehrernamen zurück
+    * @return Ein Objekt, in dem das Kürzel des Lehrers und der volle Namen enthalten ist
+    */
     getLeader() {
       axios
         .get(this.url + "/getTeacher?id=" + this.user, {
@@ -327,6 +337,10 @@ export default {
           return { longname: data.Longname, short: data.Short };
         });
     },
+    /*
+    * Diese Methode erstellt die Datenstruktur für die Begleitpersonenformulare
+    * @param escortsdata Die Informationen aus dem Schulveranstaltungsformular
+    */
     loadEscortsData(escortsdata) {
       let leader = this.getLeader();
       let output = [
@@ -369,6 +383,10 @@ export default {
       escortsdata.output = output;
       this.escortsdata = escortsdata;
     },
+    /*
+    * Diese Methode gibt den vollen Namen eines Lehrers zurück
+    * @param shortName Der Kürzel des verlangten Lehrers
+    */
     getFullName(shortName) {
       axios
         .get(this.url + "/getLongName?name=" + shortName, {
@@ -380,6 +398,10 @@ export default {
           return response.data.long;
         });
     },
+    /*
+    * Diese Methode gitb alle states des übergebenen state-Arrays zurück
+    * @param state Das state-Objekt, welches zurückgegeben werden soll
+    */
     generateState(state) {
       let output = "";
       for (let i = 0; i < 100; i++) {
@@ -390,6 +412,10 @@ export default {
         }
       }
     },
+    /*
+    * Diese Methode schaut, ob ein Cookie von dieser Seite gespeichert ist
+    * @return Boolean-Wert, je nach dem, ob ein Cookie gesetzt ist, oder nicht
+    */
     checkCookie() {
       var name = "current=";
       var decodedCookie = decodeURIComponent(document.cookie);
@@ -405,6 +431,10 @@ export default {
       }
       return false;
     },
+    /*
+    * Diese Methode gibt den Cookie der Webseite zurück
+    * @return Der Cookie mit all seinen Informationen
+    */
     getCookie() {
       var name = "current=";
       var decodedCookie = decodeURIComponent(document.cookie);
@@ -420,6 +450,10 @@ export default {
       }
       return "";
     },
+    /*
+    * Diese Methode setzt den Cookie der Webseite 
+    * @param value Der Wert des Cookies
+    */
     setCookie(value) {
       if (this.cookies) {
         var d = new Date();
@@ -429,9 +463,16 @@ export default {
           "current=" + value + ";" + expires + ";SameSite=Strict;path=/";
       }
     },
+    /*
+    * Diese Methode setzt die Variable, falls Cookies akzeptiert worden sind
+    * @param cookie Boolean-Wert, ob die Cookies akzeptiert worden sind
+    */
     useCookie(cookie) {
       this.cookies = cookie;
     },
+    /*
+    * Diese Methode löscht vorhanderen Cookies
+    */
     deleteCookie() {
       if (this.cookies) {
         var d = new Date();
@@ -443,6 +484,7 @@ export default {
     }
   },
   created() {
+    // Hier wird der Listener für die Pfeile des Browsers erstellt
     window.addEventListener("popstate", e => {
       if (this.generateState(e.state) === "Escorts") {
         this.changeComponent("School", false);
@@ -450,6 +492,8 @@ export default {
         this.changeComponent(this.generateState(e.state), false);
       }
     });
+
+    // Weiterleitung, falls der Token gesetzt ist und eine die ApplicationView-Seite aufgerufen werden soll
     if (this.pathing === undefined) {
       let tokenPresent = false; // Set tokenPresent to true if active token is present
       if (this.query !== undefined) {
@@ -477,6 +521,10 @@ export default {
         }
       }
     } else {
+      /* 
+      Falls nicht weitergeleitet werden soll, wird geschaut, ob
+      der Benutzer mit dem Browser zuletzt auf einer anderen Seite war und wird auf diese Seite weitergeleitet
+      */
       if (this.checkCookie()) {
         this.useCookie(true);
         var c = this.getCookie();
@@ -486,6 +534,7 @@ export default {
           this.changeComponent(c);
         }
       } else {
+        // Falls kein Cookie gesetzt ist, wird der Benutzer auf die Login-Seite weitergeleitet
         this.changeComponent("Login");
       }
     }
