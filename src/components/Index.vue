@@ -327,6 +327,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * TODO
+     * Diese Methode requestet die News von dem Benutzer und erstellt damit die Komponenten
+     */
     setNews() {
       axios
         .get(this.url + "/news?user=" + this.user)
@@ -334,23 +338,20 @@ export default {
           status.toString();
           this.news = this.cutNews(response.data);
         });
-      /*var back = [
-        { id: "1", title: "TEST 1", description: "Das ist nur Test Nr. 1" },
-        { id: "2", title: "TEST 2", description: "Das ist nur Test Nr. 2" },
-        { id: "3", title: "TEST 3", description: "Das ist nur Test Nr. 3" },
-        { id: "4", title: "TEST 4", description: "Das ist nur Test Nr. 4" },
-        { id: "5", title: "TEST 5", description: "Das ist nur Test Nr. 5" },
-        { id: "6", title: "TEST 6", description: "Das ist nur Test Nr. 6" },
-        { id: "7", title: "TEST 7", description: "Das ist nur Test Nr. 7" },
-        { id: "8", title: "TEST 8", description: "Das ist nur Test Nr. 8" },
-        { id: "9", title: "TEST 9", description: "Das ist nur Test Nr. 9" },
-        { id: "10", title: "TEST 10", description: "Das ist nur Test Nr. 10" }
-      ];
-      this.news = this.cutNews(back);*/
     },
-    changeComponent(component, back = true, application = null) {
-      this.$emit("change-component", component, back, application);
+    /**
+     * Diese Methode ändert die angezeigte Komponente
+     * @param component Die neue Komponente, welche angezeigt werden soll
+     * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
+     */
+    changeComponent(component, back = true) {
+      this.$emit("change-component", component, back);
     },
+    /**
+     * Diese Methode legt die maximale Anzahl an angezeigten News auf der Startseite fest
+     * @param news Die geladenen News
+     * @returns
+     */
     cutNews(news) {
       var viewnews = [];
       for (let i = 0; i < this.maxnews; i++) {
@@ -359,6 +360,10 @@ export default {
       }
       return viewnews;
     },
+    /**
+     * TODO
+     * Diese Methode loggt den Benutzer vom System aus
+     */
     logout() {
       if (this.checkClick()) {
         console.log("Logout!");
@@ -368,26 +373,41 @@ export default {
         this.changeComponent("Login");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die NewApplication-Seite weiter
+     */
     newApplication() {
       if (this.checkClick()) {
         this.changeComponent("NewApplication");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die AllApplication-Seite weiter
+     */
     allApplication() {
       if (this.checkClick()) {
         this.changeComponent("AllApplication");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die CurrentApplication-Seite weiter
+     */
     currentApplication() {
       if (this.checkClick()) {
         this.changeComponent("CurrentApplication");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf das Admin-Dashboard weiter
+     */
     adminclick() {
       if (this.checkClick()) {
         this.changeComponent("AdminDashboard");
       }
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window

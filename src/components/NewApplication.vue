@@ -61,9 +61,17 @@
 export default {
   name: "NewApplication",
   methods: {
-    changeComponent(component, back = true, application = null) {
-      this.$emit("change-component", component, back, application);
+    /**
+     * Diese Methode ändert die angezeigte Komponente
+     * @param component Die neue Komponente, welche angezeigt werden soll
+     * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
+     */
+    changeComponent(component, back = true) {
+      this.$emit("change-component", component, back);
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window
@@ -76,16 +84,25 @@ export default {
         return false;
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Schulveranstaltungs-Seite weiter
+     */
     school() {
       if (this.checkClick()) {
         this.changeComponent("School");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Fortbildung,etc.-Seite weiter
+     */
     other() {
       if (this.checkClick()) {
         this.changeComponent("Others");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Startseite weiter
+     */
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
@@ -95,14 +112,6 @@ export default {
   data() {
     return {
       items: [
-        //{
-        //  text: "Admin",
-        //  href: "#"
-        //},
-        //{
-        //  text: "Manage",
-        //  href: "#"
-        //},
         {
           text: "Antrag Übersicht",
           active: true

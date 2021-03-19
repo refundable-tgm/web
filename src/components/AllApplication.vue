@@ -171,9 +171,18 @@ export default {
     this.loadData();
   },
   methods: {
+    /**
+     * Diese Methode sorgt dafür, dass die richtige ID an die viewApplication-Methode weitergegeben wird
+     */
     info(item) {
       this.viewApplication(item.UUID);
     },
+    /**
+     * Diese Methode schaut, ob die geladenen Anträge aktiv oder unaktiv sind
+     * @param kind Die Art des Antrags
+     * @param progress Der Fortschritt des Antrags
+     * @returns Boolean-Wert, ob der Antrag aktiv ist oder nicht
+     */
     isActive(kind, progress) {
       if (kind === 4) {
         if (progress > 0 && progress < 7) return true;
@@ -183,6 +192,12 @@ export default {
         else return false;
       }
     },
+    /**
+     * Diese Methode setzt den Status der Anträge in Textform um
+     * @param kind Die Art des Antrags
+     * @param progress Der Fortschritt des Antrags
+     * @returns String-Form des Fortschritts
+     */
     loadStatus(kind, progress) {
       if (kind === 4) {
         switch (progress) {
@@ -226,8 +241,12 @@ export default {
         }
       }
     },
-    showInfo(item, index, button) {
-      //this.infoModal.title = `Row index: ${index}`;
+    /**
+     * Diese Methode sorgt dafür, dass die wichtigsten Informationen im Modal angezeigt werden
+     * @param item Das Element in der Liste, auf welches gedrückt worden ist
+     * @param button Der Knopf, mit dem die Methode aufgerufen worden ist
+     */
+    showInfo(item, button) {
       this.infoModal.title = item.title;
       let leiter = "Leiter: " + item.leader;
       let date = "Einreichdatum: " + item.edate;
@@ -239,6 +258,10 @@ export default {
         leiter + "\n" + date + "\n" + status + "\n" + active;
       this.$root.$emit("bv::show::modal", this.infoModal.id, button);
     },
+    /**
+     * TODO
+     * Diese Methode lädt alle Anträge für die Liste der aktiven Anträge
+     */
     loadData() {
       axios
         .get(this.url + "/getAllApplications?user=" + this.user, {
@@ -314,28 +337,50 @@ export default {
           this.totalRows = this.items.length;
         });
     },
+    /**
+     * Diese Methode leert den Inhalt und den Titel des Modals
+     */
     resetInfoModal() {
       this.infoModal.title = "";
       this.infoModal.content = "";
     },
+    /**
+     * Filter-Methode von Bootstrap-vue Table
+     */
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+    /**
+     * Leitet den Benutzer auf die NewApplication-Seite weiter
+     */
     newApplication() {
       if (this.checkClick()) {
         this.changeComponent("NewApplication");
       }
     },
+    /**
+     * Öffnet den Antrag im Antrag-Viewer
+     * @param application Der Antrag, welcher geöffnet werden soll
+     */
     openApplication(application) {
       if (this.checkClick()) {
         this.changeComponent("ApplicationView", true, application);
       }
     },
+    /**
+     * Diese Methode ändert die angezeigte Komponente
+     * @param component Die neue Komponente, welche angezeigt werden soll
+     * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
+     * @param application Die ID des Antrags, welcher angezeigt werden soll
+     */
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window
@@ -348,13 +393,19 @@ export default {
         return false;
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Startseite weiter
+     */
     index() {
       if (this.checkClick) {
         this.changeComponent("Index");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf den Antrag-Viewer weiter
+     * @param app Der Antrag, welcher dem Benutzer angezeigt werden soll
+     */
     viewApplication(app) {
-      // Nur die ID verwenden beim übergeben!
       this.changeComponent("ApplicationView", true, app);
     }
   }

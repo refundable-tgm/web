@@ -99,6 +99,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * TODO
+     * Diese Methode loggt den Benutzer mit dem eingegebenen Benutzernamen und dem eingegebenen Passwort ein
+     */
     login() {
       if (this.checkClick()) {
         if (this.cookieset === true) {
@@ -182,15 +186,24 @@ export default {
         }
       }
     },
+    /**
+     * TODO?
+     * Diese Methode leitet den Benutzer auf OWA weiter, um sein Passwort zu ändern
+     */
     forgot() {
       if (this.checkClick()) {
         window.open("https://owa.tgm.ac.at");
-        console.log("Passwort vergessen!");
       }
     },
+    /**
+     * Diese Methode sorgt dafür, dass die Cookie-Komponente neu geladen wird
+     */
     forceRender() {
       this.componentKey += 1;
     },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Benutzer die Cookies der Webseite akzeptieren muss
+     */
     makeToast() {
       this.$bvToast.toast("Bitte akzeptieren Sie unsere Cookies!", {
         title: "Ein Fehler ist aufgetreten!",
@@ -199,6 +212,9 @@ export default {
         variant: "danger"
       });
     },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Login fehlgeschlagen ist
+     */
     loginFailed() {
       this.$bvToast.toast("Username oder Passwort ist nicht korrekt", {
         title: "Ein Fehler ist aufgetreten!",
@@ -207,6 +223,9 @@ export default {
         variant: "danger"
       });
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window
@@ -219,6 +238,9 @@ export default {
         return false;
       }
     },
+    /**
+     * Diese Methode leitet die Antwort auf die Cookie-Frage an den Parent (Home) weiter
+     */
     requestAnswer(answer) {
       this.setcookie = answer;
       this.$emit("requestAnswer", answer);

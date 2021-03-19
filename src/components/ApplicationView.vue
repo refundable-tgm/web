@@ -275,18 +275,39 @@ export default {
     this.totalRows = this.items.length;
   },
   methods: {
+    /**
+     * Aktualisiert die Daten der Schulveranstaltung
+     * @param sgdata Die Daten der Schulveranstaltung
+     */
     updateSG(sgdata) {
       this.app = sgdata;
     },
+    /**
+     * Aktualisiert die Daten der Begleitformulare
+     * @param sedata Die Daten der Begleitformulare
+     */
     updateSE(sedata) {
       this.app.SchoolEventDetails.Teachers[this.currentTeacherIndex] = sedata;
     },
+    /**
+     * Aktualisiert die Daten der Sonstigen Anträge
+     * @param odata Die Daten der Sonstigen Anträge
+     */
     updateO(odata) {
       this.app = odata;
     },
+    /**
+     * Aktualisiert die Daten der Fortbildungen
+     * @param wdata Die Daten der Fortbildungen
+     */
     updateW(wdata) {
       this.app = wdata;
     },
+    /**
+     * Aktualisiert die Daten der Reiserechnung
+     * @param index Der Index, bei dem die Daten aktualisiert werden sollen
+     * @param data Die Daten der Reiserechnung
+     */
     updateTB(index, data) {
       index.toString();
       if (data.selected.includes("a1")) {
@@ -454,6 +475,11 @@ export default {
         );
       }
     },
+    /**
+     * Aktualisiert die Daten der Reiseformulare
+     * @param index Der Index, bei dem die Daten aktualisiert werden sollen
+     * @param data Die Daten der Reiseformulare
+     */
     updateTA(index, data) {
       index.toString();
       if (data.bonus_meilen[0] === "0" || data.bonus_meilen[1] === "0") {
@@ -508,14 +534,24 @@ export default {
         this.currentTeacherIndex
       ].EstimatedCosts = this.returnValue(data.geschaetzte_kosten);
     },
+    /**
+     * Diese Methode rechnet das Datum in das verwendete Datumsformat um
+     */
     calcDate(date) {
       var tmp = date.split(".");
       return tmp[2] + "-" + tmp[1] + "-" + tmp[0] + "T00:00:00+01:00";
     },
+    /**
+     * Diese Methode rechnet die Zeit in das verwendete Datumsformat um
+     */
     calcTime(date) {
       var tmp = date.split(":");
       return "2000-01-01T" + tmp[0] + ":" + tmp[1] + ":00+01:00";
     },
+    /**
+     * TODO
+     * Diese Methode lädt alle notwendigen Daten und formatiert jene so, dass diese richtig angezeigt werden
+     */
     loadData() {
       axios
         .get(this.url + "/application/getApplication?id=" + this.appid, {
@@ -579,6 +615,11 @@ export default {
           this.setReads(this.app);
         });
     },
+    /**
+     * Diese Methode gibt den Wert der Variable als Zahl zurück
+     * @param input Die Zahl, welche umgewandelt werden soll
+     * @returns Die Zahl des gegebenen Werts
+     */
     returnValue(input) {
       if (input === undefined || input === null || input === "") {
         return null;
@@ -586,6 +627,11 @@ export default {
         return Number(input);
       }
     },
+    /**
+     * Diese Methode gibt den String der Variable zurück
+     * @param input Der String, welcher umgewandelt werden soll
+     * @returns Den String der gegebenen Variable
+     */
     returnString(input) {
       if (input === undefined || input === null || input === "") {
         return null;
@@ -593,6 +639,11 @@ export default {
         return input;
       }
     },
+    /**
+     * Diese Methode gibt den Wert der Variable als Boolean-Wert zurück
+     * @param input Der Boolean-Wert als String
+     * @returns Der Boolean-Wert der Variable
+     */
     returnBoolean(input) {
       if (input === undefined || input === null || input === "") {
         return null;
@@ -601,6 +652,10 @@ export default {
         else return true;
       }
     },
+    /**
+     * TODO
+     * Diese Methode sendet den veränderten Antrag an das Backend
+     */
     save() {
       axios
         .put(this.url + "/saveApplication", {
@@ -615,9 +670,15 @@ export default {
           this.saveConfirm();
         });
     },
+    /**
+     * Diese Methode öffnet das Modal, in dem man den Antrag schließen kann
+     */
     closeAntrag() {
       this.$refs["close-modal"].show();
     },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
     saveConfirm() {
       this.$bvToast.toast("Die Änderungen wurden erfolgreich gespeichert!", {
         title: "Änderungen gespeichert",
@@ -626,6 +687,10 @@ export default {
         variant: "success"
       });
     },
+    /**
+     * Diese Methode setzt je nach Art und Fortschritts des Antrags die Lese- und Schreibberechtigungen
+     * @param app Der gesamte Antrag
+     */
     setReads(app) {
       var progress = app.Progress;
       if (app.Kind === 4) {
@@ -833,6 +898,10 @@ export default {
         }
       }
     },
+    /**
+     * Diese Methode setzt je nach Art und Fortschritts des Antrags die angezeigten Formulare
+     * @param app Der gesamte Antrag
+     */
     setItems(app) {
       if (app.Kind === 4) {
         if (this.isLeader) {
@@ -904,6 +973,10 @@ export default {
         }
       }
     },
+    /**
+     * TODO
+     * Diese Methode gibt den Kürzel des derzeit angemeldeten Benutzers zurück
+     */
     getCurrentTeacher() {
       axios
         .get(this.url + "/getTeacher?id=" + this.user, {
@@ -916,6 +989,9 @@ export default {
           return data.Short;
         });
     },
+    /**
+     * Diese Methode lädt die PDF von dem Backend
+     */
     openPDF(item) {
       axios
         .get(this.url + "/getPDF", {
@@ -931,14 +1007,17 @@ export default {
           this.showPDF(pdf);
         });
     },
+    /**
+     * Diese Methode versteckt das Modal
+     */
     hideClose() {
       this.$refs["close-modal"].hide();
     },
-    info(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`;
-      this.infoModal.content = JSON.stringify(item, null, 2);
-      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
-    },
+    /**
+     * Code aus StackOverflow
+     * Diese Methode wandelt den Base64String in eine PDF um und zeigt diese in einem neuen Tab an
+     * @param pdf Das PDF formatiert in Base64
+     */
     showPDF(pdf) {
       let pdfWindow = window.open("");
       var fileName = "PDF";
@@ -953,24 +1032,42 @@ export default {
           "#toolbar=0&navpanes=0&scrollbar=0'></embed></body></html>"
       );
     },
+    /**
+     * Diese Methode leert das Modal
+     */
     resetInfoModal() {
       this.infoModal.title = "";
       this.infoModal.content = "";
     },
+    /**
+     * Methode von Bootstrap-vue Table
+     */
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die NewApplication-Seite weiter
+     */
     newApplication() {
       if (this.checkClick()) {
         this.changeComponent("NewApplication");
         this.changeURL("NewApplication");
       }
     },
+    /**
+     * Diese Methode ändert die angezeigte Komponente
+     * @param component Die neue Komponente, welche angezeigt werden soll
+     * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
+     * @param application Die ID des Antrags, welcher angezeigt werden soll
+     */
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window
@@ -983,12 +1080,19 @@ export default {
         return false;
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Startseite weiter
+     */
     index() {
       if (this.checkClick) {
         this.changeComponent("Index");
         this.changeURL("Index");
       }
     },
+    /**
+     * TODO
+     * Diese Methode löscht den Antrag
+     */
     delAn() {
       axios
         .delete(this.url + "/closeApplication", {
@@ -1001,6 +1105,10 @@ export default {
           this.index();
         });
     },
+    /**
+     * Diese Methode sorgt dafür, dass die URL angepasst ist, damit keine Reste des Viewers (ApplicationSearch) in der URL stehen
+     * @param nextpage Die nächste Seite, welche aufgerufen wird
+     */
     changeURL(nextpage) {
       if (window.location.href.indexOf("/viewer") >= 0) {
         history.replaceState(

@@ -45,11 +45,19 @@ export default {
   name: "NewsElement",
   props: ["snews"],
   methods: {
+    /**
+     * TODO
+     * Diese Methode sorgt dafür, dass der Benutzer auf die richtigen Antrag weitergeleitet wird
+     * @param application The Application of the News-Element
+     */
     linkToApplication(application) {
       if (this.checkClick()) {
-        this.$emit("change-component", "ApplicationView", true, application);
+        this.$emit("change-component", "ApplicationView", true, application.id);
       }
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window

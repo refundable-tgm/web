@@ -37,12 +37,17 @@
 <script>
 export default {
   methods: {
+    /**
+     * Diese Methode ändert die Komponente auf die Index-Seite (Hauptseite)
+     */
     index() {
-      console.log("INDEX!");
       if (this.checkClick()) {
         this.$emit("toIndex");
       }
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window

@@ -26,6 +26,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * Diese Methode leitet die Antwort des Benutzers auf den Parent (Login) weiter
+     */
     validateCookies() {
       this.$emit("requestAnswer", true);
     }
