@@ -288,6 +288,10 @@ export default {
     this.totalRows = this.items.length;
   },
   methods: {
+    /**
+     * TODO
+     * Diese Methode lädt den gewünschte Antrag aus dem Backend
+     */
     loadData() {
       axios
         .get(this.url + "/application/getApplication?id=" + this.appid)
@@ -296,9 +300,17 @@ export default {
           this.setItems(this.app);
         });
     },
+    /**
+     * Diese Methode öffnet das Modal, in dem man den Antrag ablehnen kann
+     */
     closeAntrag() {
       this.$refs["close-modal"].show();
     },
+    /**
+     * Code aus StackOverflow
+     * Diese Methode wandelt den Base64String in eine PDF um und zeigt diese in einem neuen Tab an
+     * @param pdf Das PDF formatiert in Base64
+     */
     showPDF(pdf) {
       let pdfWindow = window.open("");
       var fileName = "PDF";
@@ -313,6 +325,10 @@ export default {
           "#toolbar=0&navpanes=0&scrollbar=0'></embed></body></html>"
       );
     },
+    /**
+     * Diese Methode setzt die richtigen Items für den Antrag
+     * @param app Der gesamte Antrag
+     */
     setItems(app) {
       if (app.Kind === 4) {
         this.items = [
@@ -398,6 +414,11 @@ export default {
         }
       }
     },
+    /**
+     * TODO
+     * Diese Methode lädt die PDF von dem Backend
+     * @param item Die erwünschte PDF
+     */
     openPDF(item) {
       axios
         .get(this.url + "/getAdminPDF", {
@@ -413,32 +434,32 @@ export default {
           this.showPDF(pdf);
         });
     },
-    hideClose() {
-      this.$refs["close-modal"].hide();
-    },
-    info(item, index, button) {
-      this.infoModal.title = `Row index: ${index}`;
-      this.infoModal.content = JSON.stringify(item, null, 2);
-      this.$root.$emit("bv::show::modal", this.infoModal.id, button);
-    },
-    resetInfoModal() {
-      this.infoModal.title = "";
-      this.infoModal.content = "";
-    },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die NewApplication-Seite weiter
+     */
     newApplication() {
       if (this.checkClick()) {
         this.changeComponent("NewApplication");
         this.changeURL("NewApplication");
       }
     },
+    /**
+     * Diese Methode ändert die angezeigte Komponente
+     * @param component Die neue Komponente, welche angezeigt werden soll
+     * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
+     * @param application Die ID des Antrags, welcher angezeigt werden soll
+     */
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window
@@ -451,18 +472,28 @@ export default {
         return false;
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Startseite weiter
+     */
     index() {
       if (this.checkClick) {
         this.changeComponent("Index");
         this.changeURL("Index");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf das AdminDashboard weiter
+     */
     dashboard() {
       if (this.checkClick) {
         this.changeComponent("AdminDashboard");
         this.changeURL("AdminDashboard");
       }
     },
+    /**
+     * TODO
+     * Diese Methode lehnt den Antrag ab
+     */
     delAn() {
       //If Progress is at 5 it should be thrown back to Progress 4 -SchoolEvent
       //If Progress is at 2 it should be thrown back to Progress 0 -Schoolevent
@@ -474,6 +505,10 @@ export default {
       //Save the nesessary information from current User reviewing the application in the application
       //Progress should be counted up => Michi macht das vielleicht?
     },
+    /**
+     * Diese Methode sorgt dafür, dass die URL angepasst ist, damit keine Reste des Viewers (ApplicationSearch) in der URL stehen
+     * @param nextpage Die nächste Seite, welche aufgerufen wird
+     */
     changeURL(nextpage) {
       if (window.location.href.indexOf("/viewer") >= 0) {
         history.replaceState(

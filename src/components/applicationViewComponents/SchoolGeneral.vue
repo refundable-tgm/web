@@ -262,9 +262,15 @@ export default {
     };
   },
   methods: {
+    /**
+     * Diese Methode sendet die aktuellen Daten an den Parent
+     */
     updateData() {
       this.$emit("update", this.data);
     },
+    /**
+     * Diese Methode erstellt die Begleitlehrer-Objekte für die neu erstellen Begleiter
+     */
     updateBeg() {
       var teach = [];
       teach.push(this.data.SchoolEventDetails.Teachers[0]);
@@ -297,6 +303,12 @@ export default {
       this.data.SchoolEventDetails.Teachers = teach;
       this.updateData();
     },
+    /**
+     * TODO
+     * Diese Methode gibt das Kürzel des Lehreres zurück
+     * @param shortName Der Kürzel des Lehrers
+     * @returns Der ausgeschriebene Name des Lehrers
+     */
     getFullName(shortName) {
       axios
         .get(this.url + "/getLongName?name=" + shortName, {
@@ -307,8 +319,10 @@ export default {
         .then(response => {
           return response.data.long;
         });
-      return shortName;
     },
+    /**
+     * Diese Methode wandelt die Zeiteingaben in ein valides Datum um und ruft die updateData-Methode
+     */
     updateTime() {
       var start = new Date(this.startDate);
       start.setHours(this.startTime.split(":")[0]);
@@ -320,6 +334,11 @@ export default {
       this.data.EndTime = this.setTimezone(end);
       this.updateData();
     },
+    /**
+     * Diese Methode setzt die verwendete Zeitzone von dem übergebenen Datum
+     * @param datum Das Datum, welches angepasst werden soll
+     * @returns Das angepasste Datum
+     */
     setTimezone(datum) {
       datum.setHours(datum.getHours() + 1);
       return datum.toISOString() + "+01:00";

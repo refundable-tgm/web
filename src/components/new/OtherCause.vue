@@ -288,9 +288,18 @@ export default {
   name: "NewApplication",
   props: ["url", "user", "token"],
   methods: {
+    /**
+     * Diese Methode ändert die angezeigte Komponente
+     * @param component Die neue Komponente, welche angezeigt werden soll
+     * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
+     * @param application Die ID des Antrags, welcher angezeigt werden soll
+     */
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window
@@ -303,11 +312,17 @@ export default {
         return false;
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Startseite weiter
+     */
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
     },
+    /**
+     * Diese Methode überprüft die eingegebenen Daten, ob diese einen sinnvollen Wert haben
+     */
     checkTime() {
       if (
         this.startDate !== "" &&
@@ -325,6 +340,9 @@ export default {
         this.checkInputs();
       }
     },
+    /**
+     * Diese Methode überprüft, ob eine Art von Antrag ausgewählt worden ist
+     */
     checkSelected() {
       if (this.selected !== "") {
         this.isSelected = true;
@@ -333,6 +351,9 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode überprüft, ob der Titel des Dienstauftrags eingegeben worden ist
+     */
     checkTitel() {
       if (this.title === "") {
         this.Titel = false;
@@ -341,6 +362,9 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode überprüft, ob die GZ des Diesntauftrages eingegeben worden ist
+     */
     checkGZ() {
       if (this.gz === "") {
         this.GZset = false;
@@ -349,6 +373,9 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode überprüft, ob ein Sonstiger Grund eingegeben worden ist
+     */
     checkSonstiges() {
       if (this.son === "") {
         this.Sonstiges = false;
@@ -357,6 +384,9 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode überprüft, ob die Eingaben valide sind
+     */
     checkInputs() {
       switch (this.selected) {
         case "B":
@@ -386,22 +416,17 @@ export default {
           break;
       }
     },
-    makeToast() {
-      this.$bvToast.toast(
-        "Es wurden nicht allen Begleitern eine Klasse zugewiesen!",
-        {
-          title: "Ein Fehler ist aufgetreten!",
-          autoHideDelay: 2500,
-          appendToast: false,
-          variant: "danger"
-        }
-      );
-    },
+    /**
+     * Diese Methode leitet den Benutzer auf die Others-Seite weiter
+     */
     workshop() {
       if (this.checkClick()) {
         this.changeComponent("Others");
       }
     },
+    /**
+     * Diese Methode überprüft, ob die Zieladresse eingegeben worden ist
+     */
     checkEnd() {
       if (this.end === "") {
         this.End = false;
@@ -410,6 +435,9 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode überprüft, ob die Startadresse eingegeben worden ist
+     */
     checkStart() {
       if (this.start === "") {
         this.Start = false;
@@ -418,6 +446,11 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode gibt den Wert der Variable als Zahl zurück
+     * @param input Die Zahl, welche umgewandelt werden soll
+     * @returns Die Zahl des gegebenen Werts
+     */
     returnValue(input) {
       if (input === undefined || input === null || input === "") {
         return null;
@@ -425,6 +458,11 @@ export default {
         return Number(input);
       }
     },
+    /**
+     * Diese Methode gibt den String der Variable zurück
+     * @param input Der String, welcher umgewandelt werden soll
+     * @returns Den String der gegebenen Variable
+     */
     returnString(input) {
       if (input === undefined || input === null || input === "") {
         return null;
@@ -432,6 +470,11 @@ export default {
         return input;
       }
     },
+    /**
+     * Diese Methode gibt den Wert der Variable als Boolean-Wert zurück
+     * @param input Der Boolean-Wert als String
+     * @returns Der Boolean-Wert der Variable
+     */
     returnBoolean(input) {
       if (input === undefined || input === null || input === "") {
         return null;
@@ -440,6 +483,11 @@ export default {
         else return true;
       }
     },
+    /**
+     * Diese Methode aktualisiert die Daten des Reiseformulars
+     * @param index Der Index des zu ändernden Eintrags
+     * @param data Die Daten zur aktualisierung
+     */
     updateTravel(index, data) {
       index.toString();
       this.teacher.personalnummer = data.personalnummer;
@@ -455,6 +503,11 @@ export default {
       this.teacher.sonstige_kosten = data.sonstige_kosten;
       this.teacher.geschaetzte_kosten = data.geschaetzte_kosten;
     },
+    /**
+     * TODO
+     * Gibt den derzeitig angemeldeten Nutzer zurück
+     * @returns Der angemeldetet Lehrer
+     */
     getLeader() {
       axios
         .get(this.url + "/getTeacher?id=" + this.user, {
@@ -467,10 +520,18 @@ export default {
           return { longname: data.Longname, short: data.Short };
         });
     },
+    /**
+     * Diese Methode setzt die verwendete Zeitzone von dem übergebenen Datum
+     * @param datum Das Datum, welches angepasst werden soll
+     * @returns Das angepasste Datum
+     */
     setTimezone(datum) {
       datum.setHours(datum.getHours() + 1);
       return datum.toISOString() + "+01:00";
     },
+    /**
+     * Diese Methode fügt die einzelnen Daten zu einem für das Backend verwendbares Objekt zusammen und sendet dieses an das Backend
+     */
     einreichen() {
       if (this.checkClick()) {
         if (this.validInputs) {
@@ -563,7 +624,6 @@ export default {
               this.changeComponent("Index");
             });
         } else {
-          this.makeToast();
           if (this.Time === null) this.Time = false;
           if (this.Titel === null) this.Titel = false;
           if (this.GZset === null) this.GZset = false;

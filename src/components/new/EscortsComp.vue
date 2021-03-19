@@ -192,33 +192,57 @@ export default {
     };
   },
   methods: {
+    /**
+     * Diese Methode sendet die neue Startadresse an den Parent (Escorts)
+     */
     changeStartAdresse() {
       this.checkInputs();
       this.$emit("startadresse", this.index, this.escort.startadresse);
     },
+    /**
+     * Diese Methode sendet den neue MeetingPoint an den Parent (Escorts)
+     */
     changeMeetingPoint() {
       this.checkInputs();
       this.$emit("meetingpoint", this.index, this.escort.meetingpoint);
     },
+    /**
+     * Diese Methode sendet die neue Startzeit an den Parent (Escorts)
+     */
     changeStartTime() {
       this.checkInputs();
       this.$emit("startTime", this.index, this.escort.startTime);
     },
+    /**
+     * Diese Methode sendet das neue Startdatum an den Parent (Escorts)
+     */
     changeStartDate() {
       this.checkInputs();
       this.$emit("startDate", this.index, this.escort.startDate);
     },
+    /**
+     * Diese Methode sendet das neue Enddatum an den Parent (Escorts)
+     */
     changeEndDate() {
       this.checkInputs();
       this.$emit("endDate", this.index, this.escort.endDate);
     },
+    /**
+     * Diese Methode sendet die neue Endzeit an den Parent (Escorts)
+     */
     changeEndTime() {
       this.checkInputs();
       this.$emit("endTime", this.index, this.escort.endTime);
     },
+    /**
+     * Diese Methode sendet die neue Lehrergruppe an den Parent (Escorts)
+     */
     changeSelected() {
       this.$emit("selected", this.index, this.escort.selected);
     },
+    /**
+     * Diese Methode überprüft, ob die Eingaben valide sind
+     */
     checkInputs() {
       if (
         this.escort.startDate !== "" &&

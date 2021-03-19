@@ -147,13 +147,22 @@
 export default {
   props: ["data", "readonly"],
   methods: {
+    /**
+     * Diese Methode sendet die aktuellen Daten an den Parent
+     */
     updateData() {
       this.$emit("update", this.data);
     },
+    /**
+     * Diese Methode aktualisiert die Daten mit den Radiobuttons der Komponente
+     */
     updateRadio() {
       this.data.Group = this.selected;
       this.updateData();
     },
+    /**
+     * Diese Methode wandelt die Zeiteingaben in ein valides Datum um und ruft die updateData-Methode
+     */
     updateTime() {
       var start = new Date(this.startDate);
       start.setHours(this.startTime.split(":")[0]);
@@ -165,6 +174,11 @@ export default {
       this.data.AttendanceTill = this.setTimezone(end);
       this.updateData();
     },
+    /**
+     * Diese Methode setzt die verwendete Zeitzone von dem übergebenen Datum
+     * @param datum Das Datum, welches angepasst werden soll
+     * @returns Das angepasste Datum
+     */
     setTimezone(datum) {
       datum.setHours(datum.getHours() + 1);
       return datum.toISOString() + "+01:00";

@@ -315,6 +315,13 @@ export default {
   name: "NewApplication",
   props: ["apikey"],
   methods: {
+    /**
+     * Diese Methode ändert die angezeigte Komponente
+     * @param component Die neue Komponente, welche angezeigt werden soll
+     * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
+     * @param application Die ID des Antrags, welcher angezeigt werden soll
+     * @param escortsdata Die Daten der Schulveranstaltung
+     */
     changeComponent(
       component,
       back = true,
@@ -323,6 +330,9 @@ export default {
     ) {
       this.$emit("change-component", component, back, application, escortsdata);
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window
@@ -335,11 +345,17 @@ export default {
         return false;
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Startseite weiter
+     */
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
     },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass nicht alle Felder richtig ausgefüllt worden sind
+     */
     makeToast() {
       this.$bvToast.toast("Es wurden nicht alle Felder richtig ausgefüllt!", {
         title: "Ein Fehler ist aufgetreten!",
@@ -348,6 +364,9 @@ export default {
         variant: "danger"
       });
     },
+    /**
+     * Diese Methode leitet den Benutzer weiter, sofern alle Daten richtig gesetzt worden sind
+     */
     next() {
       if (this.checkClick()) {
         if (this.validInputs) {
@@ -365,9 +384,9 @@ export default {
         }
       }
     },
-    callback() {
-      "x".toString();
-    },
+    /**
+     * Diese Methode berechnet die Dauer der Schulveranstaltung
+     */
     calculateLength() {
       let start = new Date(this.data.startDate + "T" + this.data.startTime);
       let end = new Date(this.data.endDate + "T" + this.data.endTime);
@@ -375,6 +394,9 @@ export default {
       let days = diff / (1000 * 3600 * 24);
       this.data.exkursLength = Math.ceil(days);
     },
+    /**
+     * Diese Methode überprüft, ob die Bezeichnung der Schulveranstaltung angegeben worden ist
+     */
     checkDesc() {
       if (this.data.description === "") {
         this.Desc = false;
@@ -383,6 +405,9 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode überprüft, ob Lehrer angegeben worden sind
+     */
     checkTeacher() {
       if (this.data.teacher.length === 0) {
         this.Teacher = false;
@@ -391,6 +416,9 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode überprüft, ob Klassen angegeben worden sind
+     */
     checkClass() {
       if (this.data.class.length === 0) {
         this.Class = false;
@@ -399,6 +427,9 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode überprüft, ob SchülerInnen angegeben worden sind
+     */
     checkStudents() {
       if (this.data.count_student_male + this.data.count_student_female <= 0) {
         this.Students = false;
@@ -407,6 +438,9 @@ export default {
       }
       this.checkInputs();
     },
+    /**
+     * Diese Methode überprüft die eingegebenen Daten, ob diese einen sinnvollen Wert haben
+     */
     checkTime() {
       if (
         this.data.startDate !== "" &&
@@ -424,6 +458,9 @@ export default {
         this.checkInputs();
       }
     },
+    /**
+     * Diese Methode überprüft, ob die Startadresse eingegeben worden ist
+     */
     checkStart() {
       if (this.data.start === "") {
         this.Start = false;
@@ -431,6 +468,9 @@ export default {
         this.Start = true;
       }
     },
+    /**
+     * Diese Methode überprüft, ob die Zieladresse eingegeben worden ist
+     */
     checkZiel() {
       if (this.data.ziel === "") {
         this.Ziel = false;
@@ -438,14 +478,17 @@ export default {
         this.Ziel = true;
       }
     },
-    newapp() {
-      this.changeComponent("NewApplication");
-    },
+    /**
+     * Diese Methode leitet den Benutzer auf die NewApplication-Seite weiter
+     */
     uebersicht() {
       if (this.checkClick()) {
         this.changeComponent("NewApplication");
       }
     },
+    /**
+     * Diese Methode überprüft, ob die Eingaben valide sind
+     */
     checkInputs() {
       if (
         this.Time === true &&

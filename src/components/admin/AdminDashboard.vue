@@ -191,6 +191,11 @@ export default {
     this.loadData();
   },
   methods: {
+    /**
+     * Diese Methode gibt die Art des Antrags zurück
+     * @param kind Integer Wert der Art des Antrags
+     * @returns String der Art des Antrags
+     */
     loadKind(kind) {
       switch (kind) {
         case 4:
@@ -215,6 +220,12 @@ export default {
           return "Fehler!";
       }
     },
+    /**
+     * Diese Methode setzt den Status der Anträge in Textform um
+     * @param kind Die Art des Antrags
+     * @param progress Der Fortschritt des Antrags
+     * @returns String-Form des Fortschritts
+     */
     loadStatus(kind, progress) {
       if (kind === 4) {
         switch (progress) {
@@ -258,6 +269,9 @@ export default {
         }
       }
     },
+    /**
+     * Diese Methode lädt die Daten aus dem Backend für das AdminDashboard und fügt die notwendigen Variablen hinzu
+     */
     loadData() {
       axios
         .get(this.url + "/getAllAdminApplications?user=" + this.user, {
@@ -281,9 +295,17 @@ export default {
           this.totalRows = this.items.length;
         });
     },
+    /**
+     * Diese Methode sorgt dafür, dass die richtige ID an die viewApplication-Methode weitergegeben wird
+     */
     info(item) {
       this.viewApplication(item.UUID);
     },
+    /**
+     * Diese Methode formatiert das Datum um korrekt angezeigt zu werden
+     * @param datum Das Datum
+     * @returns Das Datum in einfacher Form
+     */
     formatDate(datum) {
       return (
         datum.getUTCFullYear() +
@@ -294,6 +316,12 @@ export default {
         datum.getUTCDate()
       );
     },
+    /**
+     * TODO
+     * Diese Methode gibt die "Farbe" der verschiedenen Phasen zurück
+     * @param status Die Phase eines Antrags
+     * @returns Die Farbe, welche zur Phase des Antrags passt
+     */
     getStateVariant(status) {
       //TODO: Weitere States hinzufügen
       switch (status.toLowerCase()) {
@@ -307,6 +335,12 @@ export default {
           return "primary";
       }
     },
+    /**
+     * TODO
+     * Diese Methode gibt die "Farbe" der verschiedenen Arten von Anträgen zurück
+     * @param kind Die Art eines Antrags
+     * @returns Die Farbe, welche zur Art des Antrags passt
+     */
     getKindVariant(kind) {
       switch (kind) {
         case 4:
@@ -331,21 +365,37 @@ export default {
           return "primary";
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf den Antrag-Viewer weiter
+     * @param app Der Antrag, welcher dem Benutzer angezeigt werden soll
+     */
     viewApplication(app) {
       this.changeComponent("ApplicationAdminView", true, app);
     },
+    /**
+     * Diese Methode leert den Inhalt und den Titel des Modals
+     */
     resetInfoModal() {
       this.infoModal.title = "";
       this.infoModal.content = "";
     },
+    /**
+     * Filter-Methode von Bootstrap-vue Table
+     */
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
       this.currentPage = 1;
     },
+    /**
+     * Diese Methode wählt einen Antrag aus
+     */
     onRowSelected(items) {
       this.selected = items;
     },
+    /**
+     * Diese Methode lädt die gewünschten PDFs aus dem Backend
+     */
     printSelected() {
       var req = [];
       for (let i = 0; i < this.selected.length; i++) {
@@ -365,6 +415,11 @@ export default {
           this.showPDF(pdf);
         });
     },
+    /**
+     * Code aus StackOverflow
+     * Diese Methode wandelt den Base64String in eine PDF um und zeigt diese in einem neuen Tab an
+     * @param pdf Das PDF formatiert in Base64
+     */
     showPDF(pdf) {
       let pdfWindow = window.open("");
       var fileName = "PDF";
@@ -379,17 +434,30 @@ export default {
           "#toolbar=0&navpanes=0&scrollbar=0'></embed></body></html>"
       );
     },
+    /**
+     * Diese Methode wählt alle Anträge aus
+     */
     selectAllRows() {
       this.$refs.selectableTable.selectAllRows();
     },
+    /**
+     * Diese Methode leert die derzeitige Auswahl an Anträgen
+     */
     clearSelected() {
       this.$refs.selectableTable.clearSelected();
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Startseite weiter
+     */
     normal() {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
     },
+    /**
+     * TODO
+     * Diese Methode loggt den Benutzer aus und leitet ihn auf die Startseite weiter
+     */
     logout() {
       if (this.checkClick()) {
         /*
@@ -398,9 +466,18 @@ export default {
         this.changeComponent("Login");
       }
     },
+    /**
+     * Diese Methode ändert die angezeigte Komponente
+     * @param component Die neue Komponente, welche angezeigt werden soll
+     * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
+     * @param application Die ID des Antrags, welcher angezeigt werden soll
+     */
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window

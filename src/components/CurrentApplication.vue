@@ -172,6 +172,8 @@ export default {
     },
     /**
      * Diese Methode sorgt dafür, dass die wichtigsten Informationen im Modal angezeigt werden
+     * @param item Das Element in der Liste, auf welches gedrückt worden ist
+     * @param button Der Knopf, mit dem die Methode aufgerufen worden ist
      */
     showInfo(item, button) {
       this.infoModal.title = item.title;

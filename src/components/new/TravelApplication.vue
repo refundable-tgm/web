@@ -287,6 +287,9 @@ export default {
   name: "NewApplication",
   props: ["escort", "index", "readonly", "app"],
   methods: {
+    /**
+     * Diese Methode sendet die Daten dieser Komponente an seinen Parent (Können mehrere Komponenten sein)
+     */
     update() {
       this.$emit("update", this.index, this.data);
     }

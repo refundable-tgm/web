@@ -371,10 +371,16 @@ export default {
     };
   },
   methods: {
+    /**
+     * Diese Methode sendet alle Daten an den Parent (Können mehrere Komponenten sein)
+     */
     update() {
       this.calcRows();
       this.$emit("update", this.index, this.data);
     },
+    /**
+     * Diese Methode rechnet die Summe aller Reihen des tables aus und setzt diese
+     */
     calcSum(item) {
       item.sum =
         Number(item.travelcosts) +
@@ -383,6 +389,10 @@ export default {
         Number(item.othercosts);
       this.calcRows();
     },
+    /**
+     * TODO send Michael Data
+     * Diese Methode convertiert die hochgeladenen Datein in Base64 und sendet diese an das Backend
+     */
     async convert() {
       var imgs = [];
       const toBase64 = file =>
@@ -398,6 +408,9 @@ export default {
       this.data.beleg = imgs;
       this.update();
     },
+    /**
+     * Diese Methode rechnet die Summen der einzelnen Spalten aus und setzt diese
+     */
     calcRows() {
       var stc = 0;
       var sdc = 0;
@@ -427,15 +440,27 @@ export default {
       this.data.SumAdditionalCosts = Number(sac);
       this.data.SumOfSums = Number(sos);
     },
+    /**
+     * Diese Methode rechnet die Dauer des Antrags aus
+     * @returns Die Dauer des Antrags
+     */
     calculateLength() {
       let diff = new Date(this.end).getTime() - new Date(this.start).getTime();
       let days = diff / (1000 * 3600 * 24);
       return Math.ceil(days);
     },
+    /**
+     * Diese Methode gibt die Uhrzeit eines Datums zurück
+     * @param datum Das übergebene Datum
+     * @returns Die Uhrzeit des Datums
+     */
     getTimeOfDate(datum) {
       var tmp = new Date(datum);
       return tmp.getHours() + ":" + tmp.getMinutes();
     },
+    /**
+     * Diese Methode setzt alle wichtigen Daten für diese Komponente
+     */
     loadData() {
       for (let i = 0; i <= this.calculateLength(); i++) {
         var tmp = new Date(this.start);

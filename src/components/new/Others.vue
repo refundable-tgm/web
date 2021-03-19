@@ -63,9 +63,18 @@
 export default {
   name: "NewApplication",
   methods: {
+    /**
+     * Diese Methode ändert die angezeigte Komponente
+     * @param component Die neue Komponente, welche angezeigt werden soll
+     * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
+     * @param application Die ID des Antrags, welcher angezeigt werden soll
+     */
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
     },
+    /**
+     * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
+     */
     checkClick() {
       if (
         window
@@ -78,21 +87,33 @@ export default {
         return false;
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Workshop-Seite weiter
+     */
     workshop() {
       if (this.checkClick()) {
         this.changeComponent("Workshop");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die OtherCause-Seite weiter
+     */
     otherCause() {
       if (this.checkClick()) {
         this.changeComponent("OtherCause");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die Startseite weiter
+     */
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
       }
     },
+    /**
+     * Diese Methode leitet den Benutzer auf die NewApplication-Seite weiter
+     */
     uebersicht() {
       if (this.checkClick()) {
         this.changeComponent("NewApplication");
