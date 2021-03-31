@@ -1,3 +1,4 @@
+<!-- Templatee für die Progress Bar -->
 <template>
   <b-container
     fluid

@@ -1,3 +1,4 @@
+<!-- Komponente zum anzeigen aller aktuellen Anträge -->
 <template>
   <b-container fluid>
     <b-row align-v="center" align-h="center">
@@ -5,6 +6,7 @@
         <h1 id="new-application-heading">Aktive Anträge</h1>
       </b-col>
       <div class="col-12 col-md-6">
+        <!-- Home Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
@@ -12,6 +14,7 @@
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
+        <!-- Neuer Antrag Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
@@ -23,6 +26,7 @@
       </div>
     </b-row>
 
+    <!-- Such Element -->
     <b-row align-h="center" style="margin-top: 1rem; margin-bottom: 2rem">
       <b-col cols="12" md="6">
         <b-form-group
@@ -51,7 +55,7 @@
       </b-col>
     </b-row>
 
-    <!-- Main table element -->
+    <!-- Tabelle, die alle aktuellen Anträge beinhaltet -->
     <b-table
       :items="items"
       :fields="fields"
@@ -65,11 +69,13 @@
       small
       @filtered="onFiltered"
     >
+      <!-- Name des Antragsstellers -->
       <template #cell(name)="row">
         {{ row.value.first }} {{ row.value.last }}
       </template>
-
+      <!-- Aktionen -->
       <template #cell(actions)="row">
+        <!-- Schnelle Infos -->
         <b-button
           size="sm"
           @click="showInfo(row.item, row.index, $event.target)"
@@ -77,11 +83,12 @@
         >
           Schnelle Information
         </b-button>
+        <!-- Antrag betrachten -->
         <b-button size="sm" @click="info(row.item)">
           Antrag Betrachten
         </b-button>
       </template>
-
+      <!-- Details -->
       <template #row-details="row">
         <b-card>
           <ul>

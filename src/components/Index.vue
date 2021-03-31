@@ -81,7 +81,7 @@
               <center><h1 style="margin-top:10px;">Dashboard</h1></center>
             </b-col>
             <b-col cols="12">
-              <!-- Button -->
+              <!-- Logout Button -->
               <b-button
                 variant="outline-danger"
                 class="shadow-lg"
@@ -94,6 +94,7 @@
             </b-col>
 
             <b-col cols="12">
+              <!-- Admin Ansicht Button -->
               <b-button
                 variant="outline-primary"
                 class="shadow-lg"
@@ -105,8 +106,8 @@
               </b-button>
             </b-col>
 
-            <b-col cols="12"
-              ><b-button
+            <b-col cols="12">
+              <!-- Neuer Antrag Button --><b-button
                 size="lg"
                 variant="outline-primary"
                 v-on:click="newApplication"
@@ -117,8 +118,8 @@
                 Antrag
               </b-button></b-col
             >
-            <b-col cols="12"
-              ><b-button
+            <b-col cols="12">
+              <!-- Aktuelle Anträge Button --><b-button
                 size="lg"
                 variant="outline-primary"
                 v-on:click="currentApplication"
@@ -129,8 +130,8 @@
                 Anträge
               </b-button></b-col
             >
-            <b-col cols="12"
-              ><b-button
+            <b-col cols="12">
+              <!-- Alle Anträge Button --><b-button
                 size="lg"
                 variant="outline-primary"
                 v-on:click="allApplication"
@@ -157,6 +158,7 @@
             <b-col cols="12">
               <center><h2 id="menu-h2">Menü</h2></center>
             </b-col>
+            <!-- Custom Button für einen neuen Antrag -->
             <b-col
               id="new"
               cols="12"
@@ -166,6 +168,7 @@
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
                   <b-col cols="6" class="ill-wrapper d-none d-md-block">
+                    <!-- Illustration neuer Antrag -->
                     <b-img
                       id="all-ill"
                       center
@@ -179,6 +182,7 @@
                 </b-row>
               </b-container>
             </b-col>
+            <!-- Custom Button für das Anzeigen der aktuellen Anträge -->
             <b-col
               id="current"
               cols="12"
@@ -188,6 +192,7 @@
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
                   <b-col cols="6" class="ill-wrapper d-none d-md-block">
+                    <!-- Illustration aktuelle Anträge -->
                     <img
                       src="@/assets/current.svg"
                       id="all-ill"
@@ -201,6 +206,7 @@
                 </b-row>
               </b-container>
             </b-col>
+            <!-- Custom Button Alle Anträge -->
             <b-col
               id="all"
               cols="12"
@@ -210,6 +216,7 @@
               <b-container style="height: 100%">
                 <b-row align-h="center" align-v="center" style="height: 100%">
                   <b-col cols="6" class="ill-wrapper d-none d-md-block">
+                    <!-- Illustration alle Anträge -->
                     <img
                       src="@/assets/all.svg"
                       id="all-ill"
@@ -227,7 +234,7 @@
         </b-container>
       </b-col>
 
-      <!-- MEDIA - ONLY ON  -->
+      <!-- MEDIA - ONLY ON PC -->
       <b-col id="media-main-cont" cols="12" md="4" class="d-none d-md-block">
         <b-container class="">
           <b-row id="media-row" align-h="center" align-v="center">
@@ -241,14 +248,16 @@
               data-placement="top"
               title="Klicken Sie hier um sich ausloggen zu können!"
             />-->
-
+            <!-- Refundable Logo -->
             <img src="@/assets/logo.svg" alt="" id="logo" class="img-fluid" />
+            <!-- Dashboard Illustration -->
             <img
               src="@/assets/brainstorming.jpg"
               class="img-fluid"
               id="dash-img"
               alt="Illustration von arbeitenden Personen"
             />
+            <!-- Administrator Ansicht Button -->
             <b-button
               v-on:click="adminclick"
               v-if="admin"
@@ -257,6 +266,7 @@
               style="margin-right:1rem"
               >Admin Ansicht</b-button
             >
+            <!-- Logout Button -->
             <b-button
               v-on:click="logout"
               class="shadow-lg"
@@ -268,12 +278,14 @@
       </b-col>
 
       <!-- NEWS PC -->
+      <!-- Scrollbarer Container -->
       <b-col id="news-main-cont" class="d-none d-md-block" cols="12" md="4">
         <b-container id="news-cont" class="shadow-xl">
           <b-row id="news-row-heading" align-h="center">
             <b-col cols="12">
               <h2 id="news-h2">Neuigkeiten</h2>
             </b-col>
+            <!-- Newes Elemente -->
             <NewsElement
               class="news-elem"
               v-for="snews in news"
@@ -286,6 +298,7 @@
       </b-col>
 
       <!-- NEWS MOBILE -->
+      <!-- Nicht scrollbarer Container -->
       <b-col
         id="news-main-cont-mobile"
         class="d-block d-md-none"
@@ -297,6 +310,7 @@
             <b-col cols="12">
               <h2 id="news-h2-mobile">Neuigkeiten</h2>
             </b-col>
+            <!-- News Elemente -->
             <NewsElement
               class="news-elem"
               v-for="snews in news"

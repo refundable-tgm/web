@@ -1,10 +1,13 @@
+<!-- Komponente zum anzeigen eines Antrags -->
 <template>
   <b-container fluid>
     <b-row align-v="center" align-h="center">
       <b-col cols="12" md="6">
+        <!-- Titel des Antrags -->
         <h1 id="new-application-heading">Antrag für {{ app.Name }}</h1>
       </b-col>
       <div class="col-12 col-md-6">
+        <!-- Home Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
@@ -12,6 +15,7 @@
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
+        <!-- Neuer Antrag Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
@@ -28,12 +32,13 @@
       style="margin-top:1rem;margin-bottom:3rem"
     >
       <b-col cols="12">
+        <!-- Progressbar -->
         <Progress v-bind:progress="app.Progress" v-bind:kind="app.Kind" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
       <b-col cols="12">
-        <!-- Main table element -->
+        <!-- Tabelle die die Dokumente beinhalttet -->
         <b-table
           striped
           :items="items"
@@ -48,11 +53,13 @@
           small
           @filtered="onFiltered"
         >
+          <!-- Name des Dokuments -->
           <template #cell(name)="row">
             {{ row.value.first }} {{ row.value.last }}
           </template>
-
+          <!-- Aktionen -->
           <template #cell(actions)="row">
+            <!-- PDF öffnen -->
             <b-button
               variant="outline-secondary"
               size="sm"
@@ -61,6 +68,7 @@
             >
               <b-icon icon="file-earmark-text"></b-icon> PDF öffnen
             </b-button>
+            <!-- Details anzeigen -->
             <b-button
               variant="outline-secondary"
               size="sm"
@@ -71,8 +79,10 @@
             </b-button>
           </template>
 
+          <!-- Details -->
           <template #row-details="row">
             <b-card>
+              <!-- Schulveranstaltung -->
               <SchoolGeneral
                 v-bind:readonly="sgreadonly"
                 v-bind:data="app"
@@ -81,12 +91,14 @@
                 v-on:update="updateSG"
                 v-if="isLeader && row.item.title == 'Allgemeine Infos'"
               />
+              <!-- Veranstaltuns BEgleiter -->
               <SchoolEscorts
                 v-bind:readonly="sereadonly"
                 v-bind:data="sedata"
                 v-on:update="updateSE"
                 v-if="row.item.title == 'Begleitformular'"
               />
+              <!-- Reiseantrag -->
               <TravelApplication
                 v-bind:readonly="tareadonly"
                 v-bind:app="tadata"
@@ -94,6 +106,7 @@
                 v-on:update="updateTA"
                 v-if="row.item.title == 'Reiseformular'"
               />
+              <!-- Reiserechung -->
               <TravelBill
                 v-bind:readonly="tbreadonly"
                 v-bind:index="0"
@@ -103,12 +116,14 @@
                 v-on:update="updateTB"
                 v-if="row.item.title == 'Reiserechnung'"
               />
+              <!-- Andere -->
               <Others
                 v-bind:readonly="oreadonly"
                 v-bind:data="odata"
                 v-on:update="updateO"
                 v-if="row.item.title == 'Abwesenheitsformular'"
               />
+              <!-- Forbildungen -->
               <Workshop
                 v-bind:readonly="wreadonly"
                 v-bind:data="wdata"
@@ -121,8 +136,10 @@
       </b-col>
     </b-row>
 
+    <!-- Aktuonen zum schließen und speichern -->
     <b-row style="margin-bottom:2rem">
       <b-col cols="12">
+        <!-- Antrag schließen -->
         <b-button
           variant="outline-danger"
           v-if="isLeader"
@@ -132,6 +149,7 @@
           ><b-icon icon="file-earmark-excel"></b-icon> Antrag
           schließen</b-button
         >
+        <!-- Änderungen speichern -->
         <b-button
           variant="outline-success"
           id="show-btn"
@@ -152,6 +170,7 @@
       </b-col>
     </b-row>
 
+    <!-- Sicherheitshinweis Antrag schließen -->
     <b-modal ref="close-modal" hide-footer title="Antrag schließen">
       <b-container fluid>
         <b-row
@@ -167,12 +186,13 @@
         >
         <b-row>
           <b-col cols="6">
+            <!-- Antrag schließen bestätigung -->
             <b-button class="mt-2" variant="outline-danger" block @click="delAn"
               >Antrag schließen <b-spinner small type="grow"></b-spinner
             ></b-button>
           </b-col>
-          <b-col cols="6"
-            ><b-button
+          <b-col cols="6">
+            <!-- Abbrechen Button --><b-button
               class="mt-2"
               variant="outline-success"
               block

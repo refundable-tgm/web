@@ -1,3 +1,4 @@
+<!-- Template für Fortbildungen etc. -->
 <template>
   <b-container fluid>
     <b-row align-h="center">
@@ -8,6 +9,7 @@
               <h1 id="new-application-heading">Neuen Antrag erstellen</h1>
             </b-col>
             <div class="col-12 col-md-6">
+              <!-- Home Button -->
               <b-button
                 variant="outline-primary"
                 class="float-right"
@@ -19,6 +21,7 @@
           </b-row>
           <b-row>
             <b-col cols="12">
+              <!-- Verzeichnis Anzeige -->
               <b-breadcrumb style="background-color: white">
                 <b-breadcrumb-item v-on:click="workshop"
                   >Fortbildung, etc</b-breadcrumb-item
@@ -29,6 +32,7 @@
           </b-row>
           <b-row align-h="center">
             <b-col cols="12" md="8">
+              <!-- Startdatum -->
               <b-form-group
                 id="startd"
                 label-cols-sm="4"
@@ -51,6 +55,7 @@
                   Start der Fortbildung muss vor dem Ende der Fortbildung sein!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Startzeit -->
               <b-form-group
                 id="startz"
                 label-cols-sm="4"
@@ -73,6 +78,7 @@
                   Start der Fortbildung muss vor dem Ende der Fortbildung sein!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Enddatum -->
               <b-form-group
                 id="endd"
                 label-cols-sm="4"
@@ -95,6 +101,7 @@
                   Start der Fortbildung muss vor dem Ende der Fortbildung sein!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Endzeit -->
               <b-form-group
                 id="endz"
                 label-cols-sm="4"
@@ -117,6 +124,7 @@
                   Start der Fortbildung muss vor dem Ende der Fortbildung sein!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Startadresse -->
               <b-form-group
                 id="start"
                 label-cols-sm="4"
@@ -137,6 +145,7 @@
                   Keine Startadresse angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Zieladresse -->
               <b-form-group
                 id="end"
                 label-cols-sm="4"
@@ -157,6 +166,7 @@
                   Keine Zieladresse angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Grund der Fortbildung -->
               <b-form-group
                 id="grund"
                 label-cols-sm="4"
@@ -178,6 +188,7 @@
                   disabled-field="notEnabled"
                 ></b-form-radio-group>
               </b-form-group>
+              <!-- Auswahl des sonstigen Grundes -->
               <b-form-group
                 id="sonst"
                 label-cols-sm="4"
@@ -200,6 +211,7 @@
                   Kein Sonstiger Grund angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Titel des Dienstauftrages, falls dieser als Grund gewählt wurde -->
               <b-form-group
                 id="titel"
                 label-cols-sm="4"
@@ -221,6 +233,7 @@
                   Kein Titel angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- GZ des Dienstauftrages, falls dieser als Grund gewählt wurde -->
               <b-form-group
                 id="gz"
                 label-cols-sm="4"
@@ -243,6 +256,7 @@
                   Keine GZ angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Zusätzliche Anmerkungen -->
               <b-form-group
                 id="anmerkung"
                 label-cols-sm="4"
@@ -261,12 +275,14 @@
                   v-model="notes"
                 ></b-form-textarea>
               </b-form-group>
+              <!-- Reiseanträge -->
               <TravelApplication
                 v-bind:escort="escort"
                 v-bind:index="1"
                 v-on:update="updateTravel"
               />
               <center>
+                <!-- Button zum einreichen -->
                 <button v-on:click="einreichen()" class="blueish-gradiant">
                   Einreichen
                 </button>

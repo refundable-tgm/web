@@ -1,11 +1,14 @@
+<!-- Komponente für das Login -->
 <template>
   <b-container fluid>
+    <!-- Einbinden der Cookie Abfrage -->
     <CookieRequest
       :key="componentKey"
       v-on:requestAnswer="requestAnswer"
       v-if="!setcookie"
     />
     <b-row align-v="center" align-h="center" class="template-main-row">
+      <!-- Titel -->
       <b-col cols="12" md="6">
         <b-container>
           <b-row align-h="center">
@@ -20,6 +23,7 @@
           </b-row>
         </b-container>
       </b-col>
+      <!-- Anmeldungsformular -->
       <b-col cols="12" md="6">
         <b-container>
           <b-row align-h="center">
@@ -30,6 +34,7 @@
                 </b-row>
                 <b-row align-h="center" id="r-email">
                   <b-col cols="12">
+                    <!-- Input des Benutzernamens / der Email -->
                     <b-input-group size="lg">
                       <b-input-group-text
                         id="tgm-addon"
@@ -49,6 +54,7 @@
                 </b-row>
                 <b-row id="r-password">
                   <b-col cols="12">
+                    <!-- Input des Passworts -->
                     <b-form-input
                       id="password"
                       class="shadow login-inputs"
@@ -61,6 +67,7 @@
                 </b-row>
                 <b-row id="r-forgotten">
                   <b-col cols="12">
+                    <!-- Passwort vergessen Weiterleitung auf Moodle -->
                     <a
                       id="forgotten-password"
                       href="https://elearning.tgm.ac.at/login/forgot_password.php"
@@ -69,6 +76,7 @@
                   </b-col>
                 </b-row>
                 <b-row align-h="center" id="r-login-btn">
+                  <!-- Login Button -->
                   <b-button size="lg" id="login-btn" v-on:click="login"
                     >Anmelden</b-button
                   >

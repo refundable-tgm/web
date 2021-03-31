@@ -1,5 +1,7 @@
+<!-- Cookie Popup -->
 <template>
   <div>
+    <!-- Bestätigung, dass diese Seite Cookies benutzt -->
     <b-alert
       v-model="showBottom"
       class="position-fixed fixed-bottom m-0 rounded-0"
@@ -10,6 +12,7 @@
       Diese Seite <b>benötigt</b> Cookies um zu funktionieren. Dies sind nur
       funktionelle Cookies, wir sammeln Ihre Daten <b>nicht</b>. Alle benötigten
       Cookies
+      <!-- Button zum akzeptieren -->
       <b-button variant="success" @click="validateCookies()"
         >akzeptieren</b-button
       >

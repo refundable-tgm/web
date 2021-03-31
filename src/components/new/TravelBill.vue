@@ -1,7 +1,9 @@
+<!-- Template für Reiserechnungen -->
 <template>
   <b-container fluid>
     <b-row align-h="center">
       <b-col cols="12">
+        <!-- Zusätzliche Daten -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -39,6 +41,7 @@
             <b-form-checkbox value="a8">Keine Reisekosten</b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
+        <!-- Gefahrene km mit eigenem PKW -->
         <b-form-group
           id="km-pkwg"
           label-cols-sm="4"
@@ -64,6 +67,7 @@
             </b-form-input>
           </b-input-group>
         </b-form-group>
+        <!-- Tagesgebühr Art -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -86,6 +90,7 @@
             >
           </b-form-radio-group>
         </b-form-group>
+        <!-- Tagesgebühr Kürzungen -->
         <b-form-group
           id="tag-kuerzg"
           label-cols-sm="4"
@@ -106,6 +111,7 @@
           >
           </b-form-input>
         </b-form-group>
+        <!-- Art der Nächtigungsgebühr -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -130,7 +136,7 @@
             >
           </b-form-radio-group>
         </b-form-group>
-
+        <!-- Anzahl Frühstücke -->
         <b-form-group
           id="freuhg"
           label-cols-sm="4"
@@ -155,7 +161,7 @@
             </b-form-input>
           </b-input-group>
         </b-form-group>
-
+        <!-- Anzahl Mittagessen -->
         <b-form-group
           id="mittagg"
           label-cols-sm="4"
@@ -180,7 +186,7 @@
             </b-form-input>
           </b-input-group>
         </b-form-group>
-
+        <!-- Anzahl Abendessen -->
         <b-form-group
           id="abendg"
           label-cols-sm="4"
@@ -205,6 +211,7 @@
             </b-form-input>
           </b-input-group>
         </b-form-group>
+        <!-- Belege Input -->
         <b-form-group
           id="belg"
           label-cols-sm="4"
@@ -231,15 +238,17 @@
           </b-form-file>
         </b-form-group>
 
+        <!-- Berechnungstabelle -->
         <b-table striped :items="data.items" stacked="md" show-empty small>
           <template #cell(index)="data">
             {{ data.index + 1 }}
           </template>
-          <!-- A custom formatted column -->
+          <!-- Datumsspalte -->
           <template #cell(date)="data">
             {{ data.item.date }}
           </template>
 
+          <!-- Startzeit Spalte -->
           <template #cell(start)="data">
             <b-form-timepicker
               style="min-width: 100px;"
@@ -252,6 +261,7 @@
             ></b-form-timepicker>
           </template>
 
+          <!-- Endzeit Spalte -->
           <template #cell(end)="data">
             <b-form-timepicker
               style="min-width: 100px;"
@@ -263,10 +273,11 @@
               v-on:input="update()"
             ></b-form-timepicker>
           </template>
-
+          <!-- Art Spalte -->
           <template #cell(kind)="data">
             {{ data.item.kind }}
           </template>
+          <!-- KM Spalte -->
           <template #cell(km)="data">
             <b-form-input
               :id="'0'"
@@ -277,6 +288,7 @@
             >
             </b-form-input>
           </template>
+          <!-- Reisekosten Spalte -->
           <template #cell(travelcosts)="data">
             <b-form-input
               :id="'0'"
@@ -289,6 +301,7 @@
             >
             </b-form-input>
           </template>
+          <!-- Tagesgebühr Spalte -->
           <template #cell(daycharge)="data">
             <b-form-input
               :id="'1'"
@@ -301,6 +314,7 @@
             >
             </b-form-input>
           </template>
+          <!-- Nächtigungsgebühr Spalte -->
           <template #cell(sleepcharge)="data">
             <b-form-input
               :id="'2'"
@@ -313,6 +327,7 @@
             >
             </b-form-input>
           </template>
+          <!-- Andere Kosten Spalte -->
           <template #cell(othercosts)="data">
             <b-form-input
               :id="'3'"

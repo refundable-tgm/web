@@ -108,17 +108,17 @@
         </b-form-group>
         <!-- Input für die Zieladresse -->
         <b-form-group
-          id="ziel"
+          id="starta"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
           description="Geben Sie Ihre Startadresse für diese Schulveranstaltung ein."
           label="Startaddresse"
-          label-for="za"
+          label-for="sta"
         >
           <b-form-input
-            id="za"
+            id="sta"
             placeholder="Straße & Nr., Postleitzahl & Ort, Land"
             v-model="data.StartAddress"
             :readonly="readonly"
@@ -128,17 +128,17 @@
         </b-form-group>
         <!-- Input für die Treffpunktadresse -->
         <b-form-group
-          id="ziel"
+          id="treff"
           label-cols-sm="4"
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
           description="Geben Sie den Treffpunkt für diese Schulveranstaltung ein."
           label="Treffpunkt"
-          label-for="za"
+          label-for="tr"
         >
           <b-form-input
-            id="za"
+            id="tr"
             placeholder="Straße & Nr., Postleitzahl & Ort, Land"
             v-model="data.MeetingPoint"
             :readonly="readonly"

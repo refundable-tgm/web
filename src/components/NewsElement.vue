@@ -1,5 +1,7 @@
+<!-- Template für ein News Element -->
 <template>
   <b-container>
+    <!-- Verlinkung zu dem zugehörigen Antrag -->
     <b-row
       align-v="center"
       v-on:click="linkToApplication(snews.application)"
@@ -11,6 +13,7 @@
             <b-col cols="2">
               <b-container style="height: 100%">
                 <b-row align-v="center" align-h="center" style="height: 100%">
+                  <!-- Illustration Angenommen/Abgelehnt -->
                   <img
                     src="@/assets/accepted_1.svg"
                     class="align-middle news-status"
@@ -24,11 +27,13 @@
               <b-container>
                 <b-row align-h="center" align-v="center">
                   <b-col cols="12">
+                    <!-- Titel der Neuigkeit -->
                     <h3 class="news-elem-heading">{{ snews.title }}</h3>
                   </b-col>
                 </b-row>
                 <b-row align-h="center" class="d-none d-md-block">
                   <b-col cols="12">
+                    <!-- Beschreibung der Neuigkeit -->
                     <h4 class="news-elem-heading">{{ snews.description }}</h4>
                   </b-col>
                 </b-row>

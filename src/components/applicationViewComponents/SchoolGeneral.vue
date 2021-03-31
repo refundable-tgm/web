@@ -1,3 +1,4 @@
+<!-- Template für Schulveranstaltungsanträge -->
 <template>
   <b-container fluid>
     <b-row align-h="center">
@@ -5,6 +6,7 @@
         <b-container fluid>
           <b-row align-h="center">
             <b-col cols="12" md="8">
+              <!-- Input für den Namen der Schulveranstaltung -->
               <b-form-group
                 id="bez"
                 label-cols-sm="4"
@@ -22,6 +24,7 @@
                   @input="updateData"
                 ></b-form-input>
               </b-form-group>
+              <!-- Input für das Startdatum -->
               <b-form-group
                 id="startd"
                 label-cols-sm="4"
@@ -41,6 +44,7 @@
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
               </b-form-group>
+              <!-- Input für die Startzeit -->
               <b-form-group
                 id="startz"
                 label-cols-sm="4"
@@ -60,6 +64,7 @@
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
               </b-form-group>
+              <!-- Input für das Enddatum -->
               <b-form-group
                 id="endd"
                 label-cols-sm="4"
@@ -79,6 +84,7 @@
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
               </b-form-group>
+              <!-- Input für die Endzeit -->
               <b-form-group
                 id="endz"
                 label-cols-sm="4"
@@ -98,6 +104,7 @@
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
               </b-form-group>
+              <!-- Input für die Startadresse der SV -->
               <b-form-group
                 id="treff"
                 label-cols-sm="4"
@@ -117,6 +124,7 @@
                 >
                 </b-form-input>
               </b-form-group>
+              <!-- Input für die Zieladresse der SV -->
               <b-form-group
                 id="ziel"
                 label-cols-sm="4"
@@ -136,6 +144,7 @@
                 >
                 </b-form-input>
               </b-form-group>
+              <!-- Namen der Begleitpersonen -->
               <b-form-group
                 id="begleit"
                 label-cols-sm="4"
@@ -158,6 +167,7 @@
                   placeholder="Einträge durch Leerzeichen trennen"
                 ></b-form-tags>
               </b-form-group>
+              <!-- Bezeichnungen der teilnehmenden Klassen -->
               <b-form-group
                 id="klassen"
                 label-cols-sm="4"
@@ -180,6 +190,7 @@
                   placeholder="Einträge durch Leerzeichen trennen"
                 ></b-form-tags>
               </b-form-group>
+              <!-- Anzahl der teilnehmenden Schüler -->
               <b-form-group
                 id="schueler"
                 label-cols-sm="4"
@@ -200,6 +211,7 @@
                   max="3000"
                 ></b-form-input>
               </b-form-group>
+              <!-- Anzahl der teilnehmenden Schülerinnen -->
               <b-form-group
                 id="schuelerinnen"
                 label-cols-sm="4"
@@ -220,6 +232,7 @@
                   max="3000"
                 ></b-form-input>
               </b-form-group>
+              <!-- Zusätzliche Anmerkungen -->
               <b-form-group
                 id="anmerkung"
                 label-cols-sm="4"

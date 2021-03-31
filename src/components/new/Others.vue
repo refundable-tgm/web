@@ -1,3 +1,4 @@
+<!-- Komponente zum Auswählen der sonstigen Art des Antrages -->
 <template>
   <b-container fluid>
     <b-row id="new-application-row" align-h="center">
@@ -8,6 +9,7 @@
               <h1 id="new-application-heading">Neuen Antrag erstellen</h1>
             </b-col>
             <b-col cols="12" md="6">
+              <!-- Home Buttons -->
               <b-button
                 variant="outline-primary"
                 class="float-right"
@@ -19,6 +21,7 @@
           </b-row>
           <b-row>
             <b-col cols="12">
+              <!-- Verzeichnisanzeige -->
               <b-breadcrumb style="background-color: white">
                 <b-breadcrumb-item v-on:click="uebersicht"
                   >Antrag Übersicht</b-breadcrumb-item
@@ -30,6 +33,7 @@
           <b-row id="na-srow" align-h="center" align-v="center">
             <b-col cols="12" md="6" lg="4">
               <b-container id="school-button" class="na-elem shadow-xl">
+                <!-- Button zum erstellen einer Fortbildung -->
                 <b-row
                   class="na-elem-sr"
                   align-v="center"
@@ -41,6 +45,7 @@
                 </b-row>
               </b-container>
               <b-container id="na-elem-2" class="na-elem shadow-xl">
+                <!-- Button zum erstellen eines anderen Antrags -->
                 <b-row
                   class="na-elem-sr"
                   align-h="center"

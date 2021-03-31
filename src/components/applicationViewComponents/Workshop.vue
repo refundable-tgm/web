@@ -6,6 +6,7 @@
         <b-container fluid>
           <b-row align-h="center">
             <b-col cols="12" md="8">
+              <!-- Bezeichnung der Fortbildung -->
               <b-form-group
                 id="titel"
                 label-cols-sm="4"
@@ -23,6 +24,7 @@
                   @input="updateData"
                 ></b-form-input>
               </b-form-group>
+              <!-- Startdatum der Fortbildung -->
               <b-form-group
                 id="startd"
                 label-cols-sm="4"
@@ -42,6 +44,7 @@
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
               </b-form-group>
+              <!-- Startzeit der Fortbildung -->
               <b-form-group
                 id="startz"
                 label-cols-sm="4"
@@ -61,6 +64,7 @@
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
               </b-form-group>
+              <!-- Enddatum der Fortbildung -->
               <b-form-group
                 id="endd"
                 label-cols-sm="4"
@@ -80,6 +84,7 @@
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
               </b-form-group>
+              <!-- Endzeit der Fortbildung -->
               <b-form-group
                 id="endz"
                 label-cols-sm="4"
@@ -99,6 +104,7 @@
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
               </b-form-group>
+              <!-- Input für die PH-Zahl -->
               <b-form-group
                 id="phzahl"
                 label-cols-sm="4"
@@ -119,6 +125,7 @@
                   max="3000"
                 ></b-form-input>
               </b-form-group>
+              <!-- Name des Veranstalters -->
               <b-form-group
                 id="veran"
                 label-cols-sm="4"
@@ -136,6 +143,7 @@
                   @input="updateData"
                 ></b-form-input>
               </b-form-group>
+              <!-- Art der Fortbildung -->
               <b-form-group
                 id="art"
                 label-cols-sm="4"
@@ -158,6 +166,7 @@
                   disabled-field="notEnabled"
                 ></b-form-radio-group>
               </b-form-group>
+              <!-- Bezeichnung der Sonstigen Art, falls diese ausgewählt wurde -->
               <b-form-group
                 id="sonst"
                 label-cols-sm="4"
@@ -176,6 +185,7 @@
                   :readonly="readonly"
                 ></b-form-input>
               </b-form-group>
+              <!-- Zusätzliche Anmerkungen -->
               <b-form-group
                 id="anmerkung"
                 label-cols-sm="4"

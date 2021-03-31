@@ -8,6 +8,7 @@
               <h1 id="new-application-heading">Neuen Antrag erstellen</h1>
             </b-col>
             <div class="col-12 col-md-6">
+              <!-- Startseite Button -->
               <b-button
                 variant="outline-primary"
                 class="float-right"
@@ -19,6 +20,7 @@
           </b-row>
           <b-row>
             <b-col cols="12">
+              <!-- Verzeichnisanzeige -->
               <b-breadcrumb style="background-color: white">
                 <b-breadcrumb-item v-on:click="uebersicht"
                   >Antrag Übersicht</b-breadcrumb-item
@@ -32,10 +34,12 @@
           </b-row>
           <b-row align-h="center">
             <b-col cols="12" md="8">
+              <!-- Einfügen der Templates für die Begleitpersonen -->
               <div
                 v-for="(escort, index) in escorts.output"
                 v-bind:key="escort.id"
               >
+                <!-- Begleitformular -->
                 <EscortsComp
                   v-bind:escort="escort"
                   v-bind:index="index"
@@ -52,6 +56,7 @@
                   v-on:startadresse="changeStartAdresse"
                   v-on:meetingpoint="changeMeetingPoint"
                 />
+                <!-- Reiseantragsformular -->
                 <TravelApplication
                   v-bind:escort="escort"
                   v-bind:index="index"
@@ -60,6 +65,7 @@
               </div>
 
               <center>
+                <!-- Button zum einreichen -->
                 <button v-on:click="einreichen" class="blueish-gradiant">
                   Einreichen
                 </button>

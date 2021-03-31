@@ -1,7 +1,9 @@
+<!-- Template für Reiseanträge -->
 <template>
   <b-container fluid>
     <b-row align-h="center">
       <b-col cols="12">
+        <!-- Personalnummer der Begleitperson -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -23,6 +25,7 @@
             Keine Bezeichnung angegeben!
           </b-form-invalid-feedback>
         </b-form-group>
+        <!-- Fortbewegungsart -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -55,6 +58,7 @@
             <b-form-radio value="7">Eigener PKW</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
+        <!-- Begründung der Fortbewegungsart -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -75,6 +79,7 @@
             no-resize
           ></b-form-textarea>
         </b-form-group>
+        <!-- Ausgangspunkt -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -96,6 +101,7 @@
             <b-form-radio value="0">Wohnung*</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
+        <!-- Zielpunkt -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -117,6 +123,7 @@
             <b-form-radio value="0">Wohnung*</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
+        <!-- Begründung -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -137,6 +144,7 @@
             no-resize
           ></b-form-textarea>
         </b-form-group>
+        <!-- Bonusmeilen Bedingungen -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -166,6 +174,7 @@
             >
           </b-form-checkbox-group>
         </b-form-group>
+        <!-- Reisekosten andere Stellen -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -187,6 +196,7 @@
             <b-form-radio value="true">Ja</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
+        <!-- Aufenthaltskosten andere Stellen -->
         <b-form-group
           label-cols-sm="4"
           label-cols-lg="3"
@@ -208,6 +218,7 @@
             <b-form-radio value="true">Ja</b-form-radio>
           </b-form-radio-group>
         </b-form-group>
+        <!-- Bezeichnung der anderen Stelle -->
         <b-form-group
           v-if="
             data.aufenthaltskosten === 'true' || data.reisekosten === 'true'
@@ -230,6 +241,7 @@
           >
           </b-form-input>
         </b-form-group>
+        <!-- Sonstige Kosten -->
         <b-form-group
           :id="index + 'sonstkg'"
           label-cols-sm="4"
@@ -254,6 +266,7 @@
             </b-form-input>
           </b-input-group>
         </b-form-group>
+        <!-- Geschätzte Kosten -->
         <b-form-group
           :id="index + 'geschkg'"
           label-cols-sm="4"

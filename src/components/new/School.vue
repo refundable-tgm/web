@@ -1,3 +1,4 @@
+<!-- Template für einen Antrag einer Schulveranstaltung -->
 <template>
   <b-container fluid>
     <b-row align-h="center">
@@ -8,6 +9,7 @@
               <h1 id="new-application-heading">Neuen Antrag erstellen</h1>
             </b-col>
             <div class="col-12 col-md-6">
+              <!-- Home Button -->
               <b-button
                 variant="outline-primary"
                 class="float-right"
@@ -19,6 +21,7 @@
           </b-row>
           <b-row>
             <b-col cols="12">
+              <!-- Verzeichnisanzeige -->
               <b-breadcrumb style="background-color: white">
                 <b-breadcrumb-item v-on:click="uebersicht"
                   >Antrag Übersicht</b-breadcrumb-item
@@ -31,6 +34,7 @@
           </b-row>
           <b-row align-h="center">
             <b-col cols="12" md="8">
+              <!-- Name der SV -->
               <b-form-group
                 id="bez"
                 label-cols-sm="4"
@@ -52,6 +56,7 @@
                   Keine Bezeichnung angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Startdatum -->
               <b-form-group
                 id="startd"
                 label-cols-sm="4"
@@ -74,6 +79,7 @@
                   Start der Exkursion muss vor dem Ende der Exkursion sein!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Startzeit -->
               <b-form-group
                 id="startz"
                 label-cols-sm="4"
@@ -96,6 +102,7 @@
                   Start der Exkursion muss vor dem Ende der Exkursion sein!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Enddatum -->
               <b-form-group
                 id="endd"
                 label-cols-sm="4"
@@ -118,6 +125,7 @@
                   Start der Exkursion muss vor dem Ende der Exkursion sein!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Endzeit -->
               <b-form-group
                 id="endz"
                 label-cols-sm="4"
@@ -140,6 +148,7 @@
                   Start der Exkursion muss vor dem Ende der Exkursion sein!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Treffpunkt -->
               <b-form-group
                 id="treff"
                 label-cols-sm="4"
@@ -162,6 +171,7 @@
                   Keine Startadresse angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Zieladresse -->
               <b-form-group
                 id="ziel"
                 label-cols-sm="4"
@@ -184,6 +194,7 @@
                   Keine Zieladresse angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Kürzel der Begleitpersonen -->
               <b-form-group
                 id="begleit"
                 label-cols-sm="4"
@@ -209,6 +220,7 @@
                   Keine Begleitpersonen angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Bezeichnungen der Klassen -->
               <b-form-group
                 id="klassen"
                 label-cols-sm="4"
@@ -234,6 +246,7 @@
                   Keine Jahrgänge angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Anzahl der teilnehmenden Schüler -->
               <b-form-group
                 id="schueler"
                 label-cols-sm="4"
@@ -257,6 +270,7 @@
                   Keine Schüler/Schülerinnen angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- ANzahö der teilnehmenden Schülerinnen -->
               <b-form-group
                 id="schuelerinnen"
                 label-cols-sm="4"
@@ -280,6 +294,7 @@
                   Keine Schüler/Schülerinnen angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
+              <!-- Anmerkungen -->
               <b-form-group
                 id="anmerkung"
                 label-cols-sm="4"
@@ -299,6 +314,7 @@
                 ></b-form-textarea>
               </b-form-group>
               <center>
+                <!-- Button um zu den Begleitformularen zu kommen -->
                 <button v-on:click="next" class="blueish-gradiant">
                   weiter
                 </button>

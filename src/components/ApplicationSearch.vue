@@ -1,3 +1,4 @@
+<!-- Komponente zum Suchen eines Antrages -->
 <template>
   <b-container fluid>
     <b-row align-v="center" align-h="center">
@@ -5,6 +6,7 @@
         <h1 id="new-application-heading">Antrag Suchen</h1>
       </b-col>
       <div class="col-12 col-md-6">
+        <!-- Home Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
@@ -12,6 +14,7 @@
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
+        <!-- Neuer Antrag Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
@@ -24,6 +27,7 @@
     </b-row>
     <b-row align-h="center" align-v="center" style="margin-top:3rem">
       <b-col>
+        <!-- Input zur eingabe der ID des gewünschten Antrags -->
         <b-form-group
           id="search-application"
           label-cols-sm="4"
@@ -36,6 +40,7 @@
           <b-input-group id="search" prepend="Antrags ID" class="mt-3">
             <b-form-input v-model="searching"></b-form-input>
             <b-input-group-append>
+              <!-- Antrag suchen -->
               <b-button v-on:click="search" variant="info">Suchen</b-button>
             </b-input-group-append>
           </b-input-group>

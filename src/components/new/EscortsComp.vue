@@ -1,3 +1,4 @@
+<!-- Template für die Begleitpersonen -->
 <template>
   <b-container fluid>
     <b-row>
@@ -5,7 +6,7 @@
         <center>
           <h2>{{ escort.name }}</h2>
         </center>
-
+        <!-- Startdatum der SV -->
         <b-form-group
           :id="index + 'sdg'"
           label-cols-sm="4"
@@ -33,6 +34,7 @@
             </a>
           </b-form-invalid-feedback>
         </b-form-group>
+        <!-- Startzeit der SV -->
         <b-form-group
           :id="index + 'stg'"
           label-cols-sm="4"
@@ -60,6 +62,7 @@
             </a>
           </b-form-invalid-feedback>
         </b-form-group>
+        <!-- Enddatum der SV -->
         <b-form-group
           :id="index + 'edg'"
           label-cols-sm="4"
@@ -87,6 +90,7 @@
             </a>
           </b-form-invalid-feedback>
         </b-form-group>
+        <!-- Endzeit der SV -->
         <b-form-group
           :id="index + 'etg'"
           label-cols-sm="4"
@@ -114,6 +118,7 @@
             </a>
           </b-form-invalid-feedback>
         </b-form-group>
+        <!-- Gruppe der Begleitperson -->
         <b-form-group
           :id="index + 'gruppe'"
           label-cols-sm="4"
@@ -135,6 +140,7 @@
             disabled-field="notEnabled"
           ></b-form-radio-group>
         </b-form-group>
+        <!-- Startadresse der SV -->
         <b-form-group
           :id="index + 'sa'"
           label-cols-sm="4"
@@ -152,6 +158,7 @@
           >
           </b-form-input>
         </b-form-group>
+        <!-- Treffpunkt der SV -->
         <b-form-group
           :id="index + 'mp'"
           label-cols-sm="4"
