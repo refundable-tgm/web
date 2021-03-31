@@ -1,3 +1,4 @@
+<!-- Template für Fortbildungsanträge -->
 <template>
   <b-container fluid>
     <b-row align-h="center">

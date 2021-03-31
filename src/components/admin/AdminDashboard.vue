@@ -1,3 +1,4 @@
+<!-- Admin Dashboard Template -->
 <template>
   <b-container fluid>
     <!-- User Interface controls -->
@@ -6,6 +7,7 @@
         <h1 id="new-application-heading">Alle Anträge</h1>
       </b-col>
       <div class="col-12 col-md-6">
+        <!-- Logout Button -->
         <b-button
           variant="outline-danger"
           class="float-right"
@@ -13,6 +15,7 @@
         >
           Abmelden
         </b-button>
+        <!-- Ansicht wechseln Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
@@ -25,6 +28,7 @@
       </div>
     </b-row>
 
+    <!-- Such Element -->
     <b-row align-h="center" style="margin-top: 1rem; margin-bottom: 2rem">
       <b-col cols="12" md="6">
         <b-form-group
@@ -52,14 +56,17 @@
         </b-form-group>
       </b-col>
     </b-row>
+    <!-- Tabelle auswählen Button -->
     <b-button size="sm" @click="selectAllRows" style="margin-right:1rem"
       >Alle auswählen</b-button
     >
+    <!-- Tabellenauswahl aufheben Button -->
     <b-button size="sm" @click="clearSelected" style="margin-right:1rem"
-      >Auswahl löschen</b-button
+      >Auswahl aufheben</b-button
     >
+    <!-- Drucken Button -->
     <b-button size="sm" @click="printSelected">Auswahl drucken</b-button>
-    <!-- Main table element -->
+    <!-- Tabelle, die die Anträge der Lehrer anzeigt -->
     <b-table
       striped
       :select-mode="selectMode"
@@ -78,6 +85,7 @@
       selectable
       @row-selected="onRowSelected"
     >
+      <!-- Auswahl Spalte -->
       <template #cell(selected)="{ rowSelected }">
         <template v-if="rowSelected">
           <span aria-hidden="true">&check;</span>
@@ -89,24 +97,29 @@
         </template>
       </template>
 
+      <!-- Antragsart Spalte -->
       <template #cell(kind)="data">
         <b-badge :variant="getKindVariant(data.item.kind)">{{
           loadKind(data.item.kind)
         }}</b-badge>
       </template>
+      <!-- Funktionsspalte zum betrachten des Antrags -->
       <template #cell(actions)="row">
         <b-button size="sm" @click="info(row.item)">
           Antrag betrachten
         </b-button>
       </template>
+      <!-- Antragsstatus Spalte -->
       <template #cell(status)="data">
         <b-badge :variant="getStateVariant(data.item.status)">{{
           data.item.status.toUpperCase()
         }}</b-badge>
       </template>
+      <!-- Antragssteller Spalte -->
       <template #cell(from)="data">
         <b-badge variant="secondary">{{ data.item.from }}</b-badge>
       </template>
+      <!-- Ausklappbare Detailansicht -->
       <template #row-details="row">
         <b-card>
           <ul>
@@ -118,7 +131,7 @@
       </template>
     </b-table>
 
-    <!-- Info modal -->
+    <!-- Info Modal -->
     <b-modal
       :id="infoModal.id"
       :title="infoModal.title"

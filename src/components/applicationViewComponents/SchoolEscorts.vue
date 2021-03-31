@@ -1,7 +1,9 @@
+<!-- Template fpr die Anträge der Begleiter der Schulveranstaltungen -->
 <template>
   <b-container fluid>
     <b-row>
       <b-col cols="12">
+        <!-- Input für das Startdatum der SV -->
         <b-form-group
           id="startd"
           label-cols-sm="4"
@@ -21,6 +23,7 @@
             placeholder="Datum auswählen"
           ></b-form-datepicker>
         </b-form-group>
+        <!-- Input für die Startzeit der SV -->
         <b-form-group
           id="startz"
           label-cols-sm="4"
@@ -40,6 +43,7 @@
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
         </b-form-group>
+        <!-- Input für das Enddatum der SV -->
         <b-form-group
           id="endd"
           label-cols-sm="4"
@@ -59,6 +63,7 @@
             placeholder="Datum auswählen"
           ></b-form-datepicker>
         </b-form-group>
+        <!-- Input für die Endzeit der SV -->
         <b-form-group
           id="endz"
           label-cols-sm="4"
@@ -78,6 +83,7 @@
             placeholder="Zeit auswählen"
           ></b-form-timepicker>
         </b-form-group>
+        <!-- Input für die Gruppe der Begleitperson -->
         <b-form-group
           id="gruppe"
           label-cols-sm="4"
@@ -100,6 +106,7 @@
             disabled-field="notEnabled"
           ></b-form-radio-group>
         </b-form-group>
+        <!-- Input für die Zieladresse -->
         <b-form-group
           id="ziel"
           label-cols-sm="4"
@@ -119,6 +126,7 @@
           >
           </b-form-input>
         </b-form-group>
+        <!-- Input für die Treffpunktadresse -->
         <b-form-group
           id="ziel"
           label-cols-sm="4"

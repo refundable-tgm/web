@@ -1,10 +1,13 @@
+<!-- Administrator Ansicht Template -->
 <template>
   <b-container fluid>
     <b-row align-v="center" align-h="center">
       <b-col cols="12" md="6">
+        <!-- Name des Antrages -->
         <h1 id="new-application-heading">Antrag für {{ app.Name }}</h1>
       </b-col>
       <div class="col-12 col-md-6">
+        <!-- Startseite Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
@@ -13,6 +16,7 @@
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
+        <!-- Dashoard Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
@@ -23,6 +27,7 @@
         </b-button>
       </div>
     </b-row>
+    <!-- Progress Bar -->
     <b-row
       align-h="center"
       align-v="center"
@@ -34,7 +39,7 @@
     </b-row>
     <b-row style="margin-top:2rem">
       <b-col cols="12">
-        <!-- Main table element -->
+        <!-- Tabelle mit den spezifischen Dokumenten -->
         <b-table
           striped
           :items="items"
@@ -49,11 +54,14 @@
           small
           @filtered="onFiltered"
         >
+          <!-- Dokumenten Art -->
           <template #cell(name)="row">
             {{ row.value.first }} {{ row.value.last }}
           </template>
 
+          <!-- Funktionstasten -->
           <template #cell(actions)="row">
+            <!-- PDF öffnen Button -->
             <b-button
               variant="outline-secondary"
               size="sm"
@@ -62,6 +70,7 @@
             >
               <b-icon icon="file-earmark-text"></b-icon> PDF öffnen
             </b-button>
+            <!-- Details anschauen Button -->
             <b-button
               variant="outline-secondary"
               size="sm"
@@ -72,29 +81,35 @@
             </b-button>
           </template>
 
+          <!-- Detailanzeige -->
           <template #row-details="row">
             <b-card>
+              <!-- Schulveranstaltungen -->
               <SchoolGeneral
                 v-bind:data="app"
                 v-bind:readonly="true"
                 v-if="row.item.title == 'Allgemeine Infos'"
               />
+              <!-- Abwesenheitsformular -->
               <Others
                 v-bind:data="app"
                 v-bind:readonly="true"
                 v-if="row.item.title == 'Abwesenheitsformular'"
               />
+              <!-- Fortbildung -->
               <Workshop
                 v-bind:data="app"
                 v-bind:readonly="true"
                 v-if="row.item.title == 'Fortbildung'"
               />
+              <!-- Reiseantrag -->
               <TravelApplication
                 v-bind:index="index"
                 v-bind:app="app.BusinessTripApplications[0]"
                 v-bind:readonly="true"
                 v-if="row.item.title == 'Reiseformular'"
               />
+              <!-- Reiserechnung -->
               <TravelBill
                 v-bind:index="index"
                 v-bind:start="app.StartTime"
@@ -107,6 +122,7 @@
                 v-for="(teach, index) in app.SchoolEventDetails.Teachers"
                 v-bind:key="teach.Shortname"
               >
+                <!-- Begleitformular -->
                 <SchoolEscorts
                   v-bind:readonly="true"
                   v-bind:data="app.SchoolEventDetails.Teachers[index]"
@@ -121,6 +137,7 @@
                 v-for="(busi, index) in app.BusinessTripApplications"
                 v-bind:key="busi.Staffnr"
               >
+                <!-- Reiseantrag für den jeweiligen Lehrer -->
                 <TravelApplication
                   v-bind:index="index"
                   v-bind:app="busi"
@@ -136,6 +153,7 @@
                 v-for="(bill, index) in app.TravelInvoices"
                 v-bind:key="bill.ID"
               >
+                <!-- Reiserechnung für den jeweiligen Lehrer -->
                 <TravelBill
                   v-bind:index="index"
                   v-bind:start="
@@ -159,8 +177,10 @@
       </b-col>
     </b-row>
 
+    <!-- Funktionen zum annehmen/ablehnen der Anträge -->
     <b-row style="margin-bottom:2rem">
       <b-col cols="12">
+        <!-- Antrag ablehnen Button -->
         <b-button
           variant="outline-danger"
           id="show-btn"
@@ -168,6 +188,7 @@
           class="float-right"
           ><b-icon icon="file-earmark-excel"></b-icon> Antrag ablehnen</b-button
         >
+        <!-- Antrag annehmen Button -->
         <b-button
           variant="outline-success"
           id="show-btn"
@@ -179,6 +200,7 @@
       </b-col>
     </b-row>
 
+    <!-- Antrag Ablehnen Warnhinweis -->
     <b-modal ref="close-modal" hide-footer title="Antrag ablehnen">
       <b-container fluid>
         <b-row
@@ -187,6 +209,7 @@
               <p>
                 Sind Sie sich sicher, dass Sie den Antrag ablehnen wollen?
               </p>
+              <!-- Begründung der Ablehnung -->
               <b-form-textarea
                 id="decline-reason"
                 placeholder="Begründung"
@@ -197,12 +220,14 @@
         ></b-row>
         <b-row>
           <b-col cols="6">
+            <!-- Antrag ablehnen Bestätigung -->
             <b-button class="mt-2" variant="outline-danger" block @click="delAn"
               >Antrag ablehnen <b-spinner small type="grow"></b-spinner
             ></b-button>
           </b-col>
-          <b-col cols="6"
-            ><b-button
+          <b-col cols="6">
+            <!-- Abbrechen Button -->
+            <b-button
               class="mt-2"
               variant="outline-success"
               block

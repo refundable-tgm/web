@@ -1,19 +1,37 @@
 <!DOCTYPE html>
+<!-- Sprache der Website -->
 <html lang="de">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- Favicon Verlinkung -->
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <!-- Google Fonts import -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font awesome import -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+    />
+    <!-- Import des Custom-CSS Datei -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Anzeigen des jeweiligen Titels -->
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
+    <!-- Warnhinweis, wenn JS deaktiviert ist -->
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong
+        >Es tut uns leid, aber <%= htmlWebpackPlugin.options.title %>
+        funktioniert nicht richtig, wenn JavaScript deaktiviert ist. Um diese
+        Plattform weiter zu nutzen müssen sie JavaScript aktivieren.</strong
+      >
     </noscript>
+    <!-- Inhalt der Website -->
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

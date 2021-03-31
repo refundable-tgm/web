@@ -1,3 +1,4 @@
+<!-- Template für Fortbildungen -->
 <template>
   <b-container fluid>
     <b-row align-h="center">
@@ -5,13 +6,14 @@
         <b-container fluid>
           <b-row align-h="center">
             <b-col cols="12" md="8">
+              <!-- Input für das Startdatum -->
               <b-form-group
                 id="startd"
                 label-cols-sm="4"
                 label-cols-lg="3"
                 content-cols-sm
                 content-cols-lg="7"
-                description="Geben Sie das Startdatum der Fortbildung ein."
+                description="Geben Sie das Startdatum des Termins ein."
                 label="Startdatum"
                 label-for="std"
               >
@@ -24,13 +26,14 @@
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
               </b-form-group>
+              <!-- Input für die Startzeit -->
               <b-form-group
                 id="startz"
                 label-cols-sm="4"
                 label-cols-lg="3"
                 content-cols-sm
                 content-cols-lg="7"
-                description="Geben Sie die Startzeit der Fortbildung ein."
+                description="Geben Sie die Startzeit des Termins ein."
                 label="Startzeit"
                 label-for="stz"
               >
@@ -43,13 +46,14 @@
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
               </b-form-group>
+              <!-- Input für das Enddatum -->
               <b-form-group
                 id="endd"
                 label-cols-sm="4"
                 label-cols-lg="3"
                 content-cols-sm
                 content-cols-lg="7"
-                description="Geben Sie das Enddatum der Fortbildung ein."
+                description="Geben Sie das Enddatum des Termins ein."
                 label="Enddatum"
                 label-for="end"
               >
@@ -62,13 +66,14 @@
                   placeholder="Datum auswählen"
                 ></b-form-datepicker>
               </b-form-group>
+              <!-- Input für die Endzeit -->
               <b-form-group
                 id="endz"
                 label-cols-sm="4"
                 label-cols-lg="3"
                 content-cols-sm
                 content-cols-lg="7"
-                description="Geben Sie die Endzeit der Fortbildung ein."
+                description="Geben Sie die Endzeit des Termins ein."
                 label="Endzeit"
                 label-for="enz"
               >
@@ -81,6 +86,7 @@
                   placeholder="Zeit auswählen"
                 ></b-form-timepicker>
               </b-form-group>
+              <!-- Grund für die Abwesenheit -->
               <b-form-group
                 id="grund"
                 label-cols-sm="4"
@@ -103,6 +109,7 @@
                   disabled-field="notEnabled"
                 ></b-form-radio-group>
               </b-form-group>
+              <!-- Input zur Eingabe des benutzerdefinierten Grundes -->
               <b-form-group
                 id="sonst"
                 label-cols-sm="4"
@@ -122,6 +129,7 @@
                 >
                 </b-form-input>
               </b-form-group>
+              <!-- Titel des Dienstauftrages, falls er als Grund ausgewählt wurde -->
               <b-form-group
                 id="titel"
                 label-cols-sm="4"
@@ -140,6 +148,7 @@
                   @input="updateData"
                 ></b-form-input>
               </b-form-group>
+              <!-- GZ des Dienstauftrages, falls er als Grund ausgewählt wurde -->
               <b-form-group
                 id="gz"
                 label-cols-sm="4"
@@ -159,6 +168,7 @@
                   @input="updateData"
                 ></b-form-input>
               </b-form-group>
+              <!-- Input für Anmerkungen -->
               <b-form-group
                 id="anmerkung"
                 label-cols-sm="4"
