@@ -6,6 +6,7 @@
   >
     <b-row align-h="center">
       <b-col cols="12">
+        <!-- Falles der Antrag eine Schulveranstaltung ist -->
         <div v-if="kind === 4" class="track">
           <div
             :class="{
@@ -134,6 +135,7 @@
             <span class="text text-truncate">Abgeschlossen</span>
           </div>
         </div>
+        <!-- Falls der Antrag keine Schulveranstaltung ist -->
         <div
           v-if="
             kind === 0 ||
@@ -263,40 +265,6 @@
 <script>
 export default {
   props: ["kind", "progress"]
-  /*
-    const Schulveranstaltung (
-	SERejected = iota   0
-	SEInSubmission      1
-	SEInProcess         2
-	SEConfirmed         3
-	SERunning           4
-	SECostsPending      5
-	SECostsInProcess    6
-	SEDone              7
-)
-
-const Training (
-  TRejected = iota    0
-	TInProcess          1
-	TConfirmed          2
-	TRunning            3
-	TCostsPending       4
-	TCostsInProcess     5
-	TDone               6
-)
-
-const Types of applications (
-  Training = iota     0
-	Careleave           1
-	ServiceMandate      2
-	MedicalAppointment  3
-	SchoolEvent         4
-	Seminar             5
-	Conference          6
-	Course              7
-	Miscellaneous       8
-)
-    */
 };
 </script>
 
