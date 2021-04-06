@@ -16,7 +16,7 @@ const routes = [
     path: "/viewer",
     name: "Viewer",
     component: Home,
-    props: route => ({ query: route.query.uid })
+    props: route => ({ query: route.query.uuid })
   },
   {
     path: "*",

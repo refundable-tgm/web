@@ -108,59 +108,53 @@ export default {
   },
   methods: {
     /**
-     * TODO
      * Diese Methode loggt den Benutzer mit dem eingegebenen Benutzernamen und dem eingegebenen Passwort ein
      */
     login() {
       if (this.checkClick()) {
         if (this.cookieset === true) {
           axios
-            .get(
-              this.url + "/login?mail=" + this.email + ",pswd=" + this.password
-            )
+            .post(this.url + "/login", {
+              username: this.email,
+              password: this.password
+            })
             .then(response => {
               var data = response.data;
-              if (data.success) {
-                // Wenn login stimmt:
-                switch (this.forward.name) {
-                  case "ApplicationSearch":
-                    this.$emit(
-                      "login",
-                      data.user,
-                      data.admin,
-                      data.administration,
-                      data.av,
-                      data.pek
-                    );
-                    this.$emit("change-component", this.forward.name);
-                    break;
-                  case "ApplicationView":
-                    this.$emit(
-                      "login",
-                      data.user,
-                      data.admin,
-                      data.administration,
-                      data.av,
-                      data.pek
-                    );
-                    this.$emit(
-                      "change-component",
-                      this.forward.name,
-                      true,
-                      this.forward.id
-                    );
-                    break;
-                  default:
-                    this.$emit(
-                      "login",
-                      data.user,
-                      data.admin,
-                      data.administration,
-                      data.av,
-                      data.pek
-                    );
-                    break;
-                }
+              if (response.status === 200) {
+                axios
+                  .get(this.url + "/getTeacherByShort?name=" + this.email, {
+                    headers: {
+                      Authorization: "Basic " + data.access_token
+                    }
+                  })
+                  .then(resp => {
+                    if (resp.status === 200) {
+                      this.$emit(
+                        "login",
+                        resp.data.uuid,
+                        resp.data.super_user,
+                        resp.data.administration,
+                        resp.data.av,
+                        resp.data.pek
+                      );
+                      switch (this.forward.name) {
+                        case "ApplicationSearch":
+                          this.$emit("change-component", this.forward.name);
+                          break;
+                        case "ApplicationView":
+                          this.$emit(
+                            "change-component",
+                            this.forward.name,
+                            true,
+                            this.forward.id
+                          );
+                          break;
+                        default:
+                          this.$emit("change-component", "Index");
+                          break;
+                      }
+                    }
+                  });
               } else {
                 this.loginFailed();
               }
