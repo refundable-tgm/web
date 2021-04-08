@@ -240,11 +240,7 @@
     </b-modal>
 
     <!-- Info modal -->
-    <b-modal
-      :id="infoModal.id"
-      :title="infoModal.title"
-      ok-only
-    >
+    <b-modal :id="infoModal.id" :title="infoModal.title" ok-only>
       <pre>{{ infoModal.content }}</pre>
     </b-modal>
   </b-container>
@@ -365,7 +361,11 @@ export default {
             teacher: 0
           }
         ];
-        for (let i = 0; i < this.app.school_event_details.teachers.length; i++) {
+        for (
+          let i = 0;
+          i < this.app.school_event_details.teachers.length;
+          i++
+        ) {
           this.items.push({
             title:
               "Begleitformular - " +
@@ -374,7 +374,11 @@ export default {
             teacher: i
           });
         }
-        for (let i = 0; i < this.app.school_event_details.teachers.length; i++) {
+        for (
+          let i = 0;
+          i < this.app.school_event_details.teachers.length;
+          i++
+        ) {
           this.items.push({
             title:
               "Reiseformular - " +

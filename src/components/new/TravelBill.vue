@@ -528,10 +528,13 @@ export default {
       }
       if (this.app.official_business_card_got) this.data.selected.push("a1");
       if (this.app.travel_grant) this.data.selected.push("a2");
-      if (this.app.replacement_for_advantage_card) this.data.selected.push("a3");
-      if (this.app.replacement_for_train_card_class_2) this.data.selected.push("a4");
+      if (this.app.replacement_for_advantage_card)
+        this.data.selected.push("a3");
+      if (this.app.replacement_for_train_card_class_2)
+        this.data.selected.push("a4");
       if (this.app.kilometre_allowance) this.data.selected.push("a5");
-      if (this.app.nr_and_idications_of_participants) this.data.selected.push("a6");
+      if (this.app.nr_and_idications_of_participants)
+        this.data.selected.push("a6");
       if (this.app.travel_costs_cited) this.data.selected.push("a7");
       if (this.app.no_travel_costs) this.data.selected.push("a8");
     }

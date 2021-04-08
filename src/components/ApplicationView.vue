@@ -390,9 +390,13 @@ export default {
         ].travel_costs_cited = true;
       }
       if (data.selected.includes("a8")) {
-        this.app.travel_invoices[this.currentTeacherIndex].no_travel_costs = true;
+        this.app.travel_invoices[
+          this.currentTeacherIndex
+        ].no_travel_costs = true;
       } else {
-        this.app.travel_invoices[this.currentTeacherIndex].no_travel_costs = false;
+        this.app.travel_invoices[
+          this.currentTeacherIndex
+        ].no_travel_costs = false;
       }
       switch (data.dcm) {
         case "a1":
@@ -476,23 +480,24 @@ export default {
       this.app.travel_invoices[
         this.currentTeacherIndex
       ].calculation.sum_additional_costs = data.SumAdditionalCosts;
-      this.app.travel_invoices[this.currentTeacherIndex].calculation.sum_of_sums =
-        data.SumOfSums;
+      this.app.travel_invoices[
+        this.currentTeacherIndex
+      ].calculation.sum_of_sums = data.SumOfSums;
       for (let i = 0; i < data.items.length; i++) {
-        this.app.travel_invoices[this.currentTeacherIndex].calculation.rows.push(
-          {
-            nr: this.returnValue(data.items[i].index),
-            date: this.calcDate(data.items[i].date),
-            begin: this.calcTime(data.items[i].start),
-            end: this.calcTime(data.items[i].end),
-            kilometres: this.returnValue(data.items[i].km),
-            travel_costs: this.returnValue(data.items[i].travelcosts),
-            daily_charges: this.returnValue(data.items[i].daycharge),
-            nightly_charges: this.returnValue(data.items[i].sleepcharge),
-            additional_costs: this.returnValue(data.items[i].othercosts),
-            sum: this.returnValue(data.items[i].sum)
-          }
-        );
+        this.app.travel_invoices[
+          this.currentTeacherIndex
+        ].calculation.rows.push({
+          nr: this.returnValue(data.items[i].index),
+          date: this.calcDate(data.items[i].date),
+          begin: this.calcTime(data.items[i].start),
+          end: this.calcTime(data.items[i].end),
+          kilometres: this.returnValue(data.items[i].km),
+          travel_costs: this.returnValue(data.items[i].travelcosts),
+          daily_charges: this.returnValue(data.items[i].daycharge),
+          nightly_charges: this.returnValue(data.items[i].sleepcharge),
+          additional_costs: this.returnValue(data.items[i].othercosts),
+          sum: this.returnValue(data.items[i].sum)
+        });
       }
     },
     /**
@@ -543,7 +548,9 @@ export default {
       ].travel_costs_payed_by_someone = this.returnBoolean(data.reisekosten);
       this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].staying_costs_payed_by_someone = this.returnBoolean(data.aufenthaltskosten);
+      ].staying_costs_payed_by_someone = this.returnBoolean(
+        data.aufenthaltskosten
+      );
       this.app.business_trip_applications[
         this.currentTeacherIndex
       ].payed_by_whom = this.returnString(data.von);

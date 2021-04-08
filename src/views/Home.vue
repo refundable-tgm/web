@@ -52,14 +52,6 @@
       v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
-    <Others
-      v-if="currentComponent == 'Others'"
-      v-on:change-component="changeComponent"
-      v-bind:url="url"
-      v-bind:token="token"
-      v-bind:apikey="mapsapi"
-      v-bind:user="user"
-    />
     <Escorts
       v-if="currentComponent == 'Escorts'"
       v-on:change-component="changeComponent"
@@ -148,7 +140,6 @@ import CurrentApplication from "@/components/CurrentApplication.vue";
 import ApplicationView from "@/components/ApplicationView.vue";
 import ApplicationSearch from "@/components/ApplicationSearch.vue";
 import School from "@/components/new/School.vue";
-import Others from "@/components/new/Others.vue";
 import Escorts from "@/components/new/Escorts.vue";
 import OtherCause from "@/components/new/OtherCause.vue";
 import Workshop from "@/components/new/Workshop.vue";
@@ -165,7 +156,6 @@ export default {
     Login,
     NewApplication,
     School,
-    Others,
     Escorts,
     AllApplication,
     CurrentApplication,

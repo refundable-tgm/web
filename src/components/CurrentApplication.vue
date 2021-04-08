@@ -276,7 +276,8 @@ export default {
                 j++
               ) {
                 if (data[i].school_event_details.teachers[j].role === 0) {
-                  data[i].leader = data[i].school_event_details.teachers[j].name;
+                  data[i].leader =
+                    data[i].school_event_details.teachers[j].name;
                 }
               }
             } else {

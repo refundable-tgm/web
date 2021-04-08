@@ -227,7 +227,9 @@ export default {
             role: this.returnValue(this.escorts.output[i].role),
             group: this.returnValue(this.escorts.output[i].selected),
             shortname: this.returnString(this.escorts.output[i].shortname),
-            start_address: this.returnString(this.escorts.output[i].startadresse)
+            start_address: this.returnString(
+              this.escorts.output[i].startadresse
+            )
           });
           var otherteachers = [];
           for (let j = 0; j < this.escorts.output.length; j++)

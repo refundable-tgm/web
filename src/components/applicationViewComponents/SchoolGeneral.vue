@@ -289,7 +289,11 @@ export default {
       teach.push(this.data.school_event_details.teachers[0]);
       var found = -1;
       for (let i = 0; i < this.beg.length; i++) {
-        for (let j = 0; j < this.data.school_event_details.teachers.length; j++) {
+        for (
+          let j = 0;
+          j < this.data.school_event_details.teachers.length;
+          j++
+        ) {
           found = -1;
           if (
             this.beg[i] === this.data.school_event_details.teachers[j].shortname
@@ -374,7 +378,11 @@ export default {
       end.getDate();
     this.startTime = start.getHours() + ":" + start.getMinutes();
     this.endTime = end.getHours() + ":" + end.getMinutes();
-    for (let i = 0; i < this.data.school_event_details.teachers.length - 1; i++) {
+    for (
+      let i = 0;
+      i < this.data.school_event_details.teachers.length - 1;
+      i++
+    ) {
       this.beg.push(this.data.school_event_details.teachers[i + 1].shortname);
     }
   }

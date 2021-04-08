@@ -342,7 +342,8 @@ export default {
       }
       this.data.bonus_meilen = bm;
       this.data.reisekosten = "" + this.app.travel_costs_payed_by_someone;
-      this.data.aufenthaltskosten = "" + this.app.staying_costs_payed_by_someone;
+      this.data.aufenthaltskosten =
+        "" + this.app.staying_costs_payed_by_someone;
       this.data.von = this.app.payed_by_whom;
       this.data.sonstige_kosten = this.app.other_costs;
       this.data.geschaetzte_kosten = this.app.estimated_costs;
