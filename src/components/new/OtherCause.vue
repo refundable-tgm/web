@@ -23,8 +23,8 @@
             <b-col cols="12">
               <!-- Verzeichnis Anzeige -->
               <b-breadcrumb style="background-color: white">
-                <b-breadcrumb-item v-on:click="workshop"
-                  >Fortbildung, etc</b-breadcrumb-item
+                <b-breadcrumb-item v-on:click="uebersicht"
+                  >Antrag Übersicht</b-breadcrumb-item
                 >
                 <b-breadcrumb-item active>Anderer Grund</b-breadcrumb-item>
               </b-breadcrumb>
@@ -438,6 +438,14 @@ export default {
     workshop() {
       if (this.checkClick()) {
         this.changeComponent("Others");
+      }
+    },
+    /**
+     * Diese Methode leitet den Benutzer auf die NewApplication-Seite weiter
+     */
+    uebersicht() {
+      if (this.checkClick()) {
+        this.changeComponent("NewApplication");
       }
     },
     /**
