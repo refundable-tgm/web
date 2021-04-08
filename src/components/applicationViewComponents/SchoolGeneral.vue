@@ -19,7 +19,7 @@
               >
                 <b-form-input
                   id="bezeichnung"
-                  v-model="data.Name"
+                  v-model="data.name"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -118,7 +118,7 @@
                 <b-form-input
                   id="ta"
                   placeholder="Wexstraße 19-23, 1200 Wien, Österreich"
-                  v-model="data.StartAddress"
+                  v-model="data.start_address"
                   :readonly="readonly"
                   v-on:input="updateData"
                 >
@@ -138,7 +138,7 @@
                 <b-form-input
                   id="za"
                   placeholder="Straße & Nr., Postleitzahl & Ort, Land"
-                  v-model="data.DestinationAddress"
+                  v-model="data.destination_address"
                   :readonly="readonly"
                   v-on:input="updateData"
                 >
@@ -181,7 +181,7 @@
                 <b-form-tags
                   id="kl"
                   input-id="tags-pills"
-                  v-model="data.SchoolEventDetails.Classes"
+                  v-model="data.school_event_details.classes"
                   :disabled="readonly"
                   @input="updateData"
                   tag-variant="primary"
@@ -204,7 +204,7 @@
                 <b-form-input
                   id="aschueler"
                   :readonly="readonly"
-                  v-model="data.SchoolEventDetails.AmountMaleStudents"
+                  v-model="data.school_event_details.amount_male_students"
                   @input="updateData"
                   type="number"
                   min="0"
@@ -224,7 +224,7 @@
               >
                 <b-form-input
                   id="aschuelerin"
-                  v-model="data.SchoolEventDetails.AmountFemaleStudents"
+                  v-model="data.school_event_details.amount_female_students"
                   :readonly="readonly"
                   @input="updateData"
                   type="number"
@@ -246,7 +246,7 @@
                 <b-form-textarea
                   id="an"
                   :readonly="readonly"
-                  v-model="data.Notes"
+                  v-model="data.notes"
                   @input="updateData"
                   placeholder="Anmerkungen"
                   rows="3"
@@ -286,34 +286,34 @@ export default {
      */
     updateBeg() {
       var teach = [];
-      teach.push(this.data.SchoolEventDetails.Teachers[0]);
+      teach.push(this.data.school_event_details.teachers[0]);
       var found = -1;
       for (let i = 0; i < this.beg.length; i++) {
-        for (let j = 0; j < this.data.SchoolEventDetails.Teachers.length; j++) {
+        for (let j = 0; j < this.data.school_event_details.teachers.length; j++) {
           found = -1;
           if (
-            this.beg[i] === this.data.SchoolEventDetails.Teachers[j].Shortname
+            this.beg[i] === this.data.school_event_details.teachers[j].shortname
           ) {
             found = j;
           }
         }
         if (found !== -1) {
-          teach.push(this.data.SchoolEventDetails.Teachers[found]);
+          teach.push(this.data.school_event_details.teachers[found]);
         } else {
           var l = this.getFullName(this.beg[i]);
           teach.push({
-            Name: l,
-            Shortname: this.beg[i],
-            AttendanceFrom: "",
-            AttendanceTill: "",
-            Group: "",
-            StartAddress: this.data.StartAddress,
-            MeetingPoint: this.data.StartAddress,
-            Role: 0
+            name: l,
+            shortname: this.beg[i],
+            attendance_from: "",
+            attendance_till: "",
+            group: "",
+            start_address: this.data.start_address,
+            meeting_point: this.data.start_address,
+            role: 0
           });
         }
       }
-      this.data.SchoolEventDetails.Teachers = teach;
+      this.data.school_event_details.teachers = teach;
       this.updateData();
     },
     /**
@@ -343,8 +343,8 @@ export default {
       var end = new Date(this.endDate);
       end.setHours(this.endTime.split(":")[0]);
       end.setMinutes(this.endTime.split(":")[1]);
-      this.data.StartTime = this.setTimezone(start);
-      this.data.EndTime = this.setTimezone(end);
+      this.data.start_time = this.setTimezone(start);
+      this.data.end_time = this.setTimezone(end);
       this.updateData();
     },
     /**
@@ -358,8 +358,8 @@ export default {
     }
   },
   mounted() {
-    var start = new Date(this.data.StartTime);
-    var end = new Date(this.data.EndTime);
+    var start = new Date(this.data.start_time);
+    var end = new Date(this.data.end_time);
     this.startDate =
       start.getUTCFullYear() +
       "-" +
@@ -374,8 +374,8 @@ export default {
       end.getDate();
     this.startTime = start.getHours() + ":" + start.getMinutes();
     this.endTime = end.getHours() + ":" + end.getMinutes();
-    for (let i = 0; i < this.data.SchoolEventDetails.Teachers.length - 1; i++) {
-      this.beg.push(this.data.SchoolEventDetails.Teachers[i + 1].Shortname);
+    for (let i = 0; i < this.data.school_event_details.teachers.length - 1; i++) {
+      this.beg.push(this.data.school_event_details.teachers[i + 1].shortname);
     }
   }
 };

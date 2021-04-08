@@ -193,41 +193,41 @@ export default {
         var invoices = [];
         for (let i = 0; i < this.escorts.output.length; i++) {
           invoices.push({
-            ID: i,
-            TripBeginTime: this.setTimezone(
+            id: i,
+            trip_begin_time: this.setTimezone(
               new Date(this.escorts.startDate + "T" + this.escorts.startTime)
             ),
-            TripEndTime: this.setTimezone(
+            trip_end_time: this.setTimezone(
               new Date(this.escorts.endDate + "T" + this.escorts.endTime)
             ),
-            Staffnr: this.returnValue(this.escorts.output[i].personalnummer),
-            StartingPoint: this.returnString(this.escorts.start),
-            EndPoint: this.returnString(this.escorts.ziel),
-            FilingDate: this.setTimezone(new Date())
+            staffnr: this.returnValue(this.escorts.output[i].personalnummer),
+            starting_point: this.returnString(this.escorts.start),
+            end_point: this.returnString(this.escorts.ziel),
+            filing_date: this.setTimezone(new Date())
           });
           teachers.push({
-            AttendanceFrom: this.setTimezone(
+            attendance_from: this.setTimezone(
               new Date(
                 this.escorts.output[i].startDate +
                   "T" +
                   this.escorts.output[i].startTime
               )
             ),
-            AttendanceTill: this.setTimezone(
+            attendance_till: this.setTimezone(
               new Date(
                 this.escorts.output[i].endDate +
                   "T" +
                   this.escorts.output[i].endTime
               )
             ),
-            MeetingPoint: this.returnString(
+            meeting_point: this.returnString(
               this.escorts.output[i].meetingpoint
             ),
-            Name: this.returnString(this.escorts.output[i].name),
-            Role: this.returnValue(this.escorts.output[i].role),
-            Group: this.returnValue(this.escorts.output[i].selected),
-            Shortname: this.returnString(this.escorts.output[i].shortname),
-            StartAddress: this.returnString(this.escorts.output[i].startadresse)
+            name: this.returnString(this.escorts.output[i].name),
+            role: this.returnValue(this.escorts.output[i].role),
+            group: this.returnValue(this.escorts.output[i].selected),
+            shortname: this.returnString(this.escorts.output[i].shortname),
+            start_address: this.returnString(this.escorts.output[i].startadresse)
           });
           var otherteachers = [];
           for (let j = 0; j < this.escorts.output.length; j++)
@@ -254,83 +254,82 @@ export default {
           }
 
           business.push({
-            ID: i,
-            Staffnr: this.returnValue(this.escorts.output[i].personalnummer),
-            TripBeginTime: this.setTimezone(
+            id: i,
+            staffnr: this.returnValue(this.escorts.output[i].personalnummer),
+            trip_begin_time: this.setTimezone(
               new Date(this.escorts.startDate + "T" + this.escorts.startTime)
             ),
-            TripEndTime: this.setTimezone(
+            trip_end_time: this.setTimezone(
               new Date(this.escorts.endDate + "T" + this.escorts.endTime)
             ),
-            ServiceBeginTime: this.setTimezone(
+            service_begin_time: this.setTimezone(
               new Date(
                 this.escorts.output[i].startDate +
                   "T" +
                   this.escorts.output[i].startTime
               )
             ),
-            ServiceEndTime: this.setTimezone(
+            service_end_time: this.setTimezone(
               new Date(
                 this.escorts.output[i].endDate +
                   "T" +
                   this.escorts.output[i].endTime
               )
             ),
-            TripGoal: this.returnString(this.escorts.ziel),
-            TravelPurpose: this.returnString(this.escorts.output[i].reason1),
-            TravelMode: this.returnValue(this.escorts.output[i].transport),
-            StartingPoint: this.returnValue(
+            trip_goal: this.returnString(this.escorts.ziel),
+            travel_purpose: this.returnString(this.escorts.output[i].reason1),
+            travel_mode: this.returnValue(this.escorts.output[i].transport),
+            starting_point: this.returnValue(
               this.escorts.output[i].ausgangspunkt
             ),
-            EndPoint: this.returnValue(this.escorts.output[i].endpunkt),
-            Reasoning: this.returnString(this.escorts.output[i].reason),
-            OtherParticipants: otherteachers,
-            BonusMileConfirmation1: bonus1,
-            BonusMileConfirmation2: bonus2,
-            TravelCostsPayedBySomeone: this.returnBoolean(
+            end_point: this.returnValue(this.escorts.output[i].endpunkt),
+            reasoning: this.returnString(this.escorts.output[i].reason),
+            other_participants: otherteachers,
+            bonus_mile_confirmation_1: bonus1,
+            bonus_mile_confirmation_2: bonus2,
+            travel_costs_payed_by_someone: this.returnBoolean(
               this.escorts.output[i].reisekosten
             ),
-            StayingCostsPayedBySomeone: this.returnBoolean(
+            staying_costs_payed_by_someone: this.returnBoolean(
               this.escorts.output[i].aufenthaltskosten
             ),
-            PayedByWhom: this.returnString(this.escorts.output[i].von),
-            OtherCosts: this.returnValue(
+            payed_by_whom: this.returnString(this.escorts.output[i].von),
+            other_costs: this.returnValue(
               this.escorts.output[i].sonstige_kosten
             ),
-            EstimatedCosts: this.returnValue(
+            estimated_costs: this.returnValue(
               this.escorts.output[i].geschaetzte_kosten
             )
           });
         }
         var data = {
-          Name: this.returnString(this.escorts.description),
-          Kind: 4,
-          MiscellaneousReason: this.returnString(""),
-          Progress: 1,
-          StartTime: this.setTimezone(
+          name: this.returnString(this.escorts.description),
+          kind: 4,
+          miscellaneous_reason: this.returnString(""),
+          progress: 1,
+          start_time: this.setTimezone(
             new Date(this.escorts.startDate + "T" + this.escorts.startTime)
           ),
-          EndTime: this.setTimezone(
+          end_time: this.setTimezone(
             new Date(this.escorts.endDate + "T" + this.escorts.endTime)
           ),
-          Notes: this.returnString(this.escorts.notes),
-          StartAddress: this.returnString(this.escorts.start),
-          DestinationAddress: this.returnString(this.escorts.ziel),
-          SchoolEventDetails: {
-            Classes: this.escorts.class,
-            AmountMaleStudent: this.returnValue(
+          notes: this.returnString(this.escorts.notes),
+          start_address: this.returnString(this.escorts.start),
+          destination_address: this.returnString(this.escorts.ziel),
+          school_event_details: {
+            classes: this.escorts.class,
+            amount_male_students: this.returnValue(
               this.escorts.count_student_male
             ),
-            AmountFemaleStudent: this.returnValue(
+            amount_female_students: this.returnValue(
               this.escorts.count_student_female
             ),
-            DurationInDays: this.returnValue(this.escorts.exkursLength),
-            Teachers: teachers
+            duration_in_days: this.returnValue(this.escorts.exkursLength),
+            teachers: teachers
           },
-          BusinessTripApplications: business,
-          TravelInvoices: invoices
+          business_trip_applications: business,
+          travel_invoices: invoices
         };
-        console.log(data);
         axios
           .post(this.url + "/createApplication", {
             params: {

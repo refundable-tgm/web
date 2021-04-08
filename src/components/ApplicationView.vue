@@ -4,7 +4,7 @@
     <b-row align-v="center" align-h="center">
       <b-col cols="12" md="6">
         <!-- Titel des Antrags -->
-        <h1 id="new-application-heading">Antrag für {{ app.Name }}</h1>
+        <h1 id="new-application-heading">Antrag für {{ app.name }}</h1>
       </b-col>
       <div class="col-12 col-md-6">
         <!-- Home Button -->
@@ -33,7 +33,7 @@
     >
       <b-col cols="12">
         <!-- Progressbar -->
-        <Progress v-bind:progress="app.Progress" v-bind:kind="app.Kind" />
+        <Progress v-bind:progress="app.progress" v-bind:kind="app.kind" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -331,166 +331,166 @@ export default {
     updateTB(index, data) {
       index.toString();
       if (data.selected.includes("a1")) {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].OfficialBusinessCardGot = true;
+        ].official_business_card_got = true;
       } else {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].OfficialBusinessCardGot = false;
+        ].official_business_card_got = false;
       }
       if (data.selected.includes("a2")) {
-        this.app.TravelInvoices[this.currentTeacherIndex].TravelGrant = true;
+        this.app.travel_invoices[this.currentTeacherIndex].travel_grant = true;
       } else {
-        this.app.TravelInvoices[this.currentTeacherIndex].TravelGrant = false;
+        this.app.travel_invoices[this.currentTeacherIndex].travel_grant = false;
       }
       if (data.selected.includes("a3")) {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].ReplacementForAdvantageCard = true;
+        ].replacement_for_advantage_card = true;
       } else {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].ReplacementForAdvantageCard = false;
+        ].replacement_for_advantage_card = false;
       }
       if (data.selected.includes("a4")) {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].ReplacementForTrainCardClass2 = true;
+        ].replacement_for_train_card_class_2 = true;
       } else {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].ReplacementForTrainCardClass2 = false;
+        ].replacement_for_train_card_class2 = false;
       }
       if (data.selected.includes("a5")) {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].KilometreAllowance = true;
+        ].kilometre_allowance = true;
       } else {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].KilometreAllowance = false;
+        ].kilometre_allowance = false;
       }
       if (data.selected.includes("a6")) {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].NRAndIdicationsOfParticipants = true;
+        ].nr_and_indications_of_participants = true;
       } else {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].NRAndIdicationsOfParticipants = false;
+        ].nr_and_indications_of_participants = false;
       }
       if (data.selected.includes("a7")) {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].TravelCostsCited = true;
+        ].travel_costs_cited = true;
       } else {
-        this.app.TravelInvoices[
+        this.app.travel_invoices[
           this.currentTeacherIndex
-        ].TravelCostsCited = true;
+        ].travel_costs_cited = true;
       }
       if (data.selected.includes("a8")) {
-        this.app.TravelInvoices[this.currentTeacherIndex].NoTravelCosts = true;
+        this.app.travel_invoices[this.currentTeacherIndex].no_travel_costs = true;
       } else {
-        this.app.TravelInvoices[this.currentTeacherIndex].NoTravelCosts = false;
+        this.app.travel_invoices[this.currentTeacherIndex].no_travel_costs = false;
       }
       switch (data.dcm) {
         case "a1":
-          this.app.TravelInvoices[
+          this.app.travel_invoices[
             this.currentTeacherIndex
-          ].DailyChargesMode = 0;
+          ].daily_charges_mode = 0;
           break;
         case "a2":
-          this.app.TravelInvoices[
+          this.app.travel_invoices[
             this.currentTeacherIndex
-          ].DailyChargesMode = 1;
+          ].daily_charges_mode = 1;
           break;
         case "a3":
-          this.app.TravelInvoices[
+          this.app.travel_invoices[
             this.currentTeacherIndex
-          ].DailyChargesMode = 2;
+          ].daily_charges_mode = 2;
           break;
       }
       switch (data.ncm) {
         case "a1":
-          this.app.TravelInvoices[
+          this.app.travel_invoices[
             this.currentTeacherIndex
-          ].NightlyChargesMode = 0;
+          ].nightly_charges_mode = 0;
           break;
         case "a2":
-          this.app.TravelInvoices[
+          this.app.travel_invoices[
             this.currentTeacherIndex
-          ].NightlyChargesMode = 1;
+          ].nightly_charges_mode = 1;
           break;
         case "a3":
-          this.app.TravelInvoices[
+          this.app.travel_invoices[
             this.currentTeacherIndex
-          ].NightlyChargesMode = 2;
+          ].nightly_charges_mode = 2;
           break;
       }
-      this.app.TravelInvoices[
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].TravelMode = this.app.BusinessTripApplications[
+      ].travel_mode = this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].TravelMode;
-      this.app.TravelInvoices[
+      ].travel_mode;
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].ID = this.currentTeacherIndex;
-      this.app.TravelInvoices[
+      ].id = this.currentTeacherIndex;
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].TripBeginTime = this.app.StartTime;
-      this.app.TravelInvoices[
+      ].trip_begin_time = this.app.start_time;
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].TripEndTime = this.app.EndTime;
-      this.app.TravelInvoices[
+      ].trip_end_time = this.app.end_time;
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].Staffnr = this.app.BusinessTripApplications[
+      ].staffnr = this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].Staffnr;
-      this.app.TravelInvoices[
+      ].staffnr;
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].StartingPoint = this.app.StartAddress;
-      this.app.TravelInvoices[
+      ].starting_point = this.app.start_address;
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].EndPoint = this.app.DestinationAddress;
-      this.app.TravelInvoices[this.currentTeacherIndex].ShortenedAmount =
+      ].end_point = this.app.destination_address;
+      this.app.travel_invoices[this.currentTeacherIndex].shortened_amount =
         data.short;
-      this.app.TravelInvoices[this.currentTeacherIndex].Breakfasts =
+      this.app.travel_invoices[this.currentTeacherIndex].breakfasts =
         data.breakfast;
-      this.app.TravelInvoices[this.currentTeacherIndex].Lunches = data.lunch;
-      this.app.TravelInvoices[this.currentTeacherIndex].Dinners = data.dinner;
-      this.app.TravelInvoices[this.currentTeacherIndex].KilometreAmount =
+      this.app.travel_invoices[this.currentTeacherIndex].lunches = data.lunch;
+      this.app.travel_invoices[this.currentTeacherIndex].dinners = data.dinner;
+      this.app.travel_invoices[this.currentTeacherIndex].kilometreAmount =
         data.km;
-      this.app.TravelInvoices[this.currentTeacherIndex].Calculation = {};
-      this.app.TravelInvoices[this.currentTeacherIndex].Calculation.ID = 0;
-      this.app.TravelInvoices[this.currentTeacherIndex].Calculation.Rows = [];
-      this.app.TravelInvoices[
+      this.app.travel_invoices[this.currentTeacherIndex].calculation = {};
+      this.app.travel_invoices[this.currentTeacherIndex].calculation.id = 0;
+      this.app.travel_invoices[this.currentTeacherIndex].calculation.rows = [];
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].Calculation.SumTravelCosts = data.SumTravelCosts;
-      this.app.TravelInvoices[
+      ].calculation.sum_travel_costs = data.SumTravelCosts;
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].Calculation.SumDailyCharges = data.SumDailyCharges;
-      this.app.TravelInvoices[
+      ].calculation.sum_daily_charges = data.SumDailyCharges;
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].Calculation.SumNightlyCharges = data.SumNightlyCharges;
-      this.app.TravelInvoices[
+      ].calculation.sum_nightly_charges = data.SumNightlyCharges;
+      this.app.travel_invoices[
         this.currentTeacherIndex
-      ].Calculation.SumAdditionalCosts = data.SumAdditionalCosts;
-      this.app.TravelInvoices[this.currentTeacherIndex].Calculation.SumOfSums =
+      ].calculation.sum_additional_costs = data.SumAdditionalCosts;
+      this.app.travel_invoices[this.currentTeacherIndex].calculation.sum_of_sums =
         data.SumOfSums;
       for (let i = 0; i < data.items.length; i++) {
-        this.app.TravelInvoices[this.currentTeacherIndex].Calculation.Rows.push(
+        this.app.travel_invoices[this.currentTeacherIndex].calculation.rows.push(
           {
-            NR: this.returnValue(data.items[i].index),
-            Date: this.calcDate(data.items[i].date),
-            Begin: this.calcTime(data.items[i].start),
-            End: this.calcTime(data.items[i].end),
-            Kilometres: this.returnValue(data.items[i].km),
-            TravelCosts: this.returnValue(data.items[i].travelcosts),
-            DailyCharges: this.returnValue(data.items[i].daycharge),
-            NightlyCharges: this.returnValue(data.items[i].sleepcharge),
-            AdditionalCosts: this.returnValue(data.items[i].othercosts),
-            Sum: this.returnValue(data.items[i].sum)
+            nr: this.returnValue(data.items[i].index),
+            date: this.calcDate(data.items[i].date),
+            begin: this.calcTime(data.items[i].start),
+            end: this.calcTime(data.items[i].end),
+            kilometres: this.returnValue(data.items[i].km),
+            travel_costs: this.returnValue(data.items[i].travelcosts),
+            daily_charges: this.returnValue(data.items[i].daycharge),
+            nightly_charges: this.returnValue(data.items[i].sleepcharge),
+            additional_costs: this.returnValue(data.items[i].othercosts),
+            sum: this.returnValue(data.items[i].sum)
           }
         );
       }
@@ -503,56 +503,56 @@ export default {
     updateTA(index, data) {
       index.toString();
       if (data.bonus_meilen[0] === "0" || data.bonus_meilen[1] === "0") {
-        this.app.BusinessTripApplications[
+        this.app.business_trip_applications[
           this.currentTeacherIndex
-        ].BonusMileConfirmation1 = true;
+        ].bonus_mile_confirmation_1 = true;
       } else {
-        this.app.BusinessTripApplications[
+        this.app.business_trip_applications[
           this.currentTeacherIndex
-        ].BonusMileConfirmation1 = false;
+        ].bonus_mile_confirmation_1 = false;
       }
       if (data.bonus_meilen[0] === "1" || data.bonus_meilen[1] === "1") {
-        this.app.BusinessTripApplications[
+        this.app.business_trip_applications[
           this.currentTeacherIndex
-        ].BonusMileConfirmation2 = true;
+        ].bonus_mile_confirmation_2 = true;
       } else {
-        this.app.BusinessTripApplications[
+        this.app.business_trip_applications[
           this.currentTeacherIndex
-        ].BonusMileConfirmation2 = false;
+        ].bonus_mile_confirmation_2 = false;
       }
-      this.app.BusinessTripApplications[
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].Staffnr = this.returnValue(data.personalnummer);
-      this.app.BusinessTripApplications[
+      ].staffnr = this.returnValue(data.personalnummer);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].TravelMode = this.returnValue(data.transport);
-      this.app.BusinessTripApplications[
+      ].travel_mode = this.returnValue(data.transport);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].StartingPoint = this.returnValue(data.ausgangspunkt);
-      this.app.BusinessTripApplications[
+      ].starting_point = this.returnValue(data.ausgangspunkt);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].EndPoint = this.returnValue(data.endpunkt);
-      this.app.BusinessTripApplications[
+      ].end_point = this.returnValue(data.endpunkt);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].Reasoning = this.returnString(data.reason);
-      this.app.BusinessTripApplications[
+      ].reasoning = this.returnString(data.reason);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].TravelPurpose = this.returnString(data.reason1);
-      this.app.BusinessTripApplications[
+      ].travel_purpose = this.returnString(data.reason1);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].TravelCostsPayedBySomeone = this.returnBoolean(data.reisekosten);
-      this.app.BusinessTripApplications[
+      ].travel_costs_payed_by_someone = this.returnBoolean(data.reisekosten);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].StayingCostsPayedBySomeone = this.returnBoolean(data.aufenthaltskosten);
-      this.app.BusinessTripApplications[
+      ].staying_costs_payed_by_someone = this.returnBoolean(data.aufenthaltskosten);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].PayedByWhom = this.returnString(data.von);
-      this.app.BusinessTripApplications[
+      ].payed_by_whom = this.returnString(data.von);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].OtherCosts = this.returnValue(data.sonstige_kosten);
-      this.app.BusinessTripApplications[
+      ].other_costs = this.returnValue(data.sonstige_kosten);
+      this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].EstimatedCosts = this.returnValue(data.geschaetzte_kosten);
+      ].estimated_costs = this.returnValue(data.geschaetzte_kosten);
     },
     /**
      * Diese Methode rechnet das Datum in das verwendete Datumsformat um
@@ -581,13 +581,13 @@ export default {
         })
         .then(response => {
           this.app = response.data.application;
-          this.title = this.app.Name;
-          this.kind = this.app.Kind;
+          this.title = this.app.name;
+          this.kind = this.app.kind;
           this.currentTeacher = this.getCurrentTeacher();
-          if (this.app.Kind === 4) {
+          if (this.app.kind === 4) {
             if (
               this.currentTeacher ===
-              this.app.SchoolEventDetails.Teachers[0].Shortname
+              this.app.school_event_details.teachers[0].shortname
             ) {
               this.isLeader = true;
             } else {
@@ -595,42 +595,42 @@ export default {
             }
             for (
               let i = 0;
-              i < this.app.SchoolEventDetails.Teachers.length;
+              i < this.app.school_event_details.teachers.length;
               i++
             ) {
               if (
                 this.currentTeacher ===
-                this.app.SchoolEventDetails.Teachers[i].Shortname
+                this.app.school_event_details.teachers[i].shortname
               ) {
                 this.currentTeacherIndex = i;
               }
             }
-            this.start = this.app.SchoolEventDetails.Teachers[
+            this.start = this.app.school_event_details.teachers[
               this.currentTeacherIndex
-            ].AttendanceFrom;
-            this.end = this.app.SchoolEventDetails.Teachers[
+            ].attendance_from;
+            this.end = this.app.school_event_details.teachers[
               this.currentTeacherIndex
-            ].AttendanceTill;
-            this.sedata = this.app.SchoolEventDetails.Teachers[
+            ].attendance_till;
+            this.sedata = this.app.school_event_details.teachers[
               this.currentTeacherIndex
             ];
           } else {
             this.currentTeacherIndex = 0;
           }
-          if (this.app.Kind === 0) {
-            this.start = this.app.StartTime;
-            this.end = this.app.EndTime;
+          if (this.app.kind === 0) {
+            this.start = this.app.start_time;
+            this.end = this.app.end_time;
             this.wdata = this.app;
           }
-          if (this.app.Kind === 8) {
-            this.start = this.app.StartTime;
-            this.end = this.app.EndTime;
+          if (this.app.kind === 8) {
+            this.start = this.app.start_time;
+            this.end = this.app.end_time;
             this.odata = this.app;
           }
-          this.tadata = this.app.BusinessTripApplications[
+          this.tadata = this.app.business_trip_applications[
             this.currentTeacherIndex
           ];
-          this.tbdata = this.app.TravelInvoices[this.currentTeacherIndex];
+          this.tbdata = this.app.travel_invoices[this.currentTeacherIndex];
           this.setItems(this.app);
           this.setReads(this.app);
         });
@@ -712,8 +712,8 @@ export default {
      * @param app Der gesamte Antrag
      */
     setReads(app) {
-      var progress = app.Progress;
-      if (app.Kind === 4) {
+      var progress = app.progress;
+      if (app.kind === 4) {
         if (this.isLeader) {
           switch (progress) {
             case 0:
@@ -824,7 +824,7 @@ export default {
           }
         }
       } else {
-        if (app.Kind === 0) {
+        if (app.kind === 0) {
           switch (progress) {
             case 0:
               this.wreadonly = false;
@@ -870,7 +870,7 @@ export default {
               this.tbreadonly = true;
           }
         }
-        if (app.Kind === 8) {
+        if (app.kind === 8) {
           switch (progress) {
             case 0:
               this.oreadonly = false;
@@ -923,7 +923,7 @@ export default {
      * @param app Der gesamte Antrag
      */
     setItems(app) {
-      if (app.Kind === 4) {
+      if (app.kind === 4) {
         if (this.isLeader) {
           this.items = [
             {
@@ -960,7 +960,7 @@ export default {
           ];
         }
       } else {
-        if (app.Kind === 0) {
+        if (app.kind === 0) {
           this.items = [
             {
               title: "Fortbildung",

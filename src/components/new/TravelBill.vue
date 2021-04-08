@@ -449,11 +449,11 @@ export default {
           sos += Number(this.data.items[i].sum);
         }
       }
-      this.data.SumTravelCosts = Number(stc);
-      this.data.SumDailyCharges = Number(sdc);
-      this.data.SumNightlyCharges = Number(snc);
-      this.data.SumAdditionalCosts = Number(sac);
-      this.data.SumOfSums = Number(sos);
+      this.data.sum_travel_costs = Number(stc);
+      this.data.sum_daily_charges = Number(sdc);
+      this.data.sum_nightly_charges = Number(snc);
+      this.data.sum_additional_costs = Number(sac);
+      this.data.sum_of_sums = Number(sos);
     },
     /**
      * Diese Methode rechnet die Dauer des Antrags aus
@@ -488,23 +488,23 @@ export default {
             (tmp.getUTCMonth() + 1) +
             "." +
             tmp.getUTCFullYear(),
-          start: this.getTimeOfDate(this.app.Calculation.Rows[i].Begin),
-          end: this.getTimeOfDate(this.app.Calculation.Rows[i].End),
+          start: this.getTimeOfDate(this.app.calculation.rows[i].begin),
+          end: this.getTimeOfDate(this.app.calculation.rows[i].end),
           kind: "Tagesgebühr",
-          km: this.app.Calculation.Rows[i].Kilometres,
-          travelcosts: this.app.Calculation.Rows[i].TravelCosts,
-          daycharge: this.app.Calculation.Rows[i].DailyCharges,
-          sleepcharge: this.app.Calculation.Rows[i].NightlyCharges,
-          othercosts: this.app.Calculation.Rows[i].AdditionalCosts,
-          sum: this.app.Calculation.Rows[i].Sum
+          km: this.app.calculation.rows[i].kilometres,
+          travelcosts: this.app.calculation.rows[i].travel_costs,
+          daycharge: this.app.calculation.rows[i].daily_charges,
+          sleepcharge: this.app.calculation.rows[i].nightly_charges,
+          othercosts: this.app.calculation.rows[i].additional_costs,
+          sum: this.app.calculation.rows[i].sum
         });
       }
-      this.data.km = this.app.KilometreAmount;
-      this.data.breakfast = this.app.Breakfasts;
-      this.data.lunch = this.app.Lunches;
-      this.data.dinner = this.app.Dinners;
-      this.data.short = this.app.ShortenedAmount;
-      switch (this.app.DailyChargesMode) {
+      this.data.km = this.app.kilometre_amount;
+      this.data.breakfast = this.app.breakfasts;
+      this.data.lunch = this.app.lunches;
+      this.data.dinner = this.app.dinners;
+      this.data.short = this.app.shortened_amount;
+      switch (this.app.daily_charges_mode) {
         case 0:
           this.data.dcm = "a1";
           break;
@@ -515,7 +515,7 @@ export default {
           this.data.dcm = "a3";
           break;
       }
-      switch (this.app.NightlyChargesMode) {
+      switch (this.app.nightly_charges_mode) {
         case 0:
           this.data.ncm = "a1";
           break;
@@ -526,14 +526,14 @@ export default {
           this.data.ncm = "a3";
           break;
       }
-      if (this.app.OfficialBusinessCardGot) this.data.selected.push("a1");
-      if (this.app.TravelGrant) this.data.selected.push("a2");
-      if (this.app.ReplacementForAdvantageCard) this.data.selected.push("a3");
-      if (this.app.ReplacementForTrainCardClass2) this.data.selected.push("a4");
-      if (this.app.KilometreAllowance) this.data.selected.push("a5");
-      if (this.app.NRAndIdicationsOfParticipants) this.data.selected.push("a6");
-      if (this.app.TravelCostsCited) this.data.selected.push("a7");
-      if (this.app.NoTravelCosts) this.data.selected.push("a8");
+      if (this.app.official_business_card_got) this.data.selected.push("a1");
+      if (this.app.travel_grant) this.data.selected.push("a2");
+      if (this.app.replacement_for_advantage_card) this.data.selected.push("a3");
+      if (this.app.replacement_for_train_card_class_2) this.data.selected.push("a4");
+      if (this.app.kilometre_allowance) this.data.selected.push("a5");
+      if (this.app.nr_and_idications_of_participants) this.data.selected.push("a6");
+      if (this.app.travel_costs_cited) this.data.selected.push("a7");
+      if (this.app.no_travel_costs) this.data.selected.push("a8");
     }
   },
   mounted() {

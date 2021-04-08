@@ -295,13 +295,13 @@ export default {
         .then(response => {
           var apps = response.data.applications;
           for (let i = 0; i < apps.length; i++) {
-            apps[i].title = apps[i].Name;
-            apps[i].status = this.loadStatus(apps[i].Kind, apps[i].Progress);
+            apps[i].title = apps[i].name;
+            apps[i].status = this.loadStatus(apps[i].kind, apps[i].progress);
             apps[i].edate = this.formatDate(
-              apps[i].BusinessTripApplications[0].DateApplicationFiled
+              apps[i].business_trip_applications[0].date_application_filed
             );
-            apps[i].start = this.formatDate(apps[i].StartTime);
-            apps[i].from = apps[i].Staffnr;
+            apps[i].start = this.formatDate(apps[i].start_time);
+            apps[i].from = apps[i].staffnr;
           }
           this.items = apps;
           // Set the initial number of items
@@ -312,7 +312,7 @@ export default {
      * Diese Methode sorgt dafür, dass die richtige ID an die viewApplication-Methode weitergegeben wird
      */
     info(item) {
-      this.viewApplication(item.UUID);
+      this.viewApplication(item.uuid);
     },
     /**
      * Diese Methode formatiert das Datum um korrekt angezeigt zu werden

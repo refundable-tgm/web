@@ -4,7 +4,7 @@
     <b-row align-v="center" align-h="center">
       <b-col cols="12" md="6">
         <!-- Name des Antrages -->
-        <h1 id="new-application-heading">Antrag für {{ app.Name }}</h1>
+        <h1 id="new-application-heading">Antrag für {{ app.name }}</h1>
       </b-col>
       <div class="col-12 col-md-6">
         <!-- Startseite Button -->
@@ -34,7 +34,7 @@
       style="margin-top:1rem;margin-bottom:3rem"
     >
       <b-col cols="12">
-        <Progress v-bind:progress="app.Progress" v-bind:kind="app.Kind" />
+        <Progress v-bind:progress="app.progress" v-bind:kind="app.kind" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -105,37 +105,37 @@
               <!-- Reiseantrag -->
               <TravelApplication
                 v-bind:index="index"
-                v-bind:app="app.BusinessTripApplications[0]"
+                v-bind:app="app.business_trip_applications[0]"
                 v-bind:readonly="true"
                 v-if="row.item.title == 'Reiseformular'"
               />
               <!-- Reiserechnung -->
               <TravelBill
                 v-bind:index="index"
-                v-bind:start="app.StartTime"
-                v-bind:end="app.EndTime"
-                v-bind:app="app.TravelInvoices[0]"
+                v-bind:start="app.start_time"
+                v-bind:end="app.end_time"
+                v-bind:app="app.travel_invoices[0]"
                 v-bind:readonly="true"
                 v-if="row.item.title == 'Reiserechnung'"
               />
               <div
-                v-for="(teach, index) in app.SchoolEventDetails.Teachers"
-                v-bind:key="teach.Shortname"
+                v-for="(teach, index) in app.school_event_details.teachers"
+                v-bind:key="teach.shortname"
               >
                 <!-- Begleitformular -->
                 <SchoolEscorts
                   v-bind:readonly="true"
-                  v-bind:data="app.SchoolEventDetails.Teachers[index]"
+                  v-bind:data="app.school_event_details.teachers[index]"
                   v-if="
                     row.item.title ==
                       'Begleitformular - ' +
-                        app.SchoolEventDetails.Teachers[index].Shortname
+                        app.school_event_details.teachers[index].shortname
                   "
                 />
               </div>
               <div
-                v-for="(busi, index) in app.BusinessTripApplications"
-                v-bind:key="busi.Staffnr"
+                v-for="(busi, index) in app.business_trip_applications"
+                v-bind:key="busi.staffnr"
               >
                 <!-- Reiseantrag für den jeweiligen Lehrer -->
                 <TravelApplication
@@ -145,29 +145,29 @@
                   v-if="
                     row.item.title ==
                       'Reiseformular - ' +
-                        app.SchoolEventDetails.Teachers[index].Shortname
+                        app.school_event_details.teachers[index].shortname
                   "
                 />
               </div>
               <div
-                v-for="(bill, index) in app.TravelInvoices"
-                v-bind:key="bill.ID"
+                v-for="(bill, index) in app.travel_invoices"
+                v-bind:key="bill.id"
               >
                 <!-- Reiserechnung für den jeweiligen Lehrer -->
                 <TravelBill
                   v-bind:index="index"
                   v-bind:start="
-                    app.SchoolEventDetails.Teachers[index].AttendanceFrom
+                    app.school_event_details.teachers[index].attendance_from
                   "
                   v-bind:end="
-                    app.SchoolEventDetails.Teachers[index].AttendanceTill
+                    app.school_event_details.teachers[index].attendance_till
                   "
                   v-bind:app="bill"
                   v-bind:readonly="true"
                   v-if="
                     row.item.title ==
                       'Reiserechnung - ' +
-                        app.SchoolEventDetails.Teachers[index].Shortname
+                        app.school_event_details.teachers[index].shortname
                   "
                 />
               </div>
@@ -244,7 +244,6 @@
       :id="infoModal.id"
       :title="infoModal.title"
       ok-only
-      @hide="resetInfoModal"
     >
       <pre>{{ infoModal.content }}</pre>
     </b-modal>
@@ -321,7 +320,7 @@ export default {
       axios
         .get(this.url + "/application/getApplication?id=" + this.appid)
         .then(response => {
-          this.app = response.data.application;
+          this.app = response.data;
           this.setItems(this.app);
         });
     },
@@ -330,6 +329,9 @@ export default {
      */
     closeAntrag() {
       this.$refs["close-modal"].show();
+    },
+    hideClose() {
+      this.$refs["close-modal"].hide();
     },
     /**
      * Code aus StackOverflow
@@ -355,7 +357,7 @@ export default {
      * @param app Der gesamte Antrag
      */
     setItems(app) {
-      if (app.Kind === 4) {
+      if (app.kind === 4) {
         this.items = [
           {
             title: "Allgemeine Infos",
@@ -363,41 +365,41 @@ export default {
             teacher: 0
           }
         ];
-        for (let i = 0; i < this.app.SchoolEventDetails.Teachers.length; i++) {
+        for (let i = 0; i < this.app.school_event_details.teachers.length; i++) {
           this.items.push({
             title:
               "Begleitformular - " +
-              this.app.SchoolEventDetails.Teachers[i].Shortname,
+              this.app.school_event_details.teachers[i].shortname,
             form: "SchoolEventTeacherDetails",
             teacher: i
           });
         }
-        for (let i = 0; i < this.app.SchoolEventDetails.Teachers.length; i++) {
+        for (let i = 0; i < this.app.school_event_details.teachers.length; i++) {
           this.items.push({
             title:
               "Reiseformular - " +
-              this.app.SchoolEventDetails.Teachers[i].Shortname,
+              this.app.school_event_details.teachers[i].shortname,
             form: "BusinessTripApplication",
             teacher: i
           });
         }
-        if (this.app.Progress >= 5) {
+        if (this.app.progress >= 5) {
           for (
             let i = 0;
-            i < this.app.SchoolEventDetails.Teachers.length;
+            i < this.app.school_event_details.teachers.length;
             i++
           ) {
             this.items.push({
               title:
                 "Reiserechnung - " +
-                this.app.SchoolEventDetails.Teachers[i].Shortname,
+                this.app.school_event_details.teachers[i].shortname,
               form: "TravelInvoice",
               teacher: i
             });
           }
         }
       } else {
-        if (app.Kind === 0) {
+        if (app.kind === 0) {
           this.items = [
             {
               title: "Fortbildung",
@@ -409,7 +411,7 @@ export default {
               form: "BusinessTripApplication"
             }
           ];
-          if (this.app.Progress >= 4) {
+          if (this.app.progress >= 4) {
             this.items.push({
               title: "Reiserechnung",
               form: "TravelInvoice",
@@ -429,7 +431,7 @@ export default {
               teacher: 0
             }
           ];
-          if (this.app.Progress >= 4) {
+          if (this.app.progress >= 4) {
             this.items.push({
               title: "Reiserechnung",
               form: "TravelInvoice",
@@ -448,7 +450,7 @@ export default {
       axios
         .get(this.url + "/getAdminPDF", {
           params: {
-            application: this.app.UUID,
+            application: this.app.uuid,
             form: item.form,
             teacher: item.teacher,
             token: this.token

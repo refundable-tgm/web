@@ -99,7 +99,7 @@
               >
                 <b-form-radio-group
                   id="gr"
-                  v-model="data.OtherReasonDetails.Kind"
+                  v-model="data.other_reason_details.kind"
                   @input="updateData"
                   :options="options"
                   :disabled="readonly"
@@ -119,12 +119,12 @@
                 description="Geben Sie den Grund an."
                 label="Sonstiger Grund"
                 label-for="son"
-                v-if="data.OtherReasonDetails.Kind === 8"
+                v-if="data.other_reason_details.kind === 8"
               >
                 <b-form-input
                   id="son"
                   @input="updateData"
-                  v-model="data.OtherReasonDetails.MiscellaneousReason"
+                  v-model="data.other_reason_details.miscellaneous_reason"
                   :readonly="readonly"
                 >
                 </b-form-input>
@@ -139,11 +139,11 @@
                 description="Geben Sie den Titel des Dienstauftrages ein."
                 label="Titel"
                 label-for="tit"
-                v-if="data.OtherReasonDetails.Kind === 2"
+                v-if="data.other_reason_details.kind === 2"
               >
                 <b-form-input
                   id="tit"
-                  v-model="data.OtherReasonDetails.ServiceMandateTitle"
+                  v-model="data.other_reason_details.service_mandate_title"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -158,12 +158,12 @@
                 description="Geben Sie die GZ des Dienstauftrages ein."
                 label="GZ"
                 label-for="gzn"
-                v-if="data.OtherReasonDetails.Kind === 2"
+                v-if="data.other_reason_details.kind === 2"
               >
                 <b-form-input
                   id="gzn"
                   type="number"
-                  v-model="data.OtherReasonDetails.ServiceMandateGZ"
+                  v-model="data.other_reason_details.service_mandate_gz"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -184,7 +184,7 @@
                   placeholder="Anmerkungen"
                   rows="3"
                   no-resize
-                  v-model="data.Notes"
+                  v-model="data.notes"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-textarea>
@@ -226,14 +226,14 @@ export default {
       var end = new Date(this.endDate);
       end.setHours(this.endTime.split(":")[0]);
       end.setMinutes(this.endTime.split(":")[1]);
-      this.data.StartTime = this.setTimezone(start);
-      this.data.EndTime = this.setTimezone(end);
+      this.data.start_time = this.setTimezone(start);
+      this.data.end_time = this.setTimezone(end);
       this.updateData();
     }
   },
   mounted() {
-    var start = new Date(this.data.StartTime);
-    var end = new Date(this.data.EndTime);
+    var start = new Date(this.data.start_time);
+    var end = new Date(this.data.end_time);
     this.startDate =
       start.getUTCFullYear() +
       "-" +

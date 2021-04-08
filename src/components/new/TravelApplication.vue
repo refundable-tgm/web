@@ -327,25 +327,25 @@ export default {
   },
   mounted() {
     if (this.app !== undefined) {
-      this.data.personalnummer = this.app.Staffnr;
-      this.data.transport = this.app.TravelMode;
-      this.data.ausgangspunkt = this.app.StartingPoint;
-      this.data.endpunkt = this.app.EndPoint;
-      this.data.reason = this.app.Reasoning;
-      this.data.reason1 = this.app.TravelPurpose;
+      this.data.personalnummer = this.app.staffnr;
+      this.data.transport = this.app.travel_mode;
+      this.data.ausgangspunkt = this.app.starting_point;
+      this.data.endpunkt = this.app.end_point;
+      this.data.reason = this.app.reasoning;
+      this.data.reason1 = this.app.travel_purpose;
       var bm = [];
-      if (this.app.BonusMileConfirmation1) {
+      if (this.app.bonus_mile_confirmation_1) {
         bm.push("0");
       }
-      if (this.app.BonusMileConfirmation2) {
+      if (this.app.bonus_mile_confirmation_2) {
         bm.push("1");
       }
       this.data.bonus_meilen = bm;
-      this.data.reisekosten = "" + this.app.TravelCostsPayedBySomeone;
-      this.data.aufenthaltskosten = "" + this.app.StayingCostsPayedBySomeone;
-      this.data.von = this.app.PayedByWhom;
-      this.data.sonstige_kosten = this.app.OtherCosts;
-      this.data.geschaetzte_kosten = this.app.EstimatedCosts;
+      this.data.reisekosten = "" + this.app.travel_costs_payed_by_someone;
+      this.data.aufenthaltskosten = "" + this.app.staying_costs_payed_by_someone;
+      this.data.von = this.app.payed_by_whom;
+      this.data.sonstige_kosten = this.app.other_costs;
+      this.data.geschaetzte_kosten = this.app.estimated_costs;
     }
   }
 };

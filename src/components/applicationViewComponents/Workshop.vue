@@ -19,7 +19,7 @@
               >
                 <b-form-input
                   id="tit"
-                  v-model="data.Name"
+                  v-model="data.name"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -117,7 +117,7 @@
               >
                 <b-form-input
                   id="phz"
-                  v-model="data.TrainingDetails.PH"
+                  v-model="data.training_details.ph"
                   :readonly="readonly"
                   @input="updateData"
                   type="number"
@@ -138,7 +138,7 @@
               >
                 <b-form-input
                   id="ver"
-                  v-model="data.TrainingDetails.Organizer"
+                  v-model="data.training_details.organizer"
                   :readonly="readonly"
                   @input="updateData"
                 ></b-form-input>
@@ -156,7 +156,7 @@
               >
                 <b-form-radio-group
                   id="ar"
-                  v-model="data.TrainingDetails.Kind"
+                  v-model="data.training_details.kind"
                   @input="updateData"
                   :disabled="readonly"
                   :options="options"
@@ -176,11 +176,11 @@
                 description="Geben Sie Sonstige Art ein."
                 label="Sonstige Art"
                 label-for="son"
-                v-if="data.TrainingDetails.Kind === 8"
+                v-if="data.training_details.kind === 8"
               >
                 <b-form-input
                   id="son"
-                  v-model="data.TrainingDetails.MiscellaneousReason"
+                  v-model="data.training_details.miscellaneous_reason"
                   @input="updateData"
                   :readonly="readonly"
                 ></b-form-input>
@@ -199,7 +199,7 @@
                 <b-form-textarea
                   id="an"
                   :readonly="readonly"
-                  v-model="data.Notes"
+                  v-model="data.notes"
                   @input="updateData"
                   placeholder="Anmerkungen"
                   rows="3"
@@ -233,8 +233,8 @@ export default {
     };
   },
   mounted() {
-    var start = new Date(this.data.StartTime);
-    var end = new Date(this.data.EndTime);
+    var start = new Date(this.data.start_time);
+    var end = new Date(this.data.end_time);
     this.startDate =
       start.getUTCFullYear() +
       "-" +
@@ -267,8 +267,8 @@ export default {
       var end = new Date(this.endDate);
       end.setHours(this.endTime.split(":")[0]);
       end.setMinutes(this.endTime.split(":")[1]);
-      this.data.StartTime = this.setTimezone(start);
-      this.data.EndTime = this.setTimezone(end);
+      this.data.start_time = this.setTimezone(start);
+      this.data.end_time = this.setTimezone(end);
       this.updateData();
     },
     /**

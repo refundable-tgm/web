@@ -120,7 +120,7 @@
           <b-form-input
             id="sta"
             placeholder="Straße & Nr., Postleitzahl & Ort, Land"
-            v-model="data.StartAddress"
+            v-model="data.start_address"
             :readonly="readonly"
             v-on:input="updateData"
           >
@@ -140,7 +140,7 @@
           <b-form-input
             id="tr"
             placeholder="Straße & Nr., Postleitzahl & Ort, Land"
-            v-model="data.MeetingPoint"
+            v-model="data.meeting_point"
             :readonly="readonly"
             v-on:input="updateData"
           >
@@ -165,7 +165,7 @@ export default {
      * Diese Methode aktualisiert die Daten mit den Radiobuttons der Komponente
      */
     updateRadio() {
-      this.data.Group = this.selected;
+      this.data.group = this.selected;
       this.updateData();
     },
     /**
@@ -178,8 +178,8 @@ export default {
       var end = new Date(this.endDate);
       end.setHours(this.endTime.split(":")[0]);
       end.setMinutes(this.endTime.split(":")[1]);
-      this.data.AttendanceFrom = this.setTimezone(start);
-      this.data.AttendanceTill = this.setTimezone(end);
+      this.data.attendance_from = this.setTimezone(start);
+      this.data.attendance_till = this.setTimezone(end);
       this.updateData();
     },
     /**
@@ -193,9 +193,9 @@ export default {
     }
   },
   mounted() {
-    this.selected = this.data.Group;
-    var start = new Date(this.data.AttendanceFrom);
-    var end = new Date(this.data.AttendanceTill);
+    this.selected = this.data.group;
+    var start = new Date(this.data.attendance_from);
+    var end = new Date(this.data.attendance_till);
     this.startDate =
       start.getUTCFullYear() +
       "-" +

@@ -562,77 +562,76 @@ export default {
           )
             var bonus2 = true;
           var business = {
-            ID: 0,
-            Staffnr: this.returnValue(this.teacher.personalnummer),
-            TripBeginTime: this.setTimezone(
+            id: 0,
+            staffnr: this.returnValue(this.teacher.personalnummer),
+            trip_begin_time: this.setTimezone(
               new Date(this.startDate + "T" + this.startTime)
             ),
-            TripEndTime: this.setTimezone(
+            trip_end_time: this.setTimezone(
               new Date(this.endDate + "T" + this.endTime)
             ),
-            ServiceBeginTime: this.setTimezone(
+            service_begin_time: this.setTimezone(
               new Date(this.startDate + "T" + this.startTime)
             ),
-            ServiceEndTime: this.setTimezone(
+            service_end_time: this.setTimezone(
               new Date(this.endDate + "T" + this.endTime)
             ),
-            TripGoal: this.returnString(this.start),
-            TravelPurpose: this.returnString(this.teacher.reason1),
-            TravelMode: this.returnValue(this.teacher.transport),
-            StartingPoint: this.returnValue(this.teacher.ausgangspunkt),
-            EndPoint: this.returnValue(this.teacher.endpunkt),
-            Reasoning: this.returnString(this.teacher.reason),
-            OtherParticipants: [],
-            BonusMileConfirmation1: bonus1,
-            BonusMileConfirmation2: bonus2,
-            TravelCostsPayedBySomeone: this.returnBoolean(
+            trip_goal: this.returnString(this.start),
+            travel_purpose: this.returnString(this.teacher.reason1),
+            travel_mode: this.returnValue(this.teacher.transport),
+            starting_point: this.returnValue(this.teacher.ausgangspunkt),
+            end_point: this.returnValue(this.teacher.endpunkt),
+            reasoning: this.returnString(this.teacher.reason),
+            other_participants: [],
+            bonus_mile_confirmation_1: bonus1,
+            bonus_mile_confirmation_2: bonus2,
+            travel_costs_payed_by_someone: this.returnBoolean(
               this.teacher.reisekosten
             ),
-            StayingCostsPayedBySomeone: this.returnBoolean(
+            staying_costs_payed_by_someone: this.returnBoolean(
               this.teacher.aufenthaltskosten
             ),
-            PayedByWhom: this.returnString(this.teacher.von),
-            OtherCosts: this.returnValue(this.teacher.sonstige_kosten),
-            EstimatedCosts: this.returnValue(this.teacher.geschaetzte_kosten)
+            payed_by_whom: this.returnString(this.teacher.von),
+            other_costs: this.returnValue(this.teacher.sonstige_kosten),
+            estimated_costs: this.returnValue(this.teacher.geschaetzte_kosten)
           };
           var data = {
-            Name: this.returnString(""),
-            Kind: 8,
-            MiscellaneousReason: this.returnString(this.son),
-            Progress: 1,
-            StartTime: this.setTimezone(
+            name: this.returnString(""),
+            kind: 8,
+            miscellaneous_reason: this.returnString(this.son),
+            progress: 1,
+            start_time: this.setTimezone(
               new Date(this.startDate + "T" + this.startTime)
             ),
-            EndTime: this.setTimezone(
+            end_time: this.setTimezone(
               new Date(this.endDate + "T" + this.endTime)
             ),
-            Notes: this.returnString(this.notes),
-            StartAddress: this.returnString(this.end),
-            DestinationAddress: this.returnString(this.start),
-            OtherReasonDetails: {
-              Kind: this.returnValue(this.selected),
-              MiscellaneousReason: this.returnString(this.son),
-              ServiceMandateGZ: this.returnValue(this.gz),
-              ServiceMandateTitle: this.returnString(this.title)
+            notes: this.returnString(this.notes),
+            start_address: this.returnString(this.end),
+            destination_address: this.returnString(this.start),
+            other_reason_details: {
+              kind: this.returnValue(this.selected),
+              miscellaneous_reason: this.returnString(this.son),
+              service_mandate_gz: this.returnValue(this.gz),
+              service_mandate_title: this.returnString(this.title)
             },
-            BusinessTripApplications: business,
-            TravelInvoices: [
+            business_trip_applications: business,
+            travel_invoices: [
               {
-                ID: 0,
-                TripBeginTime: this.setTimezone(
+                id: 0,
+                trip_begin_time: this.setTimezone(
                   new Date(this.startDate + "T" + this.startTime)
                 ),
-                TripEndTime: this.setTimezone(
+                trip_end_time: this.setTimezone(
                   new Date(this.endDate + "T" + this.endTime)
                 ),
-                Staffnr: this.returnValue(this.teacher.personalnummer),
-                StartingPoint: this.returnString(this.start),
-                EndPoint: this.returnString(this.end),
-                FilingDate: this.setTimezone(new Date())
+                staffnr: this.returnValue(this.teacher.personalnummer),
+                starting_point: this.returnString(this.start),
+                end_point: this.returnString(this.end),
+                filing_date: this.setTimezone(new Date())
               }
             ]
           };
-
           axios
             .post(this.url + "/createApplication", this.token, data)
             .then(response => {

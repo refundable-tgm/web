@@ -184,7 +184,7 @@ export default {
      * Diese Methode sorgt dafür, dass die richtige ID an die viewApplication-Methode weitergegeben wird
      */
     info(item) {
-      this.viewApplication(item.UUID);
+      this.viewApplication(item.uuid);
     },
     /**
      * Diese Methode schaut, ob die geladenen Anträge aktiv oder unaktiv sind
@@ -282,14 +282,14 @@ export default {
           var data = response.data;
           status.toString();
           for (let i = 0; i < data.length; i++) {
-            if (data[i].Kind === 4) {
+            if (data[i].kind === 4) {
               for (
                 let j = 0;
-                j < data[i].SchoolEventDetails.Teachers.length;
+                j < data[i].school_event_details.teachers.length;
                 j++
               ) {
-                if (data[i].SchoolEventDetails.Teachers[j].Role === 0) {
-                  data[i].leader = data[i].SchoolEventDetails.Teachers[j].Name;
+                if (data[i].school_event_details.teachers[j].role === 0) {
+                  data[i].leader = data[i].school_event_details.teachers[j].name;
                 }
               }
             } else {
@@ -304,13 +304,13 @@ export default {
                   data[i].leader = daten.Longname;
                 });
             }
-            data[i].status = this.loadStatus(data[i].Kind, data[i].Progress);
-            data[i].active = this.isActive(data[i].Kind, data[i].Progress);
-            data[i].title = data[i].Name;
+            data[i].status = this.loadStatus(data[i].kind, data[i].progress);
+            data[i].active = this.isActive(data[i].kind, data[i].progress);
+            data[i].title = data[i].name;
             data[i].edate =
-              data[i].BusinessTripApplications[0].DateApplicationFiled;
+              data[i].business_trip_applications[0].date_application_filed;
             if (data[i].kind === 4) {
-              switch (data[i].Progress) {
+              switch (data[i].progress) {
                 case 7:
                   data[i]._rowVariant = "success";
                   break;
