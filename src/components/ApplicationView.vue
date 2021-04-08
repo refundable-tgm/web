@@ -1017,7 +1017,6 @@ export default {
           let data = response.data;
           return data.Short;
         });
-        return "szakall"
     },
     /**
      * Diese Methode lädt die PDF von dem Backend
