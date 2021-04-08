@@ -42,16 +42,33 @@
                   </b-col>
                 </b-row>
               </b-container>
+              <b-container
+                id="na-elem-2"
+                class="na-elem shadow-xl"
+                style="border-radius:0px"
+              >
+                <!-- Custom Button zum erstellen eines anderen Antrages -->
+                <b-row
+                  class="na-elem-sr"
+                  align-h="center"
+                  align-v="center"
+                  v-on:click="workshop()"
+                >
+                  <b-col cols="12">
+                    <h2 class="na-elem-h">Fortbildung</h2>
+                  </b-col>
+                </b-row>
+              </b-container>
               <b-container id="na-elem-2" class="na-elem shadow-xl">
                 <!-- Custom Button zum erstellen eines anderen Antrages -->
                 <b-row
                   class="na-elem-sr"
                   align-h="center"
                   align-v="center"
-                  v-on:click="other()"
+                  v-on:click="otherCause()"
                 >
                   <b-col cols="12">
-                    <h2 class="na-elem-h">Fortbildung, etc.</h2>
+                    <h2 class="na-elem-h">Anderer Grund</h2>
                   </b-col>
                 </b-row>
               </b-container>
@@ -111,6 +128,22 @@ export default {
     index() {
       if (this.checkClick()) {
         this.changeComponent("Index");
+      }
+    },
+    /**
+     * Diese Methode leitet den Benutzer auf die Workshop-Seite weiter
+     */
+    workshop() {
+      if (this.checkClick()) {
+        this.changeComponent("Workshop");
+      }
+    },
+    /**
+     * Diese Methode leitet den Benutzer auf die OtherCause-Seite weiter
+     */
+    otherCause() {
+      if (this.checkClick()) {
+        this.changeComponent("OtherCause");
       }
     }
   },
