@@ -625,11 +625,13 @@ export default {
             this.currentTeacherIndex = 0;
           }
           if (this.app.kind === 0) {
+            this.isLeader = true;
             this.start = this.app.start_time;
             this.end = this.app.end_time;
             this.wdata = this.app;
           }
           if (this.app.kind === 8) {
+            this.isLeader = true;
             this.start = this.app.start_time;
             this.end = this.app.end_time;
             this.odata = this.app;
@@ -1015,6 +1017,7 @@ export default {
           let data = response.data;
           return data.Short;
         });
+        return "szakall"
     },
     /**
      * Diese Methode lädt die PDF von dem Backend
