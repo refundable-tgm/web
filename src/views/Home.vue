@@ -191,7 +191,7 @@ import Progress from "@/components/Progress.vue";
 import PageNotFound from "@/components/PageNotFound.vue";
 import ApplicationAdminView from "@/components/admin/ApplicationAdminView.vue";
 import Rights from "@/components/Rights.vue";
-import url from "@/url.json";
+import data from "@/data.json";
 
 export default {
   components: {
@@ -216,7 +216,7 @@ export default {
   data() {
     return {
       // url is the link from the REST-API
-      url: url.url,
+      url: data.url,
       data: Object,
       currentComponent: "",
       escortsdata: Object,
@@ -645,6 +645,10 @@ export default {
         this.changeComponent(this.generateState(e.state), false);
       }
     });
+
+    /**
+     * In diesem Block muss geschaut werden, ob die Session gütlig ist und falls nicht, ob man die Session aktualisieren kann mit dem refresh token
+     */
 
     // Weiterleitung, falls der Token gesetzt ist und eine die ApplicationView-Seite aufgerufen werden soll
     if (this.pathing === undefined) {
