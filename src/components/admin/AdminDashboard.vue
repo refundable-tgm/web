@@ -25,6 +25,16 @@
         >
           Normale Ansicht
         </b-button>
+        <!-- Rechte verwalten Button -->
+        <b-button
+          variant="outline-primary"
+          class="float-right"
+          v-on:click="rights"
+          style="margin-right:20px"
+          v-if="admin"
+        >
+          Rechte Verwalten
+        </b-button>
       </div>
     </b-row>
 
@@ -145,7 +155,7 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["url", "user", "token", "pek", "administration"],
+  props: ["url", "user", "token", "pek", "administration", "admin"],
   data() {
     return {
       selectMode: "multi",
@@ -227,6 +237,7 @@ export default {
   },
   mounted() {
     this.loadData();
+    console.log(this.admin);
   },
   methods: {
     /**
@@ -498,6 +509,14 @@ export default {
     normal() {
       if (this.checkClick()) {
         this.changeComponent("Index");
+      }
+    },
+    /**
+     * Diese Methode leitet den Benutzer auf die Rechte-Verwalten Seite weiter
+     */
+    rights() {
+      if (this.checkClick()) {
+        this.changeComponent("Rights");
       }
     },
     /**

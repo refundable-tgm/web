@@ -135,7 +135,9 @@ export default {
                         resp.data.super_user,
                         resp.data.administration,
                         resp.data.av,
-                        resp.data.pek
+                        resp.data.pek,
+                        data.access_token,
+                        data.refresh_token
                       );
                       switch (this.forward.name) {
                         case "ApplicationSearch":
@@ -150,9 +152,16 @@ export default {
                           );
                           break;
                         default:
-                          this.$emit("change-component", "Index");
+                          if (resp.data.administration || resp.data.pek) {
+                            this.$emit("change-component", "AdminDashboard");
+                          } else {
+                            this.$emit("change-component", "Index");
+                          }
+
                           break;
                       }
+                    } else {
+                      this.loginFailed();
                     }
                   });
               } else {
@@ -160,6 +169,23 @@ export default {
               }
             });
           // Temporär, damit man sich einloggen kann
+          var daten = {
+            user: 1234,
+            super_user: true,
+            administration: false,
+            av: false,
+            pek: false
+          };
+          this.$emit(
+            "login",
+            daten.user,
+            daten.super_user,
+            daten.administration,
+            daten.av,
+            daten.pek,
+            "DasIstEinToken",
+            "DasIstEinRefreshToken"
+          );
           switch (this.forward.name) {
             case "ApplicationSearch":
               //this.$emit("login", response.user, response.admin);
@@ -175,8 +201,11 @@ export default {
               );
               break;
             default:
-              //this.$emit("login", response.user, response.admin);
-              this.$emit("change-component", "Index");
+              if (daten.administration || daten.pek) {
+                this.$emit("change-component", "AdminDashboard");
+              } else {
+                this.$emit("change-component", "Index");
+              }
               //Wenn Login failed:
               //Eine Meldung an den User, dass etwas (nicht spezifisch) nicht stimmt
               break;

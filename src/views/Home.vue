@@ -16,8 +16,12 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:apikey="mapsapi"
       v-bind:admin="admin"
+      v-bind:av="av"
+      v-bind:administration="administration"
+      v-bind:pek="pek"
       v-bind:user="user"
     />
     <NewApplication
@@ -100,6 +104,7 @@
       v-bind:url="url"
       v-bind:pek="pek"
       v-bind:administration="administration"
+      v-bind:admin="admin"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
       v-bind:user="user"
@@ -119,13 +124,23 @@
       v-on:change-component="changeComponent"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <PageNotFound
       v-if="currentComponent == 'PageNotFound'"
       v-on:change-component="changeComponent"
       v-bind:url="url"
+    />
+    <Rights
+      v-if="currentComponent == 'Rights'"
+      v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
+      v-bind:url="url"
+      v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
+      v-bind:user="user"
     />
   </div>
 </template>
@@ -147,6 +162,7 @@ import AdminDashboard from "@/components/admin/AdminDashboard.vue";
 import Progress from "@/components/Progress.vue";
 import PageNotFound from "@/components/PageNotFound.vue";
 import ApplicationAdminView from "@/components/admin/ApplicationAdminView.vue";
+import Rights from "@/components/Rights.vue";
 
 export default {
   components: {
@@ -164,15 +180,14 @@ export default {
     OtherCause,
     Workshop,
     AdminDashboard,
-    ApplicationAdminView
+    ApplicationAdminView,
+    Rights
   },
   props: ["pathing", "query"],
   data() {
     return {
       // url is the link from the REST-API
-      // mapsapi is the key for the Google Maps API
       url: "Michi Link",
-      mapsapi: "AIzaSyDP340IZ-7pK7-jDmoILtWg0xrcwrXYDJc",
       data: Object,
       currentComponent: "",
       escortsdata: Object,
@@ -185,7 +200,8 @@ export default {
       logged: false,
       appid: "",
       user: "",
-      token: ""
+      token: "",
+      refresh_token: ""
     };
   },
   methods: {
@@ -205,7 +221,7 @@ export default {
       switch (component) {
         case "Login":
           this.change("Login", back);
-          this.deleteCookie();
+          this.deleteCookies();
           break;
 
         case "Index":
@@ -266,6 +282,10 @@ export default {
         case "ApplicationAdminView":
           this.change("ApplicationAdminView", back);
           break;
+
+        case "Rights":
+          this.change("Rights", back);
+          break;
       }
     },
     /**
@@ -301,15 +321,63 @@ export default {
      * @param av Boolean-Wert, ob der Benutzer AV ist
      * @param pek Boolean-Wert, ob der Benutzer eine Reiserechnungsabteilung ist
      */
-    login(user, admin, administration, av, pek) {
+    login(user, admin, administration, av, pek, token, refresh) {
       this.user = user;
       this.admin = admin;
       this.administration = administration;
       this.av = av;
       this.pek = pek;
+      this.setToken(token);
+      this.setRefresh(refresh);
+      this.token = token;
+      this.refresh_token = refresh;
+      console.log(administration);
+      console.log(pek);
       if (administration || pek) {
+        console.log("Administration oder PEK");
         this.changeComponent("AdminDashboard");
       }
+    },
+    /**
+     * Diese Methode setzt die Daten der Webseite zurück
+     */
+    resetData() {
+      this.user = "";
+      this.admin = false;
+      this.administration = false;
+      this.av = false;
+      this.pek = false;
+      this.token = "";
+      this.refresh_token = "";
+      this.data = "";
+      this.escortsdata = "";
+      this.appid = "";
+      this.logged = false;
+      this.forward = "";
+      this.cookies = false;
+    },
+    /**
+     * Diese Methode meldet den Benutzer vom System ab
+     */
+    logout() {
+      this.terminateSession();
+      this.resetData();
+      this.deleteCookies();
+      this.changeComponent("Login");
+    },
+    terminateSession() {
+      axios.post(this.url + "logout", {
+        headers: {
+          Authorization: "Basic " + this.token
+        }
+      });
+    },
+    /**
+     * Diese Methode aktualisiert die Tokens
+     */
+    updateToken(token, refresh) {
+      this.token = token;
+      this.refresh_token = refresh;
     },
     /**
      * Diese Methode gibt den derzeitg angemeldeten Lehrernamen zurück
@@ -454,6 +522,70 @@ export default {
       }
     },
     /**
+     * Diese Methode setzt den Cookie der Webseite
+     * @param value Der Wert des Cookies
+     */
+    setToken(value) {
+      if (this.cookies) {
+        var d = new Date();
+        d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
+        var expires = "expires=" + d.toUTCString();
+        document.cookie =
+          "token=" + value + ";" + expires + ";SameSite=Strict;path=/";
+      }
+    },
+    /**
+     * Diese Methode setzt den Cookie der Webseite
+     * @param value Der Wert des Cookies
+     */
+    setRefresh(value) {
+      if (this.cookies) {
+        var d = new Date();
+        d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
+        var expires = "expires=" + d.toUTCString();
+        document.cookie =
+          "refresh=" + value + ";" + expires + ";SameSite=Strict;path=/";
+      }
+    },
+    /**
+     * Diese Methode gibt den Cookie der Webseite zurück
+     * @returns Der Cookie mit all seinen Informationen
+     */
+    getRefresh() {
+      var name = "refresh=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    },
+    /**
+     * Diese Methode gibt den Cookie der Webseite zurück
+     * @returns Der Cookie mit all seinen Informationen
+     */
+    getToken() {
+      var name = "token=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    },
+    /**
      * Diese Methode setzt die Variable, falls Cookies akzeptiert worden sind
      * @param cookie Boolean-Wert, ob die Cookies akzeptiert worden sind
      */
@@ -463,13 +595,19 @@ export default {
     /**
      * Diese Methode löscht vorhanderen Cookies
      */
-    deleteCookie() {
+    deleteCookies() {
       if (this.cookies) {
         var d = new Date();
         var expires = "expires=" + d.toUTCString();
         var value = this.getCookie();
         document.cookie =
           "current=" + value + ";" + expires + ";SameSite=Strict;path=/";
+        var value2 = this.getToken();
+        document.cookie =
+          "token=" + value2 + ";" + expires + ";SameSite=Strict;path=/";
+        var value3 = this.getRefresh();
+        document.cookie =
+          "refresh=" + value3 + ";" + expires + ";SameSite=Strict;path=/";
       }
     }
   },
