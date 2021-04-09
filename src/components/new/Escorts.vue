@@ -306,7 +306,7 @@ export default {
         }
         var data = {
           name: this.returnString(this.escorts.description),
-          kind: 4,
+          kind: 0,
           miscellaneous_reason: this.returnString(""),
           progress: 1,
           start_time: this.setTimezone(

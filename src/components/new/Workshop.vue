@@ -490,7 +490,7 @@ export default {
           };
           var data = {
             name: this.returnString(this.title),
-            kind: 0,
+            kind: 1,
             miscellaneous_reason: this.returnString(""),
             progress: 1,
             start_time: this.setTimezone(
@@ -698,10 +698,10 @@ export default {
     return {
       selected: "",
       options: [
-        { item: "5", name: "Seminar" },
-        { item: "6", name: "Tagung" },
-        { item: "7", name: "Lehrgang" },
-        { item: "8", name: "Sonstiges" }
+        { item: "2", name: "Seminar" },
+        { item: "3", name: "Tagung" },
+        { item: "4", name: "Lehrgang" },
+        { item: "5", name: "Sonstiges" }
       ],
       validInputs: false,
       Titel: null,

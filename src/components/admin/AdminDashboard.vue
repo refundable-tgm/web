@@ -150,7 +150,32 @@ export default {
     return {
       selectMode: "multi",
       selected: [],
-      items: [],
+      items: [
+        {
+          title: "Sommersportwoche",
+          edat: "14-01-2021",
+          begin: "14-06-2021",
+          kind: 4,
+          from: "szakall",
+          status: "Akzeptierungsphase"
+        },
+        {
+          title: "Pflegefreistellung",
+          edat: "28-02-2021",
+          begin: "1-03-2021",
+          kind: 8,
+          from: "szakall",
+          status: "Rechnungsphase"
+        },
+        {
+          title: "Urlaub",
+          edat: "01-01-2021",
+          begin: "31-12-2021",
+          kind: 8,
+          from: "szakall",
+          status: "Abgelehnt"
+        }
+      ],
       fields: [
         { key: "selected", label: "Ausgewählt" },
         { key: "title", label: "Titel", sortable: true, sortDirection: "desc" },
@@ -211,23 +236,27 @@ export default {
      */
     loadKind(kind) {
       switch (kind) {
-        case 4:
-          return "Schulveranstaltung";
         case 0:
+          return "Schulveranstaltung";
+        case 1:
           return "Fortbildung";
         case 2:
-          return "Dienstauftrag";
-        case 3:
-          return "Arzttermin";
-        case 1:
-          return "Pflegefreistellung";
-        case 5:
           return "Seminar";
-        case 6:
+        case 3:
           return "Tagung";
-        case 7:
+        case 4:
           return "Lehrgang";
+        case 5:
+          return "Sonstiges";
+        case 6:
+          return "Sonstiger Antrag";
+        case 7:
+          return "Pflegefreistellung";
         case 8:
+          return "Dienstauftrag";
+        case 9:
+          return "Arzttermin";
+        case 10:
           return "Sonstiges";
         default:
           return "Fehler!";
@@ -240,7 +269,7 @@ export default {
      * @returns String-Form des Fortschritts
      */
     loadStatus(kind, progress) {
-      if (kind === 4) {
+      if (kind === 0) {
         switch (progress) {
           case 0:
             return "Abgelehnt";
@@ -356,23 +385,27 @@ export default {
      */
     getKindVariant(kind) {
       switch (kind) {
-        case 4:
-          return "secondary";
         case 0:
+          return "secondary";
+        case 1:
           return "info";
         case 2:
-          return "warning";
+          return "info";
         case 3:
-          return "warning";
-        case 1:
-          return "warning";
+          return "info";
+        case 4:
+          return "info";
         case 5:
-          return "dark";
+          return "info";
         case 6:
-          return "dark";
+          return "success";
         case 7:
-          return "dark";
+          return "success";
         case 8:
+          return "success";
+        case 9:
+          return "success";
+        case 10:
           return "success";
         default:
           return "primary";

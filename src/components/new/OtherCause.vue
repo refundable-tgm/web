@@ -277,6 +277,7 @@
               </b-form-group>
               <!-- Reiseanträge -->
               <TravelApplication
+                v-if="selected === '7' || selected === '9'"
                 v-bind:escort="escort"
                 v-bind:index="1"
                 v-on:update="updateTravel"
@@ -569,43 +570,60 @@ export default {
             this.teacher.bonus_meilen[1] === "1"
           )
             var bonus2 = true;
-          var business = {
-            id: 0,
-            staffnr: this.returnValue(this.teacher.personalnummer),
-            trip_begin_time: this.setTimezone(
-              new Date(this.startDate + "T" + this.startTime)
-            ),
-            trip_end_time: this.setTimezone(
-              new Date(this.endDate + "T" + this.endTime)
-            ),
-            service_begin_time: this.setTimezone(
-              new Date(this.startDate + "T" + this.startTime)
-            ),
-            service_end_time: this.setTimezone(
-              new Date(this.endDate + "T" + this.endTime)
-            ),
-            trip_goal: this.returnString(this.start),
-            travel_purpose: this.returnString(this.teacher.reason1),
-            travel_mode: this.returnValue(this.teacher.transport),
-            starting_point: this.returnValue(this.teacher.ausgangspunkt),
-            end_point: this.returnValue(this.teacher.endpunkt),
-            reasoning: this.returnString(this.teacher.reason),
-            other_participants: [],
-            bonus_mile_confirmation_1: bonus1,
-            bonus_mile_confirmation_2: bonus2,
-            travel_costs_payed_by_someone: this.returnBoolean(
-              this.teacher.reisekosten
-            ),
-            staying_costs_payed_by_someone: this.returnBoolean(
-              this.teacher.aufenthaltskosten
-            ),
-            payed_by_whom: this.returnString(this.teacher.von),
-            other_costs: this.returnValue(this.teacher.sonstige_kosten),
-            estimated_costs: this.returnValue(this.teacher.geschaetzte_kosten)
-          };
+          var business = [];
+          var invoice = [];
+          if (this.selected === "7" || this.selected === "9") {
+            business.push({
+              id: 0,
+              staffnr: this.returnValue(this.teacher.personalnummer),
+              trip_begin_time: this.setTimezone(
+                new Date(this.startDate + "T" + this.startTime)
+              ),
+              trip_end_time: this.setTimezone(
+                new Date(this.endDate + "T" + this.endTime)
+              ),
+              service_begin_time: this.setTimezone(
+                new Date(this.startDate + "T" + this.startTime)
+              ),
+              service_end_time: this.setTimezone(
+                new Date(this.endDate + "T" + this.endTime)
+              ),
+              trip_goal: this.returnString(this.start),
+              travel_purpose: this.returnString(this.teacher.reason1),
+              travel_mode: this.returnValue(this.teacher.transport),
+              starting_point: this.returnValue(this.teacher.ausgangspunkt),
+              end_point: this.returnValue(this.teacher.endpunkt),
+              reasoning: this.returnString(this.teacher.reason),
+              other_participants: [],
+              bonus_mile_confirmation_1: bonus1,
+              bonus_mile_confirmation_2: bonus2,
+              travel_costs_payed_by_someone: this.returnBoolean(
+                this.teacher.reisekosten
+              ),
+              staying_costs_payed_by_someone: this.returnBoolean(
+                this.teacher.aufenthaltskosten
+              ),
+              payed_by_whom: this.returnString(this.teacher.von),
+              other_costs: this.returnValue(this.teacher.sonstige_kosten),
+              estimated_costs: this.returnValue(this.teacher.geschaetzte_kosten)
+            });
+            invoice.push({
+              id: 0,
+              trip_begin_time: this.setTimezone(
+                new Date(this.startDate + "T" + this.startTime)
+              ),
+              trip_end_time: this.setTimezone(
+                new Date(this.endDate + "T" + this.endTime)
+              ),
+              staffnr: this.returnValue(this.teacher.personalnummer),
+              starting_point: this.returnString(this.start),
+              end_point: this.returnString(this.end),
+              filing_date: this.setTimezone(new Date())
+            });
+          }
           var data = {
             name: this.returnString(""),
-            kind: 8,
+            kind: 6,
             miscellaneous_reason: this.returnString(this.son),
             progress: 1,
             start_time: this.setTimezone(
@@ -624,21 +642,7 @@ export default {
               service_mandate_title: this.returnString(this.title)
             },
             business_trip_applications: business,
-            travel_invoices: [
-              {
-                id: 0,
-                trip_begin_time: this.setTimezone(
-                  new Date(this.startDate + "T" + this.startTime)
-                ),
-                trip_end_time: this.setTimezone(
-                  new Date(this.endDate + "T" + this.endTime)
-                ),
-                staffnr: this.returnValue(this.teacher.personalnummer),
-                starting_point: this.returnString(this.start),
-                end_point: this.returnString(this.end),
-                filing_date: this.setTimezone(new Date())
-              }
-            ]
+            travel_invoices: invoice
           };
           axios
             .post(this.url + "/createApplication", this.token, data)
@@ -659,10 +663,10 @@ export default {
     return {
       selected: "",
       options: [
-        { item: "1", name: "Pflegefreistellung" },
-        { item: "2", name: "Dienstauftrag" },
-        { item: "3", name: "Arzttermin" },
-        { item: "8", name: "Sonstiges" }
+        { item: "7", name: "Pflegefreistellung" },
+        { item: "8", name: "Dienstauftrag" },
+        { item: "9", name: "Arzttermin" },
+        { item: "10", name: "Sonstiges" }
       ],
       validInputs: false,
       Time: null,

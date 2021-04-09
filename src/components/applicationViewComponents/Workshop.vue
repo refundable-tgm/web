@@ -221,10 +221,10 @@ export default {
     return {
       selected: "",
       options: [
-        { item: 5, name: "Seminar" },
-        { item: 6, name: "Tagung" },
-        { item: 7, name: "Lehrgang" },
-        { item: 8, name: "Sonstiges" }
+        { item: 2, name: "Seminar" },
+        { item: 3, name: "Tagung" },
+        { item: 4, name: "Lehrgang" },
+        { item: 5, name: "Sonstiges" }
       ],
       startDate: "",
       startTime: "",

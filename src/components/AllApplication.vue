@@ -120,7 +120,24 @@ export default {
   props: ["url", "user", "token"],
   data() {
     return {
-      items: [],
+      items: [
+        {
+          leader: "Stefan Zakall",
+          title: "Sommersportwoche",
+          edate: "14-06-2021",
+          active: true,
+          status: "In Bearbeitung",
+          _rowVariant: "warning"
+        },
+        {
+          leader: "Stefan Zakall",
+          title: "Pflegefreistellung",
+          edate: "14-04-2021",
+          active: true,
+          status: "Abgeschlossen",
+          _rowVariant: "success"
+        }
+      ],
       fields: [
         {
           key: "title",
@@ -193,7 +210,7 @@ export default {
      * @returns Boolean-Wert, ob der Antrag aktiv ist oder nicht
      */
     isActive(kind, progress) {
-      if (kind === 4) {
+      if (kind === 0) {
         if (progress > 0 && progress < 7) return true;
         else return false;
       } else {
@@ -208,7 +225,7 @@ export default {
      * @returns String-Form des Fortschritts
      */
     loadStatus(kind, progress) {
-      if (kind === 4) {
+      if (kind === 0) {
         switch (progress) {
           case 0:
             return "Abgelehnt";
@@ -282,7 +299,7 @@ export default {
           var data = response.data;
           status.toString();
           for (let i = 0; i < data.length; i++) {
-            if (data[i].kind === 4) {
+            if (data[i].kind === 0) {
               for (
                 let j = 0;
                 j < data[i].school_event_details.teachers.length;
@@ -310,7 +327,7 @@ export default {
             data[i].title = data[i].name;
             data[i].edate =
               data[i].business_trip_applications[0].date_application_filed;
-            if (data[i].kind === 4) {
+            if (data[i].kind === 0) {
               switch (data[i].progress) {
                 case 7:
                   data[i]._rowVariant = "success";

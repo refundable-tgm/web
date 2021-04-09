@@ -253,10 +253,10 @@ export default {
     return {
       selected: "",
       options: [
-        { item: 1, name: "Pflegefreistellung" },
-        { item: 2, name: "Dienstauftrag" },
-        { item: 3, name: "Arzttermin" },
-        { item: 8, name: "Sonstiges" }
+        { item: 7, name: "Pflegefreistellung" },
+        { item: 8, name: "Dienstauftrag" },
+        { item: 9, name: "Arzttermin" },
+        { item: 10, name: "Sonstiges" }
       ],
       startDate: "",
       startTime: "",

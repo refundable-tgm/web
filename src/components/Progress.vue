@@ -7,7 +7,7 @@
     <b-row align-h="center">
       <b-col cols="12">
         <!-- Falles der Antrag eine Schulveranstaltung ist -->
-        <div v-if="kind === 4" class="track">
+        <div v-if="kind === 0" class="track">
           <div
             :class="{
               active: progress >= 1
@@ -138,14 +138,16 @@
         <!-- Falls der Antrag keine Schulveranstaltung ist -->
         <div
           v-if="
-            kind === 0 ||
-              kind === 1 ||
+            kind === 1 ||
               kind === 2 ||
               kind === 3 ||
+              kind === 4 ||
               kind === 5 ||
               kind === 6 ||
               kind === 7 ||
-              kind === 8
+              kind === 8 ||
+              kind === 9 ||
+              kind === 10
           "
           class="track"
         >
