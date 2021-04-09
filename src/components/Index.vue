@@ -260,7 +260,7 @@
             <!-- Administrator Ansicht Button -->
             <b-button
               v-on:click="adminclick"
-              v-if="admin"
+              v-if="admin || av"
               class="shadow-lg"
               variant="outline-info"
               style="margin-right:1rem"
@@ -333,7 +333,16 @@ export default {
   components: {
     NewsElement
   },
-  props: ["url", "admin", "user"],
+  props: [
+    "url",
+    "admin",
+    "av",
+    "administration",
+    "pek",
+    "token",
+    "refresh_token",
+    "user"
+  ],
   data() {
     return {
       news: "",
@@ -380,11 +389,7 @@ export default {
      */
     logout() {
       if (this.checkClick()) {
-        console.log("Logout!");
-        /*
-      Implement the logout function with the backend
-      */
-        this.changeComponent("Login");
+        this.$emit("logout");
       }
     },
     /**

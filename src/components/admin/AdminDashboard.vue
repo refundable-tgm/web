@@ -237,7 +237,6 @@ export default {
   },
   mounted() {
     this.loadData();
-    console.log(this.admin);
   },
   methods: {
     /**

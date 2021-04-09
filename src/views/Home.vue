@@ -3,6 +3,8 @@
     <Login
       v-if="currentComponent == 'Login'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:forward="forward"
@@ -14,6 +16,8 @@
     <Index
       v-if="currentComponent == 'Index'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:refresh_token="refresh_token"
@@ -27,6 +31,8 @@
     <NewApplication
       v-if="currentComponent == 'NewApplication'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
@@ -35,6 +41,8 @@
     <AllApplication
       v-if="currentComponent == 'AllApplication'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
@@ -43,6 +51,8 @@
     <CurrentApplication
       v-if="currentComponent == 'CurrentApplication'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
@@ -51,6 +61,8 @@
     <School
       v-if="currentComponent == 'School'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
@@ -59,6 +71,8 @@
     <Escorts
       v-if="currentComponent == 'Escorts'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
@@ -68,6 +82,8 @@
     <OtherCause
       v-if="currentComponent == 'OtherCause'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
@@ -76,6 +92,8 @@
     <Workshop
       v-if="currentComponent == 'Workshop'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
@@ -84,6 +102,8 @@
     <ApplicationView
       v-if="currentComponent == 'ApplicationView'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
@@ -93,6 +113,8 @@
     <ApplicationSearch
       v-if="currentComponent == 'ApplicationSearch'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:apikey="mapsapi"
@@ -101,6 +123,8 @@
     <AdminDashboard
       v-if="currentComponent == 'AdminDashboard'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:pek="pek"
       v-bind:administration="administration"
@@ -112,6 +136,8 @@
     <ApplicationAdminView
       v-if="currentComponent == 'ApplicationAdminView'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:pek="pek"
       v-bind:administration="administration"
@@ -122,6 +148,8 @@
     <Progress
       v-if="currentComponent == 'Progress'"
       v-on:change-component="changeComponent"
+      v-on:updateToken="updateToken"
+      v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:refresh_token="refresh_token"
@@ -163,6 +191,7 @@ import Progress from "@/components/Progress.vue";
 import PageNotFound from "@/components/PageNotFound.vue";
 import ApplicationAdminView from "@/components/admin/ApplicationAdminView.vue";
 import Rights from "@/components/Rights.vue";
+import url from "@/url.json";
 
 export default {
   components: {
@@ -187,7 +216,7 @@ export default {
   data() {
     return {
       // url is the link from the REST-API
-      url: "Michi Link",
+      url: url.url,
       data: Object,
       currentComponent: "",
       escortsdata: Object,
@@ -221,7 +250,6 @@ export default {
       switch (component) {
         case "Login":
           this.change("Login", back);
-          this.deleteCookies();
           break;
 
         case "Index":
@@ -331,10 +359,7 @@ export default {
       this.setRefresh(refresh);
       this.token = token;
       this.refresh_token = refresh;
-      console.log(administration);
-      console.log(pek);
       if (administration || pek) {
-        console.log("Administration oder PEK");
         this.changeComponent("AdminDashboard");
       }
     },
