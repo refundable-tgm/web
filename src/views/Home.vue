@@ -129,8 +129,9 @@
       v-bind:pek="pek"
       v-bind:administration="administration"
       v-bind:admin="admin"
+      v-bind:av="av"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <ApplicationAdminView
@@ -141,8 +142,10 @@
       v-bind:url="url"
       v-bind:pek="pek"
       v-bind:administration="administration"
+      v-bind:admin="admin"
+      v-bind:av="av"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <Progress
@@ -783,6 +786,8 @@ export default {
     } else {
       this.manageLoading(false);
     }
+    // Nur Testweise
+    this.manageLoading(false);
   }
 };
 </script>

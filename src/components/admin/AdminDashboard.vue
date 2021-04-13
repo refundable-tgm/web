@@ -155,7 +155,7 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["url", "user", "token", "pek", "administration", "admin"],
+  props: ["url", "user", "token", "pek", "administration", "admin", "av"],
   data() {
     return {
       selectMode: "multi",
@@ -341,6 +341,28 @@ export default {
             );
             apps[i].start = this.formatDate(apps[i].start_time);
             apps[i].from = apps[i].staffnr;
+            if (this.pek) {
+              if (apps[i].kind === 0) {
+                if (apps[i].progress !== 6) {
+                  apps.splice(i, 1);
+                }
+              } else {
+                if (apps[i].progress !== 5) {
+                  apps.splice(i, 1);
+                }
+              }
+            }
+            if (this.av || this.administration) {
+              if (apps[i].kind === 0) {
+                if (apps[i].progress !== 2) {
+                  apps.splice(i, 1);
+                }
+              } else {
+                if (apps[i].progress !== 1) {
+                  apps.splice(i, 1);
+                }
+              }
+            }
           }
           this.items = apps;
           // Set the initial number of items

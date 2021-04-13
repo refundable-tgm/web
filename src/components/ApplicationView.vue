@@ -511,7 +511,6 @@ export default {
           sum: this.returnValue(data.items[i].sum)
         });
       }
-      console.log(this.app);
     },
     /**
      * Aktualisiert die Daten der Reiseformulare
@@ -662,9 +661,9 @@ export default {
         name: "Sommersportwoche",
         kind: 0,
         miscellaneous_reason: "",
-        progress: 5,
-        start_time: "2021-03-01T18:54:40.035095+01:00",
-        end_time: "2021-03-03T18:54:40.035095+01:00",
+        progress: 3,
+        start_time: "2021-04-12T18:54:40.035095+01:00",
+        end_time: "2021-04-19T18:54:40.035095+01:00",
         notes: "Sommersportwoche ist cool",
         start_address: "Wexstraße 19-23, 1200 Wien",
         destination_address: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
@@ -678,8 +677,8 @@ export default {
             {
               name: "Stefan Zakall",
               shortname: "szakall",
-              attendance_from: "2021-03-01T19:00:40.035095+01:00",
-              attendance_till: "2021-03-03T17:00:40.035095+01:00",
+              attendance_from: "2021-04-12T18:54:40.035095+01:00",
+              attendance_till: "2021-04-19T18:54:40.035095+01:00",
               group: 2,
               start_address: "Wexstraße 19-23, 1200 Wien",
               meeting_point: "Wexstraße 19-23, 1200 Wien",
@@ -688,8 +687,8 @@ export default {
             {
               name: "Dominik Dolezal",
               shortname: "ddolezal",
-              attendance_from: "2021-03-01T19:00:40.035095+01:00",
-              attendance_till: "2021-03-03T17:00:40.035095+01:00",
+              attendance_from: "2021-04-12T18:54:40.035095+01:00",
+              attendance_till: "2021-04-19T18:54:40.035095+01:00",
               group: 1,
               start_address: "Wexstraße 19-23, 1200 Wien",
               meeting_point: "Wexstraße 19-23, 1200 Wien",
@@ -717,10 +716,10 @@ export default {
             degree: "B. Sc.",
             title: "Prof.",
             staffnr: 12345,
-            trip_begin_time: "2021-03-01T18:54:40.035095+01:00",
-            trip_end_time: "2021-03-03T18:54:40.035095+01:00",
-            service_begin_time: "2021-03-01T19:00:40.035095+01:00",
-            service_end_time: "2021-03-03T17:00:40.035095+01:00",
+            trip_begin_time: "2021-04-12T18:54:40.035095+01:00",
+            trip_end_time: "2021-04-19T18:54:40.035095+01:00",
+            service_begin_time: "2021-04-12T18:54:40.035095+01:00",
+            service_end_time: "2021-04-19T18:54:40.035095+01:00",
             trip_goal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
             travel_purpose: "Aus Gesundheitsgründen",
             travel_mode: 2,
@@ -748,10 +747,10 @@ export default {
             degree: "B. Sc.",
             title: "Prof.",
             staffnr: 1234,
-            trip_begin_time: "2021-03-01T18:54:40.035095+01:00",
-            trip_end_time: "2021-03-03T18:54:40.035095+01:00",
-            service_begin_time: "2021-03-01T19:00:40.035095+01:00",
-            service_end_time: "2021-03-03T17:00:40.035095+01:00",
+            trip_begin_time: "2021-04-12T18:54:40.035095+01:00",
+            trip_end_time: "2021-04-19T18:54:40.035095+01:00",
+            service_begin_time: "2021-04-12T18:54:40.035095+01:00",
+            service_end_time: "2021-04-19T18:54:40.035095+01:00",
             trip_goal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
             travel_purpose: "Aus Gründen, die ich nicht nennen möchte",
             travel_mode: 0,
@@ -780,8 +779,8 @@ export default {
             name: "Stefan",
             degree: "B. Sc.",
             title: "Prof.",
-            trip_begin_time: "2021-03-01T18:54:40.035095+01:00",
-            trip_end_time: "2021-03-03T18:54:40.035095+01:00",
+            trip_begin_time: "2021-04-12T18:54:40.035095+01:00",
+            trip_end_time: "2021-04-19T18:54:40.035095+01:00",
             staffnr: 12345,
             starting_point: "Wexstraße 19-23, 1200 Wien",
             end_point: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
@@ -813,41 +812,106 @@ export default {
                 {
                   id: 0,
                   kind_of_costs: [1, 2, 3],
-                  date: "2021-03-01T18:54:40.035095+01:00",
-                  begin: "2021-03-01T08:00:40.035095+01:00",
-                  end: "2021-03-01T20:00:40.035095+01:00",
+                  date: "2021-04-12T18:54:40.035095+01:00",
+                  begin: "2021-04-12T08:00:00.035095+01:00",
+                  end: "2021-04-12T18:00:00.035095+01:00",
                   kilometres: 5,
-                  travel_costs: 5,
+                  travel_costs: 0,
                   daily_charges: 5,
                   nightly_charges: 5,
                   additional_costs: 5,
-                  sum: 20
+                  sum: 15
                 },
                 {
                   id: 1,
-                  kind_of_costs: [0, 2, 3],
-                  date: "2021-03-02T18:54:40.035095+01:00",
-                  begin: "2021-03-02T08:00:40.035095+01:00",
-                  end: "2021-03-02T20:00:40.035095+01:00",
+                  kind_of_costs: [1, 2, 3],
+                  date: "2021-04-13T18:54:40.035095+01:00",
+                  begin: "2021-04-13T08:00:00.035095+01:00",
+                  end: "2021-04-13T18:00:00.035095+01:00",
                   kilometres: 6,
-                  travel_costs: 6,
+                  travel_costs: 0,
                   daily_charges: 6,
                   nightly_charges: 6,
                   additional_costs: 6,
-                  sum: 24
+                  sum: 18
                 },
                 {
                   id: 2,
                   kind_of_costs: [0, 1, 3],
-                  date: "2021-03-03T18:54:40.035095+01:00",
-                  begin: "2021-03-03T08:00:40.035095+01:00",
-                  end: "2021-03-03T20:00:40.035095+01:00",
+                  date: "2021-04-14T08:00:00.035095+01:00",
+                  begin: "2021-04-14T08:00:00.035095+01:00",
+                  end: "2021-04-14T18:00:00.035095+01:00",
                   kilometres: 7,
                   travel_costs: 7,
                   daily_charges: 7,
-                  nightly_charges: 7,
+                  nightly_charges: 0,
                   additional_costs: 7,
-                  sum: 28
+                  sum: 21
+                },
+                {
+                  id: 3,
+                  kind_of_costs: [0, 2, 3],
+                  date: "2021-04-15T08:00:00.035095+01:00",
+                  begin: "2021-04-15T08:00:00.035095+01:00",
+                  end: "2021-04-15T18:00:00.035095+01:00",
+                  kilometres: 8,
+                  travel_costs: 8,
+                  daily_charges: 0,
+                  nightly_charges: 8,
+                  additional_costs: 8,
+                  sum: 24
+                },
+                {
+                  id: 4,
+                  kind_of_costs: [0, 3],
+                  date: "2021-04-16T08:00:00.035095+01:00",
+                  begin: "2021-04-16T08:00:00.035095+01:00",
+                  end: "2021-04-16T18:00:00.035095+01:00",
+                  kilometres: 9,
+                  travel_costs: 9,
+                  daily_charges: 0,
+                  nightly_charges: 0,
+                  additional_costs: 9,
+                  sum: 18
+                },
+                {
+                  id: 5,
+                  kind_of_costs: [3],
+                  date: "2021-04-17T08:00:00.035095+01:00",
+                  begin: "2021-04-17T08:00:00.035095+01:00",
+                  end: "2021-04-17T18:00:00.035095+01:00",
+                  kilometres: 10,
+                  travel_costs: 0,
+                  daily_charges: 0,
+                  nightly_charges: 0,
+                  additional_costs: 10,
+                  sum: 10
+                },
+                {
+                  id: 6,
+                  kind_of_costs: [2, 3],
+                  date: "2021-04-18T08:00:00.035095+01:00",
+                  begin: "2021-04-18T08:00:00.035095+01:00",
+                  end: "2021-04-18T18:00:00.035095+01:00",
+                  kilometres: 11,
+                  travel_costs: 0,
+                  daily_charges: 0,
+                  nightly_charges: 11,
+                  additional_costs: 11,
+                  sum: 22
+                },
+                {
+                  id: 7,
+                  kind_of_costs: [],
+                  date: "2021-04-19T08:00:00.035095+01:00",
+                  begin: "2021-04-19T08:00:00.035095+01:00",
+                  end: "2021-04-19T18:00:00.035095+01:00",
+                  kilometres: 10,
+                  travel_costs: 0,
+                  daily_charges: 0,
+                  nightly_charges: 0,
+                  additional_costs: 0,
+                  sum: 0
                 }
               ]
             }
@@ -890,42 +954,107 @@ export default {
               rows: [
                 {
                   id: 0,
-                  kind_of_costs: [0, 1, 2, 3],
-                  date: "2021-03-01T18:54:40.035095+01:00",
-                  begin: "2021-03-01T08:00:40.035095+01:00",
-                  end: "2021-03-01T20:00:40.035095+01:00",
+                  kind_of_costs: [1, 2, 3],
+                  date: "2021-04-12T18:54:40.035095+01:00",
+                  begin: "2021-04-12T08:00:00.035095+01:00",
+                  end: "2021-04-12T18:00:00.035095+01:00",
                   kilometres: 5,
-                  travel_costs: 4,
-                  daily_charges: 4,
-                  nightly_charges: 4,
-                  additional_costs: 4,
-                  sum: 16
-                },
-                {
-                  id: 1,
-                  kind_of_costs: [0, 3],
-                  date: "2021-03-02T18:54:40.035095+01:00",
-                  begin: "2021-03-02T08:00:40.035095+01:00",
-                  end: "2021-03-02T20:00:40.035095+01:00",
-                  kilometres: 6,
-                  travel_costs: 5,
+                  travel_costs: 0,
                   daily_charges: 5,
                   nightly_charges: 5,
                   additional_costs: 5,
-                  sum: 20
+                  sum: 15
                 },
                 {
-                  id: 2,
-                  kind_of_costs: [2, 3],
-                  date: "2021-03-03T18:54:40.035095+01:00",
-                  begin: "2021-03-03T08:00:40.035095+01:00",
-                  end: "2021-03-03T20:00:40.035095+01:00",
-                  kilometres: 7,
-                  travel_costs: 6,
+                  id: 1,
+                  kind_of_costs: [1, 2, 3],
+                  date: "2021-04-13T18:54:40.035095+01:00",
+                  begin: "2021-04-13T08:00:00.035095+01:00",
+                  end: "2021-04-13T18:00:00.035095+01:00",
+                  kilometres: 6,
+                  travel_costs: 0,
                   daily_charges: 6,
                   nightly_charges: 6,
                   additional_costs: 6,
+                  sum: 18
+                },
+                {
+                  id: 2,
+                  kind_of_costs: [0, 1, 3],
+                  date: "2021-04-14T08:00:00.035095+01:00",
+                  begin: "2021-04-14T08:00:00.035095+01:00",
+                  end: "2021-04-14T18:00:00.035095+01:00",
+                  kilometres: 7,
+                  travel_costs: 7,
+                  daily_charges: 7,
+                  nightly_charges: 0,
+                  additional_costs: 7,
+                  sum: 21
+                },
+                {
+                  id: 3,
+                  kind_of_costs: [0, 2, 3],
+                  date: "2021-04-15T08:00:00.035095+01:00",
+                  begin: "2021-04-15T08:00:00.035095+01:00",
+                  end: "2021-04-15T18:00:00.035095+01:00",
+                  kilometres: 8,
+                  travel_costs: 8,
+                  daily_charges: 0,
+                  nightly_charges: 8,
+                  additional_costs: 8,
                   sum: 24
+                },
+                {
+                  id: 4,
+                  kind_of_costs: [0, 3],
+                  date: "2021-04-16T08:00:00.035095+01:00",
+                  begin: "2021-04-16T08:00:00.035095+01:00",
+                  end: "2021-04-16T18:00:00.035095+01:00",
+                  kilometres: 9,
+                  travel_costs: 9,
+                  daily_charges: 0,
+                  nightly_charges: 0,
+                  additional_costs: 9,
+                  sum: 18
+                },
+                {
+                  id: 5,
+                  kind_of_costs: [3],
+                  date: "2021-04-17T08:00:00.035095+01:00",
+                  begin: "2021-04-17T08:00:00.035095+01:00",
+                  end: "2021-04-17T18:00:00.035095+01:00",
+                  kilometres: 10,
+                  travel_costs: 0,
+                  daily_charges: 0,
+                  nightly_charges: 0,
+                  additional_costs: 10,
+                  sum: 10
+                },
+                {
+                  id: 6,
+                  kind_of_costs: [2, 3],
+                  date: "2021-04-18T08:00:00.035095+01:00",
+                  begin: "2021-04-18T08:00:00.035095+01:00",
+                  end: "2021-04-18T18:00:00.035095+01:00",
+                  kilometres: 11,
+                  travel_costs: 0,
+                  daily_charges: 0,
+                  nightly_charges: 11,
+                  additional_costs: 11,
+                  sum: 22
+                },
+                {
+                  id: 7,
+                  kind_of_costs: [],
+                  date: "2021-04-19T08:00:00.035095+01:00",
+                  begin: "2021-04-19T08:00:00.035095+01:00",
+                  end: "2021-04-19T18:00:00.035095+01:00",
+                  kilometres: 10,
+                  travel_costs: 0,
+                  daily_charges: 0,
+                  nightly_charges: 0,
+                  additional_costs: 0,
+                  sum: 0
                 }
               ]
             }
@@ -933,6 +1062,7 @@ export default {
         ]
       };
       this.app = application;
+      this.checkRunning();
       this.title = this.app.name;
       this.kind = this.app.kind;
       this.currentTeacher = this.getCurrentTeacher();
@@ -1031,21 +1161,27 @@ export default {
      */
     checkProgression() {},
     /**
-     * TODO
      * Diese Methode schaut, ob der Antrag läuft und setzt den Progress auf Läuft.
      */
     checkRunning() {
+      let current = new Date();
       if (this.app.kind === 0) {
         if (this.app.progress === 3) {
-          // Check if current Time is in the Time of the Antrag
-          // If yes, count Progress up to Läuft...
-          let current = new Date();
-          current.toString();
+          if (
+            new Date(this.app.start_time) <= current &&
+            current <= new Date(this.app.end_time)
+          ) {
+            this.app.progress = 4;
+          }
         }
       } else {
         if (this.app.progress === 2) {
-          // Check if current Time is in the Time of the Antrag
-          // If yes, count Progress up to Läuft...
+          if (
+            new Date(this.app.start_time) <= current &&
+            current <= new Date(this.app.end_time)
+          ) {
+            this.app.progress = 3;
+          }
         }
       }
     },
