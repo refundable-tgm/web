@@ -8,7 +8,6 @@
       v-bind:url="url"
       v-bind:token="token"
       v-bind:forward="forward"
-      v-bind:apikey="mapsapi"
       v-on:requestAnswer="useCookie"
       v-bind:cookieset="cookies"
       v-on:login="login"
@@ -21,7 +20,6 @@
       v-bind:url="url"
       v-bind:token="token"
       v-bind:refresh_token="refresh_token"
-      v-bind:apikey="mapsapi"
       v-bind:admin="admin"
       v-bind:av="av"
       v-bind:administration="administration"
@@ -35,7 +33,6 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
     <AllApplication
@@ -45,7 +42,6 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
     <CurrentApplication
@@ -55,7 +51,6 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
     <School
@@ -65,7 +60,6 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
     <Escorts
@@ -75,7 +69,6 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
       v-bind:escorts="escortsdata"
       v-bind:user="user"
     />
@@ -86,7 +79,6 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
     <Workshop
@@ -96,7 +88,6 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
     <ApplicationView
@@ -106,7 +97,6 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
       v-bind:appid="appid"
       v-bind:user="user"
     />
@@ -117,7 +107,6 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
-      v-bind:apikey="mapsapi"
       v-bind:user="user"
     />
     <AdminDashboard
