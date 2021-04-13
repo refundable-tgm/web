@@ -465,6 +465,9 @@ export default {
       this.app.travel_invoices[this.currentTeacherIndex].dinners = data.dinner;
       this.app.travel_invoices[this.currentTeacherIndex].kilometreAmount =
         data.km;
+      this.app.travel_invoices[
+        this.currentTeacherIndex
+      ].travel_costs_pre_grant = data.travel_grant;
       this.app.travel_invoices[this.currentTeacherIndex].calculation = {};
       this.app.travel_invoices[this.currentTeacherIndex].calculation.id = 0;
       this.app.travel_invoices[this.currentTeacherIndex].calculation.rows = [];
@@ -762,6 +765,10 @@ export default {
         travel_invoices: [
           {
             id: 0,
+            surname: "Zakall",
+            name: "Stefan",
+            degree: "B. Sc.",
+            title: "Prof.",
             trip_begin_time: "2021-03-01T18:54:40.035095+01:00",
             trip_end_time: "2021-03-03T18:54:40.035095+01:00",
             staffnr: 12345,
@@ -777,6 +784,7 @@ export default {
             dinners: 2,
             official_business_card_got: true,
             travel_grant: true,
+            travel_costs_pre_grant: 500,
             replacement_for_advantage_card: true,
             replacement_for_train_card_class_2: true,
             kilometre_allowance: true,
@@ -833,6 +841,10 @@ export default {
           },
           {
             id: 1,
+            surname: "Dolezal",
+            name: "Dominik",
+            degree: "B. Sc.",
+            title: "Prof.",
             trip_begin_time: "2021-03-01T18:54:40.035095+01:00",
             trip_end_time: "2021-03-03T18:54:40.035095+01:00",
             staffnr: 1234,
@@ -848,6 +860,7 @@ export default {
             dinners: 2,
             official_business_card_got: true,
             travel_grant: true,
+            travel_costs_pre_grant: 200,
             replacement_for_advantage_card: true,
             replacement_for_train_card_class_2: true,
             kilometre_allowance: true,

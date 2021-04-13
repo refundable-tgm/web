@@ -615,6 +615,10 @@ export default {
             });
             invoice.push({
               id: 0,
+              name: this.returnString(this.escort.longname.split(" ")[0]),
+              surname: this.returnString(this.escort.longname.split(" ")[1]),
+              degree: this.returnString(this.teacher.degree),
+              title: this.returnString(this.teacher.title),
               trip_begin_time: this.setTimezone(
                 new Date(this.startDate + "T" + this.startTime)
               ),

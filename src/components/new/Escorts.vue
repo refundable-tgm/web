@@ -196,6 +196,10 @@ export default {
         for (let i = 0; i < this.escorts.output.length; i++) {
           invoices.push({
             id: i,
+            degree: this.returnString(this.escorts.output[i].degree),
+            title: this.returnString(this.escorts.output[i].title),
+            name: this.returnString(this.escorts.output[i].name),
+            surname: this.returnString(this.escorts.output[i].surname),
             trip_begin_time: this.setTimezone(
               new Date(this.escorts.startDate + "T" + this.escorts.startTime)
             ),

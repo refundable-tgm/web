@@ -41,6 +41,31 @@
             <b-form-checkbox value="a8">Keine Reisekosten</b-form-checkbox>
           </b-form-checkbox-group>
         </b-form-group>
+        <!-- Beförderungszuschuss Menge in € -->
+        <b-form-group
+          id="tg"
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie die Beförderungszuschussmenge an."
+          label="Beförderungszuschuss"
+          label-for="geschk"
+        >
+          <b-input-group>
+            <b-input-group-text :id="index + 'eur-addon-2'" slot="append"
+              ><span>€</span></b-input-group-text
+            >
+            <b-form-input
+              v-model="data.travel_grant"
+              :readonly="readonly"
+              v-on:input="update"
+              :id="index + 'geschk'"
+              type="number"
+            >
+            </b-form-input>
+          </b-input-group>
+        </b-form-group>
         <!-- Gefahrene km mit eigenem PKW -->
         <b-form-group
           id="km-pkwg"
@@ -368,6 +393,7 @@ export default {
       invoices: [],
       data: {
         selected: [],
+        travel_grant: 0,
         dcm: null,
         ncm: null,
         km: null,
