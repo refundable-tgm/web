@@ -428,7 +428,8 @@ export default {
       let leader = this.getLeader();
       let output = [
         {
-          name: leader.longname,
+          name: leader.longname.split(" ")[0],
+          surname: leader.longname.split(" ")[1],
           shortname: leader.short,
           startDate: escortsdata.startDate,
           endDate: escortsdata.endDate,
@@ -441,10 +442,13 @@ export default {
         }
       ];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
+        var curTeach = this.getTeacher(escortsdata.teacher[i]);
         output.push(
           JSON.parse(
             '{"name":"' +
-              this.getFullName(escortsdata.teacher[i]) +
+              curTeach.longname.split(" ")[0] +
+              '","surname":"' +
+              curTeach.longname.split(" ")[1] +
               '","shortname":"' +
               escortsdata.teacher[i] +
               '","startDate":"' +
@@ -470,15 +474,15 @@ export default {
      * Diese Methode gibt den vollen Namen eines Lehrers zurück
      * @param shortName Der Kürzel des verlangten Lehrers
      */
-    getFullName(shortName) {
+    getTeacher(shortName) {
       axios
-        .get(this.url + "/getLongName?name=" + shortName, {
+        .get(this.url + "/getTeacherByShort?name=" + shortName, {
           params: {
             token: this.token
           }
         })
         .then(response => {
-          return response.data.long;
+          return response.data;
         });
     },
     /**

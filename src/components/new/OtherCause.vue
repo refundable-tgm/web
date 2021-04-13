@@ -515,6 +515,8 @@ export default {
      */
     updateTravel(index, data) {
       index.toString();
+      this.teacher.degree = data.degree;
+      this.teacher.title = data.title;
       this.teacher.personalnummer = data.personalnummer;
       this.teacher.transport = data.transport;
       this.teacher.ausgangspunkt = data.ausgangspunkt;
@@ -533,7 +535,7 @@ export default {
      * Gibt den derzeitig angemeldeten Nutzer zurück
      * @returns Der angemeldetet Lehrer
      */
-    getLeader() {
+    getTeacher() {
       axios
         .get(this.url + "/getTeacher?id=" + this.user, {
           params: {
@@ -575,6 +577,10 @@ export default {
           if (this.selected === "7" || this.selected === "9") {
             business.push({
               id: 0,
+              name: this.returnString(this.escort.longname.split(" ")[0]),
+              surname: this.returnString(this.escort.longname.split(" ")[1]),
+              degree: this.returnString(this.teacher.degree),
+              title: this.returnString(this.teacher.title),
               staffnr: this.returnValue(this.teacher.personalnummer),
               trip_begin_time: this.setTimezone(
                 new Date(this.startDate + "T" + this.startTime)
@@ -691,7 +697,7 @@ export default {
     };
   },
   mounted() {
-    let leader = this.getLeader();
+    let leader = this.getTeacher();
     let output = [
       {
         name: leader.longname,

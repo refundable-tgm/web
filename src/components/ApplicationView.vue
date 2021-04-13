@@ -684,13 +684,13 @@ export default {
           ]
         },
         training_details: {
-          kind: 3,
+          kind: 8,
           miscellaneous_reason: "Fortbildung im Privatem",
           ph: 12,
           organizer: "PRIA"
         },
         other_reason_details: {
-          kind: 10,
+          kind: 2,
           service_mandate_title: "Stellung",
           service_mandate_gz: 1234,
           miscellaneous_reason: "Ist nicht so wichtig"
@@ -698,6 +698,10 @@ export default {
         business_trip_applications: [
           {
             id: 0,
+            surname: "Zakall",
+            name: "Stefan",
+            degree: "B. Sc.",
+            title: "Prof.",
             staffnr: 12345,
             trip_begin_time: "2021-03-01T18:54:40.035095+01:00",
             trip_end_time: "2021-03-03T18:54:40.035095+01:00",
@@ -725,6 +729,10 @@ export default {
           },
           {
             id: 1,
+            surname: "Dolezal",
+            name: "Dominik",
+            degree: "B. Sc.",
+            title: "Prof.",
             staffnr: 1234,
             trip_begin_time: "2021-03-01T18:54:40.035095+01:00",
             trip_end_time: "2021-03-03T18:54:40.035095+01:00",

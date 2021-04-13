@@ -3,6 +3,48 @@
   <b-container fluid>
     <b-row align-h="center">
       <b-col cols="12">
+        <!-- Titel der Begleitperson -->
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie den Titel der Begleitperson ein."
+          label="Titel"
+          label-for="pn"
+        >
+          <b-form-input
+            :id="index + 'tit'"
+            v-model="data.title"
+            v-on:input="update"
+            :readonly="readonly"
+          >
+          </b-form-input>
+          <b-form-invalid-feedback id="bezeichnung-feedback">
+            Keine Bezeichnung angegeben!
+          </b-form-invalid-feedback>
+        </b-form-group>
+        <!-- Akademischer Grad der Begleitperson -->
+        <b-form-group
+          label-cols-sm="4"
+          label-cols-lg="3"
+          content-cols-sm
+          content-cols-lg="7"
+          description="Geben Sie den Akademischen Grad der Begleitperson ein."
+          label="Akademischer Grad"
+          label-for="pn"
+        >
+          <b-form-input
+            :id="index + 'deg'"
+            v-model="data.degree"
+            v-on:input="update"
+            :readonly="readonly"
+          >
+          </b-form-input>
+          <b-form-invalid-feedback id="bezeichnung-feedback">
+            Keine Bezeichnung angegeben!
+          </b-form-invalid-feedback>
+        </b-form-group>
         <!-- Personalnummer der Begleitperson -->
         <b-form-group
           label-cols-sm="4"
@@ -310,6 +352,8 @@ export default {
   data() {
     return {
       data: {
+        degree: "",
+        title: "",
         personalnummer: null,
         transport: [],
         ausgangspunkt: 1,
@@ -327,6 +371,8 @@ export default {
   },
   mounted() {
     if (this.app !== undefined) {
+      this.data.title = this.app.title;
+      this.data.degree = this.app.degree;
       this.data.personalnummer = this.app.staffnr;
       this.data.transport = this.app.travel_mode;
       this.data.ausgangspunkt = this.app.starting_point;

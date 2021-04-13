@@ -133,6 +133,8 @@ export default {
      * @param data Die Daten zur aktualisierung
      */
     updateTravel(index, data) {
+      this.escorts.output[index].degree = data.degree;
+      this.escorts.output[index].title= data.title;
       this.escorts.output[index].personalnummer = data.personalnummer;
       this.escorts.output[index].transport = data.transport;
       this.escorts.output[index].ausgangspunkt = data.ausgangspunkt;
@@ -257,6 +259,10 @@ export default {
 
           business.push({
             id: i,
+            degree: this.returnString(this.escorts.output[i].degree),
+            title: this.returnString(this.escorts.output[i].title),
+            name: this.returnString(this.escorts.output[i].name),
+            surname: this.returnString(this.escorts.output[i].surname),
             staffnr: this.returnValue(this.escorts.output[i].personalnummer),
             trip_begin_time: this.setTimezone(
               new Date(this.escorts.startDate + "T" + this.escorts.startTime)
@@ -436,6 +442,8 @@ export default {
   },
   mounted() {
     for (let i = 0; i < this.escorts.output.length; i++) {
+      this.escorts.output[i].degree = null,
+      this.escorts.output[i].title = null,
       this.escorts.output[i].personalnummer = null;
       this.escorts.output[i].transport = null;
       this.escorts.output[i].ausgangspunkt = null;
