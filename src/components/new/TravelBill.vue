@@ -264,8 +264,15 @@
         </b-form-group>
 
         <!-- Berechnungstabelle -->
-        <b-table striped :items="data.items" stacked="md" show-empty small>
-          <template #cell(index)="data">
+        <b-table
+          striped
+          :items="data.items"
+          :fields="fields"
+          stacked="md"
+          show-empty
+          small
+        >
+          <template #cell(num)="data">
             {{ data.index + 1 }}
           </template>
           <!-- Datumsspalte -->
@@ -299,8 +306,19 @@
             ></b-form-timepicker>
           </template>
           <!-- Art Spalte -->
-          <template #cell(kind)="data">
-            {{ data.item.kind }}
+          <template #cell(kind_of_costs)="data">
+            <b-form-checkbox-group
+              id="geb"
+              v-model="data.item.kind_of_costs"
+              v-on:input="update()"
+              :disabled="readonly"
+              stacked
+            >
+              <b-form-checkbox value="0">Reisegebühr</b-form-checkbox>
+              <b-form-checkbox value="1">Tagesgebühr</b-form-checkbox>
+              <b-form-checkbox value="2">Nächtigungsgebühr</b-form-checkbox>
+              <b-form-checkbox value="3">Zusätzliche Kosten</b-form-checkbox>
+            </b-form-checkbox-group>
           </template>
           <!-- KM Spalte -->
           <template #cell(km)="data">
@@ -318,11 +336,10 @@
             <b-form-input
               :id="'0'"
               v-model="data.item.travelcosts"
-              v-on:change="
-                calcSum(data.item);
-                update();
+              v-on:change="update()"
+              :readonly="
+                readonly || data.item.kind_of_costs.includes('0') === false
               "
-              :readonly="readonly"
             >
             </b-form-input>
           </template>
@@ -331,11 +348,10 @@
             <b-form-input
               :id="'1'"
               v-model="data.item.daycharge"
-              v-on:change="
-                calcSum(data.item);
-                update();
+              v-on:change="update()"
+              :readonly="
+                readonly || data.item.kind_of_costs.includes('1') === false
               "
-              :readonly="readonly"
             >
             </b-form-input>
           </template>
@@ -344,11 +360,10 @@
             <b-form-input
               :id="'2'"
               v-model="data.item.sleepcharge"
-              v-on:change="
-                calcSum(data.item);
-                update();
+              v-on:change="update()"
+              :readonly="
+                readonly || data.item.kind_of_costs.includes('2') === false
               "
-              :readonly="readonly"
             >
             </b-form-input>
           </template>
@@ -357,11 +372,10 @@
             <b-form-input
               :id="'3'"
               v-model="data.item.othercosts"
-              v-on:change="
-                calcSum(data.item);
-                update();
+              v-on:change="update()"
+              :readonly="
+                readonly || data.item.kind_of_costs.includes('3') === false
               "
-              :readonly="readonly"
             >
             </b-form-input>
           </template>
@@ -377,12 +391,11 @@ export default {
   data() {
     return {
       fields: [
-        "index",
         { key: "num", label: "Laufnummer" },
         { key: "date", label: "Tag" },
         { key: "start", label: "Beginn" },
         { key: "end", label: "Ende" },
-        { key: "kind", label: "Art des Gebührenanspruches" },
+        { key: "kind_of_costs", label: "Art des Gebührenanspruches" },
         { key: "km", label: "Gesamtkilometer" },
         { key: "travelcosts", label: "Reisekosten" },
         { key: "daycharge", label: "Tagesgebühr" },
@@ -403,11 +416,11 @@ export default {
         short: null,
         beleg: [],
         items: [],
-        SumTravelCosts: 0,
-        SumDailyCharges: 0,
-        SumNightlyCharges: 0,
-        SumAdditionalCosts: 0,
-        SumOfSums: 0
+        sum_travel_costs: 0,
+        sum_daily_charges: 0,
+        sum_nightly_charges: 0,
+        sum_additional_costs: 0,
+        sum_of_sums: 0
       }
     };
   },
@@ -416,18 +429,29 @@ export default {
      * Diese Methode sendet alle Daten an den Parent (Können mehrere Komponenten sein)
      */
     update() {
-      this.calcRows();
+      this.calcSum();
+      console.log(this.data);
       this.$emit("update", this.index, this.data);
     },
     /**
      * Diese Methode rechnet die Summe aller Reihen des tables aus und setzt diese
      */
-    calcSum(item) {
-      item.sum =
-        Number(item.travelcosts) +
-        Number(item.daycharge) +
-        Number(item.sleepcharge) +
-        Number(item.othercosts);
+    calcSum() {
+      for (let i = 0; i < this.data.items.length; i++) {
+        this.data.items[i].sum = 0;
+        if (this.data.items[i].kind_of_costs.includes("0")) {
+          this.data.items[i].sum += Number(this.data.items[i].travelcosts);
+        }
+        if (this.data.items[i].kind_of_costs.includes("1")) {
+          this.data.items[i].sum += Number(this.data.items[i].daycharge);
+        }
+        if (this.data.items[i].kind_of_costs.includes("2")) {
+          this.data.items[i].sum += Number(this.data.items[i].sleepcharge);
+        }
+        if (this.data.items[i].kind_of_costs.includes("3")) {
+          this.data.items[i].sum += Number(this.data.items[i].othercosts);
+        }
+      }
       this.calcRows();
     },
     /**
@@ -459,23 +483,31 @@ export default {
       var sac = 0;
       var sos = 0;
       for (let i = 0; i < this.data.items.length; i++) {
-        if (!isNaN(Number(this.data.items[i].travelcosts))) {
-          stc += Number(this.data.items[i].travelcosts);
+        if (this.data.items[i].kind_of_costs.includes("0")) {
+          if (!isNaN(Number(this.data.items[i].travelcosts))) {
+            stc += Number(this.data.items[i].travelcosts);
+          }
         }
-        if (!isNaN(Number(this.data.items[i].daycharge))) {
-          sdc += Number(this.data.items[i].daycharge);
+        if (this.data.items[i].kind_of_costs.includes("1")) {
+          if (!isNaN(Number(this.data.items[i].daycharge))) {
+            sdc += Number(this.data.items[i].daycharge);
+          }
         }
-        if (!isNaN(Number(this.data.items[i].sleepcharge))) {
-          snc += Number(this.data.items[i].sleepcharge);
+        if (this.data.items[i].kind_of_costs.includes("2")) {
+          if (!isNaN(Number(this.data.items[i].sleepcharge))) {
+            snc += Number(this.data.items[i].sleepcharge);
+          }
         }
-        if (!isNaN(Number(this.data.items[i].othercosts))) {
-          sac += Number(this.data.items[i].othercosts);
+        if (this.data.items[i].kind_of_costs.includes("3")) {
+          if (!isNaN(Number(this.data.items[i].othercosts))) {
+            sac += Number(this.data.items[i].othercosts);
+          }
         }
         if (!isNaN(Number(this.data.items[i].sum))) {
           sos += Number(this.data.items[i].sum);
         }
       }
-      this.data.sum_travel_costs = Number(stc);
+      this.data.sum_travelcosts = Number(stc);
       this.data.sum_daily_charges = Number(sdc);
       this.data.sum_nightly_charges = Number(snc);
       this.data.sum_additional_costs = Number(sac);
@@ -506,6 +538,19 @@ export default {
       for (let i = 0; i <= this.calculateLength(); i++) {
         var tmp = new Date(this.start);
         tmp.setDate(tmp.getDate() + i);
+        let tmp_kind = [];
+        if (this.app.calculation.rows[i].kind_of_costs.includes(0)) {
+          tmp_kind.push("0");
+        }
+        if (this.app.calculation.rows[i].kind_of_costs.includes(1)) {
+          tmp_kind.push("1");
+        }
+        if (this.app.calculation.rows[i].kind_of_costs.includes(2)) {
+          tmp_kind.push("2");
+        }
+        if (this.app.calculation.rows[i].kind_of_costs.includes(3)) {
+          tmp_kind.push("3");
+        }
         this.data.items.push({
           index: i,
           date:
@@ -516,7 +561,7 @@ export default {
             tmp.getUTCFullYear(),
           start: this.getTimeOfDate(this.app.calculation.rows[i].begin),
           end: this.getTimeOfDate(this.app.calculation.rows[i].end),
-          kind: "Tagesgebühr",
+          kind_of_costs: tmp_kind,
           km: this.app.calculation.rows[i].kilometres,
           travelcosts: this.app.calculation.rows[i].travel_costs,
           daycharge: this.app.calculation.rows[i].daily_charges,
@@ -589,8 +634,8 @@ export default {
             tmp.getUTCFullYear(),
           start: "",
           end: "",
-          kind: "Tagesgebühr",
           km: 0,
+          kind_of_costs: [],
           travelcosts: 0,
           daycharge: 0,
           sleepcharge: 0,
@@ -599,6 +644,7 @@ export default {
         });
       }
     }
+    this.calcSum();
   }
 };
 </script>

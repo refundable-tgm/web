@@ -434,11 +434,6 @@ export default {
       }
       this.app.travel_invoices[
         this.currentTeacherIndex
-      ].travel_mode = this.app.business_trip_applications[
-        this.currentTeacherIndex
-      ].travel_mode;
-      this.app.travel_invoices[
-        this.currentTeacherIndex
       ].id = this.currentTeacherIndex;
       this.app.travel_invoices[
         this.currentTeacherIndex
@@ -473,20 +468,33 @@ export default {
       this.app.travel_invoices[this.currentTeacherIndex].calculation.rows = [];
       this.app.travel_invoices[
         this.currentTeacherIndex
-      ].calculation.sum_travel_costs = data.SumTravelCosts;
+      ].calculation.sum_travel_costs = data.sum_travelcosts;
       this.app.travel_invoices[
         this.currentTeacherIndex
-      ].calculation.sum_daily_charges = data.SumDailyCharges;
+      ].calculation.sum_daily_charges = data.sum_daily_charges;
       this.app.travel_invoices[
         this.currentTeacherIndex
-      ].calculation.sum_nightly_charges = data.SumNightlyCharges;
+      ].calculation.sum_nightly_charges = data.sum_nightly_charges;
       this.app.travel_invoices[
         this.currentTeacherIndex
-      ].calculation.sum_additional_costs = data.SumAdditionalCosts;
+      ].calculation.sum_additional_costs = data.sum_additional_costs;
       this.app.travel_invoices[
         this.currentTeacherIndex
-      ].calculation.sum_of_sums = data.SumOfSums;
+      ].calculation.sum_of_sums = data.sum_of_sums;
       for (let i = 0; i < data.items.length; i++) {
+        let tmp_kind = [];
+        if (data.items[i].kind_of_costs.includes("0")) {
+          tmp_kind.push(0);
+        }
+        if (data.items[i].kind_of_costs.includes("1")) {
+          tmp_kind.push(1);
+        }
+        if (data.items[i].kind_of_costs.includes("2")) {
+          tmp_kind.push(2);
+        }
+        if (data.items[i].kind_of_costs.includes("3")) {
+          tmp_kind.push(3);
+        }
         this.app.travel_invoices[
           this.currentTeacherIndex
         ].calculation.rows.push({
@@ -494,6 +502,7 @@ export default {
           date: this.calcDate(data.items[i].date),
           begin: this.calcTime(data.items[i].start),
           end: this.calcTime(data.items[i].end),
+          kind_of_costs: tmp_kind,
           kilometres: this.returnValue(data.items[i].km),
           travel_costs: this.returnValue(data.items[i].travelcosts),
           daily_charges: this.returnValue(data.items[i].daycharge),
@@ -502,6 +511,7 @@ export default {
           sum: this.returnValue(data.items[i].sum)
         });
       }
+      console.log(this.app);
     },
     /**
      * Aktualisiert die Daten der Reiseformulare
@@ -591,6 +601,7 @@ export default {
         })
         .then(response => {
           this.app = response.data.application;
+          this.checkRunning();
           this.title = this.app.name;
           this.kind = this.app.kind;
           this.currentTeacher = this.getCurrentTeacher();
@@ -651,7 +662,7 @@ export default {
         name: "Sommersportwoche",
         kind: 0,
         miscellaneous_reason: "",
-        progress: 4,
+        progress: 5,
         start_time: "2021-03-01T18:54:40.035095+01:00",
         end_time: "2021-03-03T18:54:40.035095+01:00",
         notes: "Sommersportwoche ist cool",
@@ -774,7 +785,6 @@ export default {
             staffnr: 12345,
             starting_point: "Wexstraße 19-23, 1200 Wien",
             end_point: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-            travel_mode: 2,
             filing_date: "2021-01-01T18:54:40.035095+01:00",
             daily_charges_mode: 2,
             shortened_amount: 100,
@@ -802,6 +812,7 @@ export default {
               rows: [
                 {
                   id: 0,
+                  kind_of_costs: [1, 2, 3],
                   date: "2021-03-01T18:54:40.035095+01:00",
                   begin: "2021-03-01T08:00:40.035095+01:00",
                   end: "2021-03-01T20:00:40.035095+01:00",
@@ -814,6 +825,7 @@ export default {
                 },
                 {
                   id: 1,
+                  kind_of_costs: [0, 2, 3],
                   date: "2021-03-02T18:54:40.035095+01:00",
                   begin: "2021-03-02T08:00:40.035095+01:00",
                   end: "2021-03-02T20:00:40.035095+01:00",
@@ -826,6 +838,7 @@ export default {
                 },
                 {
                   id: 2,
+                  kind_of_costs: [0, 1, 3],
                   date: "2021-03-03T18:54:40.035095+01:00",
                   begin: "2021-03-03T08:00:40.035095+01:00",
                   end: "2021-03-03T20:00:40.035095+01:00",
@@ -850,7 +863,6 @@ export default {
             staffnr: 1234,
             starting_point: "Wexstraße 19-23, 1200 Wien",
             end_point: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-            travel_mode: 2,
             filing_date: "2021-01-01T18:54:40.035095+01:00",
             daily_charges_mode: 2,
             shortened_amount: 250,
@@ -878,6 +890,7 @@ export default {
               rows: [
                 {
                   id: 0,
+                  kind_of_costs: [0, 1, 2, 3],
                   date: "2021-03-01T18:54:40.035095+01:00",
                   begin: "2021-03-01T08:00:40.035095+01:00",
                   end: "2021-03-01T20:00:40.035095+01:00",
@@ -890,6 +903,7 @@ export default {
                 },
                 {
                   id: 1,
+                  kind_of_costs: [0, 3],
                   date: "2021-03-02T18:54:40.035095+01:00",
                   begin: "2021-03-02T08:00:40.035095+01:00",
                   end: "2021-03-02T20:00:40.035095+01:00",
@@ -902,6 +916,7 @@ export default {
                 },
                 {
                   id: 2,
+                  kind_of_costs: [2, 3],
                   date: "2021-03-03T18:54:40.035095+01:00",
                   begin: "2021-03-03T08:00:40.035095+01:00",
                   end: "2021-03-03T20:00:40.035095+01:00",
@@ -1012,9 +1027,40 @@ export default {
     },
     /**
      * TODO
+     * Diese Methode schaut nach, ob in dem Antrag alle Begleitlehrer ihre Daten eingetragen haben, damit die Progression weiter geht.
+     */
+    checkProgression() {},
+    /**
+     * TODO
+     * Diese Methode schaut, ob der Antrag läuft und setzt den Progress auf Läuft.
+     */
+    checkRunning() {
+      if (this.app.kind === 0) {
+        if (this.app.progress === 3) {
+          // Check if current Time is in the Time of the Antrag
+          // If yes, count Progress up to Läuft...
+          let current = new Date();
+          current.toString();
+        }
+      } else {
+        if (this.app.progress === 2) {
+          // Check if current Time is in the Time of the Antrag
+          // If yes, count Progress up to Läuft...
+        }
+      }
+    },
+    /**
+     * TODO
+     * Diese Methode schaut nach, ob in dem Antrag alle Begleitlehrer ihre Reiserechnungen eingetragen haben, damit die Progression weiter geht.
+     */
+    checkInvoices() {},
+    /**
+     * TODO
      * Diese Methode sendet den veränderten Antrag an das Backend
      */
     save() {
+      this.checkProgression();
+      this.checkInvoices();
       axios
         .put(this.url + "/saveApplication", {
           params: {
