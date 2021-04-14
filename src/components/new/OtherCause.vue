@@ -277,7 +277,7 @@
               </b-form-group>
               <!-- Reiseanträge -->
               <TravelApplication
-                v-if="selected === '7' || selected === '9'"
+                v-if="selected === '8' || selected === '10'"
                 v-bind:escort="escort"
                 v-bind:index="1"
                 v-on:update="updateTravel"
