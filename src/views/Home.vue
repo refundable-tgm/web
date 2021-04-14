@@ -214,13 +214,17 @@ export default {
       escortsdata: Object,
       forward: "",
       cookies: false,
-      admin: true,
-      administration: false,
-      av: false,
-      pek: false,
+      user: {
+        uuid: null,
+        short: null,
+        longname: null,
+        admin: null,
+        av: null,
+        administration: null,
+        pek: null
+      },
       logged: false,
       appid: "",
-      user: "",
       token: "",
       refresh_token: ""
     };
@@ -341,12 +345,14 @@ export default {
      * @param av Boolean-Wert, ob der Benutzer AV ist
      * @param pek Boolean-Wert, ob der Benutzer eine Reiserechnungsabteilung ist
      */
-    login(user, admin, administration, av, pek, token, refresh) {
-      this.user = user;
-      this.admin = admin;
-      this.administration = administration;
-      this.av = av;
-      this.pek = pek;
+    login(uuid, admin, administration, av, pek, token, refresh, short, long) {
+      this.user.uuid = uuid;
+      this.user.short = short;
+      this.user.long = long;
+      this.user.admin = admin;
+      this.user.administration = administration;
+      this.user.av = av;
+      this.user.pek = pek;
       this.setToken(token);
       this.setRefresh(refresh);
       this.token = token;
@@ -359,11 +365,7 @@ export default {
      * Diese Methode setzt die Daten der Webseite zurück
      */
     resetData() {
-      this.user = "";
-      this.admin = false;
-      this.administration = false;
-      this.av = false;
-      this.pek = false;
+      this.user = {};
       this.token = "";
       this.refresh_token = "";
       this.data = "";
@@ -671,48 +673,53 @@ export default {
     },
     manageLoading(tokenPresent) {
       // Weiterleitung, falls der Token gesetzt ist und eine die ApplicationView-Seite aufgerufen werden soll
-      if (this.pathing === undefined) {
-        if (this.query !== undefined) {
-          if (tokenPresent) {
-            // Wenn eine Session da ist, hol den Antrag und zeig ihn an
-            this.changeComponent("ApplicationView", true, this.query);
+      if (tokenPresent) {
+        if (this.pathing === undefined) {
+          if (this.query !== undefined) {
+            if (tokenPresent) {
+              // Wenn eine Session da ist, hol den Antrag und zeig ihn an
+              this.changeComponent("ApplicationView", true, this.query);
+            } else {
+              this.forward = {
+                name: "ApplicationView",
+                id: this.query
+              };
+              this.changeComponent("Login");
+              // Wenn keine Session da ist --> zeig die Login Seite an --> nach erfolgreichem Login --> Zeig Antrag an
+            }
           } else {
-            this.forward = {
-              name: "ApplicationView",
-              id: this.query
-            };
-            this.changeComponent("Login");
-            // Wenn keine Session da ist --> zeig die Login Seite an --> nach erfolgreichem Login --> Zeig Antrag an
+            if (tokenPresent) {
+              // Wenn eine Session da ist, zeig die Application Search Seite an
+              this.changeComponent("ApplicationSearch");
+            } else {
+              // Wenn keine Session da ist, zeig die Login Seite an und nach erfolgreichem Login die Application Search Seite
+              this.forward = {
+                name: "ApplicationSearch"
+              };
+              this.changeComponent("Login");
+            }
           }
         } else {
-          if (tokenPresent) {
-            // Wenn eine Session da ist, zeig die Application Search Seite an
-            this.changeComponent("ApplicationSearch");
+          /* 
+      Falls nicht weitergeleitet werden soll, wird geschaut, ob
+      der Benutzer mit dem Browser zuletzt auf einer anderen Seite war und wird auf diese Seite weitergeleitet
+      */
+          if (this.checkCookie()) {
+            this.useCookie(true);
+            var c = this.getCookie();
+            if (c == this.generateState(window.history.state)) {
+              this.changeComponent(c, false);
+            } else {
+              this.changeComponent(c);
+            }
           } else {
-            // Wenn keine Session da ist, zeig die Login Seite an und nach erfolgreichem Login die Application Search Seite
-            this.forward = {
-              name: "ApplicationSearch"
-            };
+            // Falls kein Cookie gesetzt ist, wird der Benutzer auf die Login-Seite weitergeleitet
             this.changeComponent("Login");
           }
         }
       } else {
-        /* 
-      Falls nicht weitergeleitet werden soll, wird geschaut, ob
-      der Benutzer mit dem Browser zuletzt auf einer anderen Seite war und wird auf diese Seite weitergeleitet
-      */
-        if (this.checkCookie()) {
-          this.useCookie(true);
-          var c = this.getCookie();
-          if (c == this.generateState(window.history.state)) {
-            this.changeComponent(c, false);
-          } else {
-            this.changeComponent(c);
-          }
-        } else {
-          // Falls kein Cookie gesetzt ist, wird der Benutzer auf die Login-Seite weitergeleitet
-          this.changeComponent("Login");
-        }
+        // Wenn keine Session da ist, wird der Benutzer auf die Login Seite weiter geleitet.
+        this.changeComponent("Login");
       }
     }
   },
@@ -742,6 +749,13 @@ export default {
         .then(response => {
           switch (response.status) {
             case 200:
+              this.user.av = response.data.av;
+              this.user.admin = response.data.super_user;
+              this.user.administration = response.data.administration;
+              this.user.pek = response.data.pek;
+              this.user.uuid = response.data.uuid;
+              this.user.short = response.data.short;
+              this.user.longname = response.data.longname;
               this.manageLoading(true);
               break;
             case 401:
@@ -756,6 +770,26 @@ export default {
                     case 200:
                       this.token = resp.data.access_token;
                       this.refresh_token = resp.data.refresh_token;
+                      axios
+                        .get(this.url + "/getTeacher?uuid=" + this.user, {
+                          headers: {
+                            Authorization: "Basic " + this.token
+                          }
+                        })
+                        .then(res => {
+                          if (res.status === 200) {
+                            this.user.av = res.data.av;
+                            this.user.admin = res.data.super_user;
+                            this.user.administration = res.data.administration;
+                            this.user.pek = res.data.pek;
+                            this.user.uuid = res.data.uuid;
+                            this.user.short = res.data.short;
+                            this.user.longname = res.data.longname;
+                            this.manageLoading(true);
+                          } else {
+                            this.manageLoading(false);
+                          }
+                        });
                       this.manageLoading(true);
                       break;
                     case 401:
@@ -776,7 +810,22 @@ export default {
       this.manageLoading(false);
     }
     // Nur Testweise
-    this.manageLoading(false);
+    this.admin = true;
+    this.administration = false;
+    this.pek = false;
+    this.av = false;
+    if (this.checkCookie()) {
+      this.useCookie(true);
+      var c = this.getCookie();
+      if (c == this.generateState(window.history.state)) {
+        this.changeComponent(c, false);
+      } else {
+        this.changeComponent(c);
+      }
+    } else {
+      // Falls kein Cookie gesetzt ist, wird der Benutzer auf die Login-Seite weitergeleitet
+      this.changeComponent("Login");
+    }
   }
 };
 </script>

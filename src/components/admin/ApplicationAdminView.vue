@@ -186,6 +186,7 @@
           id="show-btn"
           @click="closeAntrag"
           class="float-right"
+          :disabled="isActive()"
           ><b-icon icon="file-earmark-excel"></b-icon> Antrag ablehnen</b-button
         >
         <!-- Antrag annehmen Button -->
@@ -195,6 +196,7 @@
           style="margin-right: 1rem"
           class="float-right"
           @click="confirmed"
+          :disabled="isActive()"
           ><b-icon icon="file-earmark-check"></b-icon> Antrag annehmen</b-button
         >
       </b-col>
@@ -866,6 +868,24 @@ export default {
       }
     },
     /**
+     * Diese Methode schaut, ob der Admin den Fortschritt des Antrags bearbeiten soll
+     */
+    isActive() {
+      if (this.app.kind === 0) {
+        if (this.app.progress === 2 || this.app.progress === 6) {
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        if (this.app.progress === 1 || this.app.progress === 5) {
+          return false;
+        } else {
+          return true;
+        }
+      }
+    },
+    /**
      * TODO
      * Diese Methode lädt die PDF von dem Backend
      * @param item Die erwünschte PDF
@@ -946,15 +966,34 @@ export default {
      * Diese Methode lehnt den Antrag ab
      */
     delAn() {
+      if (this.app.kind === 0) {
+        if (this.app.progress === 2) {
+          this.app.progress === 0;
+        }
+        if (this.app.progress === 5) {
+          this.app.progress === 4;
+        }
+      } else {
+        if (this.app.progress === 1) {
+          this.app.progress === 0;
+        }
+        if (this.app.progress === 4) {
+          this.app.progress === 3;
+        }
+      }
       //If Progress is at 5 it should be thrown back to Progress 4 -SchoolEvent
       //If Progress is at 2 it should be thrown back to Progress 0 -Schoolevent
       //If Progress is at 4 it should be thrown back to Progress 3 -Workshop, etc
       //If Progress is at 1 it should be thrown back to Progress 0 -Workshop, etc
       console.log("Delete this Antrag!");
     },
+    /**
+     * TODO
+     * Diese Methode akzeptiert den Antrag oder die Kosten
+     */
     confirmed() {
       //Save the nesessary information from current User reviewing the application in the application
-      //Progress should be counted up
+      //Progress should be set to Akzeptiert or Fertig
     },
     /**
      * Diese Methode sorgt dafür, dass die URL angepasst ist, damit keine Reste des Viewers (ApplicationSearch) in der URL stehen

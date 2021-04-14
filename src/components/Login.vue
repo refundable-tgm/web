@@ -136,8 +136,10 @@ export default {
                         resp.data.administration,
                         resp.data.av,
                         resp.data.pek,
-                        data.access_token,
-                        data.refresh_token
+                        resp.data.access_token,
+                        resp.data.refresh_token,
+                        resp.data.short,
+                        resp.data.long
                       );
                       switch (this.forward.name) {
                         case "ApplicationSearch":
@@ -171,10 +173,10 @@ export default {
           // Temporär, damit man sich einloggen kann
           var daten = {
             user: 1234,
-            super_user: true,
+            super_user: false,
             administration: false,
             av: false,
-            pek: false
+            pek: true
           };
           this.$emit(
             "login",

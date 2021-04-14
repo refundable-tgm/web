@@ -329,7 +329,6 @@
 <script>
 export default {
   name: "NewApplication",
-  props: ["apikey"],
   methods: {
     /**
      * Diese Methode ändert die angezeigte Komponente
