@@ -24,7 +24,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Einreichung</span>
+            <span class="text text-truncate d-none d-md-block">Einreichung</span>
           </div>
           <div
             :class="{
@@ -42,7 +42,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">In Bearbeitung</span>
+            <span class="text text-truncate d-none d-md-block">In Bearbeitung</span>
           </div>
           <div
             :class="{
@@ -60,7 +60,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Bestätigt</span>
+            <span class="text text-truncate d-none d-md-block">Bestätigt</span>
           </div>
           <div
             :class="{
@@ -78,7 +78,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Läuft...</span>
+            <span class="text text-truncate d-none d-md-block">Läuft...</span>
           </div>
           <div
             :class="{
@@ -96,7 +96,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Kosten ausstehend</span>
+            <span class="text text-truncate d-none d-md-block">Kosten ausstehend</span>
           </div>
           <div
             :class="{
@@ -114,7 +114,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Kosten in Bearbeitung</span>
+            <span class="text text-truncate d-none d-md-block">Kosten in Bearbeitung</span>
           </div>
           <div
             :class="{
@@ -132,7 +132,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Abgeschlossen</span>
+            <span class="text text-truncate d-none d-md-block">Abgeschlossen</span>
           </div>
         </div>
         <!-- Falls der Antrag keine Schulveranstaltung ist -->
@@ -167,7 +167,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">In Bearbeitung</span>
+            <span class="text text-truncate d-none d-md-block">In Bearbeitung</span>
           </div>
           <div
             :class="{
@@ -185,7 +185,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Bestätigt</span>
+            <span class="text text-truncate d-none d-md-block">Bestätigt</span>
           </div>
           <div
             :class="{
@@ -203,7 +203,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Läuft...</span>
+            <span class="text text-truncate d-none d-md-block">Läuft...</span>
           </div>
           <div
             :class="{
@@ -221,7 +221,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Kosten ausstehend</span>
+            <span class="text text-truncate d-none d-md-block">Kosten ausstehend</span>
           </div>
           <div
             :class="{
@@ -239,7 +239,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Kosten in Bearbeitung</span>
+            <span class="text text-truncate d-none d-md-block">Kosten in Bearbeitung</span>
           </div>
           <div
             :class="{
@@ -257,7 +257,7 @@
                 class="fa"
               ></i>
             </span>
-            <span class="text text-truncate">Abgeschlossen</span>
+            <span class="text text-truncate d-none d-md-block">Abgeschlossen</span>
           </div>
         </div>
       </b-col>

@@ -5,12 +5,12 @@
       v-on:change-component="changeComponent"
       v-on:updateToken="updateToken"
       v-on:logout="logout"
+      v-on:login="login"
+      v-on:requestAnswer="useCookie"
       v-bind:url="url"
       v-bind:token="token"
       v-bind:forward="forward"
-      v-on:requestAnswer="useCookie"
       v-bind:cookieset="cookies"
-      v-on:login="login"
     />
     <Index
       v-if="currentComponent == 'Index'"
@@ -673,6 +673,7 @@ export default {
     },
     manageLoading(tokenPresent) {
       // Weiterleitung, falls der Token gesetzt ist und eine die ApplicationView-Seite aufgerufen werden soll
+      console.log("1");
       if (tokenPresent) {
         if (this.pathing === undefined) {
           if (this.query !== undefined) {
@@ -814,6 +815,7 @@ export default {
     this.administration = false;
     this.pek = false;
     this.av = false;
+    //this.manageLoading(true);
     if (this.checkCookie()) {
       this.useCookie(true);
       var c = this.getCookie();

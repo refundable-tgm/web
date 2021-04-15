@@ -84,6 +84,7 @@
         >
           Schnelle Information
         </b-button>
+        <div class="d-block d-lg-none" style="width:100%; height:0.5rem"></div>
         <!-- Antrag betrachten -->
         <b-button size="sm" @click="info(row.item)">
           Antrag Betrachten

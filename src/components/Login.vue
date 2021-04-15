@@ -159,7 +159,6 @@ export default {
                           } else {
                             this.$emit("change-component", "Index");
                           }
-
                           break;
                       }
                     } else {
@@ -217,15 +216,6 @@ export default {
           this.forceRender();
           this.makeToast();
         }
-      }
-    },
-    /**
-     * TODO?
-     * Diese Methode leitet den Benutzer auf OWA weiter, um sein Passwort zu ändern
-     */
-    forgot() {
-      if (this.checkClick()) {
-        window.open("https://owa.tgm.ac.at");
       }
     },
     /**
