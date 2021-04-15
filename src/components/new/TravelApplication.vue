@@ -9,8 +9,8 @@
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
-          description="Geben Sie den Titel der Begleitperson ein."
-          label="Titel"
+          description="Geben Sie den akademischen Titel an."
+          label="Akademischer Titel"
           label-for="pn"
         >
           <b-form-input
@@ -30,7 +30,7 @@
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
-          description="Geben Sie den Akademischen Grad der Begleitperson ein."
+          description="Geben Sie den Akademischen Grad an."
           label="Akademischer Grad"
           label-for="pn"
         >
