@@ -21,7 +21,7 @@
           class="float-right"
           v-on:click="normal"
           style="margin-right:20px"
-          v-if="!(pek || administration)"
+          v-if="!(user.pek || user.administration)"
         >
           Normale Ansicht
         </b-button>
@@ -31,7 +31,7 @@
           class="float-right"
           v-on:click="rights"
           style="margin-right:20px"
-          v-if="admin"
+          v-if="user.admin"
         >
           Rechte Verwalten
         </b-button>
@@ -155,7 +155,7 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["url", "user", "token", "pek", "administration", "admin", "av"],
+  props: ["url", "user", "token"],
   data() {
     return {
       selectMode: "multi",
@@ -326,7 +326,7 @@ export default {
      */
     loadData() {
       axios
-        .get(this.url + "/getAllAdminApplications?user=" + this.user, {
+        .get(this.url + "/getAllAdminApplications?user=" + this.user.uuid, {
           params: {
             token: this.token
           }
@@ -341,7 +341,7 @@ export default {
             );
             apps[i].start = this.formatDate(apps[i].start_time);
             apps[i].from = apps[i].staffnr;
-            if (this.pek) {
+            if (this.user.pek) {
               if (apps[i].kind === 0) {
                 if (apps[i].progress !== 6) {
                   apps.splice(i, 1);
@@ -352,7 +352,7 @@ export default {
                 }
               }
             }
-            if (this.av || this.administration) {
+            if (this.user.av || this.user.administration) {
               if (apps[i].kind === 0) {
                 if (apps[i].progress !== 2) {
                   apps.splice(i, 1);
@@ -777,7 +777,6 @@ export default {
         }
       ];
       for (let i = 0; i < apps.length; i++) {
-        console.log("laden objekt " + i);
         apps[i].title = apps[i].name;
         apps[i].stat = this.loadStatus(apps[i].kind, apps[i].progress);
         apps[i].edat = this.formatDate(
@@ -788,7 +787,7 @@ export default {
           apps[i].business_trip_applications[0].name +
           " " +
           apps[i].business_trip_applications[0].surname;
-        if (this.pek) {
+        if (this.user.pek) {
           if (apps[i].kind === 0) {
             if (apps[i].progress !== 6) {
               apps.splice(i, 1);
@@ -799,7 +798,7 @@ export default {
             }
           }
         }
-        if (this.av || this.administration) {
+        if (this.user.av || this.user.administration) {
           if (apps[i].kind === 0) {
             if (apps[i].progress !== 2) {
               apps.splice(i, 1);

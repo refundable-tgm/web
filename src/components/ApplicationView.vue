@@ -603,7 +603,7 @@ export default {
           this.checkRunning();
           this.title = this.app.name;
           this.kind = this.app.kind;
-          this.currentTeacher = this.getCurrentTeacher();
+          this.currentTeacher = this.user.short;
           if (this.app.kind === 0) {
             if (
               this.currentTeacher ===
@@ -1065,7 +1065,7 @@ export default {
       this.checkRunning();
       this.title = this.app.name;
       this.kind = this.app.kind;
-      this.currentTeacher = this.getCurrentTeacher();
+      this.currentTeacher = this.user.short;
       if (this.app.kind === 0) {
         if (
           this.currentTeacher ===
@@ -1203,7 +1203,7 @@ export default {
             application: this.app.UUID,
             token: this.token,
             data: this.app,
-            user: this.user
+            user: this.user.uuid
           }
         })
         .then(() => {
@@ -1526,23 +1526,6 @@ export default {
       }
     },
     /**
-     * TODO
-     * Diese Methode gibt den Kürzel des derzeit angemeldeten Benutzers zurück
-     */
-    getCurrentTeacher() {
-      axios
-        .get(this.url + "/getTeacher?id=" + this.user, {
-          params: {
-            token: this.token
-          }
-        })
-        .then(response => {
-          let data = response.data;
-          return data.Short;
-        });
-      return "szakall";
-    },
-    /**
      * Diese Methode lädt die PDF von dem Backend
      */
     openPDF(item) {
@@ -1551,7 +1534,7 @@ export default {
           params: {
             application: this.app.UUID,
             form: item.form,
-            user: this.user,
+            user: this.user.uuid,
             token: this.token
           }
         })

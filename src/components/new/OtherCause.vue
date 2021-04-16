@@ -531,23 +531,6 @@ export default {
       this.teacher.geschaetzte_kosten = data.geschaetzte_kosten;
     },
     /**
-     * TODO
-     * Gibt den derzeitig angemeldeten Nutzer zurück
-     * @returns Der angemeldetet Lehrer
-     */
-    getTeacher() {
-      axios
-        .get(this.url + "/getTeacher?id=" + this.user, {
-          params: {
-            token: this.token
-          }
-        })
-        .then(response => {
-          let data = response.data;
-          return { longname: data.Longname, short: data.Short };
-        });
-    },
-    /**
      * Diese Methode setzt die verwendete Zeitzone von dem übergebenen Datum
      * @param datum Das Datum, welches angepasst werden soll
      * @returns Das angepasste Datum
@@ -701,11 +684,10 @@ export default {
     };
   },
   mounted() {
-    let leader = this.getTeacher();
     let output = [
       {
-        name: leader.longname,
-        shortname: leader.short,
+        name: this.user.longname,
+        shortname: this.user.short,
         startDate: this.startDate,
         endDate: this.endDate,
         startTime: this.startTime,

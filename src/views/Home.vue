@@ -20,10 +20,6 @@
       v-bind:url="url"
       v-bind:token="token"
       v-bind:refresh_token="refresh_token"
-      v-bind:admin="admin"
-      v-bind:av="av"
-      v-bind:administration="administration"
-      v-bind:pek="pek"
       v-bind:user="user"
     />
     <NewApplication
@@ -115,10 +111,6 @@
       v-on:updateToken="updateToken"
       v-on:logout="logout"
       v-bind:url="url"
-      v-bind:pek="pek"
-      v-bind:administration="administration"
-      v-bind:admin="admin"
-      v-bind:av="av"
       v-bind:token="token"
       v-bind:refresh_token="refresh_token"
       v-bind:user="user"
@@ -129,13 +121,10 @@
       v-on:updateToken="updateToken"
       v-on:logout="logout"
       v-bind:url="url"
-      v-bind:pek="pek"
-      v-bind:administration="administration"
-      v-bind:admin="admin"
-      v-bind:av="av"
       v-bind:token="token"
       v-bind:refresh_token="refresh_token"
       v-bind:user="user"
+      v-bind:appid="appid"
     />
     <Progress
       v-if="currentComponent == 'Progress'"
@@ -245,7 +234,8 @@ export default {
     ) {
       switch (component) {
         case "Login":
-          this.change("Login", back);
+          this.deleteCookies();
+          this.change("Login", back, false);
           break;
 
         case "Index":
@@ -254,7 +244,7 @@ export default {
 
         case "ApplicationView":
           this.loadApplication(application);
-          this.change("ApplicationView", back);
+          this.change("ApplicationView", back, false);
           break;
 
         case "NewApplication":
@@ -304,7 +294,8 @@ export default {
           break;
 
         case "ApplicationAdminView":
-          this.change("ApplicationAdminView", back);
+          this.loadApplication(application);
+          this.change("ApplicationAdminView", back, false);
           break;
 
         case "Rights":
@@ -355,6 +346,7 @@ export default {
       this.user.pek = pek;
       this.setToken(token);
       this.setRefresh(refresh);
+      this.setUser(uuid);
       this.token = token;
       this.refresh_token = refresh;
       if (administration || pek) {
@@ -399,32 +391,15 @@ export default {
       this.refresh_token = refresh;
     },
     /**
-     * Diese Methode gibt den derzeitg angemeldeten Lehrernamen zurück
-     * @returns Ein Objekt, in dem das Kürzel des Lehrers und der volle Namen enthalten ist
-     */
-    getLeader() {
-      axios
-        .get(this.url + "/getTeacher?id=" + this.user, {
-          params: {
-            token: this.token
-          }
-        })
-        .then(response => {
-          let data = response.data;
-          return { longname: data.Longname, short: data.Short };
-        });
-    },
-    /**
      * Diese Methode erstellt die Datenstruktur für die Begleitpersonenformulare
      * @param escortsdata Die Informationen aus dem Schulveranstaltungsformular
      */
     loadEscortsData(escortsdata) {
-      let leader = this.getLeader();
       let output = [
         {
-          name: leader.longname.split(" ")[0],
-          surname: leader.longname.split(" ")[1],
-          shortname: leader.short,
+          name: this.user.longname.split(" ")[0],
+          surname: this.user.longname.split(" ")[1],
+          shortname: this.user.short,
           startDate: escortsdata.startDate,
           endDate: escortsdata.endDate,
           startTime: escortsdata.startTime,
@@ -571,6 +546,19 @@ export default {
       }
     },
     /**
+     * Diese Methode setzt den Cookie der Webseite
+     * @param value Der Wert des Cookies
+     */
+    setUser(value) {
+      if (this.cookies) {
+        var d = new Date();
+        d.setTime(d.getTime() + 365 * 24 * 60 * 60 * 1000);
+        var expires = "expires=" + d.toUTCString();
+        document.cookie =
+          "user=" + value + ";" + expires + ";SameSite=Strict;path=/";
+      }
+    },
+    /**
      * Diese Methode gibt den Cookie der Webseite zurück
      * @returns Der Cookie mit all seinen Informationen
      */
@@ -647,6 +635,25 @@ export default {
       return "";
     },
     /**
+     * Diese Methode gibt den Cookie der Webseite zurück
+     * @returns Der Cookie mit all seinen Informationen
+     */
+    getUser() {
+      var name = "user=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(";");
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == " ") {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    },
+    /**
      * Diese Methode setzt die Variable, falls Cookies akzeptiert worden sind
      * @param cookie Boolean-Wert, ob die Cookies akzeptiert worden sind
      */
@@ -669,6 +676,9 @@ export default {
         var value3 = this.getRefresh();
         document.cookie =
           "refresh=" + value3 + ";" + expires + ";SameSite=Strict;path=/";
+        var value4 = this.getUser();
+        document.cookie =
+          "user=" + value4 + ";" + expires + ";SameSite=Strict;path=/";
       }
     },
     manageLoading(tokenPresent) {
@@ -742,7 +752,7 @@ export default {
       this.token = this.getToken();
       this.refresh_token = this.getRefresh();
       axios
-        .get(this.url + "/getTeacher?uuid=" + this.user, {
+        .get(this.url + "/getTeacher?uuid=" + this.getUser(), {
           headers: {
             Authorization: "Basic " + this.token
           }
@@ -772,7 +782,7 @@ export default {
                       this.token = resp.data.access_token;
                       this.refresh_token = resp.data.refresh_token;
                       axios
-                        .get(this.url + "/getTeacher?uuid=" + this.user, {
+                        .get(this.url + "/getTeacher?uuid=" + this.getUser(), {
                           headers: {
                             Authorization: "Basic " + this.token
                           }
@@ -811,10 +821,13 @@ export default {
       this.manageLoading(false);
     }
     // Nur Testweise
-    this.admin = true;
-    this.administration = false;
-    this.pek = false;
-    this.av = false;
+    this.user.uuid = 1234;
+    this.user.admin = true;
+    this.user.administration = false;
+    this.user.pek = false;
+    this.user.av = false;
+    this.user.short = "szakall";
+    this.user.longname = "Stefan Zakall";
     //this.manageLoading(true);
     if (this.checkCookie()) {
       this.useCookie(true);

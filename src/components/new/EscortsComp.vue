@@ -4,7 +4,7 @@
     <b-row>
       <b-col cols="12">
         <center>
-          <h2>{{ escort.name }}</h2>
+          <h2>{{ escort.name }} {{ escort.surname }}</h2>
         </center>
         <!-- Startdatum der SV -->
         <b-form-group

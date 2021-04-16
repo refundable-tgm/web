@@ -172,10 +172,10 @@ export default {
           // Temporär, damit man sich einloggen kann
           var daten = {
             user: 1234,
-            super_user: false,
+            super_user: true,
             administration: false,
             av: false,
-            pek: true
+            pek: false
           };
           this.$emit(
             "login",
@@ -185,7 +185,9 @@ export default {
             daten.av,
             daten.pek,
             "DasIstEinToken",
-            "DasIstEinRefreshToken"
+            "DasIstEinRefreshToken",
+            "szakall",
+            "Stefan Zakall"
           );
           switch (this.forward.name) {
             case "ApplicationSearch":

@@ -121,24 +121,7 @@ export default {
   props: ["url", "user", "token"],
   data() {
     return {
-      items: [
-        {
-          leader: "Stefan Zakall",
-          title: "Sommersportwoche",
-          edate: "14-06-2021",
-          active: true,
-          status: "In Bearbeitung",
-          _rowVariant: "warning"
-        },
-        {
-          leader: "Stefan Zakall",
-          title: "Pflegefreistellung",
-          edate: "14-04-2021",
-          active: true,
-          status: "Abgeschlossen",
-          _rowVariant: "success"
-        }
-      ],
+      items: [],
       fields: [
         {
           key: "title",
@@ -204,6 +187,471 @@ export default {
     info(item) {
       this.viewApplication(item.uuid);
     },
+    tmp() {
+      var data = [
+        {
+          uuid: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
+          name: "Sommersportwoche",
+          kind: 0,
+          miscellaneous_reason: "",
+          progress: 3,
+          start_time: "2021-04-12T18:54:40.035095+01:00",
+          end_time: "2021-04-19T18:54:40.035095+01:00",
+          notes: "Sommersportwoche ist cool",
+          start_address: "Wexstraße 19-23, 1200 Wien",
+          destination_address: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+          last_changed: "2021-03-01T18:54:40.035096+01:00",
+          school_event_details: {
+            classes: ["5BHIT"],
+            amount_male_students: 22,
+            amount_female_students: 1,
+            duration_in_days: 3,
+            teachers: [
+              {
+                name: "Stefan Zakall",
+                shortname: "szakall",
+                attendance_from: "2021-04-12T18:54:40.035095+01:00",
+                attendance_till: "2021-04-19T18:54:40.035095+01:00",
+                group: 2,
+                start_address: "Wexstraße 19-23, 1200 Wien",
+                meeting_point: "Wexstraße 19-23, 1200 Wien",
+                role: 0
+              },
+              {
+                name: "Dominik Dolezal",
+                shortname: "ddolezal",
+                attendance_from: "2021-04-12T18:54:40.035095+01:00",
+                attendance_till: "2021-04-19T18:54:40.035095+01:00",
+                group: 1,
+                start_address: "Wexstraße 19-23, 1200 Wien",
+                meeting_point: "Wexstraße 19-23, 1200 Wien",
+                role: 1
+              }
+            ]
+          },
+          training_details: {
+            kind: 8,
+            miscellaneous_reason: "Fortbildung im Privatem",
+            ph: 12,
+            organizer: "PRIA"
+          },
+          other_reason_details: {
+            kind: 2,
+            service_mandate_title: "Stellung",
+            service_mandate_gz: 1234,
+            miscellaneous_reason: "Ist nicht so wichtig"
+          },
+          business_trip_applications: [
+            {
+              id: 0,
+              surname: "Zakall",
+              name: "Stefan",
+              degree: "B. Sc.",
+              title: "Prof.",
+              staffnr: 12345,
+              trip_begin_time: "2021-04-12T18:54:40.035095+01:00",
+              trip_end_time: "2021-04-19T18:54:40.035095+01:00",
+              service_begin_time: "2021-04-12T18:54:40.035095+01:00",
+              service_end_time: "2021-04-19T18:54:40.035095+01:00",
+              trip_goal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+              travel_purpose: "Aus Gesundheitsgründen",
+              travel_mode: 2,
+              starting_point: 0,
+              end_point: 0,
+              reasoning: "Weil es näher ist",
+              other_participants: ["ddolezal"],
+              bonus_mile_confirmation_1: true,
+              bonus_mile_confirmation_2: true,
+              travel_costs_payed_by_someone: false,
+              staying_costs_payed_by_someone: false,
+              payed_by_whom: "",
+              other_costs: 10,
+              estimated_costs: 20,
+              date_application_filed: "2021-01-01T18:54:40.035095+01:00",
+              date_application_approved: "2021-02-01T18:54:40.035095+01:00",
+              referee: "",
+              business_card_emitted_outward: false,
+              business_card_emitted_return: false
+            },
+            {
+              id: 1,
+              surname: "Dolezal",
+              name: "Dominik",
+              degree: "B. Sc.",
+              title: "Prof.",
+              staffnr: 1234,
+              trip_begin_time: "2021-04-12T18:54:40.035095+01:00",
+              trip_end_time: "2021-04-19T18:54:40.035095+01:00",
+              service_begin_time: "2021-04-12T18:54:40.035095+01:00",
+              service_end_time: "2021-04-19T18:54:40.035095+01:00",
+              trip_goal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+              travel_purpose: "Aus Gründen, die ich nicht nennen möchte",
+              travel_mode: 0,
+              starting_point: 0,
+              end_point: 0,
+              reasoning: "Weil es am nähesten ist von allem",
+              other_participants: ["szakall"],
+              bonus_mile_confirmation_1: true,
+              bonus_mile_confirmation_2: true,
+              travel_costs_payed_by_someone: true,
+              staying_costs_payed_by_someone: false,
+              payed_by_whom: "Firma",
+              other_costs: 30,
+              estimated_costs: 40,
+              date_application_filed: "2021-01-01T18:54:40.035095+01:00",
+              date_application_approved: "2021-02-01T18:54:40.035095+01:00",
+              referee: "",
+              business_card_emitted_outward: false,
+              business_card_emitted_return: false
+            }
+          ],
+          travel_invoices: [
+            {
+              id: 0,
+              surname: "Zakall",
+              name: "Stefan",
+              degree: "B. Sc.",
+              title: "Prof.",
+              trip_begin_time: "2021-04-12T18:54:40.035095+01:00",
+              trip_end_time: "2021-04-19T18:54:40.035095+01:00",
+              staffnr: 12345,
+              starting_point: "Wexstraße 19-23, 1200 Wien",
+              end_point: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+              filing_date: "2021-01-01T18:54:40.035095+01:00",
+              daily_charges_mode: 2,
+              shortened_amount: 100,
+              nightly_charges_mode: 1,
+              breakfasts: 4,
+              lunches: 3,
+              dinners: 2,
+              official_business_card_got: true,
+              travel_grant: true,
+              travel_costs_pre_grant: 500,
+              replacement_for_advantage_card: true,
+              replacement_for_train_card_class_2: true,
+              kilometre_allowance: true,
+              kilometre_amount: 18,
+              nr_and_indications_of_participants: true,
+              travel_costs_cited: true,
+              no_travel_costs: true,
+              calculation: {
+                id: 0,
+                sum_travel_costs: 18,
+                sum_daily_charges: 18,
+                sum_nightly_charges: 18,
+                sum_additional_costs: 18,
+                sum_of_sums: 72,
+                rows: [
+                  {
+                    id: 0,
+                    kind_of_costs: [1, 2, 3],
+                    date: "2021-04-12T18:54:40.035095+01:00",
+                    begin: "2021-04-12T08:00:00.035095+01:00",
+                    end: "2021-04-12T18:00:00.035095+01:00",
+                    kilometres: 5,
+                    travel_costs: 0,
+                    daily_charges: 5,
+                    nightly_charges: 5,
+                    additional_costs: 5,
+                    sum: 15
+                  },
+                  {
+                    id: 1,
+                    kind_of_costs: [1, 2, 3],
+                    date: "2021-04-13T18:54:40.035095+01:00",
+                    begin: "2021-04-13T08:00:00.035095+01:00",
+                    end: "2021-04-13T18:00:00.035095+01:00",
+                    kilometres: 6,
+                    travel_costs: 0,
+                    daily_charges: 6,
+                    nightly_charges: 6,
+                    additional_costs: 6,
+                    sum: 18
+                  },
+                  {
+                    id: 2,
+                    kind_of_costs: [0, 1, 3],
+                    date: "2021-04-14T08:00:00.035095+01:00",
+                    begin: "2021-04-14T08:00:00.035095+01:00",
+                    end: "2021-04-14T18:00:00.035095+01:00",
+                    kilometres: 7,
+                    travel_costs: 7,
+                    daily_charges: 7,
+                    nightly_charges: 0,
+                    additional_costs: 7,
+                    sum: 21
+                  },
+                  {
+                    id: 3,
+                    kind_of_costs: [0, 2, 3],
+                    date: "2021-04-15T08:00:00.035095+01:00",
+                    begin: "2021-04-15T08:00:00.035095+01:00",
+                    end: "2021-04-15T18:00:00.035095+01:00",
+                    kilometres: 8,
+                    travel_costs: 8,
+                    daily_charges: 0,
+                    nightly_charges: 8,
+                    additional_costs: 8,
+                    sum: 24
+                  },
+                  {
+                    id: 4,
+                    kind_of_costs: [0, 3],
+                    date: "2021-04-16T08:00:00.035095+01:00",
+                    begin: "2021-04-16T08:00:00.035095+01:00",
+                    end: "2021-04-16T18:00:00.035095+01:00",
+                    kilometres: 9,
+                    travel_costs: 9,
+                    daily_charges: 0,
+                    nightly_charges: 0,
+                    additional_costs: 9,
+                    sum: 18
+                  },
+                  {
+                    id: 5,
+                    kind_of_costs: [3],
+                    date: "2021-04-17T08:00:00.035095+01:00",
+                    begin: "2021-04-17T08:00:00.035095+01:00",
+                    end: "2021-04-17T18:00:00.035095+01:00",
+                    kilometres: 10,
+                    travel_costs: 0,
+                    daily_charges: 0,
+                    nightly_charges: 0,
+                    additional_costs: 10,
+                    sum: 10
+                  },
+                  {
+                    id: 6,
+                    kind_of_costs: [2, 3],
+                    date: "2021-04-18T08:00:00.035095+01:00",
+                    begin: "2021-04-18T08:00:00.035095+01:00",
+                    end: "2021-04-18T18:00:00.035095+01:00",
+                    kilometres: 11,
+                    travel_costs: 0,
+                    daily_charges: 0,
+                    nightly_charges: 11,
+                    additional_costs: 11,
+                    sum: 22
+                  },
+                  {
+                    id: 7,
+                    kind_of_costs: [],
+                    date: "2021-04-19T08:00:00.035095+01:00",
+                    begin: "2021-04-19T08:00:00.035095+01:00",
+                    end: "2021-04-19T18:00:00.035095+01:00",
+                    kilometres: 10,
+                    travel_costs: 0,
+                    daily_charges: 0,
+                    nightly_charges: 0,
+                    additional_costs: 0,
+                    sum: 0
+                  }
+                ]
+              }
+            },
+            {
+              id: 1,
+              surname: "Dolezal",
+              name: "Dominik",
+              degree: "B. Sc.",
+              title: "Prof.",
+              trip_begin_time: "2021-03-01T18:54:40.035095+01:00",
+              trip_end_time: "2021-03-03T18:54:40.035095+01:00",
+              staffnr: 1234,
+              starting_point: "Wexstraße 19-23, 1200 Wien",
+              end_point: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
+              filing_date: "2021-01-01T18:54:40.035095+01:00",
+              daily_charges_mode: 2,
+              shortened_amount: 250,
+              nightly_charges_mode: 1,
+              breakfasts: 3,
+              lunches: 4,
+              dinners: 2,
+              official_business_card_got: true,
+              travel_grant: true,
+              travel_costs_pre_grant: 200,
+              replacement_for_advantage_card: true,
+              replacement_for_train_card_class_2: true,
+              kilometre_allowance: true,
+              kilometre_amount: 18,
+              nr_and_indications_of_participants: true,
+              travel_costs_cited: true,
+              no_travel_costs: false,
+              calculation: {
+                id: 0,
+                sum_travel_costs: 15,
+                sum_daily_charges: 15,
+                sum_nightly_charges: 15,
+                sum_additional_costs: 15,
+                sum_of_sums: 60,
+                rows: [
+                  {
+                    id: 0,
+                    kind_of_costs: [1, 2, 3],
+                    date: "2021-04-12T18:54:40.035095+01:00",
+                    begin: "2021-04-12T08:00:00.035095+01:00",
+                    end: "2021-04-12T18:00:00.035095+01:00",
+                    kilometres: 5,
+                    travel_costs: 0,
+                    daily_charges: 5,
+                    nightly_charges: 5,
+                    additional_costs: 5,
+                    sum: 15
+                  },
+                  {
+                    id: 1,
+                    kind_of_costs: [1, 2, 3],
+                    date: "2021-04-13T18:54:40.035095+01:00",
+                    begin: "2021-04-13T08:00:00.035095+01:00",
+                    end: "2021-04-13T18:00:00.035095+01:00",
+                    kilometres: 6,
+                    travel_costs: 0,
+                    daily_charges: 6,
+                    nightly_charges: 6,
+                    additional_costs: 6,
+                    sum: 18
+                  },
+                  {
+                    id: 2,
+                    kind_of_costs: [0, 1, 3],
+                    date: "2021-04-14T08:00:00.035095+01:00",
+                    begin: "2021-04-14T08:00:00.035095+01:00",
+                    end: "2021-04-14T18:00:00.035095+01:00",
+                    kilometres: 7,
+                    travel_costs: 7,
+                    daily_charges: 7,
+                    nightly_charges: 0,
+                    additional_costs: 7,
+                    sum: 21
+                  },
+                  {
+                    id: 3,
+                    kind_of_costs: [0, 2, 3],
+                    date: "2021-04-15T08:00:00.035095+01:00",
+                    begin: "2021-04-15T08:00:00.035095+01:00",
+                    end: "2021-04-15T18:00:00.035095+01:00",
+                    kilometres: 8,
+                    travel_costs: 8,
+                    daily_charges: 0,
+                    nightly_charges: 8,
+                    additional_costs: 8,
+                    sum: 24
+                  },
+                  {
+                    id: 4,
+                    kind_of_costs: [0, 3],
+                    date: "2021-04-16T08:00:00.035095+01:00",
+                    begin: "2021-04-16T08:00:00.035095+01:00",
+                    end: "2021-04-16T18:00:00.035095+01:00",
+                    kilometres: 9,
+                    travel_costs: 9,
+                    daily_charges: 0,
+                    nightly_charges: 0,
+                    additional_costs: 9,
+                    sum: 18
+                  },
+                  {
+                    id: 5,
+                    kind_of_costs: [3],
+                    date: "2021-04-17T08:00:00.035095+01:00",
+                    begin: "2021-04-17T08:00:00.035095+01:00",
+                    end: "2021-04-17T18:00:00.035095+01:00",
+                    kilometres: 10,
+                    travel_costs: 0,
+                    daily_charges: 0,
+                    nightly_charges: 0,
+                    additional_costs: 10,
+                    sum: 10
+                  },
+                  {
+                    id: 6,
+                    kind_of_costs: [2, 3],
+                    date: "2021-04-18T08:00:00.035095+01:00",
+                    begin: "2021-04-18T08:00:00.035095+01:00",
+                    end: "2021-04-18T18:00:00.035095+01:00",
+                    kilometres: 11,
+                    travel_costs: 0,
+                    daily_charges: 0,
+                    nightly_charges: 11,
+                    additional_costs: 11,
+                    sum: 22
+                  },
+                  {
+                    id: 7,
+                    kind_of_costs: [],
+                    date: "2021-04-19T08:00:00.035095+01:00",
+                    begin: "2021-04-19T08:00:00.035095+01:00",
+                    end: "2021-04-19T18:00:00.035095+01:00",
+                    kilometres: 10,
+                    travel_costs: 0,
+                    daily_charges: 0,
+                    nightly_charges: 0,
+                    additional_costs: 0,
+                    sum: 0
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ];
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].kind === 0) {
+          for (
+            let j = 0;
+            j < data[i].school_event_details.teachers.length;
+            j++
+          ) {
+            if (data[i].school_event_details.teachers[j].role === 0) {
+              data[i].leader = data[i].school_event_details.teachers[j].name;
+            }
+          }
+        } else {
+          data[i].leader = this.user.longname;
+        }
+        console.log(1);
+        data[i].status = this.loadStatus(data[i].kind, data[i].progress);
+        data[i].active = this.isActive(data[i].kind, data[i].progress);
+        data[i].title = data[i].name;
+        data[i].edate = this.formatDate(
+          data[i].business_trip_applications[0].date_application_filed
+        );
+        if (data[i].kind === 0) {
+          switch (data[i].progress) {
+            case 7:
+              data[i]._rowVariant = "success";
+              break;
+            case 1 || 2 || 3 || 4 || 5 || 6:
+              data[i]._rowVariant = "warning";
+              break;
+            case 0:
+              data[i]._rowVariant = "danger";
+              break;
+            default:
+              data[i]._rowVariant = "danger";
+              break;
+          }
+        } else {
+          switch (data[i].progress) {
+            case 2 || 3 || 6:
+              data[i]._rowVariant = "success";
+              break;
+            case 1 || 4 || 5:
+              data[i]._rowVariant = "warning";
+              break;
+            case 0:
+              data[i]._rowVariant = "danger";
+              break;
+            default:
+              data[i]._rowVariant = "danger";
+              break;
+          }
+        }
+      }
+      this.items = data;
+      // Set the initial number of items
+      this.totalRows = this.items.length;
+    },
     /**
      * Diese Methode schaut, ob die geladenen Anträge aktiv oder unaktiv sind
      * @param kind Die Art des Antrags
@@ -211,6 +659,8 @@ export default {
      * @returns Boolean-Wert, ob der Antrag aktiv ist oder nicht
      */
     isActive(kind, progress) {
+      console.log(kind);
+      console.log(progress);
       if (kind === 0) {
         if (progress > 0 && progress < 7) return true;
         else return false;
@@ -291,14 +741,13 @@ export default {
      */
     loadData() {
       axios
-        .get(this.url + "/getAllApplications?user=" + this.user, {
+        .get(this.url + "/getAllApplications?user=" + this.user.uuid, {
           params: {
             token: this.token
           }
         })
-        .then((response, status) => {
+        .then(response => {
           var data = response.data;
-          status.toString();
           for (let i = 0; i < data.length; i++) {
             if (data[i].kind === 0) {
               for (
@@ -312,22 +761,14 @@ export default {
                 }
               }
             } else {
-              axios
-                .get(this.url + "/getTeacher?id=" + this.user, {
-                  params: {
-                    token: this.token
-                  }
-                })
-                .then(response => {
-                  let daten = response.data;
-                  data[i].leader = daten.Longname;
-                });
+              data[i].leader = this.user.longname;
             }
             data[i].status = this.loadStatus(data[i].kind, data[i].progress);
             data[i].active = this.isActive(data[i].kind, data[i].progress);
             data[i].title = data[i].name;
-            data[i].edate =
-              data[i].business_trip_applications[0].date_application_filed;
+            data[i].edate = this.formatDate(
+              data[i].business_trip_applications[0].date_application_filed
+            );
             if (data[i].kind === 0) {
               switch (data[i].progress) {
                 case 7:
@@ -364,6 +805,7 @@ export default {
           // Set the initial number of items
           this.totalRows = this.items.length;
         });
+      this.tmp();
     },
     /**
      * Diese Methode leert den Inhalt und den Titel des Modals
@@ -371,6 +813,22 @@ export default {
     resetInfoModal() {
       this.infoModal.title = "";
       this.infoModal.content = "";
+    },
+    /**
+     * Diese Methode formatiert das Datum um korrekt angezeigt zu werden
+     * @param datum Das Datum
+     * @returns Das Datum in einfacher Form
+     */
+    formatDate(datum) {
+      let date = new Date(datum);
+      return (
+        date.getFullYear() +
+        "-" +
+        date.getUTCMonth() +
+        1 +
+        "-" +
+        date.getUTCDate()
+      );
     },
     /**
      * Filter-Methode von Bootstrap-vue Table

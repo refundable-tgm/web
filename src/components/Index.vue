@@ -99,7 +99,7 @@
                 variant="outline-primary"
                 class="shadow-lg"
                 v-on:click="adminclick"
-                v-if="admin"
+                v-if="user.admin"
                 style="margin-top:0px; margin-bottom:40px; width:100%"
               >
                 Admin Ansicht
@@ -260,7 +260,7 @@
             <!-- Administrator Ansicht Button -->
             <b-button
               v-on:click="adminclick"
-              v-if="admin || av"
+              v-if="user.admin || user.av"
               class="shadow-lg"
               variant="outline-info"
               style="margin-right:1rem"
@@ -333,16 +333,7 @@ export default {
   components: {
     NewsElement
   },
-  props: [
-    "url",
-    "admin",
-    "av",
-    "administration",
-    "pek",
-    "token",
-    "refresh_token",
-    "user"
-  ],
+  props: ["url", "token", "refresh_token", "user"],
   data() {
     return {
       news: "",
@@ -356,7 +347,7 @@ export default {
      */
     setNews() {
       axios
-        .get(this.url + "/news?user=" + this.user)
+        .get(this.url + "/news?user=" + this.user.uuid)
         .then((response, status) => {
           status.toString();
           this.news = this.cutNews(response.data);

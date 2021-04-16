@@ -12,7 +12,7 @@
           variant="outline-primary"
           class="float-right"
           v-on:click="index"
-          v-if="!(pek || administration)"
+          v-if="!(user.pek || user.administration)"
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
@@ -21,7 +21,7 @@
           variant="outline-primary"
           class="float-right"
           v-on:click="dashboard"
-          v-if="pek || administration"
+          v-if="user.pek || user.administration"
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
@@ -258,7 +258,7 @@ import Workshop from "@/components/applicationViewComponents/Workshop.vue";
 import TravelApplication from "@/components/new/TravelApplication.vue";
 import TravelBill from "@/components/new/TravelBill.vue";
 export default {
-  props: ["url", "token", "user", "pek", "administration", "appid"],
+  props: ["url", "token", "user", "appid"],
   components: {
     Others,
     Workshop,
