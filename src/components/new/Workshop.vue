@@ -523,8 +523,8 @@ export default {
                 staffnr: this.returnValue(this.teacher.personalnummer),
                 starting_point: this.returnString(this.start),
                 end_point: this.returnString(this.end),
-                clerk: null,
-                reviewer: null,
+                clerk: "",
+                reviewer: "",
                 zi: null,
                 filing_date: this.createNewDate(
                   new Date().toISOString().split("T")[0],
