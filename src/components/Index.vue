@@ -372,20 +372,22 @@ export default {
                         resp.data.access_token,
                         resp.data.refresh_token
                       );
-                      axios.get(this.url + "/getNews", {
-                        headers: {
-                          Authorization: "Basic " + this.token
-                        }
-                      }).then(res => {
-                        switch(res.status) {
-                          case 200:
-                            this.news = this.cutNews(response.data);
-                            break;
-                          default:
-                            this.failedNews();
-                            break;
-                        }
-                      });
+                      axios
+                        .get(this.url + "/getNews", {
+                          headers: {
+                            Authorization: "Basic " + this.token
+                          }
+                        })
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.news = this.cutNews(response.data);
+                              break;
+                            default:
+                              this.failedNews();
+                              break;
+                          }
+                        });
                       break;
                     default:
                       this.$emit("logout");

@@ -529,15 +529,45 @@ export default {
       this.teacher.von = data.von;
       this.teacher.sonstige_kosten = data.sonstige_kosten;
       this.teacher.geschaetzte_kosten = data.geschaetzte_kosten;
+      this.teacher.emitted_out = data.emitted_out;
+      this.teacher.emitted_ret = data.emitted_ret;
     },
     /**
-     * Diese Methode setzt die verwendete Zeitzone von dem übergebenen Datum
-     * @param datum Das Datum, welches angepasst werden soll
-     * @returns Das angepasste Datum
+     * Erstellt ein neues Datum, welches im richtigen Datenformat ist
      */
-    setTimezone(datum) {
-      datum.setHours(datum.getHours() + 1);
-      return datum.toISOString() + "+01:00";
+    createNewDate(date, time) {
+      var tmp = new Date(date + "T" + time);
+      var str = tmp.toISOString();
+      str = str.split("T");
+      var str2 = str[1].split(":");
+      var str3 = Number(str2[0]) + 2;
+      if (str3 < 10) {
+        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+      } else {
+        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+      }
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    createConfirm() {
+      this.$bvToast.toast("Antrag erstellt!", {
+        title: "Antrag wurde erfolgreich erstellt",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "success"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedConfirm() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Antrag wurden nicht erstellt",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * Diese Methode fügt die einzelnen Daten zu einem für das Backend verwendbares Objekt zusammen und sendet dieses an das Backend
@@ -582,18 +612,16 @@ export default {
               degree: this.returnString(this.teacher.degree),
               title: this.returnString(this.teacher.title),
               staffnr: this.returnValue(this.teacher.personalnummer),
-              trip_begin_time: this.setTimezone(
-                new Date(this.startDate + "T" + this.startTime)
+              trip_begin_time: this.createNewDate(
+                this.startDate,
+                this.startTime
               ),
-              trip_end_time: this.setTimezone(
-                new Date(this.endDate + "T" + this.endTime)
+              trip_end_time: this.createNewDate(this.endDate, this.endTime),
+              service_begin_time: this.createNewDate(
+                this.startDate,
+                this.startTime
               ),
-              service_begin_time: this.setTimezone(
-                new Date(this.startDate + "T" + this.startTime)
-              ),
-              service_end_time: this.setTimezone(
-                new Date(this.endDate + "T" + this.endTime)
-              ),
+              service_end_time: this.createNewDate(this.endDate, this.endTime),
               trip_goal: this.returnString(this.start),
               travel_purpose: this.returnString(this.teacher.reason1),
               travel_mode: this.returnValue(this.teacher.transport),
@@ -603,15 +631,29 @@ export default {
               other_participants: [],
               bonus_mile_confirmation_1: bonus1,
               bonus_mile_confirmation_2: bonus2,
-              travel_costs_payed_by_someone: this.returnBoolean(
+              travel_costs_paid_by_someone: this.returnBoolean(
                 this.teacher.reisekosten
               ),
-              staying_costs_payed_by_someone: this.returnBoolean(
+              staying_costs_paid_by_someone: this.returnBoolean(
                 this.teacher.aufenthaltskosten
               ),
-              payed_by_whom: this.returnString(this.teacher.von),
+              paid_by_whom: this.returnString(this.teacher.von),
               other_costs: this.returnValue(this.teacher.sonstige_kosten),
-              estimated_costs: this.returnValue(this.teacher.geschaetzte_kosten)
+              estimated_costs: this.returnValue(
+                this.teacher.geschaetzte_kosten
+              ),
+              date_application_filed: this.createNewDate(
+                new Date().toISOString().split("T")[0],
+                new Date().toISOString().split("T")[1]
+              ),
+              date_application_approved: null,
+              referee: null,
+              business_card_emitted_outward: this.returnBoolean(
+                this.teacher.emitted_out
+              ),
+              business_card_emitted_return: this.returnBoolean(
+                this.teacher.emitted_ret
+              )
             });
             invoice.push({
               id: 0,
@@ -619,16 +661,38 @@ export default {
               surname: this.returnString(this.user.longname.split(" ")[1]),
               degree: this.returnString(this.teacher.degree),
               title: this.returnString(this.teacher.title),
-              trip_begin_time: this.setTimezone(
-                new Date(this.startDate + "T" + this.startTime)
+              trip_begin_time: this.createNewDate(
+                this.startDate,
+                this.startTime
               ),
-              trip_end_time: this.setTimezone(
-                new Date(this.endDate + "T" + this.endTime)
-              ),
+              trip_end_time: this.createNewDate(this.endDate, this.endTime),
+              travel_costs_pre_grant: null,
               staffnr: this.returnValue(this.teacher.personalnummer),
               starting_point: this.returnString(this.start),
               end_point: this.returnString(this.end),
-              filing_date: this.setTimezone(new Date())
+              clerk: null,
+              reviewer: null,
+              zi: null,
+              filing_date: this.createNewDate(
+                new Date().toISOString().split("T")[0],
+                new Date().toISOString().split("T")[1]
+              ),
+              approval_date: null,
+              daily_charges_mode: null,
+              shortened_amount: null,
+              nightly_charges_mode: null,
+              breakfasts: null,
+              lunches: null,
+              dinners: null,
+              official_business_card_got: null,
+              travel_grant: null,
+              replacement_for_train_card_class_2: null,
+              kilometre_allowance: null,
+              kilometre_amount: null,
+              nr_and_indications_of_participants: null,
+              travel_costs_cited: null,
+              no_travel_costs: null,
+              calculation: null
             });
           }
           var data = {
@@ -636,15 +700,15 @@ export default {
             kind: 6,
             miscellaneous_reason: this.returnString(this.son),
             progress: 1,
-            start_time: this.setTimezone(
-              new Date(this.startDate + "T" + this.startTime)
-            ),
-            end_time: this.setTimezone(
-              new Date(this.endDate + "T" + this.endTime)
-            ),
+            start_time: this.createNewDate(this.startDate, this.startTime),
+            end_time: this.createNewDate(this.endDate, this.endTime),
             notes: this.returnString(this.notes),
             start_address: this.returnString(this.end),
             destination_address: this.returnString(this.start),
+            last_changed: this.createNewDate(
+              new Date().toISOString().split("T")[0],
+              new Date().toISOString().split("T")[1]
+            ),
             other_reason_details: {
               kind: this.returnValue(this.selected),
               miscellaneous_reason: this.returnString(this.son),
@@ -655,10 +719,71 @@ export default {
             travel_invoices: invoice
           };
           axios
-            .post(this.url + "/createApplication", this.token, data)
+            .post(
+              this.url + "/createApplication",
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
+              },
+              data
+            )
             .then(response => {
-              response.toString();
-              this.changeComponent("Index");
+              switch (response.status) {
+                case 200:
+                  this.createConfirm();
+                  setTimeout(this.changeComponent("Index"), 1000);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .post(
+                              this.url + "/createApplication",
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
+                              },
+                              data
+                            )
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.createConfirm();
+                                  setTimeout(
+                                    this.changeComponent("Index"),
+                                    1000
+                                  );
+                                  break;
+                                default:
+                                  this.failedConfirm();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.failedConfirm();
+                  break;
+              }
             });
         } else {
           if (this.Time === null) this.Time = false;

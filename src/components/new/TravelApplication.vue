@@ -365,7 +365,9 @@ export default {
         aufenthaltskosten: false,
         von: "",
         sonstige_kosten: 0,
-        geschaetzte_kosten: 0
+        geschaetzte_kosten: 0,
+        emitted_out: false,
+        emitted_ret: false
       }
     };
   },
@@ -387,10 +389,9 @@ export default {
         bm.push("1");
       }
       this.data.bonus_meilen = bm;
-      this.data.reisekosten = "" + this.app.travel_costs_payed_by_someone;
-      this.data.aufenthaltskosten =
-        "" + this.app.staying_costs_payed_by_someone;
-      this.data.von = this.app.payed_by_whom;
+      this.data.reisekosten = "" + this.app.travel_costs_paid_by_someone;
+      this.data.aufenthaltskosten = "" + this.app.staying_costs_paid_by_someone;
+      this.data.von = this.app.paid_by_whom;
       this.data.sonstige_kosten = this.app.other_costs;
       this.data.geschaetzte_kosten = this.app.estimated_costs;
     }

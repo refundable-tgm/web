@@ -73,7 +73,10 @@
               variant="outline-secondary"
               size="sm"
               @click="row.toggleDetails"
-              v-if="row.item.title !== 'Abwesenheitsformular' && row.item.title !== 'Abwesenheitsformular für Klassen'"
+              v-if="
+                row.item.title !== 'Abwesenheitsformular' &&
+                  row.item.title !== 'Abwesenheitsformular für Klassen'
+              "
             >
               <b-icon icon="pencil-square"></b-icon> Bearbeitung
               {{ row.detailsShowing ? "schließen" : "öffnen" }}
@@ -558,15 +561,15 @@ export default {
       ].travel_purpose = this.returnString(data.reason1);
       this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].travel_costs_payed_by_someone = this.returnBoolean(data.reisekosten);
+      ].travel_costs_paid_by_someone = this.returnBoolean(data.reisekosten);
       this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].staying_costs_payed_by_someone = this.returnBoolean(
+      ].staying_costs_paid_by_someone = this.returnBoolean(
         data.aufenthaltskosten
       );
       this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].payed_by_whom = this.returnString(data.von);
+      ].paid_by_whom = this.returnString(data.von);
       this.app.business_trip_applications[
         this.currentTeacherIndex
       ].other_costs = this.returnValue(data.sonstige_kosten);
@@ -668,7 +671,7 @@ export default {
         miscellaneous_reason: "",
         progress: 3,
         start_time: "2021-04-12T17:54:40.035095+01:00",
-        end_time: "2021-04-16T17:54:40.035095+01:00",
+        end_time: "2021-04-19T17:54:40.035095+01:00",
         notes: "Sommersportwoche ist cool",
         start_address: "Wexstraße 19-23, 1200 Wien",
         destination_address: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
@@ -734,9 +737,9 @@ export default {
             other_participants: ["ddolezal"],
             bonus_mile_confirmation_1: true,
             bonus_mile_confirmation_2: true,
-            travel_costs_payed_by_someone: false,
-            staying_costs_payed_by_someone: false,
-            payed_by_whom: "",
+            travel_costs_paid_by_someone: false,
+            staying_costs_paid_by_someone: false,
+            paid_by_whom: "",
             other_costs: 10,
             estimated_costs: 20,
             date_application_filed: "2021-01-01T17:54:40.035095+01:00",
@@ -765,9 +768,9 @@ export default {
             other_participants: ["szakall"],
             bonus_mile_confirmation_1: true,
             bonus_mile_confirmation_2: true,
-            travel_costs_payed_by_someone: true,
-            staying_costs_payed_by_someone: false,
-            payed_by_whom: "Firma",
+            travel_costs_paid_by_someone: true,
+            staying_costs_paid_by_someone: false,
+            paid_by_whom: "Firma",
             other_costs: 30,
             estimated_costs: 40,
             date_application_filed: "2021-01-01T17:54:40.035095+01:00",

@@ -29,6 +29,7 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <AllApplication
@@ -38,6 +39,7 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <CurrentApplication
@@ -47,6 +49,7 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <School
@@ -56,6 +59,7 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <Escorts
@@ -65,6 +69,7 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:escorts="escortsdata"
       v-bind:user="user"
     />
@@ -75,6 +80,7 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <Workshop
@@ -84,6 +90,7 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <ApplicationView
@@ -93,6 +100,7 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:appid="appid"
       v-bind:user="user"
     />
@@ -103,6 +111,7 @@
       v-on:logout="logout"
       v-bind:url="url"
       v-bind:token="token"
+      v-bind:refresh_token="refresh_token"
       v-bind:user="user"
     />
     <AdminDashboard
@@ -666,20 +675,20 @@ export default {
      * Diese Methode löscht vorhanderen Cookies
      */
     deleteCookies() {
-        var d = new Date();
-        var expires = "expires=" + d.toUTCString();
-        var value = this.getCookie();
-        document.cookie =
-          "current=" + value + ";" + expires + ";SameSite=Strict;path=/";
-        var value2 = this.getToken();
-        document.cookie =
-          "token=" + value2 + ";" + expires + ";SameSite=Strict;path=/";
-        var value3 = this.getRefresh();
-        document.cookie =
-          "refresh=" + value3 + ";" + expires + ";SameSite=Strict;path=/";
-        var value4 = this.getUser();
-        document.cookie =
-          "user=" + value4 + ";" + expires + ";SameSite=Strict;path=/";
+      var d = new Date();
+      var expires = "expires=" + d.toUTCString();
+      var value = this.getCookie();
+      document.cookie =
+        "current=" + value + ";" + expires + ";SameSite=Strict;path=/";
+      var value2 = this.getToken();
+      document.cookie =
+        "token=" + value2 + ";" + expires + ";SameSite=Strict;path=/";
+      var value3 = this.getRefresh();
+      document.cookie =
+        "refresh=" + value3 + ";" + expires + ";SameSite=Strict;path=/";
+      var value4 = this.getUser();
+      document.cookie =
+        "user=" + value4 + ";" + expires + ";SameSite=Strict;path=/";
     },
     manageLoading(tokenPresent) {
       // Weiterleitung, falls der Token gesetzt ist und eine die ApplicationView-Seite aufgerufen werden soll

@@ -88,7 +88,7 @@ export default {
     TravelApplication,
     EscortsComp
   },
-  props: ["escorts", "user", "url", "token"],
+  props: ["escorts", "user", "url", "token", "refresh_token"],
   data() {
     return {
       travelData: []
@@ -147,6 +147,8 @@ export default {
       this.escorts.output[index].von = data.von;
       this.escorts.output[index].sonstige_kosten = data.sonstige_kosten;
       this.escorts.output[index].geschaetzte_kosten = data.geschaetzte_kosten;
+      this.escorts.output[index].emitted_out = data.emitted_out;
+      this.escorts.output[index].emitted_ret = data.emitted_ret;
     },
     /**
      * Diese Methode gibt den Wert der Variable als Zahl zurück
@@ -200,31 +202,49 @@ export default {
             title: this.returnString(this.escorts.output[i].title),
             name: this.returnString(this.escorts.output[i].name),
             surname: this.returnString(this.escorts.output[i].surname),
-            trip_begin_time: this.setTimezone(
-              new Date(this.escorts.startDate + "T" + this.escorts.startTime)
+            trip_begin_time: this.createNewDate(
+              this.escorts.startDate,
+              this.escorts.startTime
             ),
-            trip_end_time: this.setTimezone(
-              new Date(this.escorts.endDate + "T" + this.escorts.endTime)
+            trip_end_time: this.createNewDate(
+              this.escorts.endDate,
+              this.escorts.endTime
             ),
             staffnr: this.returnValue(this.escorts.output[i].personalnummer),
             starting_point: this.returnString(this.escorts.start),
             end_point: this.returnString(this.escorts.ziel),
-            filing_date: this.setTimezone(new Date())
+            clerk: null,
+            reviewer: null,
+            zi: null,
+            filing_date: this.createNewDate(
+              new Date().toISOString().split("T")[0],
+              new Date().toISOString().split("T")[1]
+            ),
+            approval_date: null,
+            daily_charges_mode: null,
+            shortened_amount: null,
+            nightly_charges_mode: null,
+            breakfasts: null,
+            lunches: null,
+            dinners: null,
+            official_business_card_got: null,
+            travel_grant: null,
+            replacement_for_train_card_class_2: null,
+            kilometre_allowance: null,
+            kilometre_amount: null,
+            nr_and_indications_of_participants: null,
+            travel_costs_cited: null,
+            no_travel_costs: null,
+            calculation: null
           });
           teachers.push({
-            attendance_from: this.setTimezone(
-              new Date(
-                this.escorts.output[i].startDate +
-                  "T" +
-                  this.escorts.output[i].startTime
-              )
+            attendance_from: this.createNewDate(
+              this.escorts.output[i].startDate,
+              this.escorts.output[i].startTime
             ),
-            attendance_till: this.setTimezone(
-              new Date(
-                this.escorts.output[i].endDate +
-                  "T" +
-                  this.escorts.output[i].endTime
-              )
+            attendance_till: this.createNewDate(
+              this.escorts.output[i].endDate,
+              this.escorts.output[i].endTime
             ),
             meeting_point: this.returnString(
               this.escorts.output[i].meetingpoint
@@ -268,25 +288,21 @@ export default {
             name: this.returnString(this.escorts.output[i].name),
             surname: this.returnString(this.escorts.output[i].surname),
             staffnr: this.returnValue(this.escorts.output[i].personalnummer),
-            trip_begin_time: this.setTimezone(
-              new Date(this.escorts.startDate + "T" + this.escorts.startTime)
+            trip_begin_time: this.createNewDate(
+              this.escorts.startDate,
+              this.escorts.startTime
             ),
-            trip_end_time: this.setTimezone(
-              new Date(this.escorts.endDate + "T" + this.escorts.endTime)
+            trip_end_time: this.createNewDate(
+              this.escorts.endDate,
+              this.escorts.endTime
             ),
-            service_begin_time: this.setTimezone(
-              new Date(
-                this.escorts.output[i].startDate +
-                  "T" +
-                  this.escorts.output[i].startTime
-              )
+            service_begin_time: this.createNewDate(
+              this.escorts.output[i].startDate,
+              this.escorts.output[i].startTime
             ),
-            service_end_time: this.setTimezone(
-              new Date(
-                this.escorts.output[i].endDate +
-                  "T" +
-                  this.escorts.output[i].endTime
-              )
+            service_end_time: this.createNewDate(
+              this.escorts.output[i].endDate,
+              this.escorts.output[i].endTime
             ),
             trip_goal: this.returnString(this.escorts.ziel),
             travel_purpose: this.returnString(this.escorts.output[i].reason1),
@@ -299,18 +315,30 @@ export default {
             other_participants: otherteachers,
             bonus_mile_confirmation_1: bonus1,
             bonus_mile_confirmation_2: bonus2,
-            travel_costs_payed_by_someone: this.returnBoolean(
+            travel_costs_paid_by_someone: this.returnBoolean(
               this.escorts.output[i].reisekosten
             ),
-            staying_costs_payed_by_someone: this.returnBoolean(
+            staying_costs_paid_by_someone: this.returnBoolean(
               this.escorts.output[i].aufenthaltskosten
             ),
-            payed_by_whom: this.returnString(this.escorts.output[i].von),
+            paid_by_whom: this.returnString(this.escorts.output[i].von),
             other_costs: this.returnValue(
               this.escorts.output[i].sonstige_kosten
             ),
             estimated_costs: this.returnValue(
               this.escorts.output[i].geschaetzte_kosten
+            ),
+            date_application_filed: this.createNewDate(
+              new Date().toISOString().split("T")[0],
+              new Date().toISOString().split("T")[1]
+            ),
+            date_application_approved: null,
+            referee: null,
+            business_card_emitted_outward: this.returnBoolean(
+              this.teacher.emitted_out
+            ),
+            business_card_emitted_return: this.returnBoolean(
+              this.teacher.emitted_ret
             )
           });
         }
@@ -319,11 +347,13 @@ export default {
           kind: 0,
           miscellaneous_reason: this.returnString(""),
           progress: 1,
-          start_time: this.setTimezone(
-            new Date(this.escorts.startDate + "T" + this.escorts.startTime)
+          start_time: this.createNewDate(
+            this.escorts.startDate,
+            this.escorts.startTime
           ),
-          end_time: this.setTimezone(
-            new Date(this.escorts.endDate + "T" + this.escorts.endTime)
+          end_time: this.createNewDate(
+            this.escorts.endDate,
+            this.escorts.endTime
           ),
           notes: this.returnString(this.escorts.notes),
           start_address: this.returnString(this.escorts.start),
@@ -343,15 +373,68 @@ export default {
           travel_invoices: invoices
         };
         axios
-          .post(this.url + "/createApplication", {
-            params: {
-              app: data,
-              token: this.token
-            }
-          })
+          .post(
+            this.url + "/createApplication",
+            {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            },
+            data
+          )
           .then(response => {
-            response.toString();
-            this.changeComponent("Index");
+            switch (response.status) {
+              case 200:
+                this.createConfirm();
+                setTimeout(this.changeComponent("Index"), 1000);
+                break;
+              case 401:
+                axios
+                  .post(this.url + "/login/refresh", {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
+                  })
+                  .then(resp => {
+                    switch (resp.status) {
+                      case 200:
+                        this.$emit(
+                          "updateToken",
+                          resp.data.access_token,
+                          resp.data.refresh_token
+                        );
+                        axios
+                          .post(
+                            this.url + "/createApplication",
+                            {
+                              headers: {
+                                Authorization: "Basic " + this.token
+                              }
+                            },
+                            data
+                          )
+                          .then(res => {
+                            switch (res.status) {
+                              case 200:
+                                this.createConfirm();
+                                setTimeout(this.changeComponent("Index"), 1000);
+                                break;
+                              default:
+                                this.failedConfirm();
+                                break;
+                            }
+                          });
+                        break;
+                      default:
+                        this.$emit("logout");
+                        break;
+                    }
+                  });
+                break;
+              default:
+                this.failedConfirm();
+                break;
+            }
           });
       }
     },
@@ -364,13 +447,41 @@ export default {
       this.escorts.output[index].startDate = newStartDate;
     },
     /**
-     * Diese Methode setzt die verwendete Zeitzone von dem übergebenen Datum
-     * @param datum Das Datum, welches angepasst werden soll
-     * @returns Das angepasste Datum
+     * Erstellt ein neues Datum, welches im richtigen Datenformat ist
      */
-    setTimezone(datum) {
-      datum.setHours(datum.getHours() + 1);
-      return datum.toISOString() + "+01:00";
+    createNewDate(date, time) {
+      var tmp = new Date(date + "T" + time);
+      var str = tmp.toISOString();
+      str = str.split("T");
+      var str2 = str[1].split(":");
+      var str3 = Number(str2[0]) + 2;
+      if (str3 < 10) {
+        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+      } else {
+        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+      }
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    createConfirm() {
+      this.$bvToast.toast("Antrag erstellt!", {
+        title: "Antrag wurde erfolgreich erstellt",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "success"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedConfirm() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Antrag wurden nicht erstellt",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * Diese Methode aktualisiert das EndDatum einer Begleitperson
