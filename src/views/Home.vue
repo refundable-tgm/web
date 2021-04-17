@@ -234,7 +234,6 @@ export default {
     ) {
       switch (component) {
         case "Login":
-          this.deleteCookies();
           this.change("Login", back, false);
           break;
 
@@ -376,8 +375,11 @@ export default {
       this.deleteCookies();
       this.changeComponent("Login");
     },
+    /**
+     * Beendet die derzeitige Session
+     */
     terminateSession() {
-      axios.post(this.url + "logout", {
+      axios.post(this.url + "/logout", {
         headers: {
           Authorization: "Basic " + this.token
         }
@@ -664,7 +666,6 @@ export default {
      * Diese Methode löscht vorhanderen Cookies
      */
     deleteCookies() {
-      if (this.cookies) {
         var d = new Date();
         var expires = "expires=" + d.toUTCString();
         var value = this.getCookie();
@@ -679,11 +680,9 @@ export default {
         var value4 = this.getUser();
         document.cookie =
           "user=" + value4 + ";" + expires + ";SameSite=Strict;path=/";
-      }
     },
     manageLoading(tokenPresent) {
       // Weiterleitung, falls der Token gesetzt ist und eine die ApplicationView-Seite aufgerufen werden soll
-      console.log("1");
       if (tokenPresent) {
         if (this.pathing === undefined) {
           if (this.query !== undefined) {
@@ -749,6 +748,7 @@ export default {
      */
 
     if (this.checkToken() && this.checkRefresh()) {
+      this.cookies = true;
       this.token = this.getToken();
       this.refresh_token = this.getRefresh();
       axios
@@ -818,6 +818,7 @@ export default {
           }
         });
     } else {
+      this.cookies = false;
       this.manageLoading(false);
     }
     // Nur Testweise
@@ -828,7 +829,11 @@ export default {
     this.user.av = false;
     this.user.short = "szakall";
     this.user.longname = "Stefan Zakall";
-    //this.manageLoading(true);
+    this.cookies = true;
+    this.setUser(this.user.short);
+    this.setToken("123456789");
+    this.setRefresh("012345678");
+    //this.manageLoading(false);
     if (this.checkCookie()) {
       this.useCookie(true);
       var c = this.getCookie();

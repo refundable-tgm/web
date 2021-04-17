@@ -201,7 +201,7 @@ export default {
                   if (resp.status === 200) {
                     this.$emit(
                       "updateToken",
-                      resp.data.token,
+                      resp.data.access_token,
                       resp.data.refresh_token
                     );
                     axios
@@ -219,7 +219,7 @@ export default {
                             .get(
                               this.url +
                                 "/setTeacherPermissions?uuid=" +
-                                response.data.uuid,
+                                re.data.uuid,
                               {
                                 headers: {
                                   Authorization: "Basic " + this.token

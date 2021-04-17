@@ -458,7 +458,7 @@ export default {
         data.breakfast;
       this.app.travel_invoices[this.currentTeacherIndex].lunches = data.lunch;
       this.app.travel_invoices[this.currentTeacherIndex].dinners = data.dinner;
-      this.app.travel_invoices[this.currentTeacherIndex].kilometreAmount =
+      this.app.travel_invoices[this.currentTeacherIndex].kilometre_amount =
         data.km;
       this.app.travel_invoices[
         this.currentTeacherIndex
@@ -585,7 +585,11 @@ export default {
      */
     calcTime(date) {
       var tmp = date.split(":");
-      return "2000-01-01T" + tmp[0] + ":" + tmp[1] + ":00+01:00";
+      if (tmp[0] <= 10) {
+        return "2000-01-01T0" + (tmp[0] - 1) + ":" + tmp[1] + ":00+01:00";
+      } else {
+        return "2000-01-01T" + (tmp[0] - 1) + ":" + tmp[1] + ":00+01:00";
+      }
     },
     /**
      * TODO
@@ -662,12 +666,12 @@ export default {
         kind: 0,
         miscellaneous_reason: "",
         progress: 3,
-        start_time: "2021-04-12T18:54:40.035095+01:00",
-        end_time: "2021-04-19T18:54:40.035095+01:00",
+        start_time: "2021-04-12T17:54:40.035095+01:00",
+        end_time: "2021-04-16T17:54:40.035095+01:00",
         notes: "Sommersportwoche ist cool",
         start_address: "Wexstraße 19-23, 1200 Wien",
         destination_address: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-        last_changed: "2021-03-01T18:54:40.035096+01:00",
+        last_changed: "2021-03-01T17:54:40.035096+01:00",
         school_event_details: {
           classes: ["5BHIT"],
           amount_male_students: 22,
@@ -677,8 +681,8 @@ export default {
             {
               name: "Stefan Zakall",
               shortname: "szakall",
-              attendance_from: "2021-04-12T18:54:40.035095+01:00",
-              attendance_till: "2021-04-19T18:54:40.035095+01:00",
+              attendance_from: "2021-04-12T17:54:40.035095+01:00",
+              attendance_till: "2021-04-19T17:54:40.035095+01:00",
               group: 2,
               start_address: "Wexstraße 19-23, 1200 Wien",
               meeting_point: "Wexstraße 19-23, 1200 Wien",
@@ -687,8 +691,8 @@ export default {
             {
               name: "Dominik Dolezal",
               shortname: "ddolezal",
-              attendance_from: "2021-04-12T18:54:40.035095+01:00",
-              attendance_till: "2021-04-19T18:54:40.035095+01:00",
+              attendance_from: "2021-04-12T17:54:40.035095+01:00",
+              attendance_till: "2021-04-19T17:54:40.035095+01:00",
               group: 1,
               start_address: "Wexstraße 19-23, 1200 Wien",
               meeting_point: "Wexstraße 19-23, 1200 Wien",
@@ -716,10 +720,10 @@ export default {
             degree: "B. Sc.",
             title: "Prof.",
             staffnr: 12345,
-            trip_begin_time: "2021-04-12T18:54:40.035095+01:00",
-            trip_end_time: "2021-04-19T18:54:40.035095+01:00",
-            service_begin_time: "2021-04-12T18:54:40.035095+01:00",
-            service_end_time: "2021-04-19T18:54:40.035095+01:00",
+            trip_begin_time: "2021-04-12T17:54:40.035095+01:00",
+            trip_end_time: "2021-04-19T17:54:40.035095+01:00",
+            service_begin_time: "2021-04-12T17:54:40.035095+01:00",
+            service_end_time: "2021-04-19T17:54:40.035095+01:00",
             trip_goal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
             travel_purpose: "Aus Gesundheitsgründen",
             travel_mode: 2,
@@ -734,8 +738,8 @@ export default {
             payed_by_whom: "",
             other_costs: 10,
             estimated_costs: 20,
-            date_application_filed: "2021-01-01T18:54:40.035095+01:00",
-            date_application_approved: "2021-02-01T18:54:40.035095+01:00",
+            date_application_filed: "2021-01-01T17:54:40.035095+01:00",
+            date_application_approved: "2021-02-01T17:54:40.035095+01:00",
             referee: "",
             business_card_emitted_outward: false,
             business_card_emitted_return: false
@@ -747,10 +751,10 @@ export default {
             degree: "B. Sc.",
             title: "Prof.",
             staffnr: 1234,
-            trip_begin_time: "2021-04-12T18:54:40.035095+01:00",
-            trip_end_time: "2021-04-19T18:54:40.035095+01:00",
-            service_begin_time: "2021-04-12T18:54:40.035095+01:00",
-            service_end_time: "2021-04-19T18:54:40.035095+01:00",
+            trip_begin_time: "2021-04-12T17:54:40.035095+01:00",
+            trip_end_time: "2021-04-19T17:54:40.035095+01:00",
+            service_begin_time: "2021-04-12T17:54:40.035095+01:00",
+            service_end_time: "2021-04-19T17:54:40.035095+01:00",
             trip_goal: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
             travel_purpose: "Aus Gründen, die ich nicht nennen möchte",
             travel_mode: 0,
@@ -765,8 +769,8 @@ export default {
             payed_by_whom: "Firma",
             other_costs: 30,
             estimated_costs: 40,
-            date_application_filed: "2021-01-01T18:54:40.035095+01:00",
-            date_application_approved: "2021-02-01T18:54:40.035095+01:00",
+            date_application_filed: "2021-01-01T17:54:40.035095+01:00",
+            date_application_approved: "2021-02-01T17:54:40.035095+01:00",
             referee: "",
             business_card_emitted_outward: false,
             business_card_emitted_return: false
@@ -779,12 +783,12 @@ export default {
             name: "Stefan",
             degree: "B. Sc.",
             title: "Prof.",
-            trip_begin_time: "2021-04-12T18:54:40.035095+01:00",
-            trip_end_time: "2021-04-19T18:54:40.035095+01:00",
+            trip_begin_time: "2021-04-12T17:54:40.035095+01:00",
+            trip_end_time: "2021-04-19T17:54:40.035095+01:00",
             staffnr: 12345,
             starting_point: "Wexstraße 19-23, 1200 Wien",
             end_point: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-            filing_date: "2021-01-01T18:54:40.035095+01:00",
+            filing_date: "2021-01-01T17:54:40.035095+01:00",
             daily_charges_mode: 2,
             shortened_amount: 100,
             nightly_charges_mode: 1,
@@ -812,9 +816,9 @@ export default {
                 {
                   id: 0,
                   kind_of_costs: [1, 2, 3],
-                  date: "2021-04-12T18:54:40.035095+01:00",
-                  begin: "2021-04-12T08:00:00.035095+01:00",
-                  end: "2021-04-12T18:00:00.035095+01:00",
+                  date: "2021-04-12T17:54:40.035095+01:00",
+                  begin: "2021-04-12T07:00:00.035095+01:00",
+                  end: "2021-04-12T17:00:00.035095+01:00",
                   kilometres: 5,
                   travel_costs: 0,
                   daily_charges: 5,
@@ -825,9 +829,9 @@ export default {
                 {
                   id: 1,
                   kind_of_costs: [1, 2, 3],
-                  date: "2021-04-13T18:54:40.035095+01:00",
-                  begin: "2021-04-13T08:00:00.035095+01:00",
-                  end: "2021-04-13T18:00:00.035095+01:00",
+                  date: "2021-04-13T17:54:40.035095+01:00",
+                  begin: "2021-04-13T07:00:00.035095+01:00",
+                  end: "2021-04-13T17:00:00.035095+01:00",
                   kilometres: 6,
                   travel_costs: 0,
                   daily_charges: 6,
@@ -838,9 +842,9 @@ export default {
                 {
                   id: 2,
                   kind_of_costs: [0, 1, 3],
-                  date: "2021-04-14T08:00:00.035095+01:00",
-                  begin: "2021-04-14T08:00:00.035095+01:00",
-                  end: "2021-04-14T18:00:00.035095+01:00",
+                  date: "2021-04-14T07:00:00.035095+01:00",
+                  begin: "2021-04-14T07:00:00.035095+01:00",
+                  end: "2021-04-14T17:00:00.035095+01:00",
                   kilometres: 7,
                   travel_costs: 7,
                   daily_charges: 7,
@@ -851,9 +855,9 @@ export default {
                 {
                   id: 3,
                   kind_of_costs: [0, 2, 3],
-                  date: "2021-04-15T08:00:00.035095+01:00",
-                  begin: "2021-04-15T08:00:00.035095+01:00",
-                  end: "2021-04-15T18:00:00.035095+01:00",
+                  date: "2021-04-15T07:00:00.035095+01:00",
+                  begin: "2021-04-15T07:00:00.035095+01:00",
+                  end: "2021-04-15T17:00:00.035095+01:00",
                   kilometres: 8,
                   travel_costs: 8,
                   daily_charges: 0,
@@ -864,9 +868,9 @@ export default {
                 {
                   id: 4,
                   kind_of_costs: [0, 3],
-                  date: "2021-04-16T08:00:00.035095+01:00",
-                  begin: "2021-04-16T08:00:00.035095+01:00",
-                  end: "2021-04-16T18:00:00.035095+01:00",
+                  date: "2021-04-16T07:00:00.035095+01:00",
+                  begin: "2021-04-16T07:00:00.035095+01:00",
+                  end: "2021-04-16T17:00:00.035095+01:00",
                   kilometres: 9,
                   travel_costs: 9,
                   daily_charges: 0,
@@ -877,9 +881,9 @@ export default {
                 {
                   id: 5,
                   kind_of_costs: [3],
-                  date: "2021-04-17T08:00:00.035095+01:00",
-                  begin: "2021-04-17T08:00:00.035095+01:00",
-                  end: "2021-04-17T18:00:00.035095+01:00",
+                  date: "2021-04-17T07:00:00.035095+01:00",
+                  begin: "2021-04-17T07:00:00.035095+01:00",
+                  end: "2021-04-17T17:00:00.035095+01:00",
                   kilometres: 10,
                   travel_costs: 0,
                   daily_charges: 0,
@@ -890,9 +894,9 @@ export default {
                 {
                   id: 6,
                   kind_of_costs: [2, 3],
-                  date: "2021-04-18T08:00:00.035095+01:00",
-                  begin: "2021-04-18T08:00:00.035095+01:00",
-                  end: "2021-04-18T18:00:00.035095+01:00",
+                  date: "2021-04-18T07:00:00.035095+01:00",
+                  begin: "2021-04-18T07:00:00.035095+01:00",
+                  end: "2021-04-18T17:00:00.035095+01:00",
                   kilometres: 11,
                   travel_costs: 0,
                   daily_charges: 0,
@@ -903,9 +907,9 @@ export default {
                 {
                   id: 7,
                   kind_of_costs: [],
-                  date: "2021-04-19T08:00:00.035095+01:00",
-                  begin: "2021-04-19T08:00:00.035095+01:00",
-                  end: "2021-04-19T18:00:00.035095+01:00",
+                  date: "2021-04-19T07:00:00.035095+01:00",
+                  begin: "2021-04-19T07:00:00.035095+01:00",
+                  end: "2021-04-19T17:00:00.035095+01:00",
                   kilometres: 10,
                   travel_costs: 0,
                   daily_charges: 0,
@@ -922,12 +926,12 @@ export default {
             name: "Dominik",
             degree: "B. Sc.",
             title: "Prof.",
-            trip_begin_time: "2021-03-01T18:54:40.035095+01:00",
-            trip_end_time: "2021-03-03T18:54:40.035095+01:00",
+            trip_begin_time: "2021-03-01T17:54:40.035095+01:00",
+            trip_end_time: "2021-03-03T17:54:40.035095+01:00",
             staffnr: 1234,
             starting_point: "Wexstraße 19-23, 1200 Wien",
             end_point: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
-            filing_date: "2021-01-01T18:54:40.035095+01:00",
+            filing_date: "2021-01-01T17:54:40.035095+01:00",
             daily_charges_mode: 2,
             shortened_amount: 250,
             nightly_charges_mode: 1,
@@ -955,9 +959,9 @@ export default {
                 {
                   id: 0,
                   kind_of_costs: [1, 2, 3],
-                  date: "2021-04-12T18:54:40.035095+01:00",
-                  begin: "2021-04-12T08:00:00.035095+01:00",
-                  end: "2021-04-12T18:00:00.035095+01:00",
+                  date: "2021-04-12T17:54:40.035095+01:00",
+                  begin: "2021-04-12T07:00:00.035095+01:00",
+                  end: "2021-04-12T17:00:00.035095+01:00",
                   kilometres: 5,
                   travel_costs: 0,
                   daily_charges: 5,
@@ -968,9 +972,9 @@ export default {
                 {
                   id: 1,
                   kind_of_costs: [1, 2, 3],
-                  date: "2021-04-13T18:54:40.035095+01:00",
-                  begin: "2021-04-13T08:00:00.035095+01:00",
-                  end: "2021-04-13T18:00:00.035095+01:00",
+                  date: "2021-04-13T17:54:40.035095+01:00",
+                  begin: "2021-04-13T07:00:00.035095+01:00",
+                  end: "2021-04-13T17:00:00.035095+01:00",
                   kilometres: 6,
                   travel_costs: 0,
                   daily_charges: 6,
@@ -981,9 +985,9 @@ export default {
                 {
                   id: 2,
                   kind_of_costs: [0, 1, 3],
-                  date: "2021-04-14T08:00:00.035095+01:00",
-                  begin: "2021-04-14T08:00:00.035095+01:00",
-                  end: "2021-04-14T18:00:00.035095+01:00",
+                  date: "2021-04-14T07:00:00.035095+01:00",
+                  begin: "2021-04-14T07:00:00.035095+01:00",
+                  end: "2021-04-14T17:00:00.035095+01:00",
                   kilometres: 7,
                   travel_costs: 7,
                   daily_charges: 7,
@@ -994,9 +998,9 @@ export default {
                 {
                   id: 3,
                   kind_of_costs: [0, 2, 3],
-                  date: "2021-04-15T08:00:00.035095+01:00",
-                  begin: "2021-04-15T08:00:00.035095+01:00",
-                  end: "2021-04-15T18:00:00.035095+01:00",
+                  date: "2021-04-15T07:00:00.035095+01:00",
+                  begin: "2021-04-15T07:00:00.035095+01:00",
+                  end: "2021-04-15T17:00:00.035095+01:00",
                   kilometres: 8,
                   travel_costs: 8,
                   daily_charges: 0,
@@ -1007,9 +1011,9 @@ export default {
                 {
                   id: 4,
                   kind_of_costs: [0, 3],
-                  date: "2021-04-16T08:00:00.035095+01:00",
-                  begin: "2021-04-16T08:00:00.035095+01:00",
-                  end: "2021-04-16T18:00:00.035095+01:00",
+                  date: "2021-04-16T07:00:00.035095+01:00",
+                  begin: "2021-04-16T07:00:00.035095+01:00",
+                  end: "2021-04-16T17:00:00.035095+01:00",
                   kilometres: 9,
                   travel_costs: 9,
                   daily_charges: 0,
@@ -1020,9 +1024,9 @@ export default {
                 {
                   id: 5,
                   kind_of_costs: [3],
-                  date: "2021-04-17T08:00:00.035095+01:00",
-                  begin: "2021-04-17T08:00:00.035095+01:00",
-                  end: "2021-04-17T18:00:00.035095+01:00",
+                  date: "2021-04-17T07:00:00.035095+01:00",
+                  begin: "2021-04-17T07:00:00.035095+01:00",
+                  end: "2021-04-17T17:00:00.035095+01:00",
                   kilometres: 10,
                   travel_costs: 0,
                   daily_charges: 0,
@@ -1033,9 +1037,9 @@ export default {
                 {
                   id: 6,
                   kind_of_costs: [2, 3],
-                  date: "2021-04-18T08:00:00.035095+01:00",
-                  begin: "2021-04-18T08:00:00.035095+01:00",
-                  end: "2021-04-18T18:00:00.035095+01:00",
+                  date: "2021-04-18T07:00:00.035095+01:00",
+                  begin: "2021-04-18T07:00:00.035095+01:00",
+                  end: "2021-04-18T17:00:00.035095+01:00",
                   kilometres: 11,
                   travel_costs: 0,
                   daily_charges: 0,
@@ -1046,9 +1050,9 @@ export default {
                 {
                   id: 7,
                   kind_of_costs: [],
-                  date: "2021-04-19T08:00:00.035095+01:00",
-                  begin: "2021-04-19T08:00:00.035095+01:00",
-                  end: "2021-04-19T18:00:00.035095+01:00",
+                  date: "2021-04-19T07:00:00.035095+01:00",
+                  begin: "2021-04-19T07:00:00.035095+01:00",
+                  end: "2021-04-19T17:00:00.035095+01:00",
                   kilometres: 10,
                   travel_costs: 0,
                   daily_charges: 0,
@@ -1156,12 +1160,100 @@ export default {
       }
     },
     /**
-     * TODO
      * Diese Methode schaut nach, ob in dem Antrag alle Begleitlehrer ihre Daten eingetragen haben, damit die Progression weiter geht.
+     * @returns Einen Boolean Wert, welcher aussagt, ob alle Begleitlehrere Ihre Informationen angegeben haben.
      */
-    checkProgression() {},
+    checkProgression() {
+      if (this.app.kind === 0) {
+        if (this.app.progress === 1) {
+          var allInput = true;
+          for (
+            let i = 0;
+            i < this.app.school_event_details.teachers.length;
+            i++
+          ) {
+            if (
+              this.app.school_event_details.teachers[i].attendance_from !==
+                "" &&
+              this.app.school_event_details.teachers[i].attendance_from !==
+                undefined &&
+              this.app.school_event_details.teachers[i].attendance_from !== null
+            ) {
+              if (
+                this.app.school_event_details.teachers[i].attendance_till !==
+                  "" &&
+                this.app.school_event_details.teachers[i].attendance_till !==
+                  undefined &&
+                this.app.school_event_details.teachers[i].attendance_till !==
+                  null
+              ) {
+                if (
+                  this.app.school_event_details.teachers[i].group === 1 ||
+                  this.app.school_event_details.teachers[i].group === 2 ||
+                  this.app.school_event_details.teachers[i].group === 3
+                ) {
+                  if (
+                    this.app.school_event_details.teachers[i].start_address !==
+                      "" &&
+                    this.app.school_event_details.teachers[i].start_address !==
+                      undefined &&
+                    this.app.school_event_details.teachers[i].start_address !==
+                      null
+                  ) {
+                    if (
+                      this.app.school_event_details.teachers[i]
+                        .meeting_point !== "" &&
+                      this.app.school_event_details.teachers[i]
+                        .meeting_point !== undefined &&
+                      this.app.school_event_details.teachers[i]
+                        .meeting_point !== null
+                    ) {
+                      if (
+                        this.app.business_trip_applications[i].staffnr !== "" ||
+                        this.app.business_trip_applications[i].staffnr !==
+                          undefined ||
+                        this.app.business_trip_applications[i].staffnr !== null
+                      ) {
+                        if (
+                          this.app.business_trip_applications[i].travel_mode !==
+                            "" ||
+                          this.app.business_trip_applications[i].travel_mode !==
+                            undefined ||
+                          this.app.business_trip_applications[i].travel_mode !==
+                            null
+                        ) {
+                          allInput = true;
+                        } else {
+                          return false;
+                        }
+                      } else {
+                        return false;
+                      }
+                    } else {
+                      return false;
+                    }
+                  } else {
+                    return false;
+                  }
+                } else {
+                  return false;
+                }
+              } else {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          }
+          if (allInput) {
+            console.log("Alles da!!!");
+            return true;
+          }
+        }
+      }
+    },
     /**
-     * Diese Methode schaut, ob der Antrag läuft und setzt den Progress auf Läuft.
+     * Diese Methode schaut, ob der Antrag läuft oder bereits beendet ist und setzt den Progress auf Läuft oder auf Kosten ausstehend.
      */
     checkRunning() {
       let current = new Date();
@@ -1173,6 +1265,9 @@ export default {
           ) {
             this.app.progress = 4;
           }
+          if(current >= new Date(this.app.end_time)) {
+            this.app.progress = 5;
+          }
         }
       } else {
         if (this.app.progress === 2) {
@@ -1182,32 +1277,259 @@ export default {
           ) {
             this.app.progress = 3;
           }
+          if(current >= new Date(this.app.end_time)) {
+            this.app.progress = 4;
+          }
         }
       }
     },
     /**
-     * TODO
      * Diese Methode schaut nach, ob in dem Antrag alle Begleitlehrer ihre Reiserechnungen eingetragen haben, damit die Progression weiter geht.
      */
-    checkInvoices() {},
+    checkInvoices() {
+      if (this.app.kind === 0) {
+        if (this.app.progress === 5) {
+          for (let i = 0; i < this.app.travel_invoices.length; i++) {
+            var allInputed = false;
+            if (
+              this.app.travel_invoices[i].daily_charges_mode === 0 ||
+              this.app.travel_invoices[i].daily_charges_mode === 1 ||
+              this.app.travel_invoices[i].daily_charges_mode === 2
+            ) {
+              if (this.app.travel_invoices[i].daily_charges_mode === 2) {
+                if (
+                  this.app.travel_invoices[i].shortened_amount === "" ||
+                  isNaN(this.app.travel_invoices[i].shortened_amount) ||
+                  this.app.travel_invoices[i].shortened_amount === undefined ||
+                  this.app.travel_invoices[i].shortened_amount === null
+                ) {
+                  return false;
+                }
+              }
+              if (
+                this.app.travel_invoices[i].nightly_charges_mode === 0 ||
+                this.app.travel_invoices[i].nightly_charges_mode === 1 ||
+                this.app.travel_invoices[i].nightly_charges_mode === 2
+              ) {
+                if (
+                  this.app.travel_invoices[i].breakfasts !== "" &&
+                  this.app.travel_invoices[i].breakfasts !== undefined &&
+                  this.app.travel_invoices[i].breakfasts !== null
+                ) {
+                  if (
+                    this.app.travel_invoices[i].lunches !== "" &&
+                    this.app.travel_invoices[i].lunches !== undefined &&
+                    this.app.travel_invoices[i].lunches !== null
+                  ) {
+                    if (
+                      this.app.travel_invoices[i].dinners !== "" &&
+                      this.app.travel_invoices[i].dinners !== undefined &&
+                      this.app.travel_invoices[i].dinners !== null
+                    ) {
+                      if (this.app.travel_invoices[i].kilometre_allowance) {
+                        if (
+                          this.app.travel_invoices[i].kilometre_amount === "" ||
+                          this.app.travel_invoices[i].kilometre_amount ===
+                            undefined ||
+                          this.app.travel_invoices[i].kilometre_amount === null
+                        ) {
+                          return false;
+                        }
+                      }
+                      if (
+                        this.app.travel_invoices[i].calculation
+                          .sum_travel_costs !== "" &&
+                        this.app.travel_invoices[i].calculation
+                          .sum_travel_costs !== undefined &&
+                        this.app.travel_invoices[i].calculation
+                          .sum_travel_costs !== null
+                      ) {
+                        if (
+                          this.app.travel_invoices[i].calculation
+                            .sum_daily_charges !== "" &&
+                          this.app.travel_invoices[i].calculation
+                            .sum_daily_charges !== undefined &&
+                          this.app.travel_invoices[i].calculation
+                            .sum_daily_charges !== null
+                        ) {
+                          if (
+                            this.app.travel_invoices[i].calculation
+                              .sum_nightly_charges !== "" &&
+                            this.app.travel_invoices[i].calculation
+                              .sum_nightly_charges !== undefined &&
+                            this.app.travel_invoices[i].calculation
+                              .sum_nightly_charges !== null
+                          ) {
+                            if (
+                              this.app.travel_invoices[i].calculation
+                                .sum_additional_costs !== "" &&
+                              this.app.travel_invoices[i].calculation
+                                .sum_additional_costs !== undefined &&
+                              this.app.travel_invoices[i].calculation
+                                .sum_additional_costs !== null
+                            ) {
+                              if (
+                                this.app.travel_invoices[i].calculation
+                                  .sum_of_sums !== "" &&
+                                this.app.travel_invoices[i].calculation
+                                  .sum_of_sums !== undefined &&
+                                this.app.travel_invoices[i].calculation
+                                  .sum_of_sums !== null
+                              ) {
+                                for (
+                                  let j = 0;
+                                  j <
+                                  this.app.travel_invoices[i].calculation.rows
+                                    .length;
+                                  j++
+                                ) {
+                                  if (
+                                    this.app.travel_invoices[i].calculation
+                                      .rows[j].begin !== "" &&
+                                    this.app.travel_invoices[i].calculation
+                                      .rows[j].begin !== undefined &&
+                                    this.app.travel_invoices[i].calculation
+                                      .rows[j].begin !== null
+                                  ) {
+                                    if (
+                                      this.app.travel_invoices[i].calculation
+                                        .rows[j].end !== "" &&
+                                      this.app.travel_invoices[i].calculation
+                                        .rows[j].end !== undefined &&
+                                      this.app.travel_invoices[i].calculation
+                                        .rows[j].end !== null
+                                    ) {
+                                      allInputed = true;
+                                    } else {
+                                      return false;
+                                    }
+                                  } else {
+                                    return false;
+                                  }
+                                }
+                              } else {
+                                return false;
+                              }
+                            } else {
+                              return false;
+                            }
+                          } else {
+                            return false;
+                          }
+                        } else {
+                          return false;
+                        }
+                      } else {
+                        return false;
+                      }
+                    } else {
+                      return false;
+                    }
+                  } else {
+                    return false;
+                  }
+                } else {
+                  return false;
+                }
+              } else {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          }
+          if (allInputed) {
+            return true;
+          }
+        }
+      }
+    },
+    /**
+     * Erstellt ein neues Datum, welches im richtigen Datenformat ist
+     */
+    createNewDate() {
+      var tmp = new Date();
+      var str = tmp.toISOString();
+      str = str.split("T");
+      var str2 = str[1].split(":");
+      var str3 = Number(str2[0]) + 2;
+      if (str3 < 10) {
+        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+      } else {
+        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+      }
+    },
     /**
      * TODO
      * Diese Methode sendet den veränderten Antrag an das Backend
      */
     save() {
-      this.checkProgression();
-      this.checkInvoices();
+      if (this.checkProgression()) {
+        this.app.progress = 2;
+      }
+      if (this.checkInvoices()) {
+        this.app.progress = 6;
+      }
+      this.app.last_changed = this.createNewDate();
       axios
-        .put(this.url + "/saveApplication", {
-          params: {
-            application: this.app.UUID,
-            token: this.token,
-            data: this.app,
-            user: this.user.uuid
+        .put(
+          this.url + "/updateApplication?uuid=" + this.app.uuid,
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          },
+          this.app
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.saveConfirm();
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios.put(
+                        this.url + "/updateApplication?uuid=" + this.app.uuid,
+                        {
+                          headers: {
+                            Authorization: "Basic " + this.token
+                          }
+                        },
+                        this.app
+                      ).then(res => {
+                        switch(res.status) {
+                          case 200:
+                            this.saveConfirm();
+                            break;
+                          default:
+                            this.failedConfirm();
+                            break;
+                        }
+                      });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedConfirm();
+              break;
           }
-        })
-        .then(() => {
-          this.saveConfirm();
         });
     },
     /**
@@ -1225,6 +1547,17 @@ export default {
         autoHideDelay: 2500,
         appendToast: false,
         variant: "success"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedConfirm() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Änderungen wurden nicht gespeichert",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
       });
     },
     /**
@@ -1457,12 +1790,14 @@ export default {
             {
               title: "Reiseformular",
               form: "BusinessTripApplication"
-            },
-            {
-              title: "Reiserechnung",
-              form: "TravelInvoice"
             }
           ];
+          if (app.progress >= 5) {
+            this.items.push({
+              title: "Reiserechnung",
+              form: "TravelInvoice"
+            });
+          }
         } else {
           this.items = [
             {
@@ -1472,12 +1807,14 @@ export default {
             {
               title: "Reiseformular",
               form: "BusinessTripApplication"
-            },
-            {
-              title: "Reiserechnung",
-              form: "TravelInvoice"
             }
           ];
+          if (app.progress >= 5) {
+            this.items.push({
+              title: "Reiserechnung",
+              form: "TravelInvoice"
+            });
+          }
         }
       } else {
         if (app.kind === 1) {
@@ -1489,12 +1826,14 @@ export default {
             {
               title: "Reiseformular",
               form: "BusinessTripApplication"
-            },
-            {
-              title: "Reiserechnung",
-              form: "TravelInvoice"
             }
           ];
+          if (app.progress >= 4) {
+            this.items.push({
+              title: "Reiserechnung",
+              form: "TravelInvoice"
+            });
+          }
         } else {
           if (
             app.other_reason_details.kind === 7 ||
@@ -1515,12 +1854,14 @@ export default {
               {
                 title: "Reiseformular",
                 form: "BusinessTripApplication"
-              },
-              {
-                title: "Reiserechnung",
-                form: "TravelInvoice"
               }
             ];
+            if (app.progress >= 4) {
+              this.items.push({
+                title: "Reiserechnung",
+                form: "TravelInvoice"
+              });
+            }
           }
         }
       }

@@ -198,8 +198,6 @@ export default {
      * @returns Boolean-Wert, ob der Antrag aktiv ist oder nicht
      */
     isActive(kind, progress) {
-      console.log(kind);
-      console.log(progress);
       if (kind === 0) {
         if (progress > 0 && progress < 7) return true;
         else return false;

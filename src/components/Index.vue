@@ -347,11 +347,68 @@ export default {
      */
     setNews() {
       axios
-        .get(this.url + "/news?user=" + this.user.uuid)
-        .then((response, status) => {
-          status.toString();
-          this.news = this.cutNews(response.data);
+        .get(this.url + "/getNews", {
+          headers: {
+            Authorization: "Basic " + this.token
+          }
+        })
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.news = this.cutNews(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios.get(this.url + "/getNews", {
+                        headers: {
+                          Authorization: "Basic " + this.token
+                        }
+                      }).then(res => {
+                        switch(res.status) {
+                          case 200:
+                            this.news = this.cutNews(response.data);
+                            break;
+                          default:
+                            this.failedNews();
+                            break;
+                        }
+                      });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedNews();
+              break;
+          }
         });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedNews() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Es konnten nicht die neuesten Nachrichten geladen werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * Diese Methode ändert die angezeigte Komponente

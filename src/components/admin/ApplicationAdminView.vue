@@ -129,7 +129,9 @@
                   v-if="
                     row.item.title ==
                       'Begleitformular - ' +
-                        app.school_event_details.teachers[index].shortname
+                        app.business_trip_applications[index].surname +
+                        ' ' +
+                        app.business_trip_applications[index].name
                   "
                 />
               </div>
@@ -145,7 +147,9 @@
                   v-if="
                     row.item.title ==
                       'Reiseformular - ' +
-                        app.school_event_details.teachers[index].shortname
+                        app.business_trip_applications[index].surname +
+                        ' ' +
+                        app.business_trip_applications[index].name
                   "
                 />
               </div>
@@ -167,7 +171,9 @@
                   v-if="
                     row.item.title ==
                       'Reiserechnung - ' +
-                        app.school_event_details.teachers[index].shortname
+                        app.travel_invoices[index].surname +
+                        ' ' +
+                        app.travel_invoices[index].name
                   "
                 />
               </div>
@@ -326,7 +332,7 @@ export default {
         name: "Sommersportwoche",
         kind: 0,
         miscellaneous_reason: "",
-        progress: 3,
+        progress: 6,
         start_time: "2021-04-12T18:54:40.035095+01:00",
         end_time: "2021-04-19T18:54:40.035095+01:00",
         notes: "Sommersportwoche ist cool",
@@ -770,42 +776,36 @@ export default {
             teacher: 0
           }
         ];
-        for (
-          let i = 0;
-          i < this.app.school_event_details.teachers.length;
-          i++
-        ) {
+        for (let i = 0; i < this.app.business_trip_applications.length; i++) {
           this.items.push({
             title:
               "Begleitformular - " +
-              this.app.school_event_details.teachers[i].shortname,
+              app.business_trip_applications[i].surname +
+              " " +
+              app.business_trip_applications[i].name,
             form: "SchoolEventTeacherDetails",
             teacher: i
           });
         }
-        for (
-          let i = 0;
-          i < this.app.school_event_details.teachers.length;
-          i++
-        ) {
+        for (let i = 0; i < this.app.business_trip_applications.length; i++) {
           this.items.push({
             title:
               "Reiseformular - " +
-              this.app.school_event_details.teachers[i].shortname,
+              app.business_trip_applications[i].surname +
+              " " +
+              app.business_trip_applications[i].name,
             form: "BusinessTripApplication",
             teacher: i
           });
         }
         if (this.app.progress >= 5) {
-          for (
-            let i = 0;
-            i < this.app.school_event_details.teachers.length;
-            i++
-          ) {
+          for (let i = 0; i < this.app.travel_invoices.length; i++) {
             this.items.push({
               title:
                 "Reiserechnung - " +
-                this.app.school_event_details.teachers[i].shortname,
+                app.travel_invoices[i].surname +
+                " " +
+                app.travel_invoices[i].name,
               form: "TravelInvoice",
               teacher: i
             });
@@ -971,6 +971,9 @@ export default {
           this.app.progress === 0;
         }
         if (this.app.progress === 5) {
+          for (let i = 0; i < this.app.business_trip_applications.length; i++) {
+            this.app.business_trip_applications[i].referee = this.user.longname;
+          }
           this.app.progress === 4;
         }
       } else {
@@ -978,6 +981,10 @@ export default {
           this.app.progress === 0;
         }
         if (this.app.progress === 4) {
+          for (let i = 0; i < this.app.travel_invoices.length; i++) {
+            this.app.travel_invoices[i].clerk = this.user.longname;
+            this.app.travel_invoices[i].reviewer = this.user.longname;
+          }
           this.app.progress === 3;
         }
       }
@@ -985,13 +992,154 @@ export default {
       //If Progress is at 2 it should be thrown back to Progress 0 -Schoolevent
       //If Progress is at 4 it should be thrown back to Progress 3 -Workshop, etc
       //If Progress is at 1 it should be thrown back to Progress 0 -Workshop, etc
-      console.log("Delete this Antrag!");
+      console.log("Update Antrag");
+    },
+    /**
+     * Erstellt ein neues Datum, welches im richtigen Datenformat ist
+     */
+    createNewDate() {
+      var tmp = new Date();
+      var str = tmp.toISOString();
+      str = str.split("T");
+      var str2 = str[1].split(":");
+      var str3 = Number(str2[0]) + 2;
+      if (str3 < 10) {
+        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+      } else {
+        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+      }
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    saveConfirm() {
+      this.$bvToast.toast("Die Änderungen wurden erfolgreich gespeichert!", {
+        title: "Änderungen gespeichert",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "success"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedConfirm() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Änderungen wurden nicht gespeichert",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * TODO
      * Diese Methode akzeptiert den Antrag oder die Kosten
      */
     confirmed() {
+      if (this.app.kind === 0) {
+        if (this.app.progress === 2) {
+          for (let i = 0; i < this.app.business_trip_applications.length; i++) {
+            this.app.business_trip_applications[i].referee = this.user.longname;
+            this.app.business_trip_applications[
+              i
+            ].date_application_approved = this.createNewDate();
+            this.app.last_changed = this.createNewDate();
+            this.app.progress = 3;
+          }
+        }
+        if (this.app.progress === 6) {
+          for (let i = 0; i < this.app.travel_invoices.length; i++) {
+            // TODO welches ist pek und welches ist av/administration?
+            this.app.travel_invoices[i].clerk = this.user.longname;
+            this.app.travel_invoices[i].reviewer = this.user.longname;
+            this.app.travel_invoices[i].approval_date = this.createNewDate();
+            this.app.travel_invoices[i].zi = 1;
+          }
+          this.app.progress = 7;
+          this.app.last_changed = this.createNewDate();
+        }
+      } else {
+        if (this.app.progress === 1) {
+          for (let i = 0; i < this.app.business_trip_applications.length; i++) {
+            this.app.business_trip_applications[i].referee = this.user.longname;
+            this.app.business_trip_applications[
+              i
+            ].date_application_approved = this.createNewDate();
+            this.app.last_changed = this.createNewDate();
+          }
+        }
+        if (this.app.progress === 5) {
+          for (let i = 0; i < this.app.travel_invoices.length; i++) {
+            // TODO welches ist pek und welches ist av/administration?
+            this.app.travel_invoices[i].clerk = this.user.longname;
+            this.app.travel_invoices[i].reviewer = this.user.longname;
+            this.app.travel_invoices[i].approval_date = this.createNewDate();
+            this.app.travel_invoices[i].zi = 1;
+          }
+          this.app.progress = 6;
+          this.app.last_changed = this.createNewDate();
+        }
+      }
+      axios
+        .put(
+          this.url + "/updateApplication?uuid=" + this.app.uuid,
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          },
+          this.app
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.saveConfirm();
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios.put(
+                        this.url + "/updateApplication?uuid=" + this.app.uuid,
+                        {
+                          headers: {
+                            Authorization: "Basic " + this.token
+                          }
+                        },
+                        this.app
+                      ).then(res => {
+                        switch(res.status) {
+                          case 200:
+                            this.saveConfirm();
+                            break;
+                          default:
+                            this.failedConfirm();
+                            break;
+                        }
+                      });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedConfirm();
+              break;
+          }
+        });
       //Save the nesessary information from current User reviewing the application in the application
       //Progress should be set to Akzeptiert or Fertig
     },

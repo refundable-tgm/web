@@ -609,7 +609,6 @@ export default {
         } else {
           data[i].leader = this.user.longname;
         }
-        console.log(1);
         data[i].status = this.loadStatus(data[i].kind, data[i].progress);
         data[i].active = this.isActive(data[i].kind, data[i].progress);
         data[i].title = data[i].name;
@@ -621,7 +620,22 @@ export default {
             case 7:
               data[i]._rowVariant = "success";
               break;
-            case 1 || 2 || 3 || 4 || 5 || 6:
+            case 1:
+              data[i]._rowVariant = "warning";
+              break;
+            case 2:
+              data[i]._rowVariant = "warning";
+              break;
+            case 3:
+              data[i]._rowVariant = "warning";
+              break;
+            case 4:
+              data[i]._rowVariant = "warning";
+              break;
+            case 5:
+              data[i]._rowVariant = "warning";
+              break;
+            case 6:
               data[i]._rowVariant = "warning";
               break;
             case 0:
@@ -633,10 +647,22 @@ export default {
           }
         } else {
           switch (data[i].progress) {
-            case 2 || 3 || 6:
+            case 6:
               data[i]._rowVariant = "success";
               break;
-            case 1 || 4 || 5:
+            case 1:
+              data[i]._rowVariant = "warning";
+              break;
+            case 2:
+              data[i]._rowVariant = "warning";
+              break;
+            case 3:
+              data[i]._rowVariant = "warning";
+              break;
+            case 4:
+              data[i]._rowVariant = "warning";
+              break;
+            case 5:
               data[i]._rowVariant = "warning";
               break;
             case 0:
@@ -659,8 +685,6 @@ export default {
      * @returns Boolean-Wert, ob der Antrag aktiv ist oder nicht
      */
     isActive(kind, progress) {
-      console.log(kind);
-      console.log(progress);
       if (kind === 0) {
         if (progress > 0 && progress < 7) return true;
         else return false;

@@ -364,8 +364,8 @@ export default {
         reisekosten: false,
         aufenthaltskosten: false,
         von: "",
-        sonstige_kosten: null,
-        geschaetzte_kosten: null
+        sonstige_kosten: 0,
+        geschaetzte_kosten: 0
       }
     };
   },

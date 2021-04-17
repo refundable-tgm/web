@@ -51,6 +51,7 @@
           description="Geben Sie die Beförderungszuschussmenge an."
           label="Beförderungszuschuss"
           label-for="geschk"
+          v-if="data.selected.includes('a2')"
         >
           <b-input-group>
             <b-input-group-text :id="index + 'eur-addon-2'" slot="append"
@@ -284,7 +285,7 @@
           <template #cell(start)="data">
             <b-form-timepicker
               style="min-width: 100px;"
-              id="begin"
+              :id="data.index + 'begin'"
               locale="de"
               placeholder="Zeit"
               v-model="data.item.start"
@@ -297,7 +298,7 @@
           <template #cell(end)="data">
             <b-form-timepicker
               style="min-width: 100px;"
-              id="end"
+              :id="data.index + 'end'"
               locale="de"
               placeholder="Zeit"
               v-model="data.item.end"
@@ -308,7 +309,7 @@
           <!-- Art Spalte -->
           <template #cell(kind_of_costs)="data">
             <b-form-checkbox-group
-              id="geb"
+              :id="data.index + '5'"
               v-model="data.item.kind_of_costs"
               v-on:input="update()"
               :disabled="readonly"
@@ -323,7 +324,7 @@
           <!-- KM Spalte -->
           <template #cell(km)="data">
             <b-form-input
-              :id="'0'"
+              :id="data.index + '4'"
               v-model="data.item.km"
               :readonly="readonly"
               v-on:input="update()"
@@ -334,7 +335,7 @@
           <!-- Reisekosten Spalte -->
           <template #cell(travelcosts)="data">
             <b-form-input
-              :id="'0'"
+              :id="data.index + '0'"
               v-model="data.item.travelcosts"
               v-on:change="update()"
               :readonly="
@@ -346,7 +347,7 @@
           <!-- Tagesgebühr Spalte -->
           <template #cell(daycharge)="data">
             <b-form-input
-              :id="'1'"
+              :id="data.index + '1'"
               v-model="data.item.daycharge"
               v-on:change="update()"
               :readonly="
@@ -358,7 +359,7 @@
           <!-- Nächtigungsgebühr Spalte -->
           <template #cell(sleepcharge)="data">
             <b-form-input
-              :id="'2'"
+              :id="data.index + '2'"
               v-model="data.item.sleepcharge"
               v-on:change="update()"
               :readonly="
@@ -370,7 +371,7 @@
           <!-- Andere Kosten Spalte -->
           <template #cell(othercosts)="data">
             <b-form-input
-              :id="'3'"
+              :id="data.index + '3'"
               v-model="data.item.othercosts"
               v-on:change="update()"
               :readonly="
@@ -430,7 +431,6 @@ export default {
      */
     update() {
       this.calcSum();
-      console.log(this.data);
       this.$emit("update", this.index, this.data);
     },
     /**
@@ -570,6 +570,7 @@ export default {
           sum: this.app.calculation.rows[i].sum
         });
       }
+      this.data.travel_grant = this.app.travel_costs_pre_grant;
       this.data.km = this.app.kilometre_amount;
       this.data.breakfast = this.app.breakfasts;
       this.data.lunch = this.app.lunches;

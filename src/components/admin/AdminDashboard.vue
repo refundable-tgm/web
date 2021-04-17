@@ -996,7 +996,7 @@ export default {
         /*
       Implement the logout function with the backend
       */
-        this.changeComponent("Login");
+        this.$emit("logout");
       }
     },
     /**

@@ -558,18 +558,18 @@ export default {
           var business = [];
           var invoice = [];
           var titel;
-          switch(this.selected) {
+          switch (this.selected) {
             case 7:
-              titel = "Pflegefreistellung "+this.user.longname;
+              titel = "Pflegefreistellung " + this.user.longname;
               break;
             case 8:
-              titel = "Dienstauftrag "+this.user.longname;
+              titel = "Dienstauftrag " + this.user.longname;
               break;
             case 9:
-              titel = "Arzttermin "+this.user.longname;
+              titel = "Arzttermin " + this.user.longname;
               break;
             case 10:
-              titel = "Sonstiger Antrag "+this.user.longname;
+              titel = "Sonstiger Antrag " + this.user.longname;
               break;
             default:
               break;
