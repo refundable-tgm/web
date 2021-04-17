@@ -557,11 +557,28 @@ export default {
             var bonus2 = true;
           var business = [];
           var invoice = [];
+          var titel;
+          switch(this.selected) {
+            case 7:
+              titel = "Pflegefreistellung "+this.user.longname;
+              break;
+            case 8:
+              titel = "Dienstauftrag "+this.user.longname;
+              break;
+            case 9:
+              titel = "Arzttermin "+this.user.longname;
+              break;
+            case 10:
+              titel = "Sonstiger Antrag "+this.user.longname;
+              break;
+            default:
+              break;
+          }
           if (this.selected === "7" || this.selected === "9") {
             business.push({
               id: 0,
-              name: this.returnString(this.escort.longname.split(" ")[0]),
-              surname: this.returnString(this.escort.longname.split(" ")[1]),
+              name: this.returnString(this.user.longname.split(" ")[0]),
+              surname: this.returnString(this.user.longname.split(" ")[1]),
               degree: this.returnString(this.teacher.degree),
               title: this.returnString(this.teacher.title),
               staffnr: this.returnValue(this.teacher.personalnummer),
@@ -598,8 +615,8 @@ export default {
             });
             invoice.push({
               id: 0,
-              name: this.returnString(this.escort.longname.split(" ")[0]),
-              surname: this.returnString(this.escort.longname.split(" ")[1]),
+              name: this.returnString(this.user.longname.split(" ")[0]),
+              surname: this.returnString(this.user.longname.split(" ")[1]),
               degree: this.returnString(this.teacher.degree),
               title: this.returnString(this.teacher.title),
               trip_begin_time: this.setTimezone(
@@ -615,7 +632,7 @@ export default {
             });
           }
           var data = {
-            name: this.returnString(""),
+            name: this.returnString(titel),
             kind: 6,
             miscellaneous_reason: this.returnString(this.son),
             progress: 1,
