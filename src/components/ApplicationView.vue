@@ -2224,6 +2224,7 @@ export default {
       }
     },
     /**
+     * TODO welcher Lehrer fragt die PDF an? Wie gebe ich an, für welchen Lehrer die PDf geöffnet werden soll?
      * Diese Methode lädt das Abwesenheitsformular des Lehers aus dem Backend und öffnet es
      */
     applicationPDF() {
