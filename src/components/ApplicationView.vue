@@ -59,6 +59,20 @@
           </template>
           <!-- Aktionen -->
           <template #cell(actions)="row">
+            <!-- Excel herunterladen -->
+            <b-button
+              v-if="
+                row.item.form === 'BusinessTripApplication' ||
+                  row.item.form === 'TravelInvoice'
+              "
+              variant="outline-secondary"
+              size="sm"
+              @click="downloadExcel(row.item)"
+              style="margin-right:1rem"
+            >
+              <b-icon variant="success" icon="file-earmark-text"></b-icon> Excel
+              herunterladen
+            </b-button>
             <!-- PDF öffnen -->
             <b-button
               variant="outline-secondary"
@@ -66,17 +80,14 @@
               @click="openPDF(row.item)"
               style="margin-right:1rem"
             >
-              <b-icon icon="file-earmark-text"></b-icon> PDF öffnen
+              <b-icon variant="danger" icon="file-earmark-text"></b-icon> PDF
+              öffnen
             </b-button>
             <!-- Details anzeigen -->
             <b-button
               variant="outline-secondary"
               size="sm"
               @click="row.toggleDetails"
-              v-if="
-                row.item.title !== 'Abwesenheitsformular' &&
-                  row.item.title !== 'Abwesenheitsformular für Klassen'
-              "
             >
               <b-icon icon="pencil-square"></b-icon> Bearbeitung
               {{ row.detailsShowing ? "schließen" : "öffnen" }}
@@ -207,6 +218,61 @@
         </b-row>
       </b-container>
     </b-modal>
+    <!-- Auswahl Klassen -->
+    <b-modal ref="class-modal" hide-footer title="Klassen auswählen">
+      <b-container fluid>
+        <b-row
+          ><b-col cols="12">
+            <div class="d-block text-center">
+              <p>
+                Bitte wählen Sie aus, welche Klassen in der Datei inkludiert
+                sein sollen:
+              </p>
+              <!-- Klassen Auswählen -->
+              <b-form-group
+                label-cols-sm="4"
+                label-cols-lg="3"
+                content-cols-sm
+                content-cols-lg="7"
+                label-for="zud"
+                id="zu"
+              >
+                <b-form-checkbox-group
+                  id="zud"
+                  v-model="auswahl"
+                  stacked
+                  v-for="c in klassen"
+                  v-bind:key="c"
+                >
+                  <b-form-checkbox :value="c">{{ c }}</b-form-checkbox>
+                </b-form-checkbox-group>
+              </b-form-group>
+            </div>
+          </b-col></b-row
+        >
+        <b-row>
+          <b-col cols="6">
+            <!-- Antrag schließen bestätigung -->
+            <b-button
+              class="mt-2"
+              variant="outline-success"
+              block
+              @click="generallPDF"
+              >Bestätigen</b-button
+            >
+          </b-col>
+          <b-col cols="6">
+            <!-- Abbrechen Button --><b-button
+              class="mt-2"
+              variant="outline-danger"
+              block
+              @click="hideClass"
+              >Abbrechen</b-button
+            ></b-col
+          >
+        </b-row>
+      </b-container>
+    </b-modal>
 
     <!-- Info modal -->
     <b-modal
@@ -216,6 +282,15 @@
       @hide="resetInfoModal"
     >
       <pre>{{ infoModal.content }}</pre>
+    </b-modal>
+    <!-- Klassen modal -->
+    <b-modal
+      :id="classModal.id"
+      :title="classModal.title"
+      ok-only
+      @hide="resetClassModal"
+    >
+      <pre>{{ classModal.content }}</pre>
     </b-modal>
   </b-container>
 </template>
@@ -239,7 +314,7 @@ export default {
     TravelApplication,
     TravelBill
   },
-  props: ["url", "appid", "user", "token"],
+  props: ["url", "appid", "user", "token", "refresh_token"],
   data() {
     return {
       items: [],
@@ -263,6 +338,11 @@ export default {
         title: "",
         content: ""
       },
+      classModal: {
+        id: "info-modal",
+        title: "",
+        content: ""
+      },
       title: "",
       app: Object,
       isLeader: false,
@@ -280,7 +360,9 @@ export default {
       tadata: {},
       tbdata: {},
       currentTeacher: "",
-      currentTeacherIndex: -1
+      currentTeacherIndex: -1,
+      auswahl: [],
+      klassen: []
     };
   },
   computed: {
@@ -596,73 +678,62 @@ export default {
       }
     },
     /**
-     * TODO
      * Diese Methode lädt alle notwendigen Daten und formatiert jene so, dass diese richtig angezeigt werden
      */
     loadData() {
       axios
-        .get(this.url + "/application/getApplication?id=" + this.appid, {
-          params: {
-            token: this.token
+        .get(this.url + "/getApplication?uuid=" + this.appid, {
+          headers: {
+            Authorization: "Basic " + this.token
           }
         })
         .then(response => {
-          this.app = response.data.application;
-          this.checkRunning();
-          this.title = this.app.name;
-          this.kind = this.app.kind;
-          this.currentTeacher = this.user.short;
-          if (this.app.kind === 0) {
-            if (
-              this.currentTeacher ===
-              this.app.school_event_details.teachers[0].shortname
-            ) {
-              this.isLeader = true;
-            } else {
-              this.isLeader = false;
-            }
-            for (
-              let i = 0;
-              i < this.app.school_event_details.teachers.length;
-              i++
-            ) {
-              if (
-                this.currentTeacher ===
-                this.app.school_event_details.teachers[i].shortname
-              ) {
-                this.currentTeacherIndex = i;
-              }
-            }
-            this.start = this.app.school_event_details.teachers[
-              this.currentTeacherIndex
-            ].attendance_from;
-            this.end = this.app.school_event_details.teachers[
-              this.currentTeacherIndex
-            ].attendance_till;
-            this.sedata = this.app.school_event_details.teachers[
-              this.currentTeacherIndex
-            ];
-          } else {
-            this.currentTeacherIndex = 0;
+          switch (response.status) {
+            case 200:
+              this.loadView(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(this.url + "/getApplication?uuid=" + this.appid, {
+                          headers: {
+                            Authorization: "Basic " + this.token
+                          }
+                        })
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.loadView(res.data);
+                              break;
+                            default:
+                              this.failedLoad();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedLoad();
+              break;
           }
-          if (this.app.kind === 1) {
-            this.isLeader = true;
-            this.start = this.app.start_time;
-            this.end = this.app.end_time;
-            this.wdata = this.app;
-          }
-          if (this.app.kind === 6) {
-            this.isLeader = true;
-            this.start = this.app.start_time;
-            this.end = this.app.end_time;
-            this.odata = this.app;
-          }
-          this.tadata = this.app.business_trip_applications[
-            this.currentTeacherIndex
-          ];
-          this.tbdata = this.app.travel_invoices[this.currentTeacherIndex];
-          this.setItems(this.app);
-          this.setReads(this.app);
         });
       var application = {
         uuid: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
@@ -671,7 +742,7 @@ export default {
         miscellaneous_reason: "",
         progress: 3,
         start_time: "2021-04-12T17:54:40.035095+01:00",
-        end_time: "2021-04-19T17:54:40.035095+01:00",
+        end_time: "2021-04-16T17:54:40.035095+01:00",
         notes: "Sommersportwoche ist cool",
         start_address: "Wexstraße 19-23, 1200 Wien",
         destination_address: "Karl-Hönck-Heim-Straße 1, 1234 Hönckheimsdorf",
@@ -1069,12 +1140,31 @@ export default {
           }
         ]
       };
-      this.app = application;
+      this.loadView(application);
+    },
+    /**
+     * Diese Methode gibt den Wert der Variable als Zahl zurück
+     * @param input Die Zahl, welche umgewandelt werden soll
+     * @returns Die Zahl des gegebenen Werts
+     */
+    returnValue(input) {
+      if (input === undefined || input === null || input === "") {
+        return null;
+      } else {
+        return Number(input);
+      }
+    },
+    /**
+     * Diese Methode setzt alle wichtigen Variablen, um einen Antrag richtig darzustellen
+     */
+    loadView(data) {
+      this.app = data;
       this.checkRunning();
       this.title = this.app.name;
       this.kind = this.app.kind;
       this.currentTeacher = this.user.short;
       if (this.app.kind === 0) {
+        this.klassen = this.app.school_event_details.classes;
         if (
           this.currentTeacher ===
           this.app.school_event_details.teachers[0].shortname
@@ -1125,18 +1215,6 @@ export default {
       this.tbdata = this.app.travel_invoices[this.currentTeacherIndex];
       this.setItems(this.app);
       this.setReads(this.app);
-    },
-    /**
-     * Diese Methode gibt den Wert der Variable als Zahl zurück
-     * @param input Die Zahl, welche umgewandelt werden soll
-     * @returns Die Zahl des gegebenen Werts
-     */
-    returnValue(input) {
-      if (input === undefined || input === null || input === "") {
-        return null;
-      } else {
-        return Number(input);
-      }
     },
     /**
      * Diese Methode gibt den String der Variable zurück
@@ -1464,7 +1542,6 @@ export default {
       }
     },
     /**
-     * TODO
      * Diese Methode sendet den veränderten Antrag an das Backend
      */
     save() {
@@ -1545,6 +1622,12 @@ export default {
       this.$refs["close-modal"].show();
     },
     /**
+     * Diese Methode öffnet das Modal, in dem man den die Klassen definieren kann
+     */
+    classForm() {
+      this.$refs["class-modal"].show();
+    },
+    /**
      * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
      */
     saveConfirm() {
@@ -1561,6 +1644,39 @@ export default {
     failedConfirm() {
       this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
         title: "Änderungen wurden nicht gespeichert",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag einen Fehler beim Laden hatte
+     */
+    failedLoad() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Antrag konnte nicht geladen werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedExcel() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Das Formular konnte nicht heruntergeladen werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedPDF() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Die PDF konnte nicht geöffnet werden",
         autoHideDelay: 2500,
         appendToast: false,
         variant: "danger"
@@ -1634,41 +1750,49 @@ export default {
         } else {
           switch (progress) {
             case 0:
+              this.sgreadonly = true;
               this.sereadonly = false;
               this.tareadonly = false;
               this.tbreadonly = true;
               break;
             case 1:
+              this.sgreadonly = true;
               this.sereadonly = false;
               this.tareadonly = false;
               this.tbreadonly = true;
               break;
             case 2:
+              this.sgreadonly = true;
               this.sereadonly = true;
               this.tareadonly = true;
               this.tbreadonly = true;
               break;
             case 3:
+              this.sgreadonly = true;
               this.sereadonly = true;
               this.tareadonly = true;
               this.tbreadonly = true;
               break;
             case 4:
+              this.sgreadonly = true;
               this.sereadonly = true;
               this.tareadonly = true;
               this.tbreadonly = true;
               break;
             case 5:
+              this.sgreadonly = true;
               this.sereadonly = true;
               this.tareadonly = true;
               this.tbreadonly = false;
               break;
             case 6:
+              this.sgreadonly = true;
               this.sereadonly = true;
               this.tareadonly = true;
               this.tbreadonly = true;
               break;
             case 7:
+              this.sgreadonly = true;
               this.sereadonly = true;
               this.tareadonly = true;
               this.tbreadonly = true;
@@ -1786,12 +1910,33 @@ export default {
         if (this.isLeader) {
           this.items = [
             {
-              title: "Allgemeine Infos",
+              title: "Allgemeine Infos - Abwesenheitsformulare der Klassen",
+              form: "SchoolEventDetails"
+            },
+            {
+              title: "Begleitformular - Abwesenheitsformular",
+              form: "SchoolEventTeacherDetails"
+            },
+            {
+              title: "Reiseformular",
+              form: "BusinessTripApplication"
+            }
+          ];
+          if (app.progress >= 5) {
+            this.items.push({
+              title: "Reiserechnung",
+              form: "TravelInvoice"
+            });
+          }
+        } else {
+          this.items = [
+            {
+              title: "Allgemeine Infos - Abwesenheitsformulare der Klassen",
               form: "SchoolEventDetails"
             },
             {
               title: "Begleitformular",
-              form: "SchoolEventTeacherDetails"
+              form: "SchoolEventTeacherDetails - Abwesenheitsformular"
             },
             {
               title: "Reiseformular",
@@ -1804,43 +1949,12 @@ export default {
               form: "TravelInvoice"
             });
           }
-          this.items.push(
-            {
-              title: "Abwesenheitsformular",
-              form: "AbsenceOfTeacher"
-            },
-            {
-              title: "Abwesenheitsformular für Klassen",
-              form: "AbsenceOfClasses"
-            }
-          );
-        } else {
-          this.items = [
-            {
-              title: "Begleitformular",
-              form: "SchoolEventTeacherDetails"
-            },
-            {
-              title: "Reiseformular",
-              form: "BusinessTripApplication"
-            }
-          ];
-          if (app.progress >= 5) {
-            this.items.push({
-              title: "Reiserechnung",
-              form: "TravelInvoice"
-            });
-          }
-          this.items.push({
-            title: "Abwesenheitsformular",
-            form: "AbsenceOfTeacher"
-          });
         }
       } else {
         if (app.kind === 1) {
           this.items = [
             {
-              title: "Fortbildung",
+              title: "Fortbildung - Abwesenheitsformular",
               form: "TrainingDetails"
             },
             {
@@ -1854,10 +1968,6 @@ export default {
               form: "TravelInvoice"
             });
           }
-          this.items.push({
-            title: "Abwesenheitsformular",
-            form: "AbsenceOfTeacher"
-          });
         } else {
           if (
             app.other_reason_details.kind === 7 ||
@@ -1865,18 +1975,14 @@ export default {
           ) {
             this.items = [
               {
-                title: "Sonstiger Antrag",
+                title: "Sonstiger Antrag - Abwesenheitsformular",
                 form: "OtherReasonDetails"
               }
             ];
-            this.items.push({
-              title: "Abwesenheitsformular",
-              form: "AbsenceOfTeacher"
-            });
           } else {
             this.items = [
               {
-                title: "Sonstiger Antrag",
+                title: "Sonstiger Antrag - Abwesenheitsformular",
                 form: "OtherReasonDetails"
               },
               {
@@ -1890,37 +1996,485 @@ export default {
                 form: "TravelInvoice"
               });
             }
-            this.items.push({
-              title: "Abwesenheitsformular",
-              form: "AbsenceOfTeacher"
-            });
           }
         }
       }
     },
     /**
-     * Diese Methode lädt die PDF von dem Backend
+     * Code aus https://codepen.io/DanIgnatov/pen/RvbeeB
+     * Diese Funktion downloaded das Excel-File beim Benutzer
      */
-    openPDF(item) {
+    excelDownload(excel) {
+      var anchor_href =
+        "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," +
+        excel;
+      var exportLinkElement = document.createElement("a");
+
+      exportLinkElement.hidden = true;
+      exportLinkElement.download = "HelloWorld.xlsx";
+      exportLinkElement.href = anchor_href;
+      exportLinkElement.text = "downloading...";
+
+      document.body.appendChild(exportLinkElement);
+      exportLinkElement.click();
+      exportLinkElement.remove();
+    },
+    /**
+     * Lädt die PDF für die Klassen herunter
+     */
+    generallPDF() {
+      this.classForm();
       axios
-        .get(this.url + "/getPDF", {
-          params: {
-            application: this.app.UUID,
-            form: item.form,
-            user: this.user.uuid,
-            token: this.token
+        .get(
+          this.url + "/getAbsenceFormForClasses",
+          {
+            params: {
+              uuid: this.app.uuid,
+              classes: this.auswahl
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
           }
-        })
+        )
         .then(response => {
-          var pdf = response.data.pdf;
-          this.showPDF(pdf);
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getAbsenceFormForClasses",
+                          {
+                            params: {
+                              uuid: this.app.uuid,
+                              classes: this.auswahl
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
         });
     },
     /**
-     * Diese Methode versteckt das Modal
+     * Diese Methode lädt das Excel-File von dem Backend und lädt diese dem Benutzer herunter
+     */
+    downloadExcel(item) {
+      switch (item.form) {
+        case "BusinessTripApplication":
+          axios
+            .get(this.url + "/getBusinessTripApplicationExcel", {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            })
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.excelDownload(response.data);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(
+                              this.url + "/getBusinessTripApplicationExcel",
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
+                              }
+                            )
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.excelDownload(res.data);
+                                  break;
+                                default:
+                                  this.failedExcel();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.failedExcel();
+                  break;
+              }
+            });
+          break;
+        case "TravelInvoice":
+          axios
+            .get(this.url + "/getTravelInvoiceExcel", {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            })
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.excelDownload(response.data);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(this.url + "/getTravelInvoiceExcel", {
+                              headers: {
+                                Authorization: "Basic " + this.token
+                              }
+                            })
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.excelDownload(res.data);
+                                  break;
+                                default:
+                                  this.failedExcel();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.failedExcel();
+                  break;
+              }
+            });
+
+          break;
+        default:
+          this.failedExcel();
+          break;
+      }
+    },
+    /**
+     * Diese Methode lädt das Abwesenheitsformular des Lehers aus dem Backend und öffnet es
+     */
+    applicationPDF() {
+      axios
+        .get(
+          this.url + "/getAbsenceFormForTeacher",
+          {
+            params: {
+              uuid: this.app.uuid
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getAbsenceFormForTeacher",
+                          {
+                            params: {
+                              uuid: this.app.uuid
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
+     * Diese Methode lädt die PDF von dem Backend
+     */
+    openPDF(item) {
+      switch (item.form) {
+        case "SchoolEventDetails":
+          this.classForm();
+          break;
+        case "SchoolEventTeacherDetails":
+          this.applicationPDF();
+          break;
+        case "TrainingDetails":
+          this.applicationPDF();
+          break;
+        case "OtherReasonDetails":
+          this.applicationPDF();
+          break;
+        case "BusinessTripApplication":
+          axios
+            .get(
+              this.url + "/getBusinessTripApplicationForm",
+              {
+                params: {
+                  uuid: this.app.uuid
+                }
+              },
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
+              }
+            )
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.showPDF(response.data);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(
+                              this.url + "/getBusinessTripApplicationForm",
+                              {
+                                params: {
+                                  uuid: this.app.uuid
+                                }
+                              },
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
+                              }
+                            )
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.showPDF(res.data);
+                                  break;
+                                default:
+                                  this.failedPDF();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.failedPDF();
+                  break;
+              }
+            });
+          break;
+        case "TravelInvoice":
+          axios
+            .get(
+              this.url + "/getTravelInvoiceForm",
+              {
+                params: {
+                  uuid: this.app.uuid
+                }
+              },
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
+              }
+            )
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.showPDF(response.data);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(
+                              this.url + "/getTravelInvoiceForm",
+                              {
+                                params: {
+                                  uuid: this.app.uuid
+                                }
+                              },
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
+                              }
+                            )
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.showPDF(res.data);
+                                  break;
+                                default:
+                                  this.failedPDF();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.failedPDF();
+                  break;
+              }
+            });
+          break;
+        default:
+          this.failedPDF();
+          break;
+      }
+    },
+    /**
+     * Diese Methode versteckt das Info-Modal
      */
     hideClose() {
       this.$refs["close-modal"].hide();
+    },
+    /**
+     * Diese Methode versteckt das Klassen-Modal
+     */
+    hideClass() {
+      this.$refs["class-modal"].hide();
     },
     /**
      * Code aus StackOverflow
@@ -1942,11 +2496,18 @@ export default {
       );
     },
     /**
-     * Diese Methode leert das Modal
+     * Diese Methode leert das Info-Modal
      */
     resetInfoModal() {
       this.infoModal.title = "";
       this.infoModal.content = "";
+    },
+    /**
+     * Diese Methode leert das Klassen-Modal
+     */
+    resetClassModal() {
+      this.classModal.title = "";
+      this.classModal.content = "";
     },
     /**
      * Methode von Bootstrap-vue Table
@@ -1964,6 +2525,28 @@ export default {
         this.changeComponent("NewApplication");
         this.changeURL("NewApplication");
       }
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer, dass der Antrag gelöscht worden ist
+     */
+    deleteConfirmed() {
+      this.$bvToast.toast("Der Antrag wurde erfolgreich gelöscht!", {
+        title: "Antrag geschlossen",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "success"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer, dass der Antrag nicht gelöscht worden ist
+     */
+    deleteFailed() {
+      this.$bvToast.toast("Der Antrag wurde nicht gelöscht!", {
+        title: "Ein Fehler ist aufgetreten",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * Diese Methode ändert die angezeigte Komponente
@@ -1999,20 +2582,135 @@ export default {
       }
     },
     /**
-     * TODO
+     * TODO => wie spezifiziere ich den Antrag bei delete (So wie ich gemacht habe richtig?)
      * Diese Methode löscht den Antrag
      */
     delAn() {
-      axios
-        .delete(this.url + "/closeApplication", {
-          params: {
-            application: this.app.uuid,
-            token: this.token
-          }
-        })
-        .then(() => {
-          this.index();
-        });
+      if (this.app.kind === 0) {
+        if (this.app.progress <= 2) {
+          axios
+            .delete(this.url + "/deleteApplication?uuid="+this.app.uuid, {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            })
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.deleteConfirmed();
+                  setTimeout(this.changeComponent("Index"), 1000);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .delete(this.url + "/deleteApplication?uuid="+this.app.uuid, {
+                              headers: {
+                                Authorization: "Basic " + this.token
+                              }
+                            })
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.deleteConfirmed();
+                                  setTimeout(
+                                    this.changeComponent("Index"),
+                                    1000
+                                  );
+                                  break;
+                                default:
+                                  this.deleteFailed();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.deleteFailed();
+                  break;
+              }
+            });
+        }
+      } else {
+        if (this.app.progress <= 1) {
+          axios
+            .delete(this.url + "/deleteApplication", {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            })
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.deleteConfirmed();
+                  setTimeout(this.changeComponent("Index"), 1000);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .delete(this.url + "/deleteApplication", {
+                              headers: {
+                                Authorization: "Basic " + this.token
+                              }
+                            })
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.deleteConfirmed();
+                                  setTimeout(
+                                    this.changeComponent("Index"),
+                                    1000
+                                  );
+                                  break;
+                                default:
+                                  this.deleteFailed();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.deleteFailed();
+                  break;
+              }
+            });
+        }
+      }
     },
     /**
      * Diese Methode sorgt dafür, dass die URL angepasst ist, damit keine Reste des Viewers (ApplicationSearch) in der URL stehen
