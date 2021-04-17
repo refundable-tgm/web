@@ -4,7 +4,7 @@
     <!-- Verlinkung zu dem zugehörigen Antrag -->
     <b-row
       align-v="center"
-      v-on:click="linkToApplication(snews.application)"
+      v-on:click="linkToApplication(snews.uuid)"
       class="shadow-lg news-elem-row"
     >
       <b-col cols="12">
@@ -34,7 +34,9 @@
                 <b-row align-h="center" class="d-none d-md-block">
                   <b-col cols="12">
                     <!-- Beschreibung der Neuigkeit -->
-                    <h4 class="news-elem-heading">{{ snews.description }}</h4>
+                    <h4 class="news-elem-heading">
+                      Der Antrag {{ snews.title }} wurde aktualisiert
+                    </h4>
                   </b-col>
                 </b-row>
               </b-container>
@@ -51,13 +53,12 @@ export default {
   props: ["snews"],
   methods: {
     /**
-     * TODO
      * Diese Methode sorgt dafür, dass der Benutzer auf die richtigen Antrag weitergeleitet wird
      * @param application The Application of the News-Element
      */
-    linkToApplication(application) {
+    linkToApplication(uuid) {
       if (this.checkClick()) {
-        this.$emit("change-component", "ApplicationView", true, application.id);
+        this.$emit("change-component", "ApplicationView", true, uuid);
       }
     },
     /**

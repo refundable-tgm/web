@@ -2590,7 +2590,7 @@ export default {
       if (this.app.kind === 0) {
         if (this.app.progress <= 2) {
           axios
-            .delete(this.url + "/deleteApplication?uuid="+this.app.uuid, {
+            .delete(this.url + "/deleteApplication?uuid=" + this.app.uuid, {
               headers: {
                 Authorization: "Basic " + this.token
               }
@@ -2617,11 +2617,16 @@ export default {
                             resp.data.refresh_token
                           );
                           axios
-                            .delete(this.url + "/deleteApplication?uuid="+this.app.uuid, {
-                              headers: {
-                                Authorization: "Basic " + this.token
+                            .delete(
+                              this.url +
+                                "/deleteApplication?uuid=" +
+                                this.app.uuid,
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
                               }
-                            })
+                            )
                             .then(res => {
                               switch (res.status) {
                                 case 200:
