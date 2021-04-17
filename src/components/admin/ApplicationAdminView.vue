@@ -1049,10 +1049,8 @@ export default {
         }
         if (this.app.progress === 6) {
           for (let i = 0; i < this.app.travel_invoices.length; i++) {
-            // TODO welches ist pek und welches ist av/administration?
-            this.app.travel_invoices[i].clerk = this.user.longname;
-            this.app.travel_invoices[i].reviewer = this.user.longname;
             this.app.travel_invoices[i].approval_date = this.createNewDate();
+            // TODO was ist die ZI Nummer?
             this.app.travel_invoices[i].zi = 1;
           }
           this.app.progress = 7;
@@ -1070,10 +1068,8 @@ export default {
         }
         if (this.app.progress === 5) {
           for (let i = 0; i < this.app.travel_invoices.length; i++) {
-            // TODO welches ist pek und welches ist av/administration?
-            this.app.travel_invoices[i].clerk = this.user.longname;
-            this.app.travel_invoices[i].reviewer = this.user.longname;
             this.app.travel_invoices[i].approval_date = this.createNewDate();
+            // TODO was ist die ZI Nummer?
             this.app.travel_invoices[i].zi = 1;
           }
           this.app.progress = 6;
