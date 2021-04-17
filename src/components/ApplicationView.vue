@@ -73,6 +73,7 @@
               variant="outline-secondary"
               size="sm"
               @click="row.toggleDetails"
+              v-if="row.item.title !== 'Abwesenheitsformular' && row.item.title !== 'Abwesenheitsformular für Klassen'"
             >
               <b-icon icon="pencil-square"></b-icon> Bearbeitung
               {{ row.detailsShowing ? "schließen" : "öffnen" }}
@@ -1265,7 +1266,7 @@ export default {
           ) {
             this.app.progress = 4;
           }
-          if(current >= new Date(this.app.end_time)) {
+          if (current >= new Date(this.app.end_time)) {
             this.app.progress = 5;
           }
         }
@@ -1277,7 +1278,7 @@ export default {
           ) {
             this.app.progress = 3;
           }
-          if(current >= new Date(this.app.end_time)) {
+          if (current >= new Date(this.app.end_time)) {
             this.app.progress = 4;
           }
         }
@@ -1501,24 +1502,26 @@ export default {
                         resp.data.access_token,
                         resp.data.refresh_token
                       );
-                      axios.put(
-                        this.url + "/updateApplication?uuid=" + this.app.uuid,
-                        {
-                          headers: {
-                            Authorization: "Basic " + this.token
+                      axios
+                        .put(
+                          this.url + "/updateApplication?uuid=" + this.app.uuid,
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          },
+                          this.app
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.saveConfirm();
+                              break;
+                            default:
+                              this.failedConfirm();
+                              break;
                           }
-                        },
-                        this.app
-                      ).then(res => {
-                        switch(res.status) {
-                          case 200:
-                            this.saveConfirm();
-                            break;
-                          default:
-                            this.failedConfirm();
-                            break;
-                        }
-                      });
+                        });
                       break;
                     default:
                       this.$emit("logout");
@@ -1798,6 +1801,16 @@ export default {
               form: "TravelInvoice"
             });
           }
+          this.items.push(
+            {
+              title: "Abwesenheitsformular",
+              form: "AbsenceOfTeacher"
+            },
+            {
+              title: "Abwesenheitsformular für Klassen",
+              form: "AbsenceOfClasses"
+            }
+          );
         } else {
           this.items = [
             {
@@ -1815,6 +1828,10 @@ export default {
               form: "TravelInvoice"
             });
           }
+          this.items.push({
+            title: "Abwesenheitsformular",
+            form: "AbsenceOfTeacher"
+          });
         }
       } else {
         if (app.kind === 1) {
@@ -1834,6 +1851,10 @@ export default {
               form: "TravelInvoice"
             });
           }
+          this.items.push({
+            title: "Abwesenheitsformular",
+            form: "AbsenceOfTeacher"
+          });
         } else {
           if (
             app.other_reason_details.kind === 7 ||
@@ -1841,14 +1862,18 @@ export default {
           ) {
             this.items = [
               {
-                title: "Abwesenheitsformular",
+                title: "Sonstiger Antrag",
                 form: "OtherReasonDetails"
               }
             ];
+            this.items.push({
+              title: "Abwesenheitsformular",
+              form: "AbsenceOfTeacher"
+            });
           } else {
             this.items = [
               {
-                title: "Abwesenheitsformular",
+                title: "Sonstiger Antrag",
                 form: "OtherReasonDetails"
               },
               {
@@ -1862,6 +1887,10 @@ export default {
                 form: "TravelInvoice"
               });
             }
+            this.items.push({
+              title: "Abwesenheitsformular",
+              form: "AbsenceOfTeacher"
+            });
           }
         }
       }
