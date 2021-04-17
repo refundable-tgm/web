@@ -276,8 +276,11 @@ export default {
           break;
 
         case "Escorts":
-          this.loadEscortsData(escortsdata);
-          this.change("Escorts", back, false);
+          if (this.loadEscortsData(escortsdata)) {
+            this.change("Escorts", back, false);
+          } else {
+            this.failedConfirm();
+          }
           break;
 
         case "OtherCause":
@@ -335,6 +338,17 @@ export default {
      */
     loadApplication(application) {
       this.appid = application;
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedConfirm() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Zumindest ein Leherer ist nicht am System registriert",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * Diese Methode setzt alle notwendigen Werte, wenn sich jemand anmeldet.
@@ -422,6 +436,7 @@ export default {
         }
       ];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
+        // If this request goes wrong, the method must return false!
         var curTeach = this.getTeacher(escortsdata.teacher[i]);
         output.push(
           JSON.parse(
