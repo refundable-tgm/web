@@ -155,37 +155,12 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["url", "user", "token"],
+  props: ["url", "user", "token", "refresh_token"],
   data() {
     return {
       selectMode: "multi",
       selected: [],
-      items: [
-        {
-          title: "Sommersportwoche",
-          edat: "14-01-2021",
-          begin: "14-06-2021",
-          kind: 4,
-          from: "szakall",
-          stat: "Akzeptierungsphase"
-        },
-        {
-          title: "Pflegefreistellung",
-          edat: "28-02-2021",
-          begin: "1-03-2021",
-          kind: 8,
-          from: "szakall",
-          stat: "Rechnungsphase"
-        },
-        {
-          title: "Urlaub",
-          edat: "01-01-2021",
-          begin: "31-12-2021",
-          kind: 8,
-          from: "szakall",
-          stat: "Abgelehnt"
-        }
-      ],
+      items: [],
       fields: [
         { key: "selected", label: "Ausgewählt" },
         { key: "title", label: "Titel", sortable: true, sortDirection: "desc" },
@@ -284,19 +259,19 @@ export default {
           case 0:
             return "Abgelehnt";
           case 1:
-            return "Akzeptierungsphase";
+            return "Einreichung";
           case 2:
             return "Akzeptierungsphase";
           case 3:
-            return "Akzeptierungsphase";
+            return "Bestätigt";
           case 4:
-            return "Akzeptierungsphase";
+            return "Läuft...";
           case 5:
-            return "Rechnungsphase";
+            return "Kosten ausstehend";
           case 6:
             return "Rechnungsphase";
           case 7:
-            return "Rechnungsphase";
+            return "Abgeschlossen";
           default:
             return "Abgelehnt";
         }
@@ -307,66 +282,115 @@ export default {
           case 1:
             return "Akzeptierungsphase";
           case 2:
-            return "Akzeptierungsphase";
+            return "Bestätigt";
           case 3:
-            return "Akzeptierungsphase";
+            return "Läuft...";
           case 4:
-            return "Rechnungsphase";
+            return "Kosten ausstehend";
           case 5:
             return "Rechnungsphase";
           case 6:
-            return "Rechnungsphase";
+            return "Abgeschlossen";
           default:
             return "Abgelehnt";
         }
       }
     },
+    loadView(applications) {
+      var apps = applications;
+      for (let i = 0; i < apps.length; i++) {
+        apps[i].title = apps[i].name;
+        apps[i].stat = this.loadStatus(apps[i].kind, apps[i].progress);
+        apps[i].edat = this.formatDate(
+          apps[i].business_trip_applications[0].date_application_filed
+        );
+        apps[i].start = this.formatDate(apps[i].start_time);
+        apps[i].from = apps[i].staffnr;
+        if (this.user.pek) {
+          if (apps[i].kind === 0) {
+            if (apps[i].progress !== 6) {
+              apps.splice(i, 1);
+            }
+          } else {
+            if (apps[i].progress !== 5) {
+              apps.splice(i, 1);
+            }
+          }
+        }
+        if (this.user.av || this.user.administration) {
+          if (apps[i].kind === 0) {
+            if (apps[i].progress !== 2) {
+              apps.splice(i, 1);
+            }
+          } else {
+            if (apps[i].progress !== 1) {
+              apps.splice(i, 1);
+            }
+          }
+        }
+      }
+      this.items = apps;
+      // Set the initial number of items
+      this.totalRows = this.items.length;
+    },
     /**
+     * TODO Testdaten
      * Diese Methode lädt die Daten aus dem Backend für das AdminDashboard und fügt die notwendigen Variablen hinzu
      */
     loadData() {
       axios
-        .get(this.url + "/getAllAdminApplications?user=" + this.user.uuid, {
-          params: {
-            token: this.token
+        .get(this.url + "/getAdminApplications", {
+          headers: {
+            Authorization: "Basic " + this.token
           }
         })
         .then(response => {
-          var apps = response.data.applications;
-          for (let i = 0; i < apps.length; i++) {
-            apps[i].title = apps[i].name;
-            apps[i].status = this.loadStatus(apps[i].kind, apps[i].progress);
-            apps[i].edat = this.formatDate(
-              apps[i].business_trip_applications[0].date_application_filed
-            );
-            apps[i].start = this.formatDate(apps[i].start_time);
-            apps[i].from = apps[i].staffnr;
-            if (this.user.pek) {
-              if (apps[i].kind === 0) {
-                if (apps[i].progress !== 6) {
-                  apps.splice(i, 1);
-                }
-              } else {
-                if (apps[i].progress !== 5) {
-                  apps.splice(i, 1);
-                }
-              }
-            }
-            if (this.user.av || this.user.administration) {
-              if (apps[i].kind === 0) {
-                if (apps[i].progress !== 2) {
-                  apps.splice(i, 1);
-                }
-              } else {
-                if (apps[i].progress !== 1) {
-                  apps.splice(i, 1);
-                }
-              }
-            }
+          switch (response.status) {
+            case 200:
+              this.loadView(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(this.url + "/getAdminApplications", {
+                          headers: {
+                            Authorization: "Basic " + this.token
+                          }
+                        })
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.loadView(res.data);
+                              break;
+                            default:
+                              this.failedLoad();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedLoad();
+              break;
           }
-          this.items = apps;
-          // Set the initial number of items
-          this.totalRows = this.items.length;
         });
       // Test data:
       var apps = [
@@ -375,7 +399,7 @@ export default {
           name: "Sommersportwoche",
           kind: 0,
           miscellaneous_reason: "",
-          progress: 3,
+          progress: 1,
           start_time: "2021-04-12T17:54:40.035095+01:00",
           end_time: "2021-04-19T17:54:40.035095+01:00",
           notes: "Sommersportwoche ist cool",
@@ -776,50 +800,24 @@ export default {
           ]
         }
       ];
-      for (let i = 0; i < apps.length; i++) {
-        apps[i].title = apps[i].name;
-        apps[i].stat = this.loadStatus(apps[i].kind, apps[i].progress);
-        apps[i].edat = this.formatDate(
-          apps[i].business_trip_applications[0].date_application_filed
-        );
-        apps[i].start = this.formatDate(apps[i].start_time);
-        apps[i].from =
-          apps[i].business_trip_applications[0].name +
-          " " +
-          apps[i].business_trip_applications[0].surname;
-        if (this.user.pek) {
-          if (apps[i].kind === 0) {
-            if (apps[i].progress !== 6) {
-              apps.splice(i, 1);
-            }
-          } else {
-            if (apps[i].progress !== 5) {
-              apps.splice(i, 1);
-            }
-          }
-        }
-        if (this.user.av || this.user.administration) {
-          if (apps[i].kind === 0) {
-            if (apps[i].progress !== 2) {
-              apps.splice(i, 1);
-            }
-          } else {
-            if (apps[i].progress !== 1) {
-              apps.splice(i, 1);
-            }
-          }
-        }
-      }
-      this.items = apps;
-      // Set the initial number of items
-      this.totalRows = this.items.length;
-      // end Test data
+      this.loadView(apps);
     },
     /**
      * Diese Methode sorgt dafür, dass die richtige ID an die viewApplication-Methode weitergegeben wird
      */
     info(item) {
       this.viewApplication(item.uuid);
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag einen Fehler beim Laden hatte
+     */
+    failedLoad() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Anträge konnten nicht geladen werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * Diese Methode formatiert das Datum um korrekt angezeigt zu werden
