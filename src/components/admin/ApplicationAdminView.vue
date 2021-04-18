@@ -61,6 +61,20 @@
 
           <!-- Funktionstasten -->
           <template #cell(actions)="row">
+            <!-- Excel herunterladen -->
+            <b-button
+              v-if="
+                row.item.form === 'BusinessTripApplication' ||
+                  row.item.form === 'TravelInvoice'
+              "
+              variant="outline-secondary"
+              size="sm"
+              @click="downloadExcel(row.item)"
+              style="margin-right:1rem"
+            >
+              <b-icon variant="success" icon="file-earmark-text"></b-icon> Excel
+              herunterladen
+            </b-button>
             <!-- PDF öffnen Button -->
             <b-button
               variant="outline-secondary"
@@ -68,7 +82,8 @@
               @click="openPDF(row.item)"
               style="margin-right:1rem"
             >
-              <b-icon icon="file-earmark-text"></b-icon> PDF öffnen
+              <b-icon variant="danger" icon="file-earmark-text"></b-icon> PDF
+              öffnen
             </b-button>
             <!-- Details anschauen Button -->
             <b-button
@@ -88,19 +103,24 @@
               <SchoolGeneral
                 v-bind:data="app"
                 v-bind:readonly="true"
-                v-if="row.item.title == 'Allgemeine Infos'"
+                v-if="
+                  row.item.title ==
+                    'Allgemeine Infos - Abwesenheitsformulare der Klassen'
+                "
               />
               <!-- Abwesenheitsformular -->
               <Others
                 v-bind:data="app"
                 v-bind:readonly="true"
-                v-if="row.item.title == 'Abwesenheitsformular'"
+                v-if="
+                  row.item.title == 'Sonstiger Antrag - Abwesenheitsformular'
+                "
               />
               <!-- Fortbildung -->
               <Workshop
                 v-bind:data="app"
                 v-bind:readonly="true"
-                v-if="row.item.title == 'Fortbildung'"
+                v-if="row.item.title == 'Fortbildung - Abwesenheitsformular'"
               />
               <!-- Reiseantrag -->
               <TravelApplication
@@ -128,7 +148,7 @@
                   v-bind:data="app.school_event_details.teachers[index]"
                   v-if="
                     row.item.title ==
-                      'Begleitformular - ' +
+                      'Begleitformular - Abwesenheitsformular - ' +
                         app.business_trip_applications[index].surname +
                         ' ' +
                         app.business_trip_applications[index].name
@@ -246,6 +266,70 @@
         </b-row>
       </b-container>
     </b-modal>
+    <!-- Auswahl Klassen -->
+    <b-modal ref="class-modal" hide-footer title="Klassen auswählen">
+      <b-container fluid>
+        <b-row
+          ><b-col cols="12">
+            <div class="d-block text-center">
+              <p>
+                Bitte wählen Sie aus, welche Klassen in der Datei inkludiert
+                sein sollen:
+              </p>
+              <!-- Klassen Auswählen -->
+              <b-form-group
+                label-cols-sm="4"
+                label-cols-lg="3"
+                content-cols-sm
+                content-cols-lg="7"
+                label-for="zud"
+                id="zu"
+              >
+                <b-form-checkbox-group
+                  id="zud"
+                  v-model="auswahl"
+                  stacked
+                  v-for="c in klassen"
+                  v-bind:key="c"
+                >
+                  <b-form-checkbox :value="c">{{ c }}</b-form-checkbox>
+                </b-form-checkbox-group>
+              </b-form-group>
+            </div>
+          </b-col></b-row
+        >
+        <b-row>
+          <b-col cols="6">
+            <!-- Antrag schließen bestätigung -->
+            <b-button
+              class="mt-2"
+              variant="outline-success"
+              block
+              @click="generallPDF"
+              >Bestätigen</b-button
+            >
+          </b-col>
+          <b-col cols="6">
+            <!-- Abbrechen Button --><b-button
+              class="mt-2"
+              variant="outline-danger"
+              block
+              @click="hideClass"
+              >Abbrechen</b-button
+            ></b-col
+          >
+        </b-row>
+      </b-container>
+    </b-modal>
+    <!-- Klassen modal -->
+    <b-modal
+      :id="classModal.id"
+      :title="classModal.title"
+      ok-only
+      @hide="resetClassModal"
+    >
+      <pre>{{ classModal.content }}</pre>
+    </b-modal>
 
     <!-- Info modal -->
     <b-modal :id="infoModal.id" :title="infoModal.title" ok-only>
@@ -297,7 +381,14 @@ export default {
         title: "",
         content: ""
       },
-      app: Object
+      classModal: {
+        id: "info-modal",
+        title: "",
+        content: ""
+      },
+      app: Object,
+      klassen: [],
+      auswahl: []
     };
   },
   computed: {
@@ -325,6 +416,9 @@ export default {
         .get(this.url + "/application/getApplication?id=" + this.appid)
         .then(response => {
           this.app = response.data;
+          if (this.app.kind === 0) {
+            this.klassen = this.app.school_event_details.classes;
+          }
           this.setItems(this.app);
         });
       var application = {
@@ -733,6 +827,9 @@ export default {
         ]
       };
       this.app = application;
+      if (this.app.kind === 0) {
+        this.klassen = this.app.school_event_details.classes;
+      }
       this.setItems(this.app);
     },
     /**
@@ -764,6 +861,286 @@ export default {
       );
     },
     /**
+     * TODO welcher Lehrer fragt die PDF an? Wie gebe ich an, für welchen Lehrer die PDf geöffnet werden soll?
+     * Diese Methode lädt das Abwesenheitsformular des Lehers aus dem Backend und öffnet es
+     */
+    applicationPDF() {
+      axios
+        .get(
+          this.url + "/getAbsenceFormForTeacher",
+          {
+            params: {
+              uuid: this.app.uuid
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getAbsenceFormForTeacher",
+                          {
+                            params: {
+                              uuid: this.app.uuid
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
+     * Lädt die PDF für die Klassen herunter
+     */
+    generallPDF() {
+      this.classForm();
+      axios
+        .get(
+          this.url + "/getAbsenceFormForClasses",
+          {
+            params: {
+              uuid: this.app.uuid,
+              classes: this.auswahl
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getAbsenceFormForClasses",
+                          {
+                            params: {
+                              uuid: this.app.uuid,
+                              classes: this.auswahl
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
+     * Diese Methode lädt das Excel-File von dem Backend und lädt diese dem Benutzer herunter
+     */
+    downloadExcel(item) {
+      switch (item.form) {
+        case "BusinessTripApplication":
+          axios
+            .get(this.url + "/getBusinessTripApplicationExcel", {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            })
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.excelDownload(response.data);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(
+                              this.url + "/getBusinessTripApplicationExcel",
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
+                              }
+                            )
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.excelDownload(res.data);
+                                  break;
+                                default:
+                                  this.failedExcel();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.failedExcel();
+                  break;
+              }
+            });
+          break;
+        case "TravelInvoice":
+          axios
+            .get(this.url + "/getTravelInvoiceExcel", {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            })
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.excelDownload(response.data);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(this.url + "/getTravelInvoiceExcel", {
+                              headers: {
+                                Authorization: "Basic " + this.token
+                              }
+                            })
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.excelDownload(res.data);
+                                  break;
+                                default:
+                                  this.failedExcel();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.failedExcel();
+                  break;
+              }
+            });
+
+          break;
+        default:
+          this.failedExcel();
+          break;
+      }
+    },
+    /**
      * Diese Methode setzt die richtigen Items für den Antrag
      * @param app Der gesamte Antrag
      */
@@ -771,7 +1148,7 @@ export default {
       if (app.kind === 0) {
         this.items = [
           {
-            title: "Allgemeine Infos",
+            title: "Allgemeine Infos - Abwesenheitsformulare der Klassen",
             form: "SchoolEventDetails",
             teacher: 0
           }
@@ -779,7 +1156,7 @@ export default {
         for (let i = 0; i < this.app.business_trip_applications.length; i++) {
           this.items.push({
             title:
-              "Begleitformular - " +
+              "Begleitformular - Abwesenheitsformular - " +
               app.business_trip_applications[i].surname +
               " " +
               app.business_trip_applications[i].name,
@@ -815,7 +1192,7 @@ export default {
         if (app.kind === 1) {
           this.items = [
             {
-              title: "Fortbildung",
+              title: "Fortbildung - Abwesenheitsformular",
               form: "TrainingDetails",
               teacher: 0
             },
@@ -838,7 +1215,7 @@ export default {
           ) {
             this.items = [
               {
-                title: "Abwesenheitsformular",
+                title: "Sonstiger Antrag - Abwesenheitsformular",
                 form: "OtherReasonDetails",
                 teacher: 0
               }
@@ -846,7 +1223,7 @@ export default {
           } else {
             this.items = [
               {
-                title: "Abwesenheitsformular",
+                title: "Sonstiger Antrag - Abwesenheitsformular",
                 form: "OtherReasonDetails",
                 teacher: 0
               },
@@ -884,26 +1261,6 @@ export default {
           return true;
         }
       }
-    },
-    /**
-     * TODO
-     * Diese Methode lädt die PDF von dem Backend
-     * @param item Die erwünschte PDF
-     */
-    openPDF(item) {
-      axios
-        .get(this.url + "/getAdminPDF", {
-          params: {
-            application: this.app.uuid,
-            form: item.form,
-            teacher: item.teacher,
-            token: this.token
-          }
-        })
-        .then(response => {
-          var pdf = response.data.pdf;
-          this.showPDF(pdf);
-        });
     },
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
@@ -950,6 +1307,185 @@ export default {
       if (this.checkClick) {
         this.changeComponent("Index");
         this.changeURL("Index");
+      }
+    },
+    /**
+     * Diese Methode leert das Klassen-Modal
+     */
+    resetClassModal() {
+      this.classModal.title = "";
+      this.classModal.content = "";
+    },
+    /**
+     * Diese Methode versteckt das Klassen-Modal
+     */
+    hideClass() {
+      this.$refs["class-modal"].hide();
+    },
+    /**
+     * Diese Methode lädt die PDF von dem Backend
+     */
+    openPDF(item) {
+      switch (item.form) {
+        case "SchoolEventDetails":
+          this.classForm();
+          break;
+        case "SchoolEventTeacherDetails":
+          this.applicationPDF();
+          break;
+        case "TrainingDetails":
+          this.applicationPDF();
+          break;
+        case "OtherReasonDetails":
+          this.applicationPDF();
+          break;
+        case "BusinessTripApplication":
+          axios
+            .get(
+              this.url + "/getBusinessTripApplicationForm",
+              {
+                params: {
+                  uuid: this.app.uuid
+                }
+              },
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
+              }
+            )
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.showPDF(response.data);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(
+                              this.url + "/getBusinessTripApplicationForm",
+                              {
+                                params: {
+                                  uuid: this.app.uuid
+                                }
+                              },
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
+                              }
+                            )
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.showPDF(res.data);
+                                  break;
+                                default:
+                                  this.failedPDF();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.failedPDF();
+                  break;
+              }
+            });
+          break;
+        case "TravelInvoice":
+          axios
+            .get(
+              this.url + "/getTravelInvoiceForm",
+              {
+                params: {
+                  uuid: this.app.uuid
+                }
+              },
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
+              }
+            )
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  this.showPDF(response.data);
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      headers: {
+                        Authorization: "Basic " + this.refresh_token
+                      }
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 200:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(
+                              this.url + "/getTravelInvoiceForm",
+                              {
+                                params: {
+                                  uuid: this.app.uuid
+                                }
+                              },
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
+                              }
+                            )
+                            .then(res => {
+                              switch (res.status) {
+                                case 200:
+                                  this.showPDF(res.data);
+                                  break;
+                                default:
+                                  this.failedPDF();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
+                  break;
+                default:
+                  this.failedPDF();
+                  break;
+              }
+            });
+          break;
+        default:
+          this.failedPDF();
+          break;
       }
     },
     /**
@@ -1010,6 +1546,12 @@ export default {
       }
     },
     /**
+     * Diese Methode öffnet das Modal, in dem man den die Klassen definieren kann
+     */
+    classForm() {
+      this.$refs["class-modal"].show();
+    },
+    /**
      * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
      */
     saveConfirm() {
@@ -1026,6 +1568,39 @@ export default {
     failedConfirm() {
       this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
         title: "Änderungen wurden nicht gespeichert",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag einen Fehler beim Laden hatte
+     */
+    failedLoad() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Antrag konnte nicht geladen werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedExcel() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Das Formular konnte nicht heruntergeladen werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedPDF() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Die PDF konnte nicht geöffnet werden",
         autoHideDelay: 2500,
         appendToast: false,
         variant: "danger"

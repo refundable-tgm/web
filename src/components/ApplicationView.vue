@@ -252,7 +252,7 @@
         >
         <b-row>
           <b-col cols="6">
-            <!-- Antrag schließen bestätigung -->
+            <!-- PDF öffnen bestätigung -->
             <b-button
               class="mt-2"
               variant="outline-success"
@@ -735,6 +735,7 @@ export default {
               break;
           }
         });
+      // TODO Testdaten
       var application = {
         uuid: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
         name: "Sommersportwoche",
@@ -1346,9 +1347,11 @@ export default {
             current <= new Date(this.app.end_time)
           ) {
             this.app.progress = 4;
+            this.save();
           }
           if (current >= new Date(this.app.end_time)) {
             this.app.progress = 5;
+            this.save();
           }
         }
       } else {
@@ -1358,9 +1361,11 @@ export default {
             current <= new Date(this.app.end_time)
           ) {
             this.app.progress = 3;
+            this.save();
           }
           if (current >= new Date(this.app.end_time)) {
             this.app.progress = 4;
+            this.save();
           }
         }
       }
