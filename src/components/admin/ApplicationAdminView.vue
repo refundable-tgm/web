@@ -424,6 +424,7 @@ export default {
               this.app = response.data;
               if (this.app.kind === 0) {
                 this.klassen = this.app.school_event_details.classes;
+                this.auswahl = this.klassen;
               }
               this.setItems(this.app);
               break;
@@ -454,6 +455,7 @@ export default {
                               this.app = res.data;
                               if (this.app.kind === 0) {
                                 this.klassen = this.app.school_event_details.classes;
+                                this.auswahl = this.klassen;
                               }
                               this.setItems(this.app);
                               break;
@@ -474,6 +476,7 @@ export default {
               break;
           }
         });
+      // Testdaten
       var application = {
         uuid: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
         name: "Sommersportwoche",
@@ -882,6 +885,7 @@ export default {
       this.app = application;
       if (this.app.kind === 0) {
         this.klassen = this.app.school_event_details.classes;
+        this.auswahl = this.klassen;
       }
       this.setItems(this.app);
     },

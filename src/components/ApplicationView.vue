@@ -291,7 +291,9 @@
                   v-for="c in klassen"
                   v-bind:key="c"
                 >
-                  <b-form-checkbox :value="c">{{ c }}</b-form-checkbox>
+                  <b-form-checkbox checked="true" :value="c">{{
+                    c
+                  }}</b-form-checkbox>
                 </b-form-checkbox-group>
               </b-form-group>
             </div>
@@ -1230,6 +1232,7 @@ export default {
       this.currentTeacher = this.user.short;
       if (this.app.kind === 0) {
         this.klassen = this.app.school_event_details.classes;
+        this.auswahl = this.klassen;
         if (
           this.currentTeacher ===
           this.app.school_event_details.teachers[0].shortname
