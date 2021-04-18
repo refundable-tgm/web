@@ -730,7 +730,7 @@ export default {
             )
             .then(response => {
               switch (response.status) {
-                case 200:
+                case 201:
                   this.createConfirm();
                   setTimeout(this.changeComponent("Index"), 1000);
                   break;
@@ -761,7 +761,7 @@ export default {
                             )
                             .then(res => {
                               switch (res.status) {
-                                case 200:
+                                case 201:
                                   this.createConfirm();
                                   setTimeout(
                                     this.changeComponent("Index"),
