@@ -767,7 +767,7 @@ export default {
                 })
                 .then(resp => {
                   switch (resp) {
-                    case 200:
+                    case 201:
                       this.$emit(
                         "updateToken",
                         resp.data.access_token,
@@ -1643,7 +1643,7 @@ export default {
                 })
                 .then(resp => {
                   switch (resp.status) {
-                    case 200:
+                    case 201:
                       this.$emit(
                         "updateToken",
                         resp.data.access_token,
@@ -1726,7 +1726,7 @@ export default {
                 })
                 .then(resp => {
                   switch (resp.status) {
-                    case 200:
+                    case 201:
                       this.$emit(
                         "updateToken",
                         resp.data.access_token,
@@ -2231,7 +2231,7 @@ export default {
                 })
                 .then(resp => {
                   switch (resp.status) {
-                    case 200:
+                    case 201:
                       this.$emit(
                         "updateToken",
                         resp.data.access_token,
@@ -2312,7 +2312,7 @@ export default {
                     })
                     .then(resp => {
                       switch (resp.status) {
-                        case 200:
+                        case 201:
                           this.$emit(
                             "updateToken",
                             resp.data.access_token,
@@ -2388,7 +2388,7 @@ export default {
                     })
                     .then(resp => {
                       switch (resp.status) {
-                        case 200:
+                        case 201:
                           this.$emit(
                             "updateToken",
                             resp.data.access_token,
@@ -2472,7 +2472,7 @@ export default {
                 })
                 .then(resp => {
                   switch (resp.status) {
-                    case 200:
+                    case 201:
                       this.$emit(
                         "updateToken",
                         resp.data.access_token,
@@ -2565,7 +2565,7 @@ export default {
                     })
                     .then(resp => {
                       switch (resp.status) {
-                        case 200:
+                        case 201:
                           this.$emit(
                             "updateToken",
                             resp.data.access_token,
@@ -2641,7 +2641,7 @@ export default {
                     })
                     .then(resp => {
                       switch (resp.status) {
-                        case 200:
+                        case 201:
                           this.$emit(
                             "updateToken",
                             resp.data.access_token,
@@ -2847,7 +2847,7 @@ export default {
                   })
                   .then(resp => {
                     switch (resp.status) {
-                      case 200:
+                      case 201:
                         this.$emit(
                           "updateToken",
                           resp.data.access_token,
@@ -2909,7 +2909,7 @@ export default {
                   })
                   .then(resp => {
                     switch (resp.status) {
-                      case 200:
+                      case 201:
                         this.$emit(
                           "updateToken",
                           resp.data.access_token,

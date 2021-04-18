@@ -303,7 +303,7 @@ export default {
     TravelApplication
   },
   name: "NewApplication",
-  props: ["url", "user", "token"],
+  props: ["url", "user", "token", "refresh_token"],
   methods: {
     /**
      * Diese Methode ändert die angezeigte Komponente
@@ -743,7 +743,7 @@ export default {
                     })
                     .then(resp => {
                       switch (resp.status) {
-                        case 200:
+                        case 201:
                           this.$emit(
                             "updateToken",
                             resp.data.access_token,

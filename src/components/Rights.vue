@@ -198,7 +198,7 @@ export default {
                   refresh_token: this.refresh_token
                 })
                 .then(resp => {
-                  if (resp.status === 200) {
+                  if (resp.status === 201) {
                     this.$emit(
                       "updateToken",
                       resp.data.access_token,

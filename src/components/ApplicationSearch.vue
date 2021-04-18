@@ -53,7 +53,7 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["url", "user"],
+  props: ["url", "user", "token", "refresh_token"],
   data() {
     return {
       searching: ""
