@@ -437,7 +437,7 @@ export default {
                 })
                 .then(resp => {
                   switch (resp) {
-                    case 200:
+                    case 201:
                       this.$emit(
                         "updateToken",
                         resp.data.access_token,
@@ -918,16 +918,23 @@ export default {
       );
     },
     /**
+     * Diese Methode gibt das kürzel des Lehrers zurück
+     */
+    getTeacherfromIndex(index) {
+      return this.app.school_event_details.teachers[index].shortname;
+    },
+    /**
      * TODO welcher Lehrer fragt die PDF an? Wie gebe ich an, für welchen Lehrer die PDf geöffnet werden soll?
      * Diese Methode lädt das Abwesenheitsformular des Lehers aus dem Backend und öffnet es
      */
-    applicationPDF() {
+    applicationPDF(index) {
       axios
         .get(
           this.url + "/getAbsenceFormForTeacher",
           {
             params: {
-              uuid: this.app.uuid
+              uuid: this.app.uuid,
+              teacher: this.getTeacherfromIndex(index)
             }
           },
           {
@@ -950,7 +957,7 @@ export default {
                 })
                 .then(resp => {
                   switch (resp.status) {
-                    case 200:
+                    case 201:
                       this.$emit(
                         "updateToken",
                         resp.data.access_token,
@@ -961,7 +968,8 @@ export default {
                           this.url + "/getAbsenceFormForTeacher",
                           {
                             params: {
-                              uuid: this.app.uuid
+                              uuid: this.app.uuid,
+                              teacher: this.getTeacherfromIndex(index)
                             }
                           },
                           {
@@ -1027,7 +1035,7 @@ export default {
                 })
                 .then(resp => {
                   switch (resp.status) {
-                    case 200:
+                    case 201:
                       this.$emit(
                         "updateToken",
                         resp.data.access_token,
@@ -1078,11 +1086,21 @@ export default {
       switch (item.form) {
         case "BusinessTripApplication":
           axios
-            .get(this.url + "/getBusinessTripApplicationExcel", {
-              headers: {
-                Authorization: "Basic " + this.token
+            .get(
+              this.url + "/getBusinessTripApplicationExcel",
+              {
+                params: {
+                  uuid: this.app.uuid,
+                  short: this.getTeacherfromIndex(item.index),
+                  Bta_id: item.index
+                }
+              },
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
               }
-            })
+            )
             .then(response => {
               switch (response.status) {
                 case 200:
@@ -1097,7 +1115,7 @@ export default {
                     })
                     .then(resp => {
                       switch (resp.status) {
-                        case 200:
+                        case 201:
                           this.$emit(
                             "updateToken",
                             resp.data.access_token,
@@ -1106,6 +1124,13 @@ export default {
                           axios
                             .get(
                               this.url + "/getBusinessTripApplicationExcel",
+                              {
+                                params: {
+                                  uuid: this.app.uuid,
+                                  short: this.getTeacherfromIndex(item.index),
+                                  Bta_id: item.index
+                                }
+                              },
                               {
                                 headers: {
                                   Authorization: "Basic " + this.token
@@ -1137,11 +1162,21 @@ export default {
           break;
         case "TravelInvoice":
           axios
-            .get(this.url + "/getTravelInvoiceExcel", {
-              headers: {
-                Authorization: "Basic " + this.token
+            .get(
+              this.url + "/getTravelInvoiceExcel",
+              {
+                params: {
+                  uuid: this.app.uuid,
+                  short: this.getTeacherfromIndex(item.index),
+                  ti_id: item.index
+                }
+              },
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
               }
-            })
+            )
             .then(response => {
               switch (response.status) {
                 case 200:
@@ -1156,18 +1191,28 @@ export default {
                     })
                     .then(resp => {
                       switch (resp.status) {
-                        case 200:
+                        case 201:
                           this.$emit(
                             "updateToken",
                             resp.data.access_token,
                             resp.data.refresh_token
                           );
                           axios
-                            .get(this.url + "/getTravelInvoiceExcel", {
-                              headers: {
-                                Authorization: "Basic " + this.token
+                            .get(
+                              this.url + "/getTravelInvoiceExcel",
+                              {
+                                params: {
+                                  uuid: this.app.uuid,
+                                  short: this.getTeacherfromIndex(item.index),
+                                  ti_id: item.index
+                                }
+                              },
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
                               }
-                            })
+                            )
                             .then(res => {
                               switch (res.status) {
                                 case 200:
@@ -1407,13 +1452,13 @@ export default {
           this.classForm();
           break;
         case "SchoolEventTeacherDetails":
-          this.applicationPDF();
+          this.applicationPDF(item.index);
           break;
         case "TrainingDetails":
-          this.applicationPDF();
+          this.applicationPDF(item.index);
           break;
         case "OtherReasonDetails":
-          this.applicationPDF();
+          this.applicationPDF(item.index);
           break;
         case "BusinessTripApplication":
           axios
@@ -1421,7 +1466,9 @@ export default {
               this.url + "/getBusinessTripApplicationForm",
               {
                 params: {
-                  uuid: this.app.uuid
+                  uuid: this.app.uuid,
+                  short: this.getTeacherfromIndex(item.index),
+                  ti_id: item.index
                 }
               },
               {
@@ -1444,7 +1491,7 @@ export default {
                     })
                     .then(resp => {
                       switch (resp.status) {
-                        case 200:
+                        case 201:
                           this.$emit(
                             "updateToken",
                             resp.data.access_token,
@@ -1455,7 +1502,9 @@ export default {
                               this.url + "/getBusinessTripApplicationForm",
                               {
                                 params: {
-                                  uuid: this.app.uuid
+                                  uuid: this.app.uuid,
+                                  short: this.getTeacherfromIndex(item.index),
+                                  ti_id: item.index
                                 }
                               },
                               {
@@ -1493,7 +1542,9 @@ export default {
               this.url + "/getTravelInvoiceForm",
               {
                 params: {
-                  uuid: this.app.uuid
+                  uuid: this.app.uuid,
+                  short: this.getTeacherfromIndex(item.index),
+                  Bta_id: item.index
                 }
               },
               {
@@ -1516,7 +1567,7 @@ export default {
                     })
                     .then(resp => {
                       switch (resp.status) {
-                        case 200:
+                        case 201:
                           this.$emit(
                             "updateToken",
                             resp.data.access_token,
@@ -1527,7 +1578,9 @@ export default {
                               this.url + "/getTravelInvoiceForm",
                               {
                                 params: {
-                                  uuid: this.app.uuid
+                                  uuid: this.app.uuid,
+                                  short: this.getTeacherfromIndex(item.index),
+                                  Bta_id: item.index
                                 }
                               },
                               {
@@ -1746,7 +1799,7 @@ export default {
                 })
                 .then(resp => {
                   switch (resp.status) {
-                    case 200:
+                    case 201:
                       this.$emit(
                         "updateToken",
                         resp.data.access_token,
