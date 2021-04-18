@@ -251,6 +251,7 @@
           <b-form-file
             multiple
             id="bel"
+            accept=".pdf"
             v-model="invoices"
             v-on:input="convert"
             :disabled="readonly"
