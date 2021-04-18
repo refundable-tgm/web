@@ -376,7 +376,7 @@ export default {
                               this.loadView(res.data);
                               break;
                             default:
-                              this.failedLoad();
+                              this.failedLoading();
                               break;
                           }
                         });
@@ -388,7 +388,7 @@ export default {
                 });
               break;
             default:
-              this.failedLoad();
+              this.failedLoading();
               break;
           }
         });
@@ -811,7 +811,7 @@ export default {
     /**
      * Diese Methode zeigt dem Benutzer an, dass der Antrag einen Fehler beim Laden hatte
      */
-    failedLoad() {
+    failedLoading() {
       this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
         title: "Anträge konnten nicht geladen werden",
         autoHideDelay: 2500,

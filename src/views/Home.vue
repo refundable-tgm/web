@@ -436,7 +436,7 @@ export default {
         }
       ];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
-        // If this request goes wrong, the method must return false!
+        // If this request goes wrong, this method must return false!
         var curTeach = this.getTeacher(escortsdata.teacher[i]);
         output.push(
           JSON.parse(

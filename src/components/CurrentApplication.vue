@@ -116,7 +116,7 @@
 <script>
 import axios from "axios";
 export default {
-  props: ["user", "url", "token"],
+  props: ["user", "url", "token", "refresh_token"],
   data() {
     return {
       items: [],
@@ -261,99 +261,64 @@ export default {
      */
     loadData() {
       axios
-        .get(this.url + "/getActiveApplications?user=" + this.user.uuid, {
-          params: {
-            token: this.token
+        .get(this.url + "/getActiveApplications?username=" + this.user.short, {
+          headers: {
+            Authorization: "Basic " + this.token
           }
         })
         .then(response => {
-          var data = response.data;
-          for (let i = 0; i < data.length; i++) {
-            if (data[i].kind === 0) {
-              for (
-                let j = 0;
-                j < data[i].school_event_details.teachers.length;
-                j++
-              ) {
-                if (data[i].school_event_details.teachers[j].role === 0) {
-                  data[i].leader =
-                    data[i].school_event_details.teachers[j].name;
-                }
-              }
-            } else {
-              data[i].leader = this.user.longname;
-            }
-            data[i].status = this.loadStatus(data[i].kind, data[i].progress);
-            data[i].title = data[i].name;
-            data[i].edate = this.formatDate(
-              data[i].business_trip_applications[0].date_application_filed
-            );
-            if (data[i].kind === 0) {
-              switch (data[i].progress) {
-                case 7:
-                  data[i]._rowVariant = "success";
-                  break;
-                case 1:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 2:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 3:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 4:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 5:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 6:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 0:
-                  data[i]._rowVariant = "danger";
-                  break;
-                default:
-                  data[i]._rowVariant = "danger";
-                  break;
-              }
-            } else {
-              switch (data[i].progress) {
-                case 6:
-                  data[i]._rowVariant = "success";
-                  break;
-                case 1:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 2:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 3:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 4:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 5:
-                  data[i]._rowVariant = "warning";
-                  break;
-                case 0:
-                  data[i]._rowVariant = "danger";
-                  break;
-                default:
-                  data[i]._rowVariant = "danger";
-                  break;
-              }
-            }
+          switch (response.status) {
+            case 200:
+              this.loadView(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url +
+                            "/getActiveApplications?username=" +
+                            this.user.short,
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.loadView(res.data);
+                              break;
+                            default:
+                              this.failedLoading();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedLoading();
+              break;
           }
-          this.items = data;
-          // Set the initial number of items
-          this.totalRows = this.items.length;
         });
-      this.tmp();
-    },
-    tmp() {
       var data = [
         {
           uuid: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
@@ -1166,6 +1131,13 @@ export default {
           ]
         }
       ];
+      this.loadView(data);
+    },
+    /**
+     * Diese Methode berechnet alle wichtigen Daten für die Anzeige in der Liste
+     */
+    loadView(applications) {
+      var data = applications;
       for (let i = 0; i < data.length; i++) {
         if (data[i].kind === 0) {
           for (
@@ -1254,6 +1226,17 @@ export default {
     resetInfoModal() {
       this.infoModal.title = "";
       this.infoModal.content = "";
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag einen Fehler beim Laden hatte
+     */
+    failedLoading() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Anträge konnten nicht geladen werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * Diese Methode formatiert das Datum um korrekt angezeigt zu werden
