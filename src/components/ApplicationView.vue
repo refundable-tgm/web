@@ -423,7 +423,8 @@ export default {
       currentTeacher: "",
       currentTeacherIndex: -1,
       auswahl: [],
-      klassen: []
+      klassen: [],
+      belege: []
     };
   },
   computed: {
@@ -477,6 +478,7 @@ export default {
      */
     updateTB(index, data) {
       index.toString();
+      this.belege = data.beleg;
       if (data.selected.includes("a1")) {
         this.app.travel_invoices[
           this.currentTeacherIndex
@@ -1605,9 +1607,13 @@ export default {
       }
     },
     /**
+     * TODO
      * Diese Methode sendet den veränderten Antrag an das Backend
      */
     save() {
+      if (this.belege.length >= 1) {
+        // Wenn zumindest ein Beleg da ist, sende ich die Belege an Michi (Welche Dateien erlaubt?)
+      }
       if (this.checkProgression()) {
         this.app.progress = 2;
       }
