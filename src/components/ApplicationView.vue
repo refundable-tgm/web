@@ -151,13 +151,23 @@
       </b-col>
     </b-row>
 
-    <!-- Aktuonen zum schließen und speichern -->
+    <!-- Aktionen zum lsöchen, schließen und speichern -->
     <b-row style="margin-bottom:2rem">
       <b-col cols="12">
+        <!-- Antrag löschen -->
+        <b-button
+          variant="outline-danger"
+          v-if="isLeader"
+          id="show-btn"
+          @click="delAntrag"
+          class="float-right"
+          ><b-icon icon="file-earmark-excel"></b-icon> Antrag löschen</b-button
+        >
         <!-- Antrag schließen -->
         <b-button
           variant="outline-danger"
           v-if="isLeader"
+          style="margin-right: 1rem"
           id="show-btn"
           @click="closeAntrag"
           class="float-right"
@@ -185,6 +195,39 @@
       </b-col>
     </b-row>
 
+    <!-- Sicherheitshinweis Antrag löschen -->
+    <b-modal ref="del-modal" hide-footer title="Antrag löschen">
+      <b-container fluid>
+        <b-row
+          ><b-col cols="12">
+            <div class="d-block text-center">
+              <p>
+                Sind Sie sich sicher, dass Sie den Antrag löschen wollen? Er
+                wird danach nicht mehr für die Prüfer sichtbar sein und
+                <b>kann nicht mehr geöffnet werden!</b>
+              </p>
+            </div>
+          </b-col></b-row
+        >
+        <b-row>
+          <b-col cols="6">
+            <!-- Antrag löschen bestätigung -->
+            <b-button class="mt-2" variant="outline-danger" block @click="delAn"
+              >Antrag löschen <b-spinner small type="grow"></b-spinner
+            ></b-button>
+          </b-col>
+          <b-col cols="6">
+            <!-- Abbrechen Button --><b-button
+              class="mt-2"
+              variant="outline-success"
+              block
+              @click="hideDel"
+              >Abbrechen</b-button
+            ></b-col
+          >
+        </b-row>
+      </b-container>
+    </b-modal>
     <!-- Sicherheitshinweis Antrag schließen -->
     <b-modal ref="close-modal" hide-footer title="Antrag schließen">
       <b-container fluid>
@@ -202,7 +245,11 @@
         <b-row>
           <b-col cols="6">
             <!-- Antrag schließen bestätigung -->
-            <b-button class="mt-2" variant="outline-danger" block @click="delAn"
+            <b-button
+              class="mt-2"
+              variant="outline-danger"
+              block
+              @click="closeAn"
               >Antrag schließen <b-spinner small type="grow"></b-spinner
             ></b-button>
           </b-col>
@@ -274,6 +321,15 @@
       </b-container>
     </b-modal>
 
+    <!-- Delete modal -->
+    <b-modal
+      :id="delModal.id"
+      :title="delModal.title"
+      ok-only
+      @hide="resetDelModal"
+    >
+      <pre>{{ delModal.content }}</pre>
+    </b-modal>
     <!-- Info modal -->
     <b-modal
       :id="infoModal.id"
@@ -339,6 +395,11 @@ export default {
         content: ""
       },
       classModal: {
+        id: "info-modal",
+        title: "",
+        content: ""
+      },
+      delModal: {
         id: "info-modal",
         title: "",
         content: ""
@@ -629,6 +690,7 @@ export default {
       this.app.business_trip_applications[
         this.currentTeacherIndex
       ].travel_mode = this.returnValue(data.transport);
+      this.app.business_trip_applications[this.currentTeacherIndex].busin;
       this.app.business_trip_applications[
         this.currentTeacherIndex
       ].starting_point = this.returnValue(data.ausgangspunkt);
@@ -1623,6 +1685,12 @@ export default {
       this.$refs["close-modal"].show();
     },
     /**
+     * Diese Methode öffnet das Modal, in dem man den Antrag schließen kann
+     */
+    delAntrag() {
+      this.$refs["del-modal"].show();
+    },
+    /**
      * Diese Methode öffnet das Modal, in dem man den die Klassen definieren kann
      */
     classForm() {
@@ -2012,7 +2080,7 @@ export default {
       var exportLinkElement = document.createElement("a");
 
       exportLinkElement.hidden = true;
-      exportLinkElement.download = "HelloWorld.xlsx";
+      exportLinkElement.download = "Formular.xlsx";
       exportLinkElement.href = anchor_href;
       exportLinkElement.text = "downloading...";
 
@@ -2473,6 +2541,12 @@ export default {
       this.$refs["close-modal"].hide();
     },
     /**
+     * Diese Methode versteckt das Delete-Modal
+     */
+    hideDel() {
+      this.$refs["del-modal"].hide();
+    },
+    /**
      * Diese Methode versteckt das Klassen-Modal
      */
     hideClass() {
@@ -2503,6 +2577,13 @@ export default {
     resetInfoModal() {
       this.infoModal.title = "";
       this.infoModal.content = "";
+    },
+    /**
+     * Diese Methode leert das Delete-Modal
+     */
+    resetDelModal() {
+      this.delModal.title = "";
+      this.delModal.content = "";
     },
     /**
      * Diese Methode leert das Klassen-Modal
@@ -2589,135 +2670,134 @@ export default {
      */
     delAn() {
       if (this.app.kind === 0) {
-        if (this.app.progress <= 2) {
-          axios
-            .delete(this.url + "/deleteApplication?uuid=" + this.app.uuid, {
-              headers: {
-                Authorization: "Basic " + this.token
-              }
-            })
-            .then(response => {
-              switch (response.status) {
-                case 200:
-                  this.deleteConfirmed();
-                  setTimeout(this.changeComponent("Index"), 1000);
-                  break;
-                case 401:
-                  axios
-                    .post(this.url + "/login/refresh", {
-                      headers: {
-                        Authorization: "Basic " + this.refresh_token
-                      }
-                    })
-                    .then(resp => {
-                      switch (resp.status) {
-                        case 200:
-                          this.$emit(
-                            "updateToken",
-                            resp.data.access_token,
-                            resp.data.refresh_token
-                          );
-                          axios
-                            .delete(
-                              this.url +
-                                "/deleteApplication?uuid=" +
-                                this.app.uuid,
-                              {
-                                headers: {
-                                  Authorization: "Basic " + this.token
-                                }
-                              }
-                            )
-                            .then(res => {
-                              switch (res.status) {
-                                case 200:
-                                  this.deleteConfirmed();
-                                  setTimeout(
-                                    this.changeComponent("Index"),
-                                    1000
-                                  );
-                                  break;
-                                default:
-                                  this.deleteFailed();
-                                  break;
-                              }
-                            });
-                          break;
-                        default:
-                          this.$emit("logout");
-                          break;
-                      }
-                    });
-                  break;
-                default:
-                  this.deleteFailed();
-                  break;
-              }
-            });
-        }
-      } else {
-        if (this.app.progress <= 1) {
-          axios
-            .delete(this.url + "/deleteApplication", {
-              headers: {
-                Authorization: "Basic " + this.token
-              }
-            })
-            .then(response => {
-              switch (response.status) {
-                case 200:
-                  this.deleteConfirmed();
-                  setTimeout(this.changeComponent("Index"), 1000);
-                  break;
-                case 401:
-                  axios
-                    .post(this.url + "/login/refresh", {
-                      headers: {
-                        Authorization: "Basic " + this.refresh_token
-                      }
-                    })
-                    .then(resp => {
-                      switch (resp.status) {
-                        case 200:
-                          this.$emit(
-                            "updateToken",
-                            resp.data.access_token,
-                            resp.data.refresh_token
-                          );
-                          axios
-                            .delete(this.url + "/deleteApplication", {
+        axios
+          .delete(this.url + "/deleteApplication?uuid=" + this.app.uuid, {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          })
+          .then(response => {
+            switch (response.status) {
+              case 200:
+                this.deleteConfirmed();
+                setTimeout(this.changeComponent("Index"), 1000);
+                break;
+              case 401:
+                axios
+                  .post(this.url + "/login/refresh", {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
+                  })
+                  .then(resp => {
+                    switch (resp.status) {
+                      case 200:
+                        this.$emit(
+                          "updateToken",
+                          resp.data.access_token,
+                          resp.data.refresh_token
+                        );
+                        axios
+                          .delete(
+                            this.url +
+                              "/deleteApplication?uuid=" +
+                              this.app.uuid,
+                            {
                               headers: {
                                 Authorization: "Basic " + this.token
                               }
-                            })
-                            .then(res => {
-                              switch (res.status) {
-                                case 200:
-                                  this.deleteConfirmed();
-                                  setTimeout(
-                                    this.changeComponent("Index"),
-                                    1000
-                                  );
-                                  break;
-                                default:
-                                  this.deleteFailed();
-                                  break;
-                              }
-                            });
-                          break;
-                        default:
-                          this.$emit("logout");
-                          break;
-                      }
-                    });
-                  break;
-                default:
-                  this.deleteFailed();
-                  break;
-              }
-            });
-        }
+                            }
+                          )
+                          .then(res => {
+                            switch (res.status) {
+                              case 200:
+                                this.deleteConfirmed();
+                                setTimeout(this.changeComponent("Index"), 1000);
+                                break;
+                              default:
+                                this.deleteFailed();
+                                break;
+                            }
+                          });
+                        break;
+                      default:
+                        this.$emit("logout");
+                        break;
+                    }
+                  });
+                break;
+              default:
+                this.deleteFailed();
+                break;
+            }
+          });
+      } else {
+        axios
+          .delete(this.url + "/deleteApplication", {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          })
+          .then(response => {
+            switch (response.status) {
+              case 200:
+                this.deleteConfirmed();
+                setTimeout(this.changeComponent("Index"), 1000);
+                break;
+              case 401:
+                axios
+                  .post(this.url + "/login/refresh", {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
+                  })
+                  .then(resp => {
+                    switch (resp.status) {
+                      case 200:
+                        this.$emit(
+                          "updateToken",
+                          resp.data.access_token,
+                          resp.data.refresh_token
+                        );
+                        axios
+                          .delete(this.url + "/deleteApplication", {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          })
+                          .then(res => {
+                            switch (res.status) {
+                              case 200:
+                                this.deleteConfirmed();
+                                setTimeout(this.changeComponent("Index"), 1000);
+                                break;
+                              default:
+                                this.deleteFailed();
+                                break;
+                            }
+                          });
+                        break;
+                      default:
+                        this.$emit("logout");
+                        break;
+                    }
+                  });
+                break;
+              default:
+                this.deleteFailed();
+                break;
+            }
+          });
       }
+    },
+    closeAn() {
+      if (this.app.kind === 0) {
+        this.app.progress = 7;
+      } else {
+        this.app.progress = 6;
+      }
+      this.save();
+      this.hideClose();
     },
     /**
      * Diese Methode sorgt dafür, dass die URL angepasst ist, damit keine Reste des Viewers (ApplicationSearch) in der URL stehen

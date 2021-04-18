@@ -1141,6 +1141,25 @@ export default {
       }
     },
     /**
+     * Code aus https://codepen.io/DanIgnatov/pen/RvbeeB
+     * Diese Funktion downloaded das Excel-File beim Benutzer
+     */
+    excelDownload(excel) {
+      var anchor_href =
+        "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," +
+        excel;
+      var exportLinkElement = document.createElement("a");
+
+      exportLinkElement.hidden = true;
+      exportLinkElement.download = "Formular.xlsx";
+      exportLinkElement.href = anchor_href;
+      exportLinkElement.text = "downloading...";
+
+      document.body.appendChild(exportLinkElement);
+      exportLinkElement.click();
+      exportLinkElement.remove();
+    },
+    /**
      * Diese Methode setzt die richtigen Items für den Antrag
      * @param app Der gesamte Antrag
      */
@@ -1607,7 +1626,6 @@ export default {
       });
     },
     /**
-     * TODO
      * Diese Methode akzeptiert den Antrag oder die Kosten
      */
     confirmed() {
@@ -1625,8 +1643,6 @@ export default {
         if (this.app.progress === 6) {
           for (let i = 0; i < this.app.travel_invoices.length; i++) {
             this.app.travel_invoices[i].approval_date = this.createNewDate();
-            // TODO was ist die ZI Nummer?
-            this.app.travel_invoices[i].zi = 1;
           }
           this.app.progress = 7;
           this.app.last_changed = this.createNewDate();
@@ -1644,8 +1660,6 @@ export default {
         if (this.app.progress === 5) {
           for (let i = 0; i < this.app.travel_invoices.length; i++) {
             this.app.travel_invoices[i].approval_date = this.createNewDate();
-            // TODO was ist die ZI Nummer?
-            this.app.travel_invoices[i].zi = 1;
           }
           this.app.progress = 6;
           this.app.last_changed = this.createNewDate();
