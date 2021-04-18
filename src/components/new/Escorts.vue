@@ -147,8 +147,24 @@ export default {
       this.escorts.output[index].von = data.von;
       this.escorts.output[index].sonstige_kosten = data.sonstige_kosten;
       this.escorts.output[index].geschaetzte_kosten = data.geschaetzte_kosten;
-      this.escorts.output[index].emitted_out = data.emitted_out;
-      this.escorts.output[index].emitted_ret = data.emitted_ret;
+      switch (data.business_karte) {
+        case "no":
+          this.escorts.output[index].emitted_out = false;
+          this.escorts.output[index].emitted_ret = false;
+          break;
+        case "too":
+          this.escorts.output[index].emitted_out = true;
+          this.escorts.output[index].emitted_ret = false;
+          break;
+        case "back":
+          this.escorts.output[index].emitted_out = false;
+          this.escorts.output[index].emitted_ret = true;
+          break;
+        default:
+          this.escorts.output[index].emitted_out = false;
+          this.escorts.output[index].emitted_ret = false;
+          break;
+      }
     },
     /**
      * Diese Methode gibt den Wert der Variable als Zahl zurück

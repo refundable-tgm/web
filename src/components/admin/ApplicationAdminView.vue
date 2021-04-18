@@ -87,7 +87,7 @@
             </b-button>
             <!-- PDF öffnen Button -->
             <b-button
-            v-if="row.item.form !== 'Compensation'"
+              v-if="row.item.form !== 'Compensation'"
               variant="outline-secondary"
               size="sm"
               @click="openPDF(row.item)"

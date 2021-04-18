@@ -529,8 +529,24 @@ export default {
       this.teacher.von = data.von;
       this.teacher.sonstige_kosten = data.sonstige_kosten;
       this.teacher.geschaetzte_kosten = data.geschaetzte_kosten;
-      this.teacher.emitted_out = data.emitted_out;
-      this.teacher.emitted_ret = data.emitted_ret;
+      switch (data.business_karte) {
+        case "no":
+          this.teacher.emitted_out = false;
+          this.teacher.emitted_ret = false;
+          break;
+        case "too":
+          this.teacher.emitted_out = true;
+          this.teacher.emitted_ret = false;
+          break;
+        case "back":
+          this.teacher.emitted_out = false;
+          this.teacher.emitted_ret = true;
+          break;
+        default:
+          this.teacher.emitted_out = false;
+          this.teacher.emitted_ret = false;
+          break;
+      }
     },
     /**
      * Erstellt ein neues Datum, welches im richtigen Datenformat ist

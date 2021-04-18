@@ -682,6 +682,40 @@ export default {
      */
     updateTA(index, data) {
       index.toString();
+      switch (data.business_karte) {
+        case "no":
+          this.app.business_trip_applications[
+            this.currentTeacherIndex
+          ].business_card_emitted_outward = false;
+          this.app.business_trip_applications[
+            this.currentTeacherIndex
+          ].business_card_emitted_return = false;
+          break;
+        case "too":
+          this.app.business_trip_applications[
+            this.currentTeacherIndex
+          ].business_card_emitted_outward = true;
+          this.app.business_trip_applications[
+            this.currentTeacherIndex
+          ].business_card_emitted_return = false;
+          break;
+        case "back":
+          this.app.business_trip_applications[
+            this.currentTeacherIndex
+          ].business_card_emitted_outward = false;
+          this.app.business_trip_applications[
+            this.currentTeacherIndex
+          ].business_card_emitted_return = true;
+          break;
+        default:
+          this.app.business_trip_applications[
+            this.currentTeacherIndex
+          ].business_card_emitted_outward = false;
+          this.app.business_trip_applications[
+            this.currentTeacherIndex
+          ].business_card_emitted_return = false;
+          break;
+      }
       if (data.bonus_meilen[0] === "0" || data.bonus_meilen[1] === "0") {
         this.app.business_trip_applications[
           this.currentTeacherIndex
@@ -736,6 +770,7 @@ export default {
       this.app.business_trip_applications[
         this.currentTeacherIndex
       ].estimated_costs = this.returnValue(data.geschaetzte_kosten);
+      console.log(this.app);
     },
     /**
      * Diese Methode rechnet das Datum in das verwendete Datumsformat um
@@ -819,7 +854,7 @@ export default {
         name: "Sommersportwoche",
         kind: 0,
         miscellaneous_reason: "",
-        progress: 3,
+        progress: 1,
         start_time: "2021-04-12T17:54:40.035095+01:00",
         end_time: "2021-04-16T17:54:40.035095+01:00",
         notes: "Sommersportwoche ist cool",
