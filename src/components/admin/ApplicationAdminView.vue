@@ -348,7 +348,7 @@ import Workshop from "@/components/applicationViewComponents/Workshop.vue";
 import TravelApplication from "@/components/new/TravelApplication.vue";
 import TravelBill from "@/components/new/TravelBill.vue";
 export default {
-  props: ["url", "token", "user", "appid"],
+  props: ["url", "token", "refresh_token", "user", "appid"],
   components: {
     Others,
     Workshop,
@@ -1574,37 +1574,32 @@ export default {
       }
     },
     /**
-     * TODO
      * Diese Methode lehnt den Antrag ab
      */
     delAn() {
       if (this.app.kind === 0) {
         if (this.app.progress === 2) {
-          this.app.progress === 0;
-        }
-        if (this.app.progress === 5) {
           for (let i = 0; i < this.app.business_trip_applications.length; i++) {
             this.app.business_trip_applications[i].referee = this.user.longname;
           }
+          this.app.progress === 0;
+        }
+        if (this.app.progress === 5) {
           this.app.progress === 4;
         }
       } else {
         if (this.app.progress === 1) {
+          for (let i = 0; i < this.app.business_trip_applications.length; i++) {
+            this.app.business_trip_applications[i].referee = this.user.longname;
+          }
           this.app.progress === 0;
         }
         if (this.app.progress === 4) {
-          for (let i = 0; i < this.app.travel_invoices.length; i++) {
-            this.app.travel_invoices[i].clerk = this.user.longname;
-            this.app.travel_invoices[i].reviewer = this.user.longname;
-          }
           this.app.progress === 3;
         }
       }
-      //If Progress is at 5 it should be thrown back to Progress 4 -SchoolEvent
-      //If Progress is at 2 it should be thrown back to Progress 0 -Schoolevent
-      //If Progress is at 4 it should be thrown back to Progress 3 -Workshop, etc
-      //If Progress is at 1 it should be thrown back to Progress 0 -Workshop, etc
-      console.log("Update Antrag");
+      this.app.last_changed = this.createNewDate();
+      this.save();
     },
     /**
      * Erstellt ein neues Datum, welches im richtigen Datenformat ist
@@ -1722,6 +1717,11 @@ export default {
           this.app.last_changed = this.createNewDate();
         }
       }
+      this.save();
+      //Save the nesessary information from current User reviewing the application in the application
+      //Progress should be set to Akzeptiert or Fertig
+    },
+    save() {
       axios
         .put(
           this.url + "/updateApplication?uuid=" + this.app.uuid,
@@ -1784,8 +1784,6 @@ export default {
               break;
           }
         });
-      //Save the nesessary information from current User reviewing the application in the application
-      //Progress should be set to Akzeptiert or Fertig
     },
     /**
      * Diese Methode sorgt dafür, dass die URL angepasst ist, damit keine Reste des Viewers (ApplicationSearch) in der URL stehen

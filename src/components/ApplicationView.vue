@@ -1610,12 +1610,90 @@ export default {
       }
     },
     /**
-     * TODO
+     * Diese Methode sendet die Rechnungen eines Benutzers an das Backend zu dem entsprechenden Antrag
+     */
+    sendReceipts(belege) {
+      axios
+        .post(
+          this.url + "/saveBillingReceipt",
+          {
+            params: {
+              uuid: this.app.uuid,
+              shortname: this.user.short
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          },
+          belege
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.belegeConfirm();
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .post(
+                          this.url + "/saveBillingReceipt",
+                          {
+                            params: {
+                              uuid: this.app.uuid,
+                              shortname: this.user.short
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          },
+                          belege
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.belegeConfirm();
+                              break;
+                            default:
+                              this.belegeFailed();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.belegeFailed();
+              break;
+          }
+        });
+    },
+    /**
      * Diese Methode sendet den veränderten Antrag an das Backend
      */
     save() {
       if (this.belege.length >= 1) {
-        // Wenn zumindest ein Beleg da ist, sende ich die Belege an Michi (Welche Dateien erlaubt?)
+        this.sendReceipts(this.belege);
       }
       if (this.checkProgression()) {
         this.app.progress = 2;
@@ -1714,6 +1792,28 @@ export default {
         autoHideDelay: 2500,
         appendToast: false,
         variant: "success"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    belegeConfirm() {
+      this.$bvToast.toast("Die Belege wurden erfolgreich gespeichert!", {
+        title: "Änderungen gespeichert",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "success"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    belegeFailed() {
+      this.$bvToast.toast("Die Belege wurden nicht gespeichert!", {
+        title: "Änderungen nicht gespeichert",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
       });
     },
     /**
@@ -2176,17 +2276,28 @@ export default {
         });
     },
     /**
+     * TODO Bta und ti wirklich korrekt?
      * Diese Methode lädt das Excel-File von dem Backend und lädt diese dem Benutzer herunter
      */
     downloadExcel(item) {
       switch (item.form) {
         case "BusinessTripApplication":
           axios
-            .get(this.url + "/getBusinessTripApplicationExcel", {
-              headers: {
-                Authorization: "Basic " + this.token
+            .get(
+              this.url + "/getBusinessTripApplicationExcel",
+              {
+                params: {
+                  uuid: this.app.uuid,
+                  short: this.user.short,
+                  ti_id: this.currentTeacherIndex
+                }
+              },
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
               }
-            })
+            )
             .then(response => {
               switch (response.status) {
                 case 200:
@@ -2210,6 +2321,13 @@ export default {
                           axios
                             .get(
                               this.url + "/getBusinessTripApplicationExcel",
+                              {
+                                params: {
+                                  uuid: this.app.uuid,
+                                  short: this.user.short,
+                                  ti_id: this.currentTeacherIndex
+                                }
+                              },
                               {
                                 headers: {
                                   Authorization: "Basic " + this.token
@@ -2241,11 +2359,21 @@ export default {
           break;
         case "TravelInvoice":
           axios
-            .get(this.url + "/getTravelInvoiceExcel", {
-              headers: {
-                Authorization: "Basic " + this.token
+            .get(
+              this.url + "/getTravelInvoiceExcel",
+              {
+                params: {
+                  uuid: this.app.uuid,
+                  short: this.user.short,
+                  Bta_id: this.currentTeacherIndex
+                }
+              },
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
               }
-            })
+            )
             .then(response => {
               switch (response.status) {
                 case 200:
@@ -2267,11 +2395,21 @@ export default {
                             resp.data.refresh_token
                           );
                           axios
-                            .get(this.url + "/getTravelInvoiceExcel", {
-                              headers: {
-                                Authorization: "Basic " + this.token
+                            .get(
+                              this.url + "/getTravelInvoiceExcel",
+                              {
+                                params: {
+                                  uuid: this.app.uuid,
+                                  short: this.user.short,
+                                  Bta_id: this.currentTeacherIndex
+                                }
+                              },
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
                               }
-                            })
+                            )
                             .then(res => {
                               switch (res.status) {
                                 case 200:
@@ -2302,7 +2440,6 @@ export default {
       }
     },
     /**
-     * TODO welcher Lehrer fragt die PDF an? Wie gebe ich an, für welchen Lehrer die PDf geöffnet werden soll?
      * Diese Methode lädt das Abwesenheitsformular des Lehers aus dem Backend und öffnet es
      */
     applicationPDF() {
@@ -2311,7 +2448,8 @@ export default {
           this.url + "/getAbsenceFormForTeacher",
           {
             params: {
-              uuid: this.app.uuid
+              uuid: this.app.uuid,
+              teacher: this.user.short
             }
           },
           {
@@ -2345,7 +2483,8 @@ export default {
                           this.url + "/getAbsenceFormForTeacher",
                           {
                             params: {
-                              uuid: this.app.uuid
+                              uuid: this.app.uuid,
+                              teacher: this.user.short
                             }
                           },
                           {
@@ -2378,6 +2517,7 @@ export default {
         });
     },
     /**
+     * TODO Bta und ti wirklich korrekt?
      * Diese Methode lädt die PDF von dem Backend
      */
     openPDF(item) {
@@ -2400,7 +2540,9 @@ export default {
               this.url + "/getBusinessTripApplicationForm",
               {
                 params: {
-                  uuid: this.app.uuid
+                  uuid: this.app.uuid,
+                  short: this.user.short,
+                  ti_id: this.currentTeacherIndex
                 }
               },
               {
@@ -2434,7 +2576,9 @@ export default {
                               this.url + "/getBusinessTripApplicationForm",
                               {
                                 params: {
-                                  uuid: this.app.uuid
+                                  uuid: this.app.uuid,
+                                  short: this.user.short,
+                                  ti_id: this.currentTeacherIndex
                                 }
                               },
                               {
@@ -2472,7 +2616,9 @@ export default {
               this.url + "/getTravelInvoiceForm",
               {
                 params: {
-                  uuid: this.app.uuid
+                  uuid: this.app.uuid,
+                  short: this.user.short,
+                  Bta_id: this.currentTeacherIndex
                 }
               },
               {
@@ -2506,7 +2652,9 @@ export default {
                               this.url + "/getTravelInvoiceForm",
                               {
                                 params: {
-                                  uuid: this.app.uuid
+                                  uuid: this.app.uuid,
+                                  short: this.user.short,
+                                  Bta_id: this.currentTeacherIndex
                                 }
                               },
                               {
@@ -2674,7 +2822,6 @@ export default {
       }
     },
     /**
-     * TODO => wie spezifiziere ich den Antrag bei delete (So wie ich gemacht habe richtig?)
      * Diese Methode löscht den Antrag
      */
     delAn() {
