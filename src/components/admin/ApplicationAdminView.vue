@@ -413,13 +413,66 @@ export default {
      */
     loadData() {
       axios
-        .get(this.url + "/application/getApplication?id=" + this.appid)
-        .then(response => {
-          this.app = response.data;
-          if (this.app.kind === 0) {
-            this.klassen = this.app.school_event_details.classes;
+        .get(this.url + "/getApplication?uuid=" + this.appid, {
+          headers: {
+            Authorization: "Basic " + this.token
           }
-          this.setItems(this.app);
+        })
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.app = response.data;
+              if (this.app.kind === 0) {
+                this.klassen = this.app.school_event_details.classes;
+              }
+              this.setItems(this.app);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp) {
+                    case 200:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(this.url + "/getApplication?uuid=" + this.appid, {
+                          headers: {
+                            Authorization: "Basic " + this.token
+                          }
+                        })
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.app = res.data;
+                              if (this.app.kind === 0) {
+                                this.klassen = this.app.school_event_details.classes;
+                              }
+                              this.setItems(this.app);
+                              break;
+                            default:
+                              this.failedLoad();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedLoad();
+              break;
+          }
         });
       var application = {
         uuid: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
