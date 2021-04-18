@@ -438,6 +438,9 @@ export default {
       for (let i = 0; i < escortsdata.teacher.length; i++) {
         // If this request goes wrong, this method must return false!
         var curTeach = this.getTeacher(escortsdata.teacher[i]);
+        if (curTeach === false) {
+          return false;
+        }
         output.push(
           JSON.parse(
             '{"name":"' +
@@ -478,7 +481,49 @@ export default {
           }
         })
         .then(response => {
-          return response.data;
+          switch (response.status) {
+            case 200:
+              return response.data;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.token = resp.data.access_token;
+                      this.refresh_token = resp.data.refresh_token;
+                      this.setToken(resp.data.access_token);
+                      this.setRefresh(resp.data.refresh_token);
+                      axios
+                        .get(
+                          this.url + "/getTeacherByShort?name=" + shortName,
+                          {
+                            params: {
+                              token: this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              return res.data;
+                            default:
+                              return false;
+                          }
+                        });
+                      break;
+                    default:
+                      this.logout();
+                  }
+                });
+              break;
+            default:
+              return false;
+          }
         });
     },
     /**
