@@ -228,7 +228,7 @@ export default {
                               rechte
                             )
                             .then(r => {
-                              if (r.stauts === 200) {
+                              if (r.status === 200) {
                                 this.saveComplete();
                                 this.reset();
                               } else {
@@ -240,7 +240,7 @@ export default {
                         }
                       });
                   }
-                  if (resp.status === 401 || resp.status === 403) {
+                  if (resp.status !== 201) {
                     this.$emit("logout");
                   }
                 });
