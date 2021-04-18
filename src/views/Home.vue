@@ -894,7 +894,7 @@ export default {
       this.manageLoading(false);
     }
     // Nur Testweise
-    /*this.user.uuid = 1234;
+    this.user.uuid = 1234;
     this.user.admin = true;
     this.user.administration = false;
     this.user.pek = false;
@@ -904,8 +904,8 @@ export default {
     this.cookies = true;
     this.setUser(this.user.short);
     this.setToken("123456789");
-    this.setRefresh("012345678");*/
-    this.manageLoading(false);
+    this.setRefresh("012345678");
+    this.manageLoading(true);
     /*if (this.checkCookie()) {
       this.useCookie(true);
       var c = this.getCookie();

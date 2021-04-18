@@ -75,8 +75,19 @@
               <b-icon variant="success" icon="file-earmark-text"></b-icon> Excel
               herunterladen
             </b-button>
+            <!-- Abgeltung PDF öffnen Button -->
+            <b-button
+              v-if="row.item.form === 'Compensation'"
+              variant="outline-secondary"
+              size="sm"
+              @click="openAbgeltung()"
+            >
+              <b-icon variant="danger" icon="file-earmark-text"></b-icon> PDF
+              öffnen
+            </b-button>
             <!-- PDF öffnen Button -->
             <b-button
+            v-if="row.item.form !== 'Compensation'"
               variant="outline-secondary"
               size="sm"
               @click="openPDF(row.item)"
@@ -87,6 +98,7 @@
             </b-button>
             <!-- Details anschauen Button -->
             <b-button
+              v-if="row.item.form !== 'Compensation'"
               variant="outline-secondary"
               size="sm"
               @click="row.toggleDetails"
@@ -918,13 +930,88 @@ export default {
       );
     },
     /**
+     * Diese Methode lädt die Abgeltung für Lehrer herunter und zeigt diese an
+     */
+    openAbgeltung() {
+      axios
+        .get(
+          this.url + "/getCompensationForEducationalSupportForm",
+          {
+            params: {
+              uuid: this.app.uuid
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url +
+                            "/getCompensationForEducationalSupportForm",
+                          {
+                            params: {
+                              uuid: this.app.uuid
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
      * Diese Methode gibt das kürzel des Lehrers zurück
      */
     getTeacherfromIndex(index) {
       return this.app.school_event_details.teachers[index].shortname;
     },
     /**
-     * TODO welcher Lehrer fragt die PDF an? Wie gebe ich an, für welchen Lehrer die PDf geöffnet werden soll?
      * Diese Methode lädt das Abwesenheitsformular des Lehers aus dem Backend und öffnet es
      */
     applicationPDF(index) {
@@ -1272,6 +1359,10 @@ export default {
             title: "Allgemeine Infos - Abwesenheitsformulare der Klassen",
             form: "SchoolEventDetails",
             teacher: 0
+          },
+          {
+            title: "Abgeltung für pädagogische Betreuung",
+            form: "Compensation"
           }
         ];
         for (let i = 0; i < this.app.business_trip_applications.length; i++) {

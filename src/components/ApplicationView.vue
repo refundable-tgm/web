@@ -73,8 +73,19 @@
               <b-icon variant="success" icon="file-earmark-text"></b-icon> Excel
               herunterladen
             </b-button>
+            <!-- Abgeltung PDF öffnen -->
+            <b-button
+              v-if="row.item.form === 'Compensation'"
+              variant="outline-secondary"
+              size="sm"
+              @click="openAbgeltung()"
+            >
+              <b-icon variant="danger" icon="file-earmark-text"></b-icon> PDF
+              öffnen
+            </b-button>
             <!-- PDF öffnen -->
             <b-button
+              v-if="row.item.form !== 'Compensation'"
               variant="outline-secondary"
               size="sm"
               @click="openPDF(row.item)"
@@ -87,6 +98,7 @@
             <b-button
               variant="outline-secondary"
               size="sm"
+              v-if="row.item.form !== 'Compensation'"
               @click="row.toggleDetails"
             >
               <b-icon icon="pencil-square"></b-icon> Bearbeitung
@@ -104,14 +116,14 @@
                 v-bind:token="token"
                 v-bind:url="url"
                 v-on:update="updateSG"
-                v-if="isLeader && row.item.title == 'Allgemeine Infos'"
+                v-if="isLeader && row.item.form == 'SchoolEventDetails'"
               />
               <!-- Veranstaltuns BEgleiter -->
               <SchoolEscorts
                 v-bind:readonly="sereadonly"
                 v-bind:data="sedata"
                 v-on:update="updateSE"
-                v-if="row.item.title == 'Begleitformular'"
+                v-if="row.item.form == 'SchoolEventTeacherDetails'"
               />
               <!-- Reiseantrag -->
               <TravelApplication
@@ -119,7 +131,7 @@
                 v-bind:app="tadata"
                 v-bind:index="0"
                 v-on:update="updateTA"
-                v-if="row.item.title == 'Reiseformular'"
+                v-if="row.item.form == 'BusinessTripApplication'"
               />
               <!-- Reiserechung -->
               <TravelBill
@@ -129,21 +141,21 @@
                 v-bind:end="end"
                 v-bind:app="tbdata"
                 v-on:update="updateTB"
-                v-if="row.item.title == 'Reiserechnung'"
+                v-if="row.item.form == 'TravelInvoice'"
               />
               <!-- Andere -->
               <Others
                 v-bind:readonly="oreadonly"
                 v-bind:data="odata"
                 v-on:update="updateO"
-                v-if="row.item.title == 'Abwesenheitsformular'"
+                v-if="row.item.form == 'OtherReasonDetails'"
               />
               <!-- Forbildungen -->
               <Workshop
                 v-bind:readonly="wreadonly"
                 v-bind:data="wdata"
                 v-on:update="updateW"
-                v-if="row.item.title == 'Fortbildung'"
+                v-if="row.item.form == 'TrainingDetails'"
               />
             </b-card>
           </template>
@@ -151,7 +163,7 @@
       </b-col>
     </b-row>
 
-    <!-- Aktionen zum lsöchen, schließen und speichern -->
+    <!-- Aktionen zum löschen, schließen und speichern -->
     <b-row style="margin-bottom:2rem">
       <b-col cols="12">
         <!-- Antrag löschen -->
@@ -457,7 +469,7 @@ export default {
      * @param sedata Die Daten der Begleitformulare
      */
     updateSE(sedata) {
-      this.app.SchoolEventDetails.Teachers[this.currentTeacherIndex] = sedata;
+      this.app.school_event_details.teachers[this.currentTeacherIndex] = sedata;
     },
     /**
      * Aktualisiert die Daten der Sonstigen Anträge
@@ -2092,6 +2104,10 @@ export default {
               form: "SchoolEventDetails"
             },
             {
+              title: "Abgeltung für pädagogische Betreuung",
+              form: "Compensation"
+            },
+            {
               title: "Begleitformular - Abwesenheitsformular",
               form: "SchoolEventTeacherDetails"
             },
@@ -2111,6 +2127,10 @@ export default {
             {
               title: "Allgemeine Infos - Abwesenheitsformulare der Klassen",
               form: "SchoolEventDetails"
+            },
+            {
+              title: "Abgeltung für pädagogische Betreuung",
+              form: "Compensation"
             },
             {
               title: "Begleitformular",
@@ -2485,6 +2505,82 @@ export default {
                             params: {
                               uuid: this.app.uuid,
                               teacher: this.user.short
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
+     * Diese Methode lädt die Abgeltung für Lehrer herunter und zeigt diese an
+     */
+    openAbgeltung() {
+      axios
+        .get(
+          this.url + "/getCompensationForEducationalSupportForm",
+          {
+            params: {
+              uuid: this.app.uuid
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url +
+                            "/getCompensationForEducationalSupportForm",
+                          {
+                            params: {
+                              uuid: this.app.uuid
                             }
                           },
                           {
