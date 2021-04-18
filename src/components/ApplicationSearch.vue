@@ -56,7 +56,8 @@ export default {
   props: ["url", "user", "token", "refresh_token"],
   data() {
     return {
-      searching: ""
+      searching: "",
+      uuid: ""
     };
   },
   methods: {
@@ -120,14 +121,59 @@ export default {
      */
     requestApplication() {
       axios
-        .get(this.url + "/application/getApplication?id=" + this.searching)
+        .get(this.url + "/getApplication?uuid=" + this.searching, {
+          headers: {
+            Authorization: "Basic " + this.token
+          }
+        })
         .then(response => {
-          var data = response.data;
-          return data.id;
+          switch (response.status) {
+            case 200:
+              this.uuid = response.data.uuid;
+              return true;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(this.url + "/getApplication?uuid=" + this.appid, {
+                          headers: {
+                            Authorization: "Basic " + this.token
+                          }
+                        })
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.uuid = response.data.uuid;
+                              return true;
+                            default:
+                              return false;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              return false;
+          }
         });
     },
     /**
-     * TODO
      * Diese Methode lädt den gefragten Antrag und leitet den Benutzer darauf weiter
      */
     search() {
@@ -136,12 +182,25 @@ export default {
           this.makeToast();
         } else {
           let application = this.requestApplication();
-          if (application.id !== -1) {
+          if (application) {
             this.changeComponent("ApplicationView", application);
             this.changeURL("ApplicationView");
+          } else {
+            this.failedLoad();
           }
         }
       }
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag einen Fehler beim Laden hatte
+     */
+    failedLoad() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Antrag konnte nicht geladen werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * Diese Methode sorgt dafür, dass die URL angepasst ist, damit keine Reste des Viewers (ApplicationSearch) in der URL stehen
