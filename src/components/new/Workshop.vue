@@ -459,43 +459,50 @@ export default {
           } else {
             bonus2 = false;
           }
-          var business = [{
-            id: 0,
-            name: this.returnString(this.user.longname.split(" ")[0]),
-            surname: this.returnString(this.user.longname.split(" ")[1]),
-            degree: this.returnString(this.teacher.degree),
-            title: this.returnString(this.teacher.title),
-            staffnr: this.returnValue(this.teacher.personalnummer),
-            trip_begin_time: this.createNewDate(this.startDate, this.startTime),
-            trip_end_time: this.createNewDate(this.endDate, this.endTime),
-            service_begin_time: this.createNewDate(
-              this.startDate,
-              this.startTime
-            ),
-            service_end_time: this.createNewDate(this.endDate, this.endTime),
-            trip_goal: this.returnString(this.start),
-            travel_purpose: this.returnString(this.teacher.reason1),
-            travel_mode: this.returnValue(this.teacher.transport),
-            starting_point: this.returnValue(this.teacher.ausgangspunkt),
-            end_point: this.returnValue(this.teacher.endpunkt),
-            reasoning: this.returnString(this.teacher.reason),
-            other_participants: [],
-            bonus_mile_confirmation_1: bonus1,
-            bonus_mile_confirmation_2: bonus2,
-            travel_costs_paid_by_someone: this.teacher.reisekosten,
-            staying_costs_paid_by_someone: this.teacher.aufenthaltskosten,
-            paid_by_whom: this.returnString(this.teacher.von),
-            other_costs: this.returnValue(this.teacher.sonstige_kosten),
-            estimated_costs: this.returnValue(this.teacher.geschaetzte_kosten),
-            date_application_filed: this.createNewDate(
-              new Date().toISOString().split("T")[0],
-              new Date().toISOString().split("T")[1]
-            ),
-            date_application_approved: null,
-            referee: null,
-            business_card_emitted_outward: this.teacher.emitted_out,
-            business_card_emitted_return: this.teacher.emitted_ret
-          }];
+          var business = [
+            {
+              id: 0,
+              name: this.returnString(this.user.longname.split(" ")[0]),
+              surname: this.returnString(this.user.longname.split(" ")[1]),
+              degree: this.returnString(this.teacher.degree),
+              title: this.returnString(this.teacher.title),
+              staffnr: this.returnValue(this.teacher.personalnummer),
+              trip_begin_time: this.createNewDate(
+                this.startDate,
+                this.startTime
+              ),
+              trip_end_time: this.createNewDate(this.endDate, this.endTime),
+              service_begin_time: this.createNewDate(
+                this.startDate,
+                this.startTime
+              ),
+              service_end_time: this.createNewDate(this.endDate, this.endTime),
+              trip_goal: this.returnString(this.start),
+              travel_purpose: this.returnString(this.teacher.reason1),
+              travel_mode: this.returnValue(this.teacher.transport),
+              starting_point: this.returnValue(this.teacher.ausgangspunkt),
+              end_point: this.returnValue(this.teacher.endpunkt),
+              reasoning: this.returnString(this.teacher.reason),
+              other_participants: [],
+              bonus_mile_confirmation_1: bonus1,
+              bonus_mile_confirmation_2: bonus2,
+              travel_costs_paid_by_someone: this.teacher.reisekosten,
+              staying_costs_paid_by_someone: this.teacher.aufenthaltskosten,
+              paid_by_whom: this.returnString(this.teacher.von),
+              other_costs: this.returnValue(this.teacher.sonstige_kosten),
+              estimated_costs: this.returnValue(
+                this.teacher.geschaetzte_kosten
+              ),
+              date_application_filed: this.createNewDate(
+                new Date().toISOString().split("T")[0],
+                new Date().toISOString().split("T")[1]
+              ),
+              date_application_approved: null,
+              referee: null,
+              business_card_emitted_outward: this.teacher.emitted_out,
+              business_card_emitted_return: this.teacher.emitted_ret
+            }
+          ];
           var data = {
             name: this.returnString(this.title),
             kind: 1,
@@ -646,11 +653,11 @@ export default {
       var str = tmp.toISOString();
       str = str.split("T");
       var str2 = str[1].split(":");
-      var str3 = Number(str2[0]) + 2;
+      var str3 = Number(str2[0]) + 1;
       if (str3 < 10) {
-        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+01:00";
       } else {
-        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+01:00";
       }
     },
     /**

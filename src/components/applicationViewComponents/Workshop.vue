@@ -262,13 +262,15 @@ export default {
      */
     updateTime() {
       var start = new Date(this.startDate);
-      start.setHours(this.startTime.split(":")[0]);
+      start.setHours(this.startTime.split(":")[0]-2);
       start.setMinutes(this.startTime.split(":")[1]);
       var end = new Date(this.endDate);
-      end.setHours(this.endTime.split(":")[0]);
+      end.setHours(this.endTime.split(":")[0]-2);
       end.setMinutes(this.endTime.split(":")[1]);
       this.data.start_time = this.setTimezone(start);
       this.data.end_time = this.setTimezone(end);
+      console.log(this.data.start_time);
+      console.log(this.data.end_time);
       this.updateData();
     },
     /**
