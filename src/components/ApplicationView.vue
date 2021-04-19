@@ -2648,7 +2648,6 @@ export default {
         });
     },
     /**
-     * TODO Bta und ti wirklich korrekt?
      * Diese Methode lädt die PDF von dem Backend
      */
     openPDF(item) {
@@ -2749,7 +2748,7 @@ export default {
                 params: {
                   uuid: this.app.uuid,
                   short: this.user.short,
-                  Bta_id: this.currentTeacherIndex
+                  bta_id: this.currentTeacherIndex
                 }
               },
               {
@@ -2785,7 +2784,7 @@ export default {
                                 params: {
                                   uuid: this.app.uuid,
                                   short: this.user.short,
-                                  Bta_id: this.currentTeacherIndex
+                                  bta_id: this.currentTeacherIndex
                                 }
                               },
                               {

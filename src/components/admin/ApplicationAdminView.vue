@@ -1006,10 +1006,10 @@ export default {
         });
     },
     /**
-     * Diese Methode gibt das kürzel des Lehrers zurück
+     * Diese Methode generiert aus dem Namen einer Person, dass Kürzel
      */
-    getTeacherfromIndex(index) {
-      return this.app.school_event_details.teachers[index].shortname;
+    generateShortname(name, surname) {
+      return name.substring(0, 1).toLowerCase() + surname.toLowerCase();
     },
     /**
      * Diese Methode lädt das Abwesenheitsformular des Lehers aus dem Backend und öffnet es
@@ -1021,7 +1021,10 @@ export default {
           {
             params: {
               uuid: this.app.uuid,
-              teacher: this.getTeacherfromIndex(index)
+              teacher: this.generateShortname(
+                this.app.business_trip_applications[index].name,
+                this.app.business_trip_applications[index].surname
+              )
             }
           },
           {
@@ -1056,7 +1059,11 @@ export default {
                           {
                             params: {
                               uuid: this.app.uuid,
-                              teacher: this.getTeacherfromIndex(index)
+                              teacher: this.generateShortname(
+                                this.app.business_trip_applications[index].name,
+                                this.app.business_trip_applications[index]
+                                  .surname
+                              )
                             }
                           },
                           {
@@ -1178,8 +1185,11 @@ export default {
               {
                 params: {
                   uuid: this.app.uuid,
-                  short: this.getTeacherfromIndex(item.index),
-                  Bta_id: item.index
+                  short: this.generateShortname(
+                    this.app.business_trip_applications[item.teacher].name,
+                    this.app.business_trip_applications[item.teacher].surname
+                  ),
+                  bta_id: item.teacher
                 }
               },
               {
@@ -1214,8 +1224,15 @@ export default {
                               {
                                 params: {
                                   uuid: this.app.uuid,
-                                  short: this.getTeacherfromIndex(item.index),
-                                  Bta_id: item.index
+                                  short: this.generateShortname(
+                                    this.app.business_trip_applications[
+                                      item.teacher
+                                    ].name,
+                                    this.app.business_trip_applications[
+                                      item.teacher
+                                    ].surname
+                                  ),
+                                  bta_id: item.teacher
                                 }
                               },
                               {
@@ -1254,8 +1271,11 @@ export default {
               {
                 params: {
                   uuid: this.app.uuid,
-                  short: this.getTeacherfromIndex(item.index),
-                  ti_id: item.index
+                  short: this.generateShortname(
+                    this.app.business_trip_applications[item.teacher].name,
+                    this.app.business_trip_applications[item.teacher].surname
+                  ),
+                  ti_id: item.teacher
                 }
               },
               {
@@ -1290,8 +1310,15 @@ export default {
                               {
                                 params: {
                                   uuid: this.app.uuid,
-                                  short: this.getTeacherfromIndex(item.index),
-                                  ti_id: item.index
+                                  short: this.generateShortname(
+                                    this.app.business_trip_applications[
+                                      item.teacher
+                                    ].name,
+                                    this.app.business_trip_applications[
+                                      item.teacher
+                                    ].surname
+                                  ),
+                                  ti_id: item.teacher
                                 }
                               },
                               {
@@ -1543,13 +1570,13 @@ export default {
           this.classForm();
           break;
         case "SchoolEventTeacherDetails":
-          this.applicationPDF(item.index);
+          this.applicationPDF(item.teacher);
           break;
         case "TrainingDetails":
-          this.applicationPDF(item.index);
+          this.applicationPDF(item.teacher);
           break;
         case "OtherReasonDetails":
-          this.applicationPDF(item.index);
+          this.applicationPDF(item.teacher);
           break;
         case "BusinessTripApplication":
           axios
@@ -1558,8 +1585,11 @@ export default {
               {
                 params: {
                   uuid: this.app.uuid,
-                  short: this.getTeacherfromIndex(item.index),
-                  ti_id: item.index
+                  short: this.generateShortname(
+                    this.app.business_trip_applications[item.teacher].name,
+                    this.app.business_trip_applications[item.teacher].surname
+                  ),
+                  bta_id: item.teacher
                 }
               },
               {
@@ -1594,8 +1624,15 @@ export default {
                               {
                                 params: {
                                   uuid: this.app.uuid,
-                                  short: this.getTeacherfromIndex(item.index),
-                                  ti_id: item.index
+                                  short: this.generateShortname(
+                                    this.app.business_trip_applications[
+                                      item.teacher
+                                    ].name,
+                                    this.app.business_trip_applications[
+                                      item.teacher
+                                    ].surname
+                                  ),
+                                  bta_id: item.teacher
                                 }
                               },
                               {
@@ -1634,8 +1671,11 @@ export default {
               {
                 params: {
                   uuid: this.app.uuid,
-                  short: this.getTeacherfromIndex(item.index),
-                  Bta_id: item.index
+                  short: this.generateShortname(
+                    this.app.business_trip_applications[item.teacher].name,
+                    this.app.business_trip_applications[item.teacher].surname
+                  ),
+                  ti_id: item.teacher
                 }
               },
               {
@@ -1670,8 +1710,15 @@ export default {
                               {
                                 params: {
                                   uuid: this.app.uuid,
-                                  short: this.getTeacherfromIndex(item.index),
-                                  Bta_id: item.index
+                                  short: this.generateShortname(
+                                    this.app.business_trip_applications[
+                                      item.teacher
+                                    ].name,
+                                    this.app.business_trip_applications[
+                                      item.teacher
+                                    ].surname
+                                  ),
+                                  ti_id: item.teacher
                                 }
                               },
                               {
