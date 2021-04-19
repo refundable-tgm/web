@@ -296,6 +296,9 @@ export default {
         }
       }
     },
+    /**
+     * Diese Methode berechnet alle wichtigen Daten, um die Anträge richtig anzuzeigen
+     */
     loadView(applications) {
       var apps = applications;
       for (let i = 0; i < apps.length; i++) {

@@ -350,12 +350,8 @@ export default {
             ),
             date_application_approved: null,
             referee: null,
-            business_card_emitted_outward: this.returnBoolean(
-              this.teacher.emitted_out
-            ),
-            business_card_emitted_return: this.returnBoolean(
-              this.teacher.emitted_ret
-            )
+            business_card_emitted_outward: this.escorts.output[i].emitted_out,
+            business_card_emitted_return: this.escorts.output[i].emitted_out
           });
         }
         var data = {

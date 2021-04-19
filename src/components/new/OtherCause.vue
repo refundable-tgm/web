@@ -591,16 +591,18 @@ export default {
     einreichen() {
       if (this.checkClick()) {
         if (this.validInputs) {
-          if (
-            this.teacher.bonus_meilen[0] === "0" ||
-            this.teacher.bonus_meilen[1] === "0"
-          )
-            var bonus1 = true;
-          if (
-            this.teacher.bonus_meilen[0] === "1" ||
-            this.teacher.bonus_meilen[1] === "1"
-          )
-            var bonus2 = true;
+          var bonus1 = false;
+          var bonus2 = false;
+          if (this.teacher.bonus_meilen.includes("0")) {
+            bonus1 = true;
+          } else {
+            bonus1 = false;
+          }
+          if (this.teacher.bonus_meilen.includes("1")) {
+            bonus2 = true;
+          } else {
+            bonus2 = false;
+          }
           var business = [];
           var invoice = [];
           var titel;
@@ -664,12 +666,8 @@ export default {
               ),
               date_application_approved: null,
               referee: null,
-              business_card_emitted_outward: this.returnBoolean(
-                this.teacher.emitted_out
-              ),
-              business_card_emitted_return: this.returnBoolean(
-                this.teacher.emitted_ret
-              )
+              business_card_emitted_outward: this.teacher.emitted_out,
+              business_card_emitted_return: this.teacher.emitted_ret
             });
             invoice.push({
               id: 0,
@@ -840,23 +838,6 @@ export default {
       escort: Object,
       teacher: Object
     };
-  },
-  mounted() {
-    let output = [
-      {
-        name: this.user.longname,
-        shortname: this.user.short,
-        startDate: this.startDate,
-        endDate: this.endDate,
-        startTime: this.startTime,
-        endTime: this.endTime,
-        selected: "",
-        startadresse: this.start,
-        meetingpoint: this.start,
-        role: 0
-      }
-    ];
-    this.escort = output;
   }
 };
 </script>

@@ -447,20 +447,22 @@ export default {
     einreichen() {
       if (this.checkClick()) {
         if (this.validInputs) {
-          if (
-            this.teacher.bonus_meilen[0] === "0" ||
-            this.teacher.bonus_meilen[1] === "0"
-          )
-            var bonus1 = true;
-          if (
-            this.teacher.bonus_meilen[0] === "1" ||
-            this.teacher.bonus_meilen[1] === "1"
-          )
-            var bonus2 = true;
-          var business = {
+          var bonus1 = false;
+          var bonus2 = false;
+          if (this.teacher.bonus_meilen.includes("0")) {
+            bonus1 = true;
+          } else {
+            bonus1 = false;
+          }
+          if (this.teacher.bonus_meilen.includes("1")) {
+            bonus2 = true;
+          } else {
+            bonus2 = false;
+          }
+          var business = [{
             id: 0,
-            name: this.returnString(this.escort.longname.split(" ")[0]),
-            surname: this.returnString(this.escort.longname.split(" ")[1]),
+            name: this.returnString(this.user.longname.split(" ")[0]),
+            surname: this.returnString(this.user.longname.split(" ")[1]),
             degree: this.returnString(this.teacher.degree),
             title: this.returnString(this.teacher.title),
             staffnr: this.returnValue(this.teacher.personalnummer),
@@ -480,12 +482,8 @@ export default {
             other_participants: [],
             bonus_mile_confirmation_1: bonus1,
             bonus_mile_confirmation_2: bonus2,
-            travel_costs_paid_by_someone: this.returnBoolean(
-              this.teacher.reisekosten
-            ),
-            staying_costs_paid_by_someone: this.returnBoolean(
-              this.teacher.aufenthaltskosten
-            ),
+            travel_costs_paid_by_someone: this.teacher.reisekosten,
+            staying_costs_paid_by_someone: this.teacher.aufenthaltskosten,
             paid_by_whom: this.returnString(this.teacher.von),
             other_costs: this.returnValue(this.teacher.sonstige_kosten),
             estimated_costs: this.returnValue(this.teacher.geschaetzte_kosten),
@@ -495,13 +493,9 @@ export default {
             ),
             date_application_approved: null,
             referee: null,
-            business_card_emitted_outward: this.returnBoolean(
-              this.teacher.emitted_out
-            ),
-            business_card_emitted_return: this.returnBoolean(
-              this.teacher.emitted_ret
-            )
-          };
+            business_card_emitted_outward: this.teacher.emitted_out,
+            business_card_emitted_return: this.teacher.emitted_ret
+          }];
           var data = {
             name: this.returnString(this.title),
             kind: 1,
@@ -526,8 +520,8 @@ export default {
             travel_invoices: [
               {
                 id: 0,
-                name: this.returnString(this.escort.longname.split(" ")[0]),
-                surname: this.returnString(this.escort.longname.split(" ")[1]),
+                name: this.returnString(this.user.longname.split(" ")[0]),
+                surname: this.returnString(this.user.longname.split(" ")[1]),
                 degree: this.returnString(this.teacher.degree),
                 title: this.returnString(this.teacher.title),
                 trip_begin_time: this.createNewDate(
@@ -565,6 +559,8 @@ export default {
               }
             ]
           };
+          console.log(data);
+          this.changeComponent("Index");
           axios
             .post(
               this.url + "/createApplication",
@@ -855,23 +851,6 @@ export default {
       escort: Object,
       teacher: Object
     };
-  },
-  mounted() {
-    let output = [
-      {
-        name: this.user.longname,
-        shortname: this.user.short,
-        startDate: this.startDate,
-        endDate: this.endDate,
-        startTime: this.startTime,
-        endTime: this.endTime,
-        selected: "",
-        startadresse: this.start,
-        meetingpoint: this.start,
-        role: 0
-      }
-    ];
-    this.escort = output;
   }
 };
 </script>
