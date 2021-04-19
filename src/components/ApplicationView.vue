@@ -852,9 +852,9 @@ export default {
       var application = {
         uuid: "3ae8ec07-1ef5-4e13-ace9-c3e9ea3d3b51",
         name: "Sommersportwoche",
-        kind: 0,
+        kind: 1,
         miscellaneous_reason: "",
-        progress: 1,
+        progress: 4,
         start_time: "2021-04-12T17:54:40.035095+01:00",
         end_time: "2021-04-16T17:54:40.035095+01:00",
         notes: "Sommersportwoche ist cool",
@@ -890,13 +890,13 @@ export default {
           ]
         },
         training_details: {
-          kind: 8,
+          kind: 5,
           miscellaneous_reason: "Fortbildung im Privatem",
           ph: 12,
           organizer: "PRIA"
         },
         other_reason_details: {
-          kind: 2,
+          kind: 8,
           service_mandate_title: "Stellung",
           service_mandate_gz: 1234,
           miscellaneous_reason: "Ist nicht so wichtig"
