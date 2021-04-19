@@ -1719,6 +1719,405 @@ export default {
       this.changeComponent("ApplicationAdminView", true, app);
     },
     /**
+     * Diese Methode lädt die Abwesenheitsformulare der Klassen herunter
+     */
+    getClassesPDF(uuid, klassen) {
+      axios
+        .get(
+          this.url + "/getAbsenceFormForClasses",
+          {
+            params: {
+              uuid: uuid,
+              classes: klassen
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getAbsenceFormForClasses",
+                          {
+                            params: {
+                              uuid: uuid,
+                              classes: klassen
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
+     * Diese Methode öffnet die PDF des übergebenen Lehrers
+     */
+    getTeacherPDF(uuid, short) {
+      axios
+        .get(
+          this.url + "/getAbsenceFormForTeacher",
+          {
+            params: {
+              uuid: uuid,
+              teacher: short
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getAbsenceFormForTeacher",
+                          {
+                            params: {
+                              uuid: uuid,
+                              teacher: short
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
+     * Diese Methode öffnet die Rückerstattung für Lehrkräfte PDF
+     */
+    getCompensation(uuid) {
+      axios
+        .get(
+          this.url + "/getCompensationForEducationalSupportForm",
+          {
+            params: {
+              uuid: uuid
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url +
+                            "/getCompensationForEducationalSupportForm",
+                          {
+                            params: {
+                              uuid: uuid
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
+     * Diese Methode zeigt das Reiseformular eines Lehrers an als PDF
+     */
+    getBusiness(uuid, short, id) {
+      axios
+        .get(
+          this.url + "/getBusinessTripApplicationForm",
+          {
+            params: {
+              uuid: uuid,
+              short: short,
+              bta_id: id
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getBusinessTripApplicationForm",
+                          {
+                            params: {
+                              uuid: uuid,
+                              short: short,
+                              bta_id: id
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
+     * Diese Methode zeigt die Reiserechnung eines Lehrers an als PDF
+     */
+    getInvoice(uuid, short, id) {
+      axios
+        .get(
+          this.url + "/getTravelInvoiceForm",
+          {
+            params: {
+              uuid: uuid,
+              short: short,
+              ti_id: id
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.showPDF(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getTravelInvoiceForm",
+                          {
+                            params: {
+                              uuid: uuid,
+                              short: short,
+                              ti_id: id
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.showPDF(res.data);
+                              break;
+                            default:
+                              this.failedPDF();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedPDF();
+              break;
+          }
+        });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedPDF() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Die PDF konnte nicht geöffnet werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    /**
      * Diese Methode leert den Inhalt und den Titel des Modals
      */
     resetInfoModal() {
@@ -1740,26 +2139,44 @@ export default {
       this.selected = items;
     },
     /**
+     * TODO
      * Diese Methode lädt die gewünschten PDFs aus dem Backend
      */
     printSelected() {
-      var req = [];
       for (let i = 0; i < this.selected.length; i++) {
-        req.push({
-          id: this.selected[i].id
-        });
-      }
-      axios
-        .get(this.url + "/getPDFs", {
-          params: {
-            token: this.token,
-            pdfs: req
+        if (this.selected[i].kind === 0) {
+          this.getClassesPDF(
+            this.selected[i].uuid,
+            this.selected[i].school_event_details.classes
+          );
+          this.getCompensation(this.selected[i].uuid);
+          for (
+            let j = 0;
+            j < this.selected[i].school_event_details.teachers.length;
+            j++
+          ) {
+            var abre = this.selected[i].school_event_details.teachers[j]
+              .shortname;
+            this.getTeacherPDF(this.selected[i].uuid, abre);
+            this.getBusiness(this.selected[i].uuid, abre, j);
+            this.getInvoice(this.selected[i].uuid, abre, j);
           }
-        })
-        .then(response => {
-          var pdf = response.data.pdf;
-          this.showPDF(pdf);
-        });
+        } else {
+          var kurz = this.generateShortname(
+            this.selected[i].business_trip_applications[0].name,
+            this.selected[i].business_trip_applications[0].surname
+          );
+          this.getTeacherPDF(this.selected[i].uuid, kurz);
+          this.getBusiness(this.selected[i].uuid, kurz, 0);
+          this.getInvoice(this.selected[i].uuid, kurz, 0);
+        }
+      }
+    },
+    /**
+     * Diese Methode generiert aus dem Namen einer Person, dass Kürzel
+     */
+    generateShortname(name, surname) {
+      return name.substring(0, 1).toLowerCase() + surname.toLowerCase();
     },
     /**
      * Code aus StackOverflow
