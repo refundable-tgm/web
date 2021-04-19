@@ -438,7 +438,7 @@ export default {
       for (let i = 0; i < escortsdata.teacher.length; i++) {
         // If this request goes wrong, this method must return false!
         var curTeach = this.getTeacher(escortsdata.teacher[i]);
-        if (curTeach === false) {
+        if (curTeach.longname === undefined) {
           return false;
         }
         output.push(
@@ -467,6 +467,7 @@ export default {
       }
       escortsdata.output = output;
       this.escortsdata = escortsdata;
+      return true;
     },
     /**
      * TODO

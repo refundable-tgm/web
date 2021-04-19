@@ -2956,126 +2956,65 @@ export default {
      * Diese Methode löscht den Antrag
      */
     delAn() {
-      if (this.app.kind === 0) {
-        axios
-          .delete(this.url + "/deleteApplication?uuid=" + this.app.uuid, {
-            headers: {
-              Authorization: "Basic " + this.token
-            }
-          })
-          .then(response => {
-            switch (response.status) {
-              case 200:
-                this.deleteConfirmed();
-                setTimeout(this.changeComponent("Index"), 1000);
-                break;
-              case 401:
-                axios
-                  .post(this.url + "/login/refresh", {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  })
-                  .then(resp => {
-                    switch (resp.status) {
-                      case 201:
-                        this.$emit(
-                          "updateToken",
-                          resp.data.access_token,
-                          resp.data.refresh_token
-                        );
-                        axios
-                          .delete(
-                            this.url +
-                              "/deleteApplication?uuid=" +
-                              this.app.uuid,
-                            {
-                              headers: {
-                                Authorization: "Basic " + this.token
-                              }
-                            }
-                          )
-                          .then(res => {
-                            switch (res.status) {
-                              case 200:
-                                this.deleteConfirmed();
-                                setTimeout(this.changeComponent("Index"), 1000);
-                                break;
-                              default:
-                                this.deleteFailed();
-                                break;
-                            }
-                          });
-                        break;
-                      default:
-                        this.$emit("logout");
-                        break;
-                    }
-                  });
-                break;
-              default:
-                this.deleteFailed();
-                break;
-            }
-          });
-      } else {
-        axios
-          .delete(this.url + "/deleteApplication", {
-            headers: {
-              Authorization: "Basic " + this.token
-            }
-          })
-          .then(response => {
-            switch (response.status) {
-              case 200:
-                this.deleteConfirmed();
-                setTimeout(this.changeComponent("Index"), 1000);
-                break;
-              case 401:
-                axios
-                  .post(this.url + "/login/refresh", {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  })
-                  .then(resp => {
-                    switch (resp.status) {
-                      case 201:
-                        this.$emit(
-                          "updateToken",
-                          resp.data.access_token,
-                          resp.data.refresh_token
-                        );
-                        axios
-                          .delete(this.url + "/deleteApplication", {
+      axios
+        .delete(this.url + "/deleteApplication?uuid=" + this.app.uuid, {
+          headers: {
+            Authorization: "Basic " + this.token
+          }
+        })
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.deleteConfirmed();
+              setTimeout(this.changeComponent("Index"), 1000);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .delete(
+                          this.url + "/deleteApplication?uuid=" + this.app.uuid,
+                          {
                             headers: {
                               Authorization: "Basic " + this.token
                             }
-                          })
-                          .then(res => {
-                            switch (res.status) {
-                              case 200:
-                                this.deleteConfirmed();
-                                setTimeout(this.changeComponent("Index"), 1000);
-                                break;
-                              default:
-                                this.deleteFailed();
-                                break;
-                            }
-                          });
-                        break;
-                      default:
-                        this.$emit("logout");
-                        break;
-                    }
-                  });
-                break;
-              default:
-                this.deleteFailed();
-                break;
-            }
-          });
-      }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.deleteConfirmed();
+                              setTimeout(this.changeComponent("Index"), 1000);
+                              break;
+                            default:
+                              this.deleteFailed();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.deleteFailed();
+              break;
+          }
+        });
     },
     closeAn() {
       if (this.app.kind === 0) {
