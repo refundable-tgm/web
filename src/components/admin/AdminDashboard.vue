@@ -2110,6 +2110,194 @@ export default {
         });
     },
     /**
+     * Diese Methode zeigt das Reiseformular eines Lehrers an als PDF
+     */
+    getBusinessExcel(uuid, short, id) {
+      axios
+        .get(
+          this.url + "/getBusinessTripApplicationExcel",
+          {
+            params: {
+              uuid: uuid,
+              short: short,
+              bta_id: id
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.excelDownload(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getBusinessTripApplicationExcel",
+                          {
+                            params: {
+                              uuid: uuid,
+                              short: short,
+                              bta_id: id
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.excelDownload(res.data);
+                              break;
+                            default:
+                              this.failedExcel();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedExcel();
+              break;
+          }
+        });
+    },
+    /**
+     * Code aus https://codepen.io/DanIgnatov/pen/RvbeeB
+     * Diese Funktion downloaded das Excel-File beim Benutzer
+     */
+    excelDownload(excel) {
+      var anchor_href =
+        "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," +
+        excel;
+      var exportLinkElement = document.createElement("a");
+
+      exportLinkElement.hidden = true;
+      exportLinkElement.download = "Formular.xlsx";
+      exportLinkElement.href = anchor_href;
+      exportLinkElement.text = "downloading...";
+
+      document.body.appendChild(exportLinkElement);
+      exportLinkElement.click();
+      exportLinkElement.remove();
+    },
+    /**
+     * Diese Methode zeigt die Reiserechnung eines Lehrers an als PDF
+     */
+    getInvoiceExcel(uuid, short, id) {
+      axios
+        .get(
+          this.url + "/getTravelInvoiceExcel",
+          {
+            params: {
+              uuid: uuid,
+              short: short,
+              ti_id: id
+            }
+          },
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
+          }
+        )
+        .then(response => {
+          switch (response.status) {
+            case 200:
+              this.excelDownload(response.data);
+              break;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getTravelInvoiceExcel",
+                          {
+                            params: {
+                              uuid: uuid,
+                              short: short,
+                              ti_id: id
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + this.token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              this.excelDownload(res.data);
+                              break;
+                            default:
+                              this.failedExcel();
+                              break;
+                          }
+                        });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.failedExcel();
+              break;
+          }
+        });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
+     */
+    failedExcel() {
+      this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
+        title: "Das Formular konnte nicht heruntergeladen werden",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    /**
      * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
      */
     failedPDF() {
@@ -2162,7 +2350,9 @@ export default {
               .shortname;
             this.getTeacherPDF(this.selected[i].uuid, abre);
             this.getBusiness(this.selected[i].uuid, abre, j);
+            this.getBusinessExcel(this.selected[i].uuid, abre, j);
             this.getInvoice(this.selected[i].uuid, abre, j);
+            this.getInvoiceExcel(this.selected[i].uuid, abre, j);
           }
         } else {
           var kurz = this.generateShortname(
@@ -2171,7 +2361,9 @@ export default {
           );
           this.getTeacherPDF(this.selected[i].uuid, kurz);
           this.getBusiness(this.selected[i].uuid, kurz, 0);
+          this.getBusinessExcel(this.selected[i].uuid, kurz, 0);
           this.getInvoice(this.selected[i].uuid, kurz, 0);
+          this.getInvoiceExcel(this.selected[i].uuid, kurz, 0);
         }
       }
     },
