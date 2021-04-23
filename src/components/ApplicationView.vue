@@ -116,6 +116,8 @@
                 v-bind:token="token"
                 v-bind:url="url"
                 v-on:update="updateSG"
+                v-on:updateToken="updateToken"
+                v-on:logout="logout"
                 v-if="isLeader && row.item.form == 'SchoolEventDetails'"
               />
               <!-- Veranstaltuns BEgleiter -->
@@ -2631,6 +2633,18 @@ export default {
           )
         );
       }
+    },
+    /**
+     * Diese methode sendet ein Signal an die Eltern-Componente
+     */
+    updateToken(access, refresh) {
+      this.$emit("updateToken", access, refresh);
+    },
+    /**
+     * Diese Methode sendet das Signal zum ausloggen an den Manager
+     */
+    logout() {
+      this.$emit("logout");
     }
   }
 };

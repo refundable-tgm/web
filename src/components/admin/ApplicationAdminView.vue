@@ -115,6 +115,10 @@
               <SchoolGeneral
                 v-bind:data="app"
                 v-bind:readonly="true"
+                v-bind:token="token"
+                v-bind:refresh_token="refresh_token"
+                v-on:updateToken="updateToken"
+                v-on:logout="logout"
                 v-if="
                   row.item.title ==
                     'Allgemeine Infos - Abwesenheitsformulare der Klassen'
@@ -1562,6 +1566,18 @@ export default {
               break;
           }
         });
+    },
+    /**
+     * Diese methode sendet ein Signal an die Eltern-Componente
+     */
+    updateToken(access, refresh) {
+      this.$emit("updateToken", access, refresh);
+    },
+    /**
+     * Diese Methode sendet das Signal zum ausloggen an den Manager
+     */
+    logout() {
+      this.$emit("logout");
     },
     /**
      * Diese Methode sorgt dafür, dass die URL angepasst ist, damit keine Reste des Viewers (ApplicationSearch) in der URL stehen

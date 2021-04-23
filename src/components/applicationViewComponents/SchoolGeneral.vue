@@ -264,7 +264,7 @@
 import axios from "axios";
 export default {
   name: "NewApplication",
-  props: ["data", "readonly", "url", "token"],
+  props: ["data", "readonly", "url", "token", "refresh_token"],
   data() {
     return {
       startDate: "",
@@ -305,11 +305,14 @@ export default {
           teach.push(this.data.school_event_details.teachers[found]);
         } else {
           var l = this.getFullName(this.beg[i]);
+          if(l.uuid === undefined) {
+            return false;
+          }
           teach.push({
-            name: l,
+            name: l.long,
             shortname: this.beg[i],
-            attendance_from: "",
-            attendance_till: "",
+            attendance_from: this.data.start_time,
+            attendance_till: this.data.end_time,
             group: "",
             start_address: this.data.start_address,
             meeting_point: this.data.start_address,
@@ -329,13 +332,65 @@ export default {
     getFullName(shortName) {
       axios
         .get(this.url + "/getLongName?name=" + shortName, {
-          params: {
-            token: this.token
+          headers: {
+            Authorization: "Basic " + this.token
           }
         })
         .then(response => {
-          return response.data.long;
+          switch (response.status) {
+            case 200:
+              return response.data;
+            case 401:
+              axios
+                .post(this.url + "/login/refresh", {
+                  headers: {
+                    Authorization: "Basic " + this.refresh_token
+                  }
+                })
+                .then(resp => {
+                  switch (resp.status) {
+                    case 201:
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios.get(this.url + "/getLongName?name=" + shortName, {
+                        headers: {
+                          Authorization: "Basic " + this.token
+                        }
+                      }).then(res => {
+                        switch(res.status) {
+                          case 200:
+                            return res.data;
+                          default:
+                            this.addFailed();
+                            return false;
+                        }
+                      });
+                      break;
+                    default:
+                      this.$emit("logout");
+                      break;
+                  }
+                });
+              break;
+            default:
+              this.addFailed();
+              return false;
+          }
         });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass ein Lehrer nicht hinzugefügt werden konnte
+     */
+    addFailed() {
+      this.$bvToast.toast("Einer der Lehrer wurde nicht gefunden!", {
+        title: "Ein Fehler ist aufgetreten!",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
     },
     /**
      * Diese Methode wandelt die Zeiteingaben in ein valides Datum um und ruft die updateData-Methode
