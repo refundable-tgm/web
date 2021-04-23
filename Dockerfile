@@ -7,6 +7,6 @@ RUN npm run build
 
 FROM nginx:stable-alpine as production
 COPY --from=vue-builder /app/dist /usr/share/nginx/html
-COPY history.conf /etc/nginx/conf.d/history.conf
+COPY history.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
