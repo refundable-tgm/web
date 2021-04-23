@@ -8,9 +8,17 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/viewer",
-    name: "Viewer",
     component: Home,
-    props: route => ({ query: route.query.uuid })
+    props: route => ({ query: route.query.uuid }),
+    beforeEnter: (to, from, next) => {
+      const { uri } = to.query;
+      if (uri != null && uri != "/") {
+        next(false);
+        router.push(uri);
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/",
