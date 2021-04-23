@@ -7,16 +7,16 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home,
-    props: { pathing: "base" }
-  },
-  {
     path: "/viewer",
     name: "Viewer",
     component: Home,
     props: route => ({ query: route.query.uuid })
+  },
+  {
+    path: "/",
+    name: "Home",
+    component: Home,
+    props: { pathing: "base" }
   },
   {
     path: "*",
