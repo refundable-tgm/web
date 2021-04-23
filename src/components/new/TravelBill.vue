@@ -456,7 +456,6 @@ export default {
       this.calcRows();
     },
     /**
-     * TODO send Michael Data
      * Diese Methode convertiert die hochgeladenen Datein in Base64 und sendet diese an das Backend
      */
     async convert() {

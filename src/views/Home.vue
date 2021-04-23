@@ -436,7 +436,6 @@ export default {
         }
       ];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
-        // If this request goes wrong, this method must return false!
         var curTeach = this.getTeacher(escortsdata.teacher[i]);
         if (curTeach.longname === undefined) {
           return false;
@@ -470,7 +469,6 @@ export default {
       return true;
     },
     /**
-     * TODO
      * Diese Methode gibt den vollen Namen eines Lehrers zurück
      * @param shortName Der Kürzel des verlangten Lehrers
      */
@@ -894,31 +892,6 @@ export default {
       this.cookies = false;
       this.manageLoading(false);
     }
-    // Nur Testweise
-    this.user.uuid = 1234;
-    this.user.admin = true;
-    this.user.administration = false;
-    this.user.pek = false;
-    this.user.av = false;
-    this.user.short = "szakall";
-    this.user.longname = "Stefan Zakall";
-    this.cookies = true;
-    this.setUser(this.user.short);
-    this.setToken("123456789");
-    this.setRefresh("012345678");
-    this.manageLoading(true);
-    /*if (this.checkCookie()) {
-      this.useCookie(true);
-      var c = this.getCookie();
-      if (c == this.generateState(window.history.state)) {
-        this.changeComponent(c, false);
-      } else {
-        this.changeComponent(c);
-      }
-    } else {
-      // Falls kein Cookie gesetzt ist, wird der Benutzer auf die Login-Seite weitergeleitet
-      this.changeComponent("Login");
-    }*/
   }
 };
 </script>

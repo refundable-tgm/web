@@ -342,7 +342,6 @@ export default {
   },
   methods: {
     /**
-     * TODO
      * Diese Methode requestet die News von dem Benutzer und erstellt damit die Komponenten
      */
     setNews() {

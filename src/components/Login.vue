@@ -169,51 +169,6 @@ export default {
                 this.loginFailed();
               }
             });
-          // Temporär, damit man sich einloggen kann
-          var daten = {
-            user: 1234,
-            super_user: true,
-            administration: false,
-            av: false,
-            pek: false
-          };
-          this.$emit(
-            "login",
-            daten.user,
-            daten.super_user,
-            daten.administration,
-            daten.av,
-            daten.pek,
-            "DasIstEinToken",
-            "DasIstEinRefreshToken",
-            "szakall",
-            "Stefan Zakall"
-          );
-          switch (this.forward.name) {
-            case "ApplicationSearch":
-              //this.$emit("login", response.user, response.admin);
-              this.$emit("change-component", this.forward.name);
-              break;
-            case "ApplicationView":
-              //this.$emit("login", response.user, response.admin);
-              this.$emit(
-                "change-component",
-                this.forward.name,
-                true,
-                this.forward.id
-              );
-              break;
-            default:
-              if (daten.administration || daten.pek) {
-                this.$emit("change-component", "AdminDashboard");
-              } else {
-                this.$emit("change-component", "Index");
-              }
-              //Wenn Login failed:
-              //Eine Meldung an den User, dass etwas (nicht spezifisch) nicht stimmt
-              break;
-          }
-          // Temporär ende, damit man sich einloggen kann
         } else {
           this.forceRender();
           this.makeToast();

@@ -115,7 +115,6 @@ export default {
       });
     },
     /**
-     * TODO
      * Diese Methode gibt die ID des Antrgas zurück
      * @returns Die ID des Antrags
      */
