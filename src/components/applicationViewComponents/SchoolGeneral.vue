@@ -305,7 +305,7 @@ export default {
           teach.push(this.data.school_event_details.teachers[found]);
         } else {
           var l = this.getFullName(this.beg[i]);
-          if(l.uuid === undefined) {
+          if (l.uuid === undefined) {
             return false;
           }
           teach.push({
@@ -355,19 +355,21 @@ export default {
                         resp.data.access_token,
                         resp.data.refresh_token
                       );
-                      axios.get(this.url + "/getLongName?name=" + shortName, {
-                        headers: {
-                          Authorization: "Basic " + this.token
-                        }
-                      }).then(res => {
-                        switch(res.status) {
-                          case 200:
-                            return res.data;
-                          default:
-                            this.addFailed();
-                            return false;
-                        }
-                      });
+                      axios
+                        .get(this.url + "/getLongName?name=" + shortName, {
+                          headers: {
+                            Authorization: "Basic " + this.token
+                          }
+                        })
+                        .then(res => {
+                          switch (res.status) {
+                            case 200:
+                              return res.data;
+                            default:
+                              this.addFailed();
+                              return false;
+                          }
+                        });
                       break;
                     default:
                       this.$emit("logout");
