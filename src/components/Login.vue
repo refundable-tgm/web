@@ -119,54 +119,64 @@ export default {
               password: this.password
             })
             .then(response => {
-              var data = response.data;
-              if (response.status === 200) {
-                axios
-                  .get(this.url + "/getTeacherByShort?name=" + this.email, {
-                    headers: {
-                      Authorization: "Basic " + data.access_token
-                    }
-                  })
-                  .then(resp => {
-                    if (resp.status === 200) {
-                      this.$emit(
-                        "login",
-                        resp.data.uuid,
-                        resp.data.super_user,
-                        resp.data.administration,
-                        resp.data.av,
-                        resp.data.pek,
-                        resp.data.access_token,
-                        resp.data.refresh_token,
-                        resp.data.short,
-                        resp.data.long
-                      );
-                      switch (this.forward.name) {
-                        case "ApplicationSearch":
-                          this.$emit("change-component", this.forward.name);
-                          break;
-                        case "ApplicationView":
+              switch (response.status) {
+                case 200:
+                  var data = response.data;
+                  if (response.status === 200) {
+                    axios
+                      .get(this.url + "/getTeacherByShort?name=" + this.email, {
+                        headers: {
+                          Authorization: "Basic " + data.access_token
+                        }
+                      })
+                      .then(resp => {
+                        if (resp.status === 200) {
                           this.$emit(
-                            "change-component",
-                            this.forward.name,
-                            true,
-                            this.forward.id
+                            "login",
+                            resp.data.uuid,
+                            resp.data.super_user,
+                            resp.data.administration,
+                            resp.data.av,
+                            resp.data.pek,
+                            resp.data.access_token,
+                            resp.data.refresh_token,
+                            resp.data.short,
+                            resp.data.long
                           );
-                          break;
-                        default:
-                          if (resp.data.administration || resp.data.pek) {
-                            this.$emit("change-component", "AdminDashboard");
-                          } else {
-                            this.$emit("change-component", "Index");
+                          switch (this.forward.name) {
+                            case "ApplicationSearch":
+                              this.$emit("change-component", this.forward.name);
+                              break;
+                            case "ApplicationView":
+                              this.$emit(
+                                "change-component",
+                                this.forward.name,
+                                true,
+                                this.forward.id
+                              );
+                              break;
+                            default:
+                              if (resp.data.administration || resp.data.pek) {
+                                this.$emit(
+                                  "change-component",
+                                  "AdminDashboard"
+                                );
+                              } else {
+                                this.$emit("change-component", "Index");
+                              }
+                              break;
                           }
-                          break;
-                      }
-                    } else {
-                      this.loginFailed();
-                    }
-                  });
-              } else {
-                this.loginFailed();
+                        } else {
+                          this.loginFailed();
+                        }
+                      });
+                  } else {
+                    this.loginFailed();
+                  }
+                  break;
+                default:
+                  this.loginFailed();
+                  break;
               }
             });
         } else {
