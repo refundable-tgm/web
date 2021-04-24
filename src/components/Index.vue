@@ -336,7 +336,7 @@ export default {
   props: ["url", "token", "refresh_token", "user"],
   data() {
     return {
-      news: "",
+      news: [],
       maxnews: 10
     };
   },
