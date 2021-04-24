@@ -206,7 +206,7 @@ export default {
   data() {
     return {
       // url is the link from the REST-API
-      url: data.url+":8080/api",
+      url: data.url + ":8080/api",
       data: Object,
       currentComponent: "",
       escortsdata: Object,
