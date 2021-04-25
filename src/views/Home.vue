@@ -206,7 +206,7 @@ export default {
   data() {
     return {
       // url is the link from the REST-API
-      url: "http://"+data.url + ":8080/api",
+      url: "http://" + data.url + ":8080/api",
       data: Object,
       currentComponent: "",
       escortsdata: Object,
@@ -475,8 +475,8 @@ export default {
     getTeacher(shortName) {
       axios
         .get(this.url + "/getTeacherByShort?name=" + shortName, {
-          params: {
-            token: this.token
+          headers: {
+            Authorization: "Basic " + this.token
           }
         })
         .then(response => {
@@ -501,8 +501,8 @@ export default {
                         .get(
                           this.url + "/getTeacherByShort?name=" + shortName,
                           {
-                            params: {
-                              token: this.token
+                            headers: {
+                              Authorization: "Basic " + this.token
                             }
                           }
                         )

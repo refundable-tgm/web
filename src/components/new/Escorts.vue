@@ -398,7 +398,7 @@ export default {
             switch (response.status) {
               case 200:
                 this.createConfirm();
-                setTimeout(this.changeComponent("Index"), 1000);
+                this.changeComponent("Index");
                 break;
               case 401:
                 axios
@@ -429,7 +429,7 @@ export default {
                             switch (res.status) {
                               case 200:
                                 this.createConfirm();
-                                setTimeout(this.changeComponent("Index"), 1000);
+                                this.changeComponent("Index");
                                 break;
                               default:
                                 this.failedConfirm();
