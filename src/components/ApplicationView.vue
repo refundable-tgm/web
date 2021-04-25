@@ -2264,7 +2264,7 @@ export default {
                 params: {
                   uuid: this.app.uuid,
                   short: this.user.short,
-                  ti_id: this.currentTeacherIndex
+                  bta_id: this.currentTeacherIndex
                 }
               },
               {
@@ -2300,7 +2300,7 @@ export default {
                                 params: {
                                   uuid: this.app.uuid,
                                   short: this.user.short,
-                                  ti_id: this.currentTeacherIndex
+                                  bta_id: this.currentTeacherIndex
                                 }
                               },
                               {
@@ -2340,7 +2340,7 @@ export default {
                 params: {
                   uuid: this.app.uuid,
                   short: this.user.short,
-                  bta_id: this.currentTeacherIndex
+                  ti_id: this.currentTeacherIndex
                 }
               },
               {
@@ -2376,7 +2376,7 @@ export default {
                                 params: {
                                   uuid: this.app.uuid,
                                   short: this.user.short,
-                                  bta_id: this.currentTeacherIndex
+                                  ti_id: this.currentTeacherIndex
                                 }
                               },
                               {
@@ -2557,7 +2557,7 @@ export default {
           switch (response.status) {
             case 200:
               this.deleteConfirmed();
-              setTimeout(this.changeComponent("Index"), 1000);
+              this.changeComponent("Index");
               break;
             case 401:
               axios
@@ -2587,7 +2587,7 @@ export default {
                           switch (res.status) {
                             case 200:
                               this.deleteConfirmed();
-                              setTimeout(this.changeComponent("Index"), 1000);
+                              this.changeComponent("Index");
                               break;
                             default:
                               this.deleteFailed();

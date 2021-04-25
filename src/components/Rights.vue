@@ -164,93 +164,99 @@ export default {
             }
           })
           .then(response => {
-            if (response.status === 200) {
-              axios
-                .get(
-                  this.url +
-                    "/setTeacherPermissions?uuid=" +
-                    response.data.uuid,
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.token
+            switch (response.status) {
+              case 200:
+                axios
+                  .get(
+                    this.url +
+                      "/setTeacherPermissions?uuid=" +
+                      response.data.uuid,
+                    {
+                      headers: {
+                        Authorization: "Basic " + this.token
+                      }
+                    },
+                    rechte
+                  )
+                  .then(res => {
+                    switch (res.status) {
+                      case 200:
+                        this.saveComplete();
+                        this.reset();
+                        break;
+                      default:
+                        this.saveFailed();
+                        break;
                     }
-                  },
-                  rechte
-                )
-                .then(res => {
-                  if (res.status === 200) {
-                    this.saveComplete();
-                    this.reset();
-                  }
-                  if (
-                    res.status === 500 ||
-                    res.status === 422 ||
-                    res.status === 403 ||
-                    res.status === 401
-                  ) {
-                    this.saveFailed();
-                  }
-                });
-            }
-            if (response.status === 401) {
-              axios
-                .post(this.url + "login/refresh", {
-                  refresh_token: this.refresh_token
-                })
-                .then(resp => {
-                  if (resp.status === 201) {
-                    this.$emit(
-                      "updateToken",
-                      resp.data.access_token,
-                      resp.data.refresh_token
-                    );
-                    axios
-                      .get(
-                        this.url + "/getTeacherByShort?name=" + this.teacher,
-                        {
-                          headers: {
-                            Authorization: "Basic " + this.token
-                          }
-                        }
-                      )
-                      .then(re => {
-                        if (re.status === 200) {
-                          axios
-                            .get(
-                              this.url +
-                                "/setTeacherPermissions?uuid=" +
-                                re.data.uuid,
-                              {
-                                headers: {
-                                  Authorization: "Basic " + this.token
-                                }
-                              },
-                              rechte
-                            )
-                            .then(r => {
-                              if (r.status === 200) {
-                                this.saveComplete();
-                                this.reset();
-                              } else {
-                                this.saveFailed();
+                  });
+                break;
+              case 401:
+                axios
+                  .post(this.url + "login/refresh", {
+                    refresh_token: this.refresh_token
+                  })
+                  .then(resp => {
+                    switch (resp.status) {
+                      case 201:
+                        this.$emit(
+                          "updateToken",
+                          resp.data.access_token,
+                          resp.data.refresh_token
+                        );
+                        axios
+                          .get(
+                            this.url +
+                              "/getTeacherByShort?name=" +
+                              this.teacher,
+                            {
+                              headers: {
+                                Authorization: "Basic " + this.token
                               }
-                            });
-                        } else {
-                          this.saveFailed();
-                        }
-                      });
-                  }
-                  if (resp.status !== 201) {
-                    this.$emit("logout");
-                  }
-                });
-            }
-            if (
-              response.status === 500 ||
-              response.status === 422 ||
-              response.status === 403
-            ) {
-              this.saveFailed();
+                            }
+                          )
+                          .then(re => {
+                            switch (re.status) {
+                              case 200:
+                                axios
+                                  .get(
+                                    this.url +
+                                      "/setTeacherPermissions?uuid=" +
+                                      re.data.uuid,
+                                    {
+                                      headers: {
+                                        Authorization: "Basic " + this.token
+                                      }
+                                    },
+                                    rechte
+                                  )
+                                  .then(r => {
+                                    switch (r.status) {
+                                      case 200:
+                                        this.saveComplete();
+                                        this.reset();
+                                        break;
+                                      default:
+                                        this.saveFailed();
+                                        break;
+                                    }
+                                  });
+                                break;
+                              default:
+                                this.saveFailed();
+                                break;
+                            }
+                          });
+                        break;
+                      default:
+                        this.$emit("logout");
+                        break;
+                    }
+                  });
+
+                break;
+              default:
+                this.saveFailed();
+                break;
             }
           });
       }
