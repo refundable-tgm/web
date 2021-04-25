@@ -472,7 +472,7 @@ export default {
         });
       for (let i = 0; i < this.invoices.length; i++) {
         imgs[i] = await toBase64(this.invoices[i]);
-        this.data.beleg.files.push({pdf: imgs[i]});
+        this.data.beleg.files.push({ pdf: imgs[i] });
       }
       this.update();
     },
