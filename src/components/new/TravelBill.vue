@@ -460,6 +460,9 @@ export default {
      */
     async convert() {
       var imgs = [];
+      this.data.beleg = {
+        files: []
+      };
       const toBase64 = file =>
         new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -469,8 +472,8 @@ export default {
         });
       for (let i = 0; i < this.invoices.length; i++) {
         imgs[i] = await toBase64(this.invoices[i]);
+        this.data.beleg.files.push({pdf: imgs[i]});
       }
-      this.data.beleg = imgs;
       this.update();
     },
     /**

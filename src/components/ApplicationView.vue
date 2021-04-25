@@ -1334,7 +1334,7 @@ export default {
      * Diese Methode sendet den veränderten Antrag an das Backend
      */
     save() {
-      if (this.belege.length >= 1) {
+      if (this.belege.files.length >= 1) {
         this.sendReceipts(this.belege);
       }
       if (this.checkProgression()) {
