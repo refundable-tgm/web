@@ -62,7 +62,6 @@
                   <b-form-checkbox value="1">AV</b-form-checkbox>
                   <b-form-checkbox value="2">Administration</b-form-checkbox>
                   <b-form-checkbox value="3">PEK</b-form-checkbox>
-                  <b-form-checkbox value="4">Lehrer</b-form-checkbox>
                 </b-form-checkbox-group>
               </b-form-group>
               <!-- Speichern Button -->
@@ -89,7 +88,7 @@ export default {
   data() {
     return {
       teacher: "",
-      rights: ["4"]
+      rights: []
     };
   },
   methods: {
