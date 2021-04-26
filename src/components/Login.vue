@@ -137,10 +137,10 @@ export default {
                             resp.data.administration,
                             resp.data.av,
                             resp.data.pek,
-                            resp.data.access_token,
-                            resp.data.refresh_token,
+                            response.data.access_token,
+                            response.data.refresh_token,
                             resp.data.short,
-                            resp.data.long
+                            resp.data.longname
                           );
                           switch (this.forward.name) {
                             case "ApplicationSearch":
