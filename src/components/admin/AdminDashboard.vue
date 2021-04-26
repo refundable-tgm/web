@@ -375,11 +375,8 @@ export default {
               axios
                 .post(
                   this.url + "/login/refresh",
-                  {},
                   {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
+                    refresh_token: this.refresh_token
                   }
                 )
                 .then(resp => {
