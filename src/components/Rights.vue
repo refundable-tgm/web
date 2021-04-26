@@ -52,18 +52,18 @@
                 label-for="tp"
                 :id="index + 'transport'"
               >
-                <b-form-radio-group
+                <b-form-checkbox-group
                   id="rights"
                   v-model="rights"
                   :name="index + 'tp'"
                   stacked
                 >
-                  <b-form-radio value="0">Admin</b-form-radio>
-                  <b-form-radio value="1">AV</b-form-radio>
-                  <b-form-radio value="2">Administration</b-form-radio>
-                  <b-form-radio value="3">PEK</b-form-radio>
-                  <b-form-radio value="4">Lehrer</b-form-radio>
-                </b-form-radio-group>
+                  <b-form-checkbox value="0">Admin</b-form-checkbox>
+                  <b-form-checkbox value="1">AV</b-form-checkbox>
+                  <b-form-checkbox value="2">Administration</b-form-checkbox>
+                  <b-form-checkbox value="3">PEK</b-form-checkbox>
+                  <b-form-checkbox value="4">Lehrer</b-form-checkbox>
+                </b-form-checkbox-group>
               </b-form-group>
               <!-- Speichern Button -->
               <b-button
@@ -89,7 +89,7 @@ export default {
   data() {
     return {
       teacher: "",
-      rights: 4
+      rights: ["4"]
     };
   },
   methods: {
@@ -105,160 +105,123 @@ export default {
      * Diese Methode sendet die Rechte für das angegebene Konto an das Backend
      */
     save() {
-      var rechte;
-      switch (Number(this.rights)) {
-        case 0:
-          rechte = {
-            super_user: true,
-            administration: false,
-            av: false,
-            pek: false
-          };
-          break;
-        case 1:
-          rechte = {
-            super_user: false,
-            administration: false,
-            av: true,
-            pek: false
-          };
-          break;
-        case 2:
-          rechte = {
-            super_user: false,
-            administration: true,
-            av: false,
-            pek: false
-          };
-          break;
-        case 3:
-          rechte = {
-            super_user: false,
-            administration: false,
-            av: false,
-            pek: true
-          };
-          break;
-        case 4:
-          rechte = {
-            super_user: false,
-            administration: false,
-            av: false,
-            pek: false
-          };
-          break;
-        default:
-          rechte = {
-            super_user: false,
-            administration: false,
-            av: false,
-            pek: false
-          };
-          break;
-      }
-      if (this.checkClick()) {
-        axios
-          .get(this.url + "/getTeacherByShort?name=" + this.teacher, {
-            headers: {
-              Authorization: "Basic " + this.token
-            }
-          })
-          .then(response => {
-            switch (response.status) {
-              case 200:
-                axios
-                  .post(
-                    this.url +
-                      "/setTeacherPermissions?uuid=" +
-                      response.data.uuid,
-                    rechte,
-                    {
-                      headers: {
-                        Authorization: "Basic " + this.token
+      if (this.teacher === "") {
+        this.noTeacher();
+      } else {
+        var rechte = {
+          super_user: false,
+          av: false,
+          administration: false,
+          pek: false
+        };
+        if (this.rights.includes("0")) rechte.super_user = true;
+        if (this.rights.includes("1")) rechte.av = true;
+        if (this.rights.includes("2")) rechte.administration = true;
+        if (this.rights.includes("3")) rechte.pek = true;
+        if (this.checkClick()) {
+          axios
+            .get(this.url + "/getTeacherByShort?name=" + this.teacher, {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            })
+            .then(response => {
+              switch (response.status) {
+                case 200:
+                  axios
+                    .post(
+                      this.url +
+                        "/setTeacherPermissions?uuid=" +
+                        response.data.uuid,
+                      rechte,
+                      {
+                        headers: {
+                          Authorization: "Basic " + this.token
+                        }
                       }
-                    }
-                  )
-                  .then(res => {
-                    switch (res.status) {
-                      case 200:
-                        this.saveComplete();
-                        this.reset();
-                        break;
-                      default:
-                        this.saveFailed();
-                        break;
-                    }
-                  });
-                break;
-              case 401:
-                axios
-                  .post(this.url + "login/refresh", {
-                    refresh_token: this.refresh_token
-                  })
-                  .then(resp => {
-                    switch (resp.status) {
-                      case 201:
-                        this.$emit(
-                          "updateToken",
-                          resp.data.access_token,
-                          resp.data.refresh_token
-                        );
-                        axios
-                          .get(
-                            this.url +
-                              "/getTeacherByShort?name=" +
-                              this.teacher,
-                            {
-                              headers: {
-                                Authorization: "Basic " + this.token
+                    )
+                    .then(res => {
+                      switch (res.status) {
+                        case 200:
+                          this.saveComplete();
+                          this.reset();
+                          break;
+                        default:
+                          this.saveFailed();
+                          break;
+                      }
+                    });
+                  break;
+                case 401:
+                  axios
+                    .post(this.url + "login/refresh", {
+                      refresh_token: this.refresh_token
+                    })
+                    .then(resp => {
+                      switch (resp.status) {
+                        case 201:
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(
+                              this.url +
+                                "/getTeacherByShort?name=" +
+                                this.teacher,
+                              {
+                                headers: {
+                                  Authorization: "Basic " + this.token
+                                }
                               }
-                            }
-                          )
-                          .then(re => {
-                            switch (re.status) {
-                              case 200:
-                                axios
-                                  .post(
-                                    this.url +
-                                      "/setTeacherPermissions?uuid=" +
-                                      re.data.uuid,
-                                    rechte,
-                                    {
-                                      headers: {
-                                        Authorization: "Basic " + this.token
+                            )
+                            .then(re => {
+                              switch (re.status) {
+                                case 200:
+                                  axios
+                                    .post(
+                                      this.url +
+                                        "/setTeacherPermissions?uuid=" +
+                                        re.data.uuid,
+                                      rechte,
+                                      {
+                                        headers: {
+                                          Authorization: "Basic " + this.token
+                                        }
                                       }
-                                    }
-                                  )
-                                  .then(r => {
-                                    switch (r.status) {
-                                      case 200:
-                                        this.saveComplete();
-                                        this.reset();
-                                        break;
-                                      default:
-                                        this.saveFailed();
-                                        break;
-                                    }
-                                  });
-                                break;
-                              default:
-                                this.saveFailed();
-                                break;
-                            }
-                          });
-                        break;
-                      default:
-                        this.$emit("logout");
-                        break;
-                    }
-                  });
+                                    )
+                                    .then(r => {
+                                      switch (r.status) {
+                                        case 200:
+                                          this.saveComplete();
+                                          this.reset();
+                                          break;
+                                        default:
+                                          this.saveFailed();
+                                          break;
+                                      }
+                                    });
+                                  break;
+                                default:
+                                  this.saveFailed();
+                                  break;
+                              }
+                            });
+                          break;
+                        default:
+                          this.$emit("logout");
+                          break;
+                      }
+                    });
 
-                break;
-              default:
-                this.saveFailed();
-                break;
-            }
-          });
+                  break;
+                default:
+                  this.saveFailed();
+                  break;
+              }
+            });
+        }
       }
     },
     /**
@@ -266,6 +229,17 @@ export default {
      */
     saveFailed() {
       this.$bvToast.toast("Speichern ist fehlgeschlagen!", {
+        title: "Ein Fehler ist aufgetreten!",
+        autoHideDelay: 2500,
+        appendToast: false,
+        variant: "danger"
+      });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass kein Lehrer eingegeben worden ist
+     */
+    noTeacher() {
+      this.$bvToast.toast("Kein Konto angegeben!", {
         title: "Ein Fehler ist aufgetreten!",
         autoHideDelay: 2500,
         appendToast: false,
