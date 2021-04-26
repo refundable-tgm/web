@@ -569,15 +569,11 @@ export default {
           console.log(data);
           this.changeComponent("Index");
           axios
-            .post(
-              this.url + "/createApplication",
-              {
-                headers: {
-                  Authorization: "Basic " + this.token
-                }
-              },
-              data
-            )
+            .post(this.url + "/createApplication", data, {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            })
             .then(response => {
               switch (response.status) {
                 case 200:
@@ -586,11 +582,15 @@ export default {
                   break;
                 case 401:
                   axios
-                    .post(this.url + "/login/refresh", {
-                      headers: {
-                        Authorization: "Basic " + this.refresh_token
+                    .post(
+                      this.url + "/login/refresh",
+                      {},
+                      {
+                        headers: {
+                          Authorization: "Basic " + this.refresh_token
+                        }
                       }
-                    })
+                    )
                     .then(resp => {
                       switch (resp.status) {
                         case 201:
@@ -600,15 +600,11 @@ export default {
                             resp.data.refresh_token
                           );
                           axios
-                            .post(
-                              this.url + "/createApplication",
-                              {
-                                headers: {
-                                  Authorization: "Basic " + this.token
-                                }
-                              },
-                              data
-                            )
+                            .post(this.url + "/createApplication", data, {
+                              headers: {
+                                Authorization: "Basic " + this.token
+                              }
+                            })
                             .then(res => {
                               switch (res.status) {
                                 case 200:

@@ -167,16 +167,16 @@ export default {
             switch (response.status) {
               case 200:
                 axios
-                  .get(
+                  .post(
                     this.url +
                       "/setTeacherPermissions?uuid=" +
                       response.data.uuid,
+                    rechte,
                     {
                       headers: {
                         Authorization: "Basic " + this.token
                       }
-                    },
-                    rechte
+                    }
                   )
                   .then(res => {
                     switch (res.status) {
@@ -218,16 +218,16 @@ export default {
                             switch (re.status) {
                               case 200:
                                 axios
-                                  .get(
+                                  .post(
                                     this.url +
                                       "/setTeacherPermissions?uuid=" +
                                       re.data.uuid,
+                                    rechte,
                                     {
                                       headers: {
                                         Authorization: "Basic " + this.token
                                       }
-                                    },
-                                    rechte
+                                    }
                                   )
                                   .then(r => {
                                     switch (r.status) {

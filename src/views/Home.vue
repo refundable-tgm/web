@@ -402,11 +402,15 @@ export default {
      * Beendet die derzeitige Session
      */
     terminateSession() {
-      axios.post(this.url + "/logout", {}, {
-        headers: {
-          Authorization: "Basic " + this.token
+      axios.post(
+        this.url + "/logout",
+        {},
+        {
+          headers: {
+            Authorization: "Basic " + this.token
+          }
         }
-      });
+      );
     },
     /**
      * Diese Methode aktualisiert die Tokens
@@ -485,11 +489,15 @@ export default {
               return response.data;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp.status) {
                     case 201:
@@ -839,11 +847,15 @@ export default {
               break;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp.status) {
                     case 201:

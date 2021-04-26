@@ -370,11 +370,15 @@ export default {
               break;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp.status) {
                     case 201:

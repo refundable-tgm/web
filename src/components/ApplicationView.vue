@@ -809,11 +809,15 @@ export default {
               break;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp) {
                     case 201:
@@ -1278,11 +1282,15 @@ export default {
               break;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp.status) {
                     case 201:
@@ -1345,15 +1353,11 @@ export default {
       }
       this.app.last_changed = this.createNewDate();
       axios
-        .put(
-          this.url + "/updateApplication?uuid=" + this.app.uuid,
-          {
-            headers: {
-              Authorization: "Basic " + this.token
-            }
-          },
-          this.app
-        )
+        .put(this.url + "/updateApplication?uuid=" + this.app.uuid, this.app, {
+          headers: {
+            Authorization: "Basic " + this.token
+          }
+        })
         .then(response => {
           switch (response.status) {
             case 200:
@@ -1361,11 +1365,15 @@ export default {
               break;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp.status) {
                     case 201:
@@ -1377,12 +1385,12 @@ export default {
                       axios
                         .put(
                           this.url + "/updateApplication?uuid=" + this.app.uuid,
+                          this.app,
                           {
                             headers: {
                               Authorization: "Basic " + this.token
                             }
-                          },
-                          this.app
+                          }
                         )
                         .then(res => {
                           switch (res.status) {
@@ -1874,11 +1882,15 @@ export default {
               break;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp.status) {
                     case 201:
@@ -1954,11 +1966,15 @@ export default {
                   break;
                 case 401:
                   axios
-                    .post(this.url + "/login/refresh", {
-                      headers: {
-                        Authorization: "Basic " + this.refresh_token
+                    .post(
+                      this.url + "/login/refresh",
+                      {},
+                      {
+                        headers: {
+                          Authorization: "Basic " + this.refresh_token
+                        }
                       }
-                    })
+                    )
                     .then(resp => {
                       switch (resp.status) {
                         case 201:
@@ -2030,11 +2046,15 @@ export default {
                   break;
                 case 401:
                   axios
-                    .post(this.url + "/login/refresh", {
-                      headers: {
-                        Authorization: "Basic " + this.refresh_token
+                    .post(
+                      this.url + "/login/refresh",
+                      {},
+                      {
+                        headers: {
+                          Authorization: "Basic " + this.refresh_token
+                        }
                       }
-                    })
+                    )
                     .then(resp => {
                       switch (resp.status) {
                         case 201:
@@ -2113,11 +2133,15 @@ export default {
               break;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp.status) {
                     case 201:
@@ -2188,11 +2212,15 @@ export default {
               break;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp.status) {
                     case 201:
@@ -2280,11 +2308,15 @@ export default {
                   break;
                 case 401:
                   axios
-                    .post(this.url + "/login/refresh", {
-                      headers: {
-                        Authorization: "Basic " + this.refresh_token
+                    .post(
+                      this.url + "/login/refresh",
+                      {},
+                      {
+                        headers: {
+                          Authorization: "Basic " + this.refresh_token
+                        }
                       }
-                    })
+                    )
                     .then(resp => {
                       switch (resp.status) {
                         case 201:
@@ -2356,11 +2388,15 @@ export default {
                   break;
                 case 401:
                   axios
-                    .post(this.url + "/login/refresh", {
-                      headers: {
-                        Authorization: "Basic " + this.refresh_token
+                    .post(
+                      this.url + "/login/refresh",
+                      {},
+                      {
+                        headers: {
+                          Authorization: "Basic " + this.refresh_token
+                        }
                       }
-                    })
+                    )
                     .then(resp => {
                       switch (resp.status) {
                         case 201:
@@ -2561,11 +2597,15 @@ export default {
               break;
             case 401:
               axios
-                .post(this.url + "/login/refresh", {
-                  headers: {
-                    Authorization: "Basic " + this.refresh_token
+                .post(
+                  this.url + "/login/refresh",
+                  {},
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.refresh_token
+                    }
                   }
-                })
+                )
                 .then(resp => {
                   switch (resp.status) {
                     case 201:
