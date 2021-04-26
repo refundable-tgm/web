@@ -16,7 +16,7 @@
               <center>
                 <h1 id="lheading">Refundable</h1>
                 <h2 id="lsheading">
-                  Die automatisierte Reisekosetenabrechnung
+                  Die automatisierte Reisekostenabrechnung
                 </h2>
               </center>
             </b-col>
