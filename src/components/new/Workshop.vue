@@ -504,6 +504,7 @@ export default {
             }
           ];
           var data = {
+            uuid: this.returnString(""),
             name: this.returnString(this.title),
             kind: 1,
             miscellaneous_reason: this.returnString(""),

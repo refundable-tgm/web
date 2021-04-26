@@ -728,6 +728,7 @@ export default {
             });
           }
           var data = {
+            uuid: this.returnString(""),
             name: this.returnString(titel),
             kind: 6,
             miscellaneous_reason: this.returnString(this.son),
