@@ -361,7 +361,7 @@ export default {
     login(uuid, admin, administration, av, pek, token, refresh, short, long) {
       this.user.uuid = uuid;
       this.user.short = short;
-      this.user.long = long;
+      this.user.longname = long;
       this.user.admin = admin;
       this.user.administration = administration;
       this.user.av = av;
