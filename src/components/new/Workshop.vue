@@ -559,8 +559,6 @@ export default {
               }
             ]
           };
-          console.log(data);
-          this.changeComponent("Index");
           axios
             .post(this.url + "/createApplication", data, {
               headers: {
@@ -568,22 +566,17 @@ export default {
               }
             })
             .then(response => {
-              switch (response.status) {
-                case 200:
-                  this.createConfirm();
-                  this.changeComponent("Index");
-                  break;
+              response.toString();
+              this.createConfirm();
+              this.changeComponent("Index");
+            })
+            .catch(error => {
+              switch (error.response.status) {
                 case 401:
                   axios
-                    .post(
-                      this.url + "/login/refresh",
-                      {},
-                      {
-                        headers: {
-                          Authorization: "Basic " + this.refresh_token
-                        }
-                      }
-                    )
+                    .post(this.url + "/login/refresh", {
+                      refresh_token: this.refresh_token
+                    })
                     .then(resp => {
                       switch (resp.status) {
                         case 201:
@@ -595,25 +588,24 @@ export default {
                           axios
                             .post(this.url + "/createApplication", data, {
                               headers: {
-                                Authorization: "Basic " + this.token
+                                Authorization: "Basic " + resp.data.access_token
                               }
                             })
                             .then(res => {
-                              switch (res.status) {
-                                case 200:
-                                  this.createConfirm();
-                                  this.changeComponent("Index");
-                                  break;
-                                default:
-                                  this.failedConfirm();
-                                  break;
-                              }
+                              res.toString();
+                              this.createConfirm();
+                              this.changeComponent("Index");
+                            })
+                            .catch(e => {
+                              e.toString();
+                              this.failedConfirm();
                             });
                           break;
-                        default:
-                          this.$emit("logout");
-                          break;
                       }
+                    })
+                    .catch(err => {
+                      err.toString();
+                      this.$emit("logout");
                     });
                   break;
                 default:

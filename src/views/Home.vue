@@ -484,48 +484,37 @@ export default {
           }
         })
         .then(response => {
-          switch (response.status) {
-            case 200:
-              return response.data;
+          return response.data;
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.token = resp.data.access_token;
-                      this.refresh_token = resp.data.refresh_token;
-                      this.setToken(resp.data.access_token);
-                      this.setRefresh(resp.data.refresh_token);
-                      axios
-                        .get(
-                          this.url + "/getTeacherByShort?name=" + shortName,
-                          {
-                            headers: {
-                              Authorization: "Basic " + this.token
-                            }
-                          }
-                        )
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              return res.data;
-                            default:
-                              return false;
-                          }
-                        });
-                      break;
-                    default:
-                      this.logout();
-                  }
+                  this.token = resp.data.access_token;
+                  this.refresh_token = resp.data.refresh_token;
+                  this.setToken(resp.data.access_token);
+                  this.setRefresh(resp.data.refresh_token);
+                  axios
+                    .get(this.url + "/getTeacherByShort?name=" + shortName, {
+                      headers: {
+                        Authorization: "Basic " + resp.data.access_token
+                      }
+                    })
+                    .then(res => {
+                      return res.data;
+                    })
+                    .catch(e => {
+                      e.toString();
+                      return false;
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.logout();
                 });
               break;
             default:
@@ -833,66 +822,54 @@ export default {
           }
         })
         .then(response => {
-          switch (response.status) {
-            case 200:
-              this.user.av = response.data.av;
-              this.user.admin = response.data.super_user;
-              this.user.administration = response.data.administration;
-              this.user.pek = response.data.pek;
-              this.user.uuid = response.data.uuid;
-              this.user.short = response.data.short;
-              this.user.longname = response.data.longname;
-              this.setUser(response.data.uuid);
-              this.manageLoading(true);
-              break;
+          this.user.av = response.data.av;
+          this.user.admin = response.data.super_user;
+          this.user.administration = response.data.administration;
+          this.user.pek = response.data.pek;
+          this.user.uuid = response.data.uuid;
+          this.user.short = response.data.short;
+          this.user.longname = response.data.longname;
+          this.setUser(response.data.uuid);
+          this.manageLoading(true);
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.token = resp.data.access_token;
-                      this.refresh_token = resp.data.refresh_token;
-                      this.setToken(resp.data.access_token);
-                      this.setRefresh(resp.data.refresh_token);
-                      axios
-                        .get(this.url + "/getTeacher?uuid=" + this.getUser(), {
-                          headers: {
-                            Authorization: "Basic " + this.token
-                          }
-                        })
-                        .then(res => {
-                          if (res.status === 200) {
-                            this.user.av = res.data.av;
-                            this.user.admin = res.data.super_user;
-                            this.user.administration = res.data.administration;
-                            this.user.pek = res.data.pek;
-                            this.user.uuid = res.data.uuid;
-                            this.user.short = res.data.short;
-                            this.user.longname = res.data.longname;
-                            this.setUser(res.data.uuid);
-                            this.manageLoading(true);
-                          } else {
-                            this.manageLoading(false);
-                          }
-                        });
+                  this.token = resp.data.access_token;
+                  this.refresh_token = resp.data.refresh_token;
+                  this.setToken(resp.data.access_token);
+                  this.setRefresh(resp.data.refresh_token);
+                  axios
+                    .get(this.url + "/getTeacher?uuid=" + this.getUser(), {
+                      headers: {
+                        Authorization: "Basic " + resp.data.access_token
+                      }
+                    })
+                    .then(res => {
+                      this.user.av = res.data.av;
+                      this.user.admin = res.data.super_user;
+                      this.user.administration = res.data.administration;
+                      this.user.pek = res.data.pek;
+                      this.user.uuid = res.data.uuid;
+                      this.user.short = res.data.short;
+                      this.user.longname = res.data.longname;
+                      this.setUser(res.data.uuid);
                       this.manageLoading(true);
-                      break;
-                    case 401:
+                    })
+                    .catch(err => {
+                      err.toString();
                       this.manageLoading(false);
-                      break;
-                    default:
-                      this.manageLoading(false);
-                      break;
-                  }
+                    });
+                  this.manageLoading(true);
+                })
+                .catch(e => {
+                  e.toString();
+                  this.manageLoading(false);
                 });
               break;
             default:

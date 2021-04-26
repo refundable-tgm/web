@@ -126,49 +126,38 @@ export default {
           }
         })
         .then(response => {
-          switch (response.status) {
-            case 200:
-              this.uuid = response.data.uuid;
-              return true;
+          this.uuid = response.data.uuid;
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(this.url + "/getApplication?uuid=" + this.appid, {
-                          headers: {
-                            Authorization: "Basic " + this.token
-                          }
-                        })
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              this.uuid = response.data.uuid;
-                              return true;
-                            default:
-                              return false;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .get(this.url + "/getApplication?uuid=" + this.appid, {
+                      headers: {
+                        Authorization: "Basic " + resp.data.access_token
+                      }
+                    })
+                    .then(res => {
+                      this.uuid = res.data.uuid;
+                    })
+                    .catch(e => {
+                      e.toString();
+                      return false;
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.$emit("logout");
                 });
               break;
             default:

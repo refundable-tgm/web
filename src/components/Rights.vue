@@ -125,95 +125,82 @@ export default {
               }
             })
             .then(response => {
-              switch (response.status) {
-                case 200:
-                  axios
-                    .post(
-                      this.url +
-                        "/setTeacherPermissions?uuid=" +
-                        response.data.uuid,
-                      rechte,
-                      {
-                        headers: {
-                          Authorization: "Basic " + this.token
-                        }
-                      }
-                    )
-                    .then(res => {
-                      switch (res.status) {
-                        case 200:
-                          this.saveComplete();
-                          this.reset();
-                          break;
-                        default:
-                          this.saveFailed();
-                          break;
-                      }
-                    });
-                  break;
+              axios
+                .post(
+                  this.url +
+                    "/setTeacherPermissions?uuid=" +
+                    response.data.uuid,
+                  rechte,
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.token
+                    }
+                  }
+                )
+                .then(res => {
+                  res.toString();
+                  this.saveComplete();
+                  this.reset();
+                })
+                .catch(erro => {
+                  erro.toString();
+                  this.saveFailed();
+                });
+            })
+            .catch(error => {
+              switch (error.response.status) {
                 case 401:
                   axios
                     .post(this.url + "login/refresh", {
                       refresh_token: this.refresh_token
                     })
                     .then(resp => {
-                      switch (resp.status) {
-                        case 201:
-                          this.$emit(
-                            "updateToken",
-                            resp.data.access_token,
-                            resp.data.refresh_token
-                          );
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getTeacherByShort?name=" + this.teacher,
+                          {
+                            headers: {
+                              Authorization: "Basic " + resp.data.access_token
+                            }
+                          }
+                        )
+                        .then(re => {
                           axios
-                            .get(
+                            .post(
                               this.url +
-                                "/getTeacherByShort?name=" +
-                                this.teacher,
+                                "/setTeacherPermissions?uuid=" +
+                                re.data.uuid,
+                              rechte,
                               {
                                 headers: {
-                                  Authorization: "Basic " + this.token
+                                  Authorization:
+                                    "Basic " + resp.data.access_token
                                 }
                               }
                             )
-                            .then(re => {
-                              switch (re.status) {
-                                case 200:
-                                  axios
-                                    .post(
-                                      this.url +
-                                        "/setTeacherPermissions?uuid=" +
-                                        re.data.uuid,
-                                      rechte,
-                                      {
-                                        headers: {
-                                          Authorization: "Basic " + this.token
-                                        }
-                                      }
-                                    )
-                                    .then(r => {
-                                      switch (r.status) {
-                                        case 200:
-                                          this.saveComplete();
-                                          this.reset();
-                                          break;
-                                        default:
-                                          this.saveFailed();
-                                          break;
-                                      }
-                                    });
-                                  break;
-                                default:
-                                  this.saveFailed();
-                                  break;
-                              }
+                            .then(r => {
+                              r.toString();
+                              this.saveComplete();
+                              this.reset();
+                            })
+                            .catch(er => {
+                              er.toString();
+                              this.saveFailed();
                             });
-                          break;
-                        default:
-                          this.$emit("logout");
-                          break;
-                      }
+                        })
+                        .catch(e => {
+                          e.toString();
+                        });
+                    })
+                    .catch(err => {
+                      err.toString();
+                      this.$emit("logout");
                     });
-
                   break;
                 default:
                   this.saveFailed();

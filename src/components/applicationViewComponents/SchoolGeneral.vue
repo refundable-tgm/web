@@ -337,48 +337,38 @@ export default {
           }
         })
         .then(response => {
-          switch (response.status) {
-            case 200:
-              return response.data;
+          return response.data;
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(this.url + "/getLongName?name=" + shortName, {
-                          headers: {
-                            Authorization: "Basic " + this.token
-                          }
-                        })
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              return res.data;
-                            default:
-                              this.addFailed();
-                              return false;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .get(this.url + "/getLongName?name=" + shortName, {
+                      headers: {
+                        Authorization: "Basic " + resp.data.access_token
+                      }
+                    })
+                    .then(res => {
+                      return res.data;
+                    })
+                    .catch(e => {
+                      e.toString();
+                      this.addFailed();
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.$emit("logout");
                 });
               break;
             default:
