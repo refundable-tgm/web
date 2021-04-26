@@ -21,7 +21,16 @@
           class="float-right"
           v-on:click="normal"
           style="margin-right:20px"
-          v-if="!(user.pek || user.administration)"
+          v-if="
+            !(
+              (user.pek === true &&
+                user.av === false &&
+                user.admin === false) ||
+              (user.administration === true &&
+                user.av === false &&
+                user.admin === false)
+            )
+          "
         >
           Normale Ansicht
         </b-button>
@@ -312,7 +321,11 @@ export default {
           apps[i].business_trip_applications[0].name +
           " " +
           apps[i].business_trip_applications[0].surname;
-        if (this.user.pek) {
+        if (
+          this.user.pek === true &&
+          this.user.av === false &&
+          this.user.admin === false
+        ) {
           if (apps[i].kind === 0) {
             if (apps[i].progress !== 6) {
               apps.splice(i, 1);
@@ -323,7 +336,11 @@ export default {
             }
           }
         }
-        if (this.user.av || this.user.administration) {
+        if (
+          this.user.administration === true &&
+          this.user.av === false &&
+          this.user.admin === false
+        ) {
           if (apps[i].kind === 0) {
             if (apps[i].progress !== 2) {
               apps.splice(i, 1);

@@ -12,7 +12,16 @@
           variant="outline-primary"
           class="float-right"
           v-on:click="index"
-          v-if="!(user.pek || user.administration)"
+          v-if="
+            !(
+              (user.pek === true &&
+                user.av === false &&
+                user.admin === false) ||
+              (user.administration === true &&
+                user.av === false &&
+                user.admin === false)
+            )
+          "
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
@@ -21,7 +30,12 @@
           variant="outline-primary"
           class="float-right"
           v-on:click="dashboard"
-          v-if="user.pek || user.administration"
+          v-if="
+            (user.pek === true && user.av === false && user.admin === false) ||
+              (user.administration === true &&
+                user.av === false &&
+                user.admin === false)
+          "
         >
           <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
         </b-button>
@@ -1425,9 +1439,27 @@ export default {
       var str2 = str[1].split(":");
       var str3 = Number(str2[0]) + 2;
       if (str3 < 10) {
-        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2].replace("Z", "") + "+02:00";
+        return (
+          str[0] +
+          "T0" +
+          str3 +
+          ":" +
+          str2[1] +
+          ":" +
+          str2[2].replace("Z", "") +
+          "+02:00"
+        );
       } else {
-        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2].replace("Z", "") + "+02:00";
+        return (
+          str[0] +
+          "T" +
+          str3 +
+          ":" +
+          str2[1] +
+          ":" +
+          str2[2].replace("Z", "") +
+          "+02:00"
+        );
       }
     },
     /**

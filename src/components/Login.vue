@@ -155,11 +155,15 @@ export default {
                               );
                               break;
                             default:
-                              if (resp.data.administration || resp.data.pek) {
-                                this.$emit(
-                                  "change-component",
-                                  "AdminDashboard"
-                                );
+                              if (!resp.data.av && !resp.data.super_user) {
+                                if (resp.data.administration || resp.data.pek) {
+                                  this.$emit(
+                                    "change-component",
+                                    "AdminDashboard"
+                                  );
+                                } else {
+                                  this.$emit("change-component", "Index");
+                                }
                               } else {
                                 this.$emit("change-component", "Index");
                               }

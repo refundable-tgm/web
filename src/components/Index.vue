@@ -99,7 +99,7 @@
                 variant="outline-primary"
                 class="shadow-lg"
                 v-on:click="adminclick"
-                v-if="user.admin"
+                v-if="user.admin || user.av || user.pek || user.administration"
                 style="margin-top:0px; margin-bottom:40px; width:100%"
               >
                 Admin Ansicht
@@ -260,7 +260,7 @@
             <!-- Administrator Ansicht Button -->
             <b-button
               v-on:click="adminclick"
-              v-if="user.admin || user.av"
+              v-if="user.admin || user.av || user.pek || user.administration"
               class="shadow-lg"
               variant="outline-info"
               style="margin-right:1rem"
