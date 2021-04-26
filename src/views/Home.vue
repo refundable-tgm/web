@@ -402,7 +402,7 @@ export default {
      * Beendet die derzeitige Session
      */
     terminateSession() {
-      axios.post(this.url + "/logout", {
+      axios.post(this.url + "/logout", {}, {
         headers: {
           Authorization: "Basic " + this.token
         }
