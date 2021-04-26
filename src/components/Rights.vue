@@ -118,16 +118,16 @@ export default {
         case 1:
           rechte = {
             super_user: false,
-            administration: true,
-            av: false,
+            administration: false,
+            av: true,
             pek: false
           };
           break;
         case 2:
           rechte = {
             super_user: false,
-            administration: false,
-            av: true,
+            administration: true,
+            av: false,
             pek: false
           };
           break;
