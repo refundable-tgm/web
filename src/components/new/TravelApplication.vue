@@ -106,8 +106,8 @@
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
-          description="Begründung der obigen Faktoren"
-          label="Begründung"
+          description="Reisezweck und Begründung der Notwendigkeit"
+          label="Reisezweck"
           label-for="beg1"
           :id="index + 'bega1'"
         >
@@ -171,7 +171,7 @@
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
-          description="Begründung der obigen Faktoren"
+          description="Begründung des Antrags"
           label="Begründung"
           label-for="beg"
           :id="index + 'bega'"
