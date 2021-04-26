@@ -842,7 +842,7 @@ export default {
               this.user.uuid = response.data.uuid;
               this.user.short = response.data.short;
               this.user.longname = response.data.longname;
-              this.setUser(response.data.short);
+              this.setUser(response.data.uuid);
               this.manageLoading(true);
               break;
             case 401:
@@ -878,7 +878,7 @@ export default {
                             this.user.uuid = res.data.uuid;
                             this.user.short = res.data.short;
                             this.user.longname = res.data.longname;
-                            this.setUser(res.data.short);
+                            this.setUser(res.data.uuid);
                             this.manageLoading(true);
                           } else {
                             this.manageLoading(false);
