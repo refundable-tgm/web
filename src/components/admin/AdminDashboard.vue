@@ -367,11 +367,11 @@ export default {
           }
         })
         .then(response => {
-          console.log(response.status);
-          switch (response.status) {
-            case 200:
-              this.loadView(response.data);
-              break;
+          this.loadView(response.data);
+          this.failedLoading();
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
                 .post(
@@ -384,34 +384,28 @@ export default {
                   }
                 )
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(this.url + "/getAdminApplications", {
-                          headers: {
-                            Authorization: "Basic " + this.token
-                          }
-                        })
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              this.loadView(res.data);
-                              break;
-                            default:
-                              this.failedLoading();
-                              break;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .get(this.url + "/getAdminApplications", {
+                      headers: {
+                        Authorization: "Basic " + this.token
+                      }
+                    })
+                    .then(res => {
+                      this.loadView(res.data);
+                    })
+                    .catch(err => {
+                      err.toString();
+                      this.failedLoading();
+                    });
+                })
+                .catch(e => {
+                  e.toString();
+                  this.$emit("logout");
                 });
               break;
             default:
