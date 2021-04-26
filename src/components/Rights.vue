@@ -106,7 +106,7 @@ export default {
      */
     save() {
       var rechte;
-      switch (this.rights) {
+      switch (Number(this.rights)) {
         case 0:
           rechte = {
             super_user: true,
