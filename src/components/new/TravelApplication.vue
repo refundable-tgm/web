@@ -344,17 +344,16 @@
           label-for="reis"
           :id="index + 'reisa'"
         >
-          <b-form-radio-group
+          <b-form-checkbox-group
             :id="index + 'bk'"
             v-on:change="update"
             v-model="data.business_karte"
             :disabled="readonly"
             :name="index + 'bk'"
           >
-            <b-form-radio value="no">Nein</b-form-radio>
-            <b-form-radio value="too">Hinfahrt</b-form-radio>
-            <b-form-radio value="back">Rückfahrt</b-form-radio>
-          </b-form-radio-group>
+            <b-form-checkbox value="too">Hinfahrt</b-form-checkbox>
+            <b-form-checkbox value="back">Rückfahrt</b-form-checkbox>
+          </b-form-checkbox-group>
         </b-form-group>
       </b-col>
     </b-row>
@@ -389,7 +388,7 @@ export default {
         von: "",
         sonstige_kosten: 0,
         geschaetzte_kosten: 0,
-        business_karte: "no"
+        business_karte: []
       }
     };
   },
@@ -404,14 +403,11 @@ export default {
       this.data.reason = this.app.reasoning;
       this.data.reason1 = this.app.travel_purpose;
       if (this.app.business_card_emitted_outward) {
-        this.data.business_karte = "too";
-      } else {
-        if (this.app.business_card_emitted_return) {
-          this.data.business_karte = "back";
-        } else {
-          this.data.business_karte = "no";
-        }
+        this.data.business_karte.push("too");
       }
+      if (this.app.business_card_emitted_return) {
+          this.data.business_karte.push("back");
+        }
       var bm = [];
       if (this.app.bonus_mile_confirmation_1) {
         bm.push("0");

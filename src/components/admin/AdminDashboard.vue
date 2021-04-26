@@ -368,7 +368,6 @@ export default {
         })
         .then(response => {
           this.loadView(response.data);
-          this.failedLoading();
         })
         .catch(error => {
           switch (error.response.status) {

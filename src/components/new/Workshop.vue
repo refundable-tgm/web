@@ -351,23 +351,15 @@ export default {
       this.teacher.von = data.von;
       this.teacher.sonstige_kosten = data.sonstige_kosten;
       this.teacher.geschaetzte_kosten = data.geschaetzte_kosten;
-      switch (data.business_karte) {
-        case "no":
-          this.teacher.emitted_out = false;
-          this.teacher.emitted_ret = false;
-          break;
-        case "too":
-          this.teacher.emitted_out = true;
-          this.teacher.emitted_ret = false;
-          break;
-        case "back":
-          this.teacher.emitted_out = false;
-          this.teacher.emitted_ret = true;
-          break;
-        default:
-          this.teacher.emitted_out = false;
-          this.teacher.emitted_ret = false;
-          break;
+      if (data.business_karte.includes("too")) {
+        this.teacher.emitted_out = true;
+      } else {
+        this.teacher.emitted_out = false;
+      }
+      if (data.business_karte.includes("back")) {
+        this.teacher.emitted_ret = true;
+      } else {
+        this.teacher.emitted_ret = false;
       }
     },
     /**

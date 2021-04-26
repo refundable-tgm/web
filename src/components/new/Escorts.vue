@@ -147,23 +147,15 @@ export default {
       this.escorts.output[index].von = data.von;
       this.escorts.output[index].sonstige_kosten = data.sonstige_kosten;
       this.escorts.output[index].geschaetzte_kosten = data.geschaetzte_kosten;
-      switch (data.business_karte) {
-        case "no":
-          this.escorts.output[index].emitted_out = false;
-          this.escorts.output[index].emitted_ret = false;
-          break;
-        case "too":
-          this.escorts.output[index].emitted_out = true;
-          this.escorts.output[index].emitted_ret = false;
-          break;
-        case "back":
-          this.escorts.output[index].emitted_out = false;
-          this.escorts.output[index].emitted_ret = true;
-          break;
-        default:
-          this.escorts.output[index].emitted_out = false;
-          this.escorts.output[index].emitted_ret = false;
-          break;
+      if (data.business_karte.includes("too")) {
+        this.escorts.output[index].emitted_out = true;
+      } else {
+        this.escorts.output[index].emitted_out = false;
+      }
+      if (data.business_karte.includes("back")) {
+        this.escorts.output[index].emitted_ret = true;
+      } else {
+        this.escorts.output[index].emitted_ret = false;
       }
     },
     /**
