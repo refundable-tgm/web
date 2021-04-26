@@ -278,7 +278,7 @@ export default {
      */
     setTimezone(datum) {
       datum.setHours(datum.getHours() + 1);
-      return datum.toISOString() + "+01:00";
+      return datum.toISOString().replace("Z", "") + "+01:00";
     }
   }
 };

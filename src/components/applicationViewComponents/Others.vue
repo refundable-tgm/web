@@ -214,7 +214,7 @@ export default {
      */
     setTimezone(datum) {
       datum.setHours(datum.getHours() + 1);
-      return datum.toISOString() + "+01:00";
+      return datum.toISOString().replace("Z", "") + "+01:00";
     },
     /**
      * Diese Methode wandelt die Zeiteingaben in ein valides Datum um und ruft die updateData-Methode

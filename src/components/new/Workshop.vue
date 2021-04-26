@@ -648,9 +648,27 @@ export default {
       var str2 = str[1].split(":");
       var str3 = Number(str2[0]) + 1;
       if (str3 < 10) {
-        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2] + "+01:00";
+        return (
+          str[0] +
+          "T0" +
+          str3 +
+          ":" +
+          str2[1] +
+          ":" +
+          str2[2].replace("Z", "") +
+          "+01:00"
+        );
       } else {
-        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2] + "+01:00";
+        return (
+          str[0] +
+          "T" +
+          str3 +
+          ":" +
+          str2[1] +
+          ":" +
+          str2[2].replace("Z", "") +
+          "+01:00"
+        );
       }
     },
     /**

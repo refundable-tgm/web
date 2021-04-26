@@ -1425,9 +1425,9 @@ export default {
       var str2 = str[1].split(":");
       var str3 = Number(str2[0]) + 2;
       if (str3 < 10) {
-        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2].replace("Z", "") + "+02:00";
       } else {
-        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2] + "Z+02:00";
+        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2].replace("Z", "") + "+02:00";
       }
     },
     /**
