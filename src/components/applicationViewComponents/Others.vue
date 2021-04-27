@@ -119,7 +119,7 @@
                 description="Geben Sie den Grund an."
                 label="Sonstiger Grund"
                 label-for="son"
-                v-if="data.other_reason_details.kind === 8"
+                v-if="data.other_reason_details.kind === 10"
               >
                 <b-form-input
                   id="son"
@@ -139,7 +139,7 @@
                 description="Geben Sie den Titel des Dienstauftrages ein."
                 label="Titel"
                 label-for="tit"
-                v-if="data.other_reason_details.kind === 2"
+                v-if="data.other_reason_details.kind === 8"
               >
                 <b-form-input
                   id="tit"
@@ -158,7 +158,7 @@
                 description="Geben Sie die GZ des Dienstauftrages ein."
                 label="GZ"
                 label-for="gzn"
-                v-if="data.other_reason_details.kind === 2"
+                v-if="data.other_reason_details.kind === 8"
               >
                 <b-form-input
                   id="gzn"

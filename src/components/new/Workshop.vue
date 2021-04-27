@@ -478,8 +478,12 @@ export default {
               other_participants: [],
               bonus_mile_confirmation_1: bonus1,
               bonus_mile_confirmation_2: bonus2,
-              travel_costs_paid_by_someone: this.returnBoolean(this.teacher.reisekosten),
-              staying_costs_paid_by_someone: this.returnBoolean(this.teacher.aufenthaltskosten),
+              travel_costs_paid_by_someone: this.returnBoolean(
+                this.teacher.reisekosten
+              ),
+              staying_costs_paid_by_someone: this.returnBoolean(
+                this.teacher.aufenthaltskosten
+              ),
               paid_by_whom: this.returnString(this.teacher.von),
               other_costs: this.returnValue(this.teacher.sonstige_kosten),
               estimated_costs: this.returnValue(
@@ -606,7 +610,7 @@ export default {
      */
     createNewDate(date, time) {
       var tmp = new Date(date + "T" + time);
-      tmp.setHours(tmp.getHours()+1);
+      tmp.setHours(tmp.getHours() + 2);
       var str = tmp.toISOString();
       str = str.split("T");
       var str2 = str[1].split(":");

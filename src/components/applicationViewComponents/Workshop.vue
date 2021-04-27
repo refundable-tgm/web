@@ -176,7 +176,7 @@
                 description="Geben Sie Sonstige Art ein."
                 label="Sonstige Art"
                 label-for="son"
-                v-if="data.training_details.kind === 8"
+                v-if="data.training_details.kind === 5"
               >
                 <b-form-input
                   id="son"
