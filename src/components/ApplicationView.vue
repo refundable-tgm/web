@@ -860,7 +860,7 @@ export default {
      */
     loadView(data) {
       this.app = data;
-      this.checkRunning();
+      if (this.checkRunning()) this.save();
       this.title = this.app.name;
       this.kind = this.app.kind;
       this.currentTeacher = this.user.short;
@@ -1048,11 +1048,11 @@ export default {
             current <= new Date(this.app.end_time)
           ) {
             this.app.progress = 4;
-            this.save();
+            return true;
           }
           if (current >= new Date(this.app.end_time)) {
             this.app.progress = 5;
-            this.save();
+            return true;
           }
         }
       } else {
@@ -1062,7 +1062,7 @@ export default {
             current <= new Date(this.app.end_time)
           ) {
             this.app.progress = 3;
-            this.save();
+            return true;
           }
           if (current >= new Date(this.app.end_time)) {
             if (this.app.kind === 6) {
@@ -1071,15 +1071,16 @@ export default {
                 this.app.other_reason_details.kind !== 9
               ) {
                 this.app.progress = 4;
-                this.save();
+                return true;
               } else {
                 this.app.progress = 6;
-                this.save();
+                return true;
               }
             }
           }
         }
       }
+      return false;
     },
     /**
      * Diese Methode schaut nach, ob in dem Antrag alle Begleitlehrer ihre Reiserechnungen eingetragen haben, damit die Progression weiter geht.
