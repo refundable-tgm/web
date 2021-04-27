@@ -431,6 +431,7 @@ export default {
      */
     formatDate(datum) {
       let date = new Date(datum);
+      date.setHours(date.getHours()-1);
       return (
         date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
       );
