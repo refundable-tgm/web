@@ -1454,6 +1454,7 @@ export default {
             this.app.business_trip_applications[
               i
             ].date_application_approved = this.createNewDate();
+            this.app.progress = 2;
             this.app.last_changed = this.createNewDate();
           }
         }
