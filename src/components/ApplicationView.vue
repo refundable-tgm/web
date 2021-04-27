@@ -2608,10 +2608,14 @@ export default {
       if (this.app.kind === 0) {
         if (this.app.progress === 7) {
           return true;
+        } else {
+          return false;
         }
       } else {
         if (this.app.progress === 6) {
           return true;
+        } else {
+          return false;
         }
       }
     }
