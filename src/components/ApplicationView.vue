@@ -862,8 +862,6 @@ export default {
       this.app = data;
       if (this.checkRunning()) {
         this.save();
-      } else {
-        console.log("Do not save!");
       }
       this.title = this.app.name;
       this.kind = this.app.kind;
