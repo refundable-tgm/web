@@ -1308,6 +1308,7 @@ export default {
      */
     delAn() {
       if (this.app.kind === 0) {
+        console.log("Schule");
         if (this.app.progress === 2) {
           for (let i = 0; i < this.app.business_trip_applications.length; i++) {
             this.app.business_trip_applications[i].referee = this.user.longname;
@@ -1318,7 +1319,9 @@ export default {
           this.app.progress === 4;
         }
       } else {
+        console.log("Anderes");
         if (this.app.progress === 1) {
+          console.log("Auf 0 setzen");
           for (let i = 0; i < this.app.business_trip_applications.length; i++) {
             this.app.business_trip_applications[i].referee = this.user.longname;
           }
