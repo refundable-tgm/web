@@ -550,29 +550,16 @@ export default {
       str = str.split("T");
       var str2 = str[1].split(":");
       var str3 = str2[0];
-      if (str3 < 10) {
-        return (
-          str[0] +
-          "T0" +
-          str3 +
-          ":" +
-          str2[1] +
-          ":" +
-          str2[2].replace("Z", "") +
-          "+01:00"
-        );
-      } else {
-        return (
-          str[0] +
-          "T" +
-          str3 +
-          ":" +
-          str2[1] +
-          ":" +
-          str2[2].replace("Z", "") +
-          "+01:00"
-        );
-      }
+      return (
+        str[0] +
+        "T" +
+        str3 +
+        ":" +
+        str2[1] +
+        ":" +
+        str2[2].replace("Z", "") +
+        "+01:00"
+      );
     },
     /**
      * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
