@@ -1466,9 +1466,7 @@ export default {
           this.app.last_changed = this.createNewDate();
         }
       }
-      if (!this.save()) {
-        this.app.progress = this.app.progress - 1;
-      }
+      this.save();
       //Save the nesessary information from current User reviewing the application in the application
       //Progress should be set to Akzeptiert or Fertig
     },
