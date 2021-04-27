@@ -505,7 +505,7 @@ export default {
         return null;
       } else {
         if (input === "false") return false;
-        if (input === "true") return true;
+        else return true;
       }
     },
     /**
