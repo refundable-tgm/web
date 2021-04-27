@@ -437,8 +437,7 @@ export default {
       return (
         date.getFullYear() +
         "-" +
-        date.getUTCMonth() +
-        1 +
+        (date.getUTCMonth() + 1) +
         "-" +
         date.getUTCDate()
       );
