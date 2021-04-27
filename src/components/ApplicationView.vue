@@ -1045,69 +1045,51 @@ export default {
     checkRunning() {
       let current = new Date();
       current.setHours(current.getHours() + 1);
-      console.log(this.app.kind);
-      console.log(this.app.progress);
-      console.log("1");
       if (this.app.kind === 0) {
-        console.log("2");
         if (this.app.progress === 3) {
-          console.log("3");
           if (
             new Date(this.app.start_time) <= current &&
             current <= new Date(this.app.end_time)
           ) {
-            console.log("4");
             this.app.progress = 4;
             return true;
           }
         }
         if (this.app.progress === 4) {
-          console.log("5");
           if (current >= new Date(this.app.end_time)) {
-            console.log("6");
             this.app.progress = 5;
             return true;
           }
         }
       } else {
-        console.log("7");
         if (this.app.progress === 2) {
-          console.log("8");
           if (
             new Date(this.app.start_time) <= current &&
             current <= new Date(this.app.end_time)
           ) {
-            console.log("9");
             this.app.progress = 3;
             return true;
           }
         }
         if (this.app.progress === 3) {
-          console.log("10");
           if (current >= new Date(this.app.end_time)) {
-            console.log("11");
             if (this.app.kind === 6) {
-              console.log("12");
               if (
                 this.app.other_reason_details.kind !== 7 &&
                 this.app.other_reason_details.kind !== 9
               ) {
-                console.log("13");
                 this.app.progress = 4;
                 return true;
               } else {
-                console.log("14");
                 this.app.progress = 6;
                 return true;
               }
             }
           } else {
-            console.log("15");
             return false;
           }
         }
       }
-      console.log("16");
       return false;
     },
     /**

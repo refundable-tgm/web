@@ -190,6 +190,7 @@ export default {
     loadView(applications) {
       var data = applications;
       for (let i = 0; i < data.length; i++) {
+        data[i] = this.checkRunning(data[i]);
         if (data[i].kind === 0) {
           for (
             let j = 0;
@@ -475,6 +476,59 @@ export default {
      */
     changeComponent(component, back = true, application = null) {
       this.$emit("change-component", component, back, application);
+    },
+    /**
+     * Diese Methode schaut, ob der Antrag läuft oder bereits beendet ist und setzt den Progress auf Läuft oder auf Kosten ausstehend.
+     */
+    checkRunning(app) {
+      let current = new Date();
+      current.setHours(current.getHours() + 1);
+      if (app.kind === 0) {
+        if (app.progress === 3) {
+          if (
+            new Date(app.start_time) <= current &&
+            current <= new Date(app.end_time)
+          ) {
+            app.progress = 4;
+            return app;
+          }
+        }
+        if (app.progress === 4) {
+          if (current >= new Date(app.end_time)) {
+            app.progress = 5;
+            return app;
+          }
+        }
+      } else {
+        if (app.progress === 2) {
+          if (
+            new Date(app.start_time) <= current &&
+            current <= new Date(app.end_time)
+          ) {
+            app.progress = 3;
+            return app;
+          }
+        }
+        if (app.progress === 3) {
+          if (current >= new Date(app.end_time)) {
+            if (app.kind === 6) {
+              if (
+                app.other_reason_details.kind !== 7 &&
+                app.other_reason_details.kind !== 9
+              ) {
+                app.progress = 4;
+                return app;
+              } else {
+                app.progress = 6;
+                return app;
+              }
+            }
+          } else {
+            return app;
+          }
+        }
+      }
+      return app;
     },
     /**
      * Diese Methode sorgt dafür, dass nicht unnötigerweise geclickt wird, falls nur makiert worden ist
