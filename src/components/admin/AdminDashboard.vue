@@ -320,7 +320,7 @@ export default {
         apps[i].from =
           apps[i].business_trip_applications[0].name +
           " " +
-          apps[i].business_trip_applications[0].surname;aufenthaltskosten
+          apps[i].business_trip_applications[0].surname;
         if (
           this.user.pek === true &&
           this.user.av === false &&
@@ -431,7 +431,7 @@ export default {
      */
     formatDate(datum) {
       let date = new Date(datum);
-      date.setHours(date.getHours()-1);
+      date.setHours(date.getHours() - 1);
       return (
         date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
       );
