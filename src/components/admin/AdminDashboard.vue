@@ -320,6 +320,7 @@ export default {
         switch (apps[i].kind) {
           case 0:
             apps[i].from = apps[i].school_event_details.teachers[0].name;
+            break;
           case 1:
             apps[i].from = apps[i].training_details.filer;
             break;
