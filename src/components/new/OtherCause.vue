@@ -686,6 +686,44 @@ export default {
                 new Date().toISOString().split("T")[1]
               )
             });
+          } else {
+            business.push({
+              id: 0,
+              name: this.returnString(this.user.longname.split(" ")[0]),
+              surname: this.returnString(this.user.longname.split(" ")[1]),
+              trip_begin_time: this.createNewDate(
+                this.startDate,
+                this.startTime
+              ),
+              trip_end_time: this.createNewDate(this.endDate, this.endTime),
+              service_begin_time: this.createNewDate(
+                this.startDate,
+                this.startTime
+              ),
+              service_end_time: this.createNewDate(this.endDate, this.endTime),
+              trip_goal: this.returnString(this.start),
+              other_participants: [],
+              date_application_filed: this.createNewDate(
+                new Date().toISOString().split("T")[0],
+                new Date().toISOString().split("T")[1]
+              )
+            });
+            invoice.push({
+              id: 0,
+              name: this.returnString(this.user.longname.split(" ")[0]),
+              surname: this.returnString(this.user.longname.split(" ")[1]),
+              trip_begin_time: this.createNewDate(
+                this.startDate,
+                this.startTime
+              ),
+              trip_end_time: this.createNewDate(this.endDate, this.endTime),
+              starting_point: this.returnString(this.start),
+              end_point: this.returnString(this.end),
+              filing_date: this.createNewDate(
+                new Date().toISOString().split("T")[0],
+                new Date().toISOString().split("T")[1]
+              )
+            });
           }
           var data = {
             uuid: this.returnString(""),
