@@ -251,7 +251,6 @@ export default {
           break;
 
         case "ApplicationView":
-          console.log(application);
           this.loadApplication(application);
           this.change("ApplicationView", back, false);
           break;
@@ -338,7 +337,6 @@ export default {
      * @param application Der neue Antrag, welcher angezeigt werden soll
      */
     loadApplication(application) {
-      console.log(application);
       this.appid = application;
     },
     /**

@@ -408,8 +408,8 @@ export default {
      * @param component Die neue Komponente, welche angezeigt werden soll
      * @param back Boolean-Wert, ob die neue Komponente in die History des Browsers gespeichert werden soll
      */
-    changeComponent(component, back = true) {
-      this.$emit("change-component", component, back);
+    changeComponent(component, back = true, application = null) {
+      this.$emit("change-component", component, back, application);
     },
     /**
      * Diese Methode legt die maximale Anzahl an angezeigten News auf der Startseite fest
