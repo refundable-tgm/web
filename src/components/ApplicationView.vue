@@ -1040,6 +1040,7 @@ export default {
      */
     checkRunning() {
       let current = new Date();
+      current.setHours(current.getHours()+1);
       console.log(current.toISOString());
       console.log(new Date(this.app.start_time).toISOString());
       console.log(new Date(this.app.end_time).toISOString());
