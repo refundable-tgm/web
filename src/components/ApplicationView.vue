@@ -773,7 +773,6 @@ export default {
       this.app.business_trip_applications[
         this.currentTeacherIndex
       ].estimated_costs = this.returnValue(data.geschaetzte_kosten);
-      console.log(this.app);
     },
     /**
      * Diese Methode rechnet das Datum in das verwendete Datumsformat um
@@ -797,7 +796,6 @@ export default {
      * Diese Methode lädt alle notwendigen Daten und formatiert jene so, dass diese richtig angezeigt werden
      */
     loadData() {
-      console.log(this.appid);
       axios
         .get(this.url + "/getApplication?uuid=" + this.appid, {
           headers: {
@@ -1032,7 +1030,6 @@ export default {
             }
           }
           if (allInput) {
-            console.log("Alles da!!!");
             return true;
           }
         }
