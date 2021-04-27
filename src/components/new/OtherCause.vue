@@ -589,17 +589,19 @@ export default {
     einreichen() {
       if (this.checkClick()) {
         if (this.validInputs) {
-          var bonus1 = false;
-          var bonus2 = false;
-          if (this.teacher.bonus_meilen.includes("0")) {
-            bonus1 = true;
-          } else {
-            bonus1 = false;
-          }
-          if (this.teacher.bonus_meilen.includes("1")) {
-            bonus2 = true;
-          } else {
-            bonus2 = false;
+          if (this.selected !== "7" && this.selected !== "9") {
+            var bonus1 = false;
+            var bonus2 = false;
+            if (this.teacher.bonus_meilen.includes("0")) {
+              bonus1 = true;
+            } else {
+              bonus1 = false;
+            }
+            if (this.teacher.bonus_meilen.includes("1")) {
+              bonus2 = true;
+            } else {
+              bonus2 = false;
+            }
           }
           var business = [];
           var invoice = [];
@@ -620,7 +622,7 @@ export default {
             default:
               break;
           }
-          if (this.selected === "7" || this.selected === "9") {
+          if (this.selected !== "7" && this.selected !== "9") {
             business.push({
               id: 0,
               name: this.returnString(this.user.longname.split(" ")[0]),

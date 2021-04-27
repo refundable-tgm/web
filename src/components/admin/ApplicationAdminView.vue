@@ -1466,7 +1466,9 @@ export default {
           this.app.last_changed = this.createNewDate();
         }
       }
-      this.save();
+      if (!this.save()) {
+        this.app.progress = this.app.progress - 1;
+      }
       //Save the nesessary information from current User reviewing the application in the application
       //Progress should be set to Akzeptiert or Fertig
     },
@@ -1480,6 +1482,7 @@ export default {
         .then(response => {
           response.toString();
           this.saveConfirm();
+          return true;
         })
         .catch(error => {
           switch (error.response.status) {
@@ -1507,10 +1510,12 @@ export default {
                     .then(res => {
                       res.toString();
                       this.saveConfirm();
+                      return true;
                     })
                     .catch(e => {
                       e.toString();
                       this.failedConfirm();
+                      return false;
                     });
                 })
                 .catch(err => {
@@ -1520,7 +1525,7 @@ export default {
               break;
             default:
               this.failedConfirm();
-              break;
+              return false;
           }
         });
     },
