@@ -1042,7 +1042,7 @@ export default {
       let current = new Date();
       current.setHours(current.getHours() + 1);
       if (this.app.kind === 0) {
-        if (this.app.progress === 3) {
+        if (this.app.progress === 3 || this.app.progress === 4) {
           if (
             new Date(this.app.start_time) <= current &&
             current <= new Date(this.app.end_time)
@@ -1056,7 +1056,7 @@ export default {
           }
         }
       } else {
-        if (this.app.progress === 2) {
+        if (this.app.progress === 2 || this.app.progress === 3) {
           if (
             new Date(this.app.start_time) <= current &&
             current <= new Date(this.app.end_time)
