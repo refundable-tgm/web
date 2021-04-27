@@ -613,13 +613,11 @@ export default {
                 this.app.business_trip_applications[index].name,
                 this.app.business_trip_applications[index].surname
               )
-            }
-          },
-          {
+            },
             headers: {
               Authorization: "Basic " + this.token
             }
-          }
+          },
         )
         .then(response => {
           this.showPDF(response.data);
