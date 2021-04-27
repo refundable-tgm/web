@@ -1072,10 +1072,15 @@ export default {
             this.selected[i].business_trip_applications[0].surname
           );
           this.getTeacherPDF(this.selected[i].uuid, kurz);
-          this.getBusiness(this.selected[i].uuid, kurz, 0);
-          this.getBusinessExcel(this.selected[i].uuid, kurz, 0);
-          this.getInvoice(this.selected[i].uuid, kurz, 0);
-          this.getInvoiceExcel(this.selected[i].uuid, kurz, 0);
+          if (
+            this.selected[i].other_reason_details.kind !== 7 &&
+            this.selected[i].other_reason_details.kind !== 9
+          ) {
+            this.getBusiness(this.selected[i].uuid, kurz, 0);
+            this.getBusinessExcel(this.selected[i].uuid, kurz, 0);
+            this.getInvoice(this.selected[i].uuid, kurz, 0);
+            this.getInvoiceExcel(this.selected[i].uuid, kurz, 0);
+          }
         }
       }
     },

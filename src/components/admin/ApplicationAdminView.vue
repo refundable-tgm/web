@@ -637,16 +637,14 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getAbsenceFormForTeacher",
-                      {
-                        params: {
-                          uuid: this.app.uuid,
-                          teacher: this.generateShortname(
-                            this.app.business_trip_applications[index].name,
-                            this.app.business_trip_applications[index].surname
-                          )
-                        }
-                      },
+                      this.url +
+                        "/getAbsenceFormForTeacher?uuid=" +
+                        this.app.uuid +
+                        "&teacher=" +
+                        this.generateShortname(
+                          this.app.business_trip_applications[index].name,
+                          this.app.business_trip_applications[index].surname
+                        ),
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
