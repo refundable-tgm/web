@@ -796,6 +796,7 @@ export default {
      * Diese Methode lädt alle notwendigen Daten und formatiert jene so, dass diese richtig angezeigt werden
      */
     loadData() {
+      console.log(this.appid);
       axios
         .get(this.url + "/getApplication?uuid=" + this.appid, {
           headers: {
