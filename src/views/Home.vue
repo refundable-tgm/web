@@ -441,7 +441,8 @@ export default {
       ];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
         var curTeach = this.getTeacher(escortsdata.teacher[i]);
-        if (curTeach.longname === undefined) {
+        console.log(curTeach);
+        if (curTeach === undefined) {
           return false;
         }
         output.push(
