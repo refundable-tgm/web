@@ -618,6 +618,7 @@ export default {
         )
         .then(response => {
           this.showPDF(response.data);
+          return;
         })
         .catch(error => {
           switch (error.response.status) {
