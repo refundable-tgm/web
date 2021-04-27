@@ -320,7 +320,7 @@ export default {
         apps[i].from =
           apps[i].business_trip_applications[0].name +
           " " +
-          apps[i].business_trip_applications[0].surname;
+          apps[i].business_trip_applications[0].surname;aufenthaltskosten
         if (
           this.user.pek === true &&
           this.user.av === false &&
@@ -370,7 +370,6 @@ export default {
           this.loadView(response.data);
         })
         .catch(error => {
-          console.log(error);
           switch (error.response.status) {
             case 401:
               axios
