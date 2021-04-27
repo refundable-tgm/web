@@ -1042,7 +1042,7 @@ export default {
       let current = new Date();
       current.setHours(current.getHours() + 1);
       if (this.app.kind === 0) {
-        if (this.app.progress === 3 || this.app.progress === 4) {
+        if (this.app.progress === 3) {
           if (
             new Date(this.app.start_time) <= current &&
             current <= new Date(this.app.end_time)
@@ -1050,13 +1050,15 @@ export default {
             this.app.progress = 4;
             return true;
           }
+        }
+        if (this.app.progress === 4) {
           if (current >= new Date(this.app.end_time)) {
             this.app.progress = 5;
             return true;
           }
         }
       } else {
-        if (this.app.progress === 2 || this.app.progress === 3) {
+        if (this.app.progress === 2) {
           if (
             new Date(this.app.start_time) <= current &&
             current <= new Date(this.app.end_time)
@@ -1064,6 +1066,8 @@ export default {
             this.app.progress = 3;
             return true;
           }
+        }
+        if (this.app.progress === 3) {
           if (current >= new Date(this.app.end_time)) {
             if (this.app.kind === 6) {
               if (
