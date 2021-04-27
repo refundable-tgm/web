@@ -605,19 +605,19 @@ export default {
     applicationPDF(index) {
       axios
         .get(
-          this.url + "/getAbsenceFormForTeacher",
+          this.url +
+            "/getAbsenceFormForTeacher?uuid=" +
+            this.app.uuid +
+            "&teacher=" +
+            this.generateShortname(
+              this.app.business_trip_applications[index].name,
+              this.app.business_trip_applications[index].surname
+            ),
           {
-            params: {
-              uuid: this.app.uuid,
-              teacher: this.generateShortname(
-                this.app.business_trip_applications[index].name,
-                this.app.business_trip_applications[index].surname
-              )
-            },
             headers: {
               Authorization: "Basic " + this.token
             }
-          },
+          }
         )
         .then(response => {
           this.showPDF(response.data);
