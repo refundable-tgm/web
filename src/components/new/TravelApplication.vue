@@ -406,8 +406,8 @@ export default {
         this.data.business_karte.push("too");
       }
       if (this.app.business_card_emitted_return) {
-          this.data.business_karte.push("back");
-        }
+        this.data.business_karte.push("back");
+      }
       var bm = [];
       if (this.app.bonus_mile_confirmation_1) {
         bm.push("0");

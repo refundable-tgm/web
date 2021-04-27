@@ -774,6 +774,7 @@ export default {
                           }
                         })
                         .then(res => {
+                          res.toString();
                           this.createConfirm();
                           this.changeComponent("Index");
                         })

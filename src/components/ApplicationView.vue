@@ -803,50 +803,38 @@ export default {
           }
         })
         .then(response => {
-          switch (response.status) {
-            case 200:
-              this.loadView(response.data);
-              break;
+          this.loadView(response.data);
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(this.url + "/getApplication?uuid=" + this.appid, {
-                          headers: {
-                            Authorization: "Basic " + this.token
-                          }
-                        })
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              this.loadView(res.data);
-                              break;
-                            default:
-                              this.failedLoad();
-                              break;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .get(this.url + "/getApplication?uuid=" + this.appid, {
+                      headers: {
+                        Authorization: "Basic " + resp.data.access_token
+                      }
+                    })
+                    .then(res => {
+                      this.loadView(res.data);
+                    })
+                    .catch(e => {
+                      e.toString();
+                      this.failedLoad();
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.$emit("logout");
                 });
               break;
             default:
@@ -1250,9 +1238,27 @@ export default {
       var str2 = str[1].split(":");
       var str3 = Number(str2[0]) + 2;
       if (str3 < 10) {
-        return str[0] + "T0" + str3 + ":" + str2[1] + ":" + str2[2].replace("Z", "") + "+01:00";
+        return (
+          str[0] +
+          "T0" +
+          str3 +
+          ":" +
+          str2[1] +
+          ":" +
+          str2[2].replace("Z", "") +
+          "+01:00"
+        );
       } else {
-        return str[0] + "T" + str3 + ":" + str2[1] + ":" + str2[2].replace("Z", "") + "+01:00";
+        return (
+          str[0] +
+          "T" +
+          str3 +
+          ":" +
+          str2[1] +
+          ":" +
+          str2[2].replace("Z", "") +
+          "+01:00"
+        );
       }
     },
     /**
@@ -1261,75 +1267,61 @@ export default {
     sendReceipts(belege) {
       axios
         .post(
-          this.url + "/saveBillingReceipt",
-          {
-            params: {
-              uuid: this.app.uuid,
-              shortname: this.user.short
-            }
-          },
+          this.url +
+            "/saveBillingReceipt?uuid=" +
+            this.app.uuid +
+            "&short=" +
+            this.user.short,
+          belege,
           {
             headers: {
               Authorization: "Basic " + this.token
             }
-          },
-          belege
+          }
         )
         .then(response => {
-          switch (response.status) {
-            case 200:
-              this.belegeConfirm();
-              break;
+          response.toString();
+          this.belegeConfirm();
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .post(
-                          this.url + "/saveBillingReceipt",
-                          {
-                            params: {
-                              uuid: this.app.uuid,
-                              shortname: this.user.short
-                            }
-                          },
-                          {
-                            headers: {
-                              Authorization: "Basic " + this.token
-                            }
-                          },
-                          belege
-                        )
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              this.belegeConfirm();
-                              break;
-                            default:
-                              this.belegeFailed();
-                              break;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .post(
+                      this.url +
+                        "/saveBillingReceipt?uuid=" +
+                        this.app.uuid +
+                        "&short=" +
+                        this.user.short,
+                      belege,
+                      {
+                        headers: {
+                          Authorization: "Basic " + resp.data.access_token
+                        }
+                      }
+                    )
+                    .then(res => {
+                      res.toString();
+                      this.belegeConfirm();
+                    })
+                    .catch(e => {
+                      e.toString();
+                      this.belegeFailed();
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.$emit("logout");
                 });
               break;
             default:
@@ -1359,54 +1351,44 @@ export default {
           }
         })
         .then(response => {
-          switch (response.status) {
-            case 200:
-              this.saveConfirm();
-              break;
+          response.toString();
+          this.saveConfirm();
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .put(
-                          this.url + "/updateApplication?uuid=" + this.app.uuid,
-                          this.app,
-                          {
-                            headers: {
-                              Authorization: "Basic " + this.token
-                            }
-                          }
-                        )
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              this.saveConfirm();
-                              break;
-                            default:
-                              this.failedConfirm();
-                              break;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .put(
+                      this.url + "/updateApplication?uuid=" + this.app.uuid,
+                      this.app,
+                      {
+                        headers: {
+                          Authorization: "Basic " + resp.data.access_token
+                        }
+                      }
+                    )
+                    .then(res => {
+                      res.toString();
+                      this.saveConfirm();
+                    })
+                    .catch(e => {
+                      e.toString();
+                      this.failedConfirm();
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.$emit("logout");
                 });
               break;
             default:
@@ -1876,59 +1858,47 @@ export default {
           }
         )
         .then(response => {
-          switch (response.status) {
-            case 200:
-              this.showPDF(response.data);
-              break;
+          this.showPDF(response.data);
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(
-                          this.url + "/getAbsenceFormForClasses",
-                          {
-                            params: {
-                              uuid: this.app.uuid,
-                              classes: this.auswahl
-                            }
-                          },
-                          {
-                            headers: {
-                              Authorization: "Basic " + this.token
-                            }
-                          }
-                        )
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              this.showPDF(res.data);
-                              break;
-                            default:
-                              this.failedPDF();
-                              break;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .get(
+                      this.url + "/getAbsenceFormForClasses",
+                      {
+                        params: {
+                          uuid: this.app.uuid,
+                          classes: this.auswahl
+                        }
+                      },
+                      {
+                        headers: {
+                          Authorization: "Basic " + resp.data.access_token
+                        }
+                      }
+                    )
+                    .then(res => {
+                      this.showPDF(res.data);
+                    })
+                    .catch(e => {
+                      e.toString();
+                      this.failedPDF();
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.$emit("logout");
                 });
               break;
             default:
@@ -1960,60 +1930,48 @@ export default {
               }
             )
             .then(response => {
-              switch (response.status) {
-                case 200:
-                  this.excelDownload(response.data);
-                  break;
+              this.excelDownload(response.data);
+            })
+            .catch(error => {
+              switch (error.response.status) {
                 case 401:
                   axios
-                    .post(
-                      this.url + "/login/refresh",
-                      {},
-                      {
-                        headers: {
-                          Authorization: "Basic " + this.refresh_token
-                        }
-                      }
-                    )
+                    .post(this.url + "/login/refresh", {
+                      refresh_token: this.refresh_token
+                    })
                     .then(resp => {
-                      switch (resp.status) {
-                        case 201:
-                          this.$emit(
-                            "updateToken",
-                            resp.data.access_token,
-                            resp.data.refresh_token
-                          );
-                          axios
-                            .get(
-                              this.url + "/getBusinessTripApplicationExcel",
-                              {
-                                params: {
-                                  uuid: this.app.uuid,
-                                  short: this.user.short,
-                                  bta_id: this.currentTeacherIndex
-                                }
-                              },
-                              {
-                                headers: {
-                                  Authorization: "Basic " + this.token
-                                }
-                              }
-                            )
-                            .then(res => {
-                              switch (res.status) {
-                                case 200:
-                                  this.excelDownload(res.data);
-                                  break;
-                                default:
-                                  this.failedExcel();
-                                  break;
-                              }
-                            });
-                          break;
-                        default:
-                          this.$emit("logout");
-                          break;
-                      }
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getBusinessTripApplicationExcel",
+                          {
+                            params: {
+                              uuid: this.app.uuid,
+                              short: this.user.short,
+                              bta_id: this.currentTeacherIndex
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + resp.data.access_token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          this.excelDownload(res.data);
+                        })
+                        .catch(e => {
+                          e.toString();
+                          this.failedExcel();
+                        });
+                    })
+                    .catch(err => {
+                      err.toString();
+                      this.$emit("logout");
                     });
                   break;
                 default:
@@ -2040,60 +1998,48 @@ export default {
               }
             )
             .then(response => {
-              switch (response.status) {
-                case 200:
-                  this.excelDownload(response.data);
-                  break;
+              this.excelDownload(response.data);
+            })
+            .catch(error => {
+              switch (error.response.status) {
                 case 401:
                   axios
-                    .post(
-                      this.url + "/login/refresh",
-                      {},
-                      {
-                        headers: {
-                          Authorization: "Basic " + this.refresh_token
-                        }
-                      }
-                    )
+                    .post(this.url + "/login/refresh", {
+                      refresh_token: this.refresh_token
+                    })
                     .then(resp => {
-                      switch (resp.status) {
-                        case 201:
-                          this.$emit(
-                            "updateToken",
-                            resp.data.access_token,
-                            resp.data.refresh_token
-                          );
-                          axios
-                            .get(
-                              this.url + "/getTravelInvoiceExcel",
-                              {
-                                params: {
-                                  uuid: this.app.uuid,
-                                  short: this.user.short,
-                                  ti_id: this.currentTeacherIndex
-                                }
-                              },
-                              {
-                                headers: {
-                                  Authorization: "Basic " + this.token
-                                }
-                              }
-                            )
-                            .then(res => {
-                              switch (res.status) {
-                                case 200:
-                                  this.excelDownload(res.data);
-                                  break;
-                                default:
-                                  this.failedExcel();
-                                  break;
-                              }
-                            });
-                          break;
-                        default:
-                          this.$emit("logout");
-                          break;
-                      }
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getTravelInvoiceExcel",
+                          {
+                            params: {
+                              uuid: this.app.uuid,
+                              short: this.user.short,
+                              ti_id: this.currentTeacherIndex
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + resp.data.access_token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          this.excelDownload(res.data);
+                        })
+                        .catch(e => {
+                          e.toString();
+                          this.failedExcel();
+                        });
+                    })
+                    .catch(err => {
+                      err.toString();
+                      this.$emit("logout");
                     });
                   break;
                 default:
@@ -2127,58 +2073,46 @@ export default {
           }
         )
         .then(response => {
-          switch (response.status) {
-            case 200:
-              this.showPDF(response.data);
-              break;
+          this.showPDF(response.data);
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(
-                          this.url + "/getAbsenceFormForTeacher",
-                          {
-                            params: {
-                              uuid: this.app.uuid
-                            }
-                          },
-                          {
-                            headers: {
-                              Authorization: "Basic " + this.token
-                            }
-                          }
-                        )
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              this.showPDF(res.data);
-                              break;
-                            default:
-                              this.failedPDF();
-                              break;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .get(
+                      this.url + "/getAbsenceFormForTeacher",
+                      {
+                        params: {
+                          uuid: this.app.uuid
+                        }
+                      },
+                      {
+                        headers: {
+                          Authorization: "Basic " + resp.data.access_token
+                        }
+                      }
+                    )
+                    .then(res => {
+                      this.showPDF(res.data);
+                    })
+                    .catch(e => {
+                      e.toString();
+                      this.failedPDF();
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.$emit("logout");
                 });
               break;
             default:
@@ -2206,59 +2140,46 @@ export default {
           }
         )
         .then(response => {
-          switch (response.status) {
-            case 200:
-              this.showPDF(response.data);
-              break;
+          this.showPDF(response.data);
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(
-                          this.url +
-                            "/getCompensationForEducationalSupportForm",
-                          {
-                            params: {
-                              uuid: this.app.uuid
-                            }
-                          },
-                          {
-                            headers: {
-                              Authorization: "Basic " + this.token
-                            }
-                          }
-                        )
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              this.showPDF(res.data);
-                              break;
-                            default:
-                              this.failedPDF();
-                              break;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .get(
+                      this.url + "/getCompensationForEducationalSupportForm",
+                      {
+                        params: {
+                          uuid: this.app.uuid
+                        }
+                      },
+                      {
+                        headers: {
+                          Authorization: "Basic " + resp.data.access_token
+                        }
+                      }
+                    )
+                    .then(res => {
+                      this.showPDF(res.data);
+                    })
+                    .catch(e => {
+                      e.toString();
+                      this.failedPDF();
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.$emit("logout");
                 });
               break;
             default:
@@ -2302,60 +2223,48 @@ export default {
               }
             )
             .then(response => {
-              switch (response.status) {
-                case 200:
-                  this.showPDF(response.data);
-                  break;
+              this.showPDF(response.data);
+            })
+            .catch(error => {
+              switch (error.response.status) {
                 case 401:
                   axios
-                    .post(
-                      this.url + "/login/refresh",
-                      {},
-                      {
-                        headers: {
-                          Authorization: "Basic " + this.refresh_token
-                        }
-                      }
-                    )
+                    .post(this.url + "/login/refresh", {
+                      refresh_token: this.refresh_token
+                    })
                     .then(resp => {
-                      switch (resp.status) {
-                        case 201:
-                          this.$emit(
-                            "updateToken",
-                            resp.data.access_token,
-                            resp.data.refresh_token
-                          );
-                          axios
-                            .get(
-                              this.url + "/getBusinessTripApplicationForm",
-                              {
-                                params: {
-                                  uuid: this.app.uuid,
-                                  short: this.user.short,
-                                  bta_id: this.currentTeacherIndex
-                                }
-                              },
-                              {
-                                headers: {
-                                  Authorization: "Basic " + this.token
-                                }
-                              }
-                            )
-                            .then(res => {
-                              switch (res.status) {
-                                case 200:
-                                  this.showPDF(res.data);
-                                  break;
-                                default:
-                                  this.failedPDF();
-                                  break;
-                              }
-                            });
-                          break;
-                        default:
-                          this.$emit("logout");
-                          break;
-                      }
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .get(
+                          this.url + "/getBusinessTripApplicationForm",
+                          {
+                            params: {
+                              uuid: this.app.uuid,
+                              short: this.user.short,
+                              bta_id: this.currentTeacherIndex
+                            }
+                          },
+                          {
+                            headers: {
+                              Authorization: "Basic " + resp.data.access_token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          this.showPDF(res.data);
+                        })
+                        .catch(e => {
+                          e.toString();
+                          this.failedPDF();
+                        });
+                    })
+                    .catch(err => {
+                      err.toString();
+                      this.$emit("logout");
                     });
                   break;
                 default:
@@ -2382,21 +2291,15 @@ export default {
               }
             )
             .then(response => {
-              switch (response.status) {
-                case 200:
-                  this.showPDF(response.data);
-                  break;
+              this.showPDF(response.data);
+            })
+            .catch(error => {
+              switch (error.response.status) {
                 case 401:
                   axios
-                    .post(
-                      this.url + "/login/refresh",
-                      {},
-                      {
-                        headers: {
-                          Authorization: "Basic " + this.refresh_token
-                        }
-                      }
-                    )
+                    .post(this.url + "/login/refresh", {
+                      refresh_token: this.refresh_token
+                    })
                     .then(resp => {
                       switch (resp.status) {
                         case 201:
@@ -2417,25 +2320,24 @@ export default {
                               },
                               {
                                 headers: {
-                                  Authorization: "Basic " + this.token
+                                  Authorization:
+                                    "Basic " + resp.data.access_token
                                 }
                               }
                             )
                             .then(res => {
-                              switch (res.status) {
-                                case 200:
-                                  this.showPDF(res.data);
-                                  break;
-                                default:
-                                  this.failedPDF();
-                                  break;
-                              }
+                              this.showPDF(res.data);
+                            })
+                            .catch(e => {
+                              e.toString();
+                              this.failedPDF();
                             });
                           break;
-                        default:
-                          this.$emit("logout");
-                          break;
                       }
+                    })
+                    .catch(err => {
+                      err.toString();
+                      this.$emit("logout");
                     });
                   break;
                 default:
@@ -2590,55 +2492,45 @@ export default {
           }
         })
         .then(response => {
-          switch (response.status) {
-            case 200:
-              this.deleteConfirmed();
-              this.changeComponent("Index");
-              break;
+          response.toString();
+          this.deleteConfirmed();
+          this.changeComponent("Index");
+        })
+        .catch(error => {
+          switch (error.response.status) {
             case 401:
               axios
-                .post(
-                  this.url + "/login/refresh",
-                  {},
-                  {
-                    headers: {
-                      Authorization: "Basic " + this.refresh_token
-                    }
-                  }
-                )
+                .post(this.url + "/login/refresh", {
+                  refresh_token: this.refresh_token
+                })
                 .then(resp => {
-                  switch (resp.status) {
-                    case 201:
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .delete(
-                          this.url + "/deleteApplication?uuid=" + this.app.uuid,
-                          {
-                            headers: {
-                              Authorization: "Basic " + this.token
-                            }
-                          }
-                        )
-                        .then(res => {
-                          switch (res.status) {
-                            case 200:
-                              this.deleteConfirmed();
-                              this.changeComponent("Index");
-                              break;
-                            default:
-                              this.deleteFailed();
-                              break;
-                          }
-                        });
-                      break;
-                    default:
-                      this.$emit("logout");
-                      break;
-                  }
+                  this.$emit(
+                    "updateToken",
+                    resp.data.access_token,
+                    resp.data.refresh_token
+                  );
+                  axios
+                    .delete(
+                      this.url + "/deleteApplication?uuid=" + this.app.uuid,
+                      {
+                        headers: {
+                          Authorization: "Basic " + resp.data.access_token
+                        }
+                      }
+                    )
+                    .then(res => {
+                      res.toString();
+                      this.deleteConfirmed();
+                      this.changeComponent("Index");
+                    })
+                    .catch(e => {
+                      e.toString();
+                      this.deleteFailed();
+                    });
+                })
+                .catch(err => {
+                  err.toString();
+                  this.$emit("logout");
                 });
               break;
             default:
