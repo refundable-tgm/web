@@ -2605,6 +2605,8 @@ export default {
      * Gibt zurück, ob der Antrag abgeschlossen ist
      */
     isFinished() {
+      console.log(this.app.kind);
+      console.log(this.app.progress);
       if (this.app.kind === 0) {
         if (this.app.progress === 7) {
           return true;
