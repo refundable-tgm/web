@@ -501,13 +501,11 @@ export default {
     getClassesPDF(uuid, klassen) {
       axios
         .get(
-          this.url + "/getAbsenceFormForClasses",
-          {
-            params: {
-              uuid: uuid,
-              classes: klassen
-            }
-          },
+          this.url +
+            "/getAbsenceFormForClasses?uuid=" +
+            uuid +
+            "&classes=" +
+            klassen,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -532,13 +530,11 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getAbsenceFormForClasses",
-                      {
-                        params: {
-                          uuid: uuid,
-                          classes: klassen
-                        }
-                      },
+                      this.url +
+                        "/getAbsenceFormForClasses?uuid=" +
+                        uuid +
+                        "&classes=" +
+                        klassen,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
@@ -570,13 +566,11 @@ export default {
     getTeacherPDF(uuid, short) {
       axios
         .get(
-          this.url + "/getAbsenceFormForTeacher",
-          {
-            params: {
-              uuid: uuid,
-              teacher: short
-            }
-          },
+          this.url +
+            "/getAbsenceFormForTeacher?uuid=" +
+            uuid +
+            "&teacher=" +
+            short,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -603,13 +597,11 @@ export default {
                       );
                       axios
                         .get(
-                          this.url + "/getAbsenceFormForTeacher",
-                          {
-                            params: {
-                              uuid: uuid,
-                              teacher: short
-                            }
-                          },
+                          this.url +
+                            "/getAbsenceFormForTeacher?uuid=" +
+                            uuid +
+                            "&teacher=" +
+                            short,
                           {
                             headers: {
                               Authorization: "Basic " + resp.data.access_token
@@ -643,12 +635,7 @@ export default {
     getCompensation(uuid) {
       axios
         .get(
-          this.url + "/getCompensationForEducationalSupportForm",
-          {
-            params: {
-              uuid: uuid
-            }
-          },
+          this.url + "/getCompensationForEducationalSupportForm?uuid=" + uuid,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -673,12 +660,9 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getCompensationForEducationalSupportForm",
-                      {
-                        params: {
-                          uuid: uuid
-                        }
-                      },
+                      this.url +
+                        "/getCompensationForEducationalSupportForm?uuid=" +
+                        uuid,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
@@ -710,14 +694,13 @@ export default {
     getBusiness(uuid, short, id) {
       axios
         .get(
-          this.url + "/getBusinessTripApplicationForm",
-          {
-            params: {
-              uuid: uuid,
-              short: short,
-              bta_id: id
-            }
-          },
+          this.url +
+            "/getBusinessTripApplicationForm?uuid=" +
+            uuid +
+            "&short=" +
+            short +
+            "&bta_id=" +
+            id,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -742,14 +725,13 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getBusinessTripApplicationForm",
-                      {
-                        params: {
-                          uuid: uuid,
-                          short: short,
-                          bta_id: id
-                        }
-                      },
+                      this.url +
+                        "/getBusinessTripApplicationForm?uuid=" +
+                        uuid +
+                        "&short=" +
+                        short +
+                        "&bta_id=" +
+                        id,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
@@ -781,14 +763,13 @@ export default {
     getInvoice(uuid, short, id) {
       axios
         .get(
-          this.url + "/getTravelInvoiceForm",
-          {
-            params: {
-              uuid: uuid,
-              short: short,
-              ti_id: id
-            }
-          },
+          this.url +
+            "/getTravelInvoiceForm?uuid=" +
+            uuid +
+            "&short=" +
+            short +
+            "&ti_id=" +
+            id,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -813,14 +794,13 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getTravelInvoiceForm",
-                      {
-                        params: {
-                          uuid: uuid,
-                          short: short,
-                          ti_id: id
-                        }
-                      },
+                      this.url +
+                        "/getTravelInvoiceForm?uuid=" +
+                        uuid +
+                        "&short=" +
+                        short +
+                        "&ti_id=" +
+                        id,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
@@ -852,14 +832,13 @@ export default {
     getBusinessExcel(uuid, short, id) {
       axios
         .get(
-          this.url + "/getBusinessTripApplicationExcel",
-          {
-            params: {
-              uuid: uuid,
-              short: short,
-              bta_id: id
-            }
-          },
+          this.url +
+            "/getBusinessTripApplicationExcel?uuid=" +
+            uuid +
+            "&short=" +
+            short +
+            "&bta_id=" +
+            id,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -884,14 +863,13 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getBusinessTripApplicationExcel",
-                      {
-                        params: {
-                          uuid: uuid,
-                          short: short,
-                          bta_id: id
-                        }
-                      },
+                      this.url +
+                        "/getBusinessTripApplicationExcel?uuid=" +
+                        uuid +
+                        "&short=" +
+                        short +
+                        "&bta_id=" +
+                        id,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
@@ -942,14 +920,13 @@ export default {
     getInvoiceExcel(uuid, short, id) {
       axios
         .get(
-          this.url + "/getTravelInvoiceExcel",
-          {
-            params: {
-              uuid: uuid,
-              short: short,
-              ti_id: id
-            }
-          },
+          this.url +
+            "/getTravelInvoiceExcel?uuid=" +
+            uuid +
+            "&short=" +
+            short +
+            "&ti_id=" +
+            id,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -974,14 +951,13 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getTravelInvoiceExcel",
-                      {
-                        params: {
-                          uuid: uuid,
-                          short: short,
-                          ti_id: id
-                        }
-                      },
+                      this.url +
+                        "/getTravelInvoiceExcel?uuid=" +
+                        uuid +
+                        "&short=" +
+                        short +
+                        "&ti_id=" +
+                        id,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token

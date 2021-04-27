@@ -1877,13 +1877,11 @@ export default {
       this.classForm();
       axios
         .get(
-          this.url + "/getAbsenceFormForClasses",
-          {
-            params: {
-              uuid: this.app.uuid,
-              classes: this.auswahl
-            }
-          },
+          this.url +
+            "/getAbsenceFormForClasses?uuid=" +
+            this.app.uuid +
+            "&classes=" +
+            this.auswahl,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -1908,13 +1906,11 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getAbsenceFormForClasses",
-                      {
-                        params: {
-                          uuid: this.app.uuid,
-                          classes: this.auswahl
-                        }
-                      },
+                      this.url +
+                        "/getAbsenceFormForClasses?uuid=" +
+                        this.app.uuid +
+                        "&classes=" +
+                        this.auswahl,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
@@ -1948,14 +1944,13 @@ export default {
         case "BusinessTripApplication":
           axios
             .get(
-              this.url + "/getBusinessTripApplicationExcel",
-              {
-                params: {
-                  uuid: this.app.uuid,
-                  short: this.user.short,
-                  bta_id: this.currentTeacherIndex
-                }
-              },
+              this.url +
+                "/getBusinessTripApplicationExcel?uuid=" +
+                this.app.uuid +
+                "&short=" +
+                this.user.short +
+                "&bta_id=" +
+                this.currentTeacherIndex,
               {
                 headers: {
                   Authorization: "Basic " + this.token
@@ -1980,14 +1975,13 @@ export default {
                       );
                       axios
                         .get(
-                          this.url + "/getBusinessTripApplicationExcel",
-                          {
-                            params: {
-                              uuid: this.app.uuid,
-                              short: this.user.short,
-                              bta_id: this.currentTeacherIndex
-                            }
-                          },
+                          this.url +
+                            "/getBusinessTripApplicationExcel?uuid=" +
+                            this.app.uuid +
+                            "&short=" +
+                            this.user.short +
+                            "&bta_id=" +
+                            this.currentTeacherIndex,
                           {
                             headers: {
                               Authorization: "Basic " + resp.data.access_token
@@ -2016,14 +2010,13 @@ export default {
         case "TravelInvoice":
           axios
             .get(
-              this.url + "/getTravelInvoiceExcel",
-              {
-                params: {
-                  uuid: this.app.uuid,
-                  short: this.user.short,
-                  ti_id: this.currentTeacherIndex
-                }
-              },
+              this.url +
+                "/getTravelInvoiceExcel?uuid=" +
+                this.app.uuid +
+                "&short=" +
+                this.user.short +
+                "&ti_id=" +
+                this.currentTeacherIndex,
               {
                 headers: {
                   Authorization: "Basic " + this.token
@@ -2048,14 +2041,13 @@ export default {
                       );
                       axios
                         .get(
-                          this.url + "/getTravelInvoiceExcel",
-                          {
-                            params: {
-                              uuid: this.app.uuid,
-                              short: this.user.short,
-                              ti_id: this.currentTeacherIndex
-                            }
-                          },
+                          this.url +
+                            "/getTravelInvoiceExcel?uuid=" +
+                            this.app.uuid +
+                            "&short=" +
+                            this.user.short +
+                            "&ti_id=" +
+                            this.currentTeacherIndex,
                           {
                             headers: {
                               Authorization: "Basic " + resp.data.access_token
@@ -2092,19 +2084,11 @@ export default {
      */
     applicationPDF() {
       axios
-        .get(
-          this.url + "/getAbsenceFormForTeacher",
-          {
-            params: {
-              uuid: this.app.uuid
-            }
-          },
-          {
-            headers: {
-              Authorization: "Basic " + this.token
-            }
+        .get(this.url + "/getAbsenceFormForTeacher?uuid=" + this.app.uuid, {
+          headers: {
+            Authorization: "Basic " + this.token
           }
-        )
+        })
         .then(response => {
           this.showPDF(response.data);
         })
@@ -2123,12 +2107,9 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getAbsenceFormForTeacher",
-                      {
-                        params: {
-                          uuid: this.app.uuid
-                        }
-                      },
+                      this.url +
+                        "/getAbsenceFormForTeacher?uuid=" +
+                        this.app.uuid,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
@@ -2160,12 +2141,9 @@ export default {
     openAbgeltung() {
       axios
         .get(
-          this.url + "/getCompensationForEducationalSupportForm",
-          {
-            params: {
-              uuid: this.app.uuid
-            }
-          },
+          this.url +
+            "/getCompensationForEducationalSupportForm?uuid=" +
+            this.app.uuid,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -2190,12 +2168,9 @@ export default {
                   );
                   axios
                     .get(
-                      this.url + "/getCompensationForEducationalSupportForm",
-                      {
-                        params: {
-                          uuid: this.app.uuid
-                        }
-                      },
+                      this.url +
+                        "/getCompensationForEducationalSupportForm?uuid=" +
+                        this.app.uuid,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
@@ -2241,14 +2216,13 @@ export default {
         case "BusinessTripApplication":
           axios
             .get(
-              this.url + "/getBusinessTripApplicationForm",
-              {
-                params: {
-                  uuid: this.app.uuid,
-                  short: this.user.short,
-                  bta_id: this.currentTeacherIndex
-                }
-              },
+              this.url +
+                "/getBusinessTripApplicationForm?uuid=" +
+                this.app.uuid +
+                "&short=" +
+                this.user.short +
+                "&bta_id=" +
+                this.currentTeacherIndex,
               {
                 headers: {
                   Authorization: "Basic " + this.token
@@ -2273,14 +2247,13 @@ export default {
                       );
                       axios
                         .get(
-                          this.url + "/getBusinessTripApplicationForm",
-                          {
-                            params: {
-                              uuid: this.app.uuid,
-                              short: this.user.short,
-                              bta_id: this.currentTeacherIndex
-                            }
-                          },
+                          this.url +
+                            "/getBusinessTripApplicationForm?uuid=" +
+                            this.app.uuid +
+                            "&short=" +
+                            this.user.short +
+                            "&bta_id=" +
+                            this.currentTeacherIndex,
                           {
                             headers: {
                               Authorization: "Basic " + resp.data.access_token
@@ -2309,14 +2282,13 @@ export default {
         case "TravelInvoice":
           axios
             .get(
-              this.url + "/getTravelInvoiceForm",
-              {
-                params: {
-                  uuid: this.app.uuid,
-                  short: this.user.short,
-                  ti_id: this.currentTeacherIndex
-                }
-              },
+              this.url +
+                "/getTravelInvoiceForm?uuid=" +
+                this.app.uuid +
+                "&short=" +
+                this.user.short +
+                "&ti_id=" +
+                this.currentTeacherIndex,
               {
                 headers: {
                   Authorization: "Basic " + this.token
@@ -2343,14 +2315,13 @@ export default {
                           );
                           axios
                             .get(
-                              this.url + "/getTravelInvoiceForm",
-                              {
-                                params: {
-                                  uuid: this.app.uuid,
-                                  short: this.user.short,
-                                  ti_id: this.currentTeacherIndex
-                                }
-                              },
+                              this.url +
+                                "/getTravelInvoiceForm?uuid=" +
+                                this.app.uuid +
+                                "&short=" +
+                                this.user.short +
+                                "&ti_id=" +
+                                this.currentTeacherIndex,
                               {
                                 headers: {
                                   Authorization:
