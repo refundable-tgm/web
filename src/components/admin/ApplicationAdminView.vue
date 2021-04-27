@@ -517,6 +517,7 @@ export default {
      */
     showPDF(pdf) {
       let pdfWindow = window.open("");
+      console.log(pdfWindow);
       var fileName = "PDF";
       pdfWindow.document.write(
         "<html<head><title>" +
@@ -617,11 +618,9 @@ export default {
           }
         )
         .then(response => {
-          console.log(response);
           this.showPDF(response.data);
         })
         .catch(error => {
-          console.log(error);
           switch (error.response.status) {
             case 401:
               axios
