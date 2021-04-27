@@ -608,16 +608,16 @@ export default {
           var titel;
           switch (this.selected) {
             case "7":
-              titel = "Pflegefreistellung " + this.user.longname;
+              titel = "Pflegefreistellung";
               break;
             case "8":
-              titel = "Dienstauftrag " + this.user.longname;
+              titel = "Dienstauftrag";
               break;
             case "9":
-              titel = "Arzttermin " + this.user.longname;
+              titel = "Arzttermin";
               break;
             case "10":
-              titel = "Sonstiger Antrag " + this.user.longname;
+              titel = "Sonstiger Antrag";
               break;
             default:
               break;
