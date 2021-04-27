@@ -639,7 +639,12 @@ export default {
                     .get(
                       this.url +
                         "/getAbsenceFormForTeacher?uuid=" +
-                        this.app.uuid,
+                        this.app.uuid +
+                        "&teacher=" +
+                        this.generateShortname(
+                          this.app.business_trip_applications[index].name,
+                          this.app.business_trip_applications[index].surname
+                        ),
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
