@@ -57,8 +57,6 @@ export default {
      * @param application The Application of the News-Element
      */
     linkToApplication(uuid) {
-      console.log(this.snews);
-      console.log(uuid);
       if (this.checkClick()) {
         this.$emit("change-component", "ApplicationView", true, uuid);
       }
