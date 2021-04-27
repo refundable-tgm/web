@@ -187,6 +187,9 @@ export default {
     info(item) {
       this.viewApplication(item.uuid);
     },
+    /**
+     * Diese Methode lädt alle wichtigen Daten für die Anzeige
+     */
     loadView(applications) {
       var data = applications;
       for (let i = 0; i < data.length; i++) {

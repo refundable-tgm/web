@@ -504,6 +504,9 @@ export default {
     closeAntrag() {
       this.$refs["close-modal"].show();
     },
+    /**
+     * Diese Methode schließt das Modal zum Antrag schließen
+     */
     hideClose() {
       this.$refs["close-modal"].hide();
     },
@@ -1036,6 +1039,9 @@ export default {
         }
       }
     },
+    /**
+     * Diese Methode filtert den Table
+     */
     onFiltered(filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
       this.totalRows = filteredItems.length;
@@ -1430,6 +1436,9 @@ export default {
       //Save the nesessary information from current User reviewing the application in the application
       //Progress should be set to Akzeptiert or Fertig
     },
+    /**
+     * Diese Methode speichert den derzeitigen Antrag
+     */
     save() {
       axios
         .put(this.url + "/updateApplication?uuid=" + this.app.uuid, this.app, {

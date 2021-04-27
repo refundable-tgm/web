@@ -232,9 +232,12 @@ export default {
         variant: "danger"
       });
     },
+    /**
+     * Diese Methode setzt das Formular zurück
+     */
     reset() {
       this.teacher = "";
-      this.rights = 4;
+      this.rights = [];
     },
     /**
      * Diese Methode zeigt dem Benutzer an, dass das Speichern erfolgreich ist

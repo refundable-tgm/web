@@ -115,14 +115,6 @@ export default {
       }
     },
     /**
-     * Diese Methode leitet den Benutzer auf die Fortbildung,etc.-Seite weiter
-     */
-    other() {
-      if (this.checkClick()) {
-        this.changeComponent("Others");
-      }
-    },
-    /**
      * Diese Methode leitet den Benutzer auf die Startseite weiter
      */
     index() {

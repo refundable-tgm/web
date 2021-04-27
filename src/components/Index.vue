@@ -425,7 +425,6 @@ export default {
       return viewnews;
     },
     /**
-     * TODO
      * Diese Methode loggt den Benutzer vom System aus
      */
     logout() {

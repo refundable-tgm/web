@@ -324,7 +324,6 @@ export default {
       this.updateData();
     },
     /**
-     * TODO
      * Diese Methode gibt das Kürzel des Lehreres zurück
      * @param shortName Der Kürzel des Lehrers
      * @returns Der ausgeschriebene Name des Lehrers
