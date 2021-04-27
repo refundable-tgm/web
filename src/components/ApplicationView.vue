@@ -1048,9 +1048,11 @@ export default {
             current <= new Date(this.app.end_time)
           ) {
             this.app.progress = 4;
+            this.save();
           }
           if (current >= new Date(this.app.end_time)) {
             this.app.progress = 5;
+            this.save();
           }
         }
       } else {
@@ -1060,6 +1062,7 @@ export default {
             current <= new Date(this.app.end_time)
           ) {
             this.app.progress = 3;
+            this.save();
           }
           if (current >= new Date(this.app.end_time)) {
             if (this.app.kind === 6) {
@@ -1068,8 +1071,10 @@ export default {
                 this.app.other_reason_details.kind !== 9
               ) {
                 this.app.progress = 4;
+                this.save();
               } else {
                 this.app.progress = 6;
+                this.save();
               }
             }
           }
