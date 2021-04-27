@@ -184,7 +184,7 @@
           style="margin-right: 1rem"
           id="show-btn"
           @click="closeAntrag"
-          :disabled="isFinished"
+          :disabled="isFinished()"
           class="float-right"
           ><b-icon icon="file-earmark-excel"></b-icon> Antrag
           schließen</b-button
