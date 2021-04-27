@@ -606,10 +606,11 @@ export default {
      */
     createNewDate(date, time) {
       var tmp = new Date(date + "T" + time);
+      tmp.setHours(tmp.getHours()+1);
       var str = tmp.toISOString();
       str = str.split("T");
       var str2 = str[1].split(":");
-      var str3 = Number(str2[0]) + 2;
+      var str3 = str2[0];
       if (str3 < 10) {
         return (
           str[0] +
