@@ -235,8 +235,8 @@ export default {
   mounted() {
     var start = new Date(this.data.start_time);
     var end = new Date(this.data.end_time);
-    start.setHours(start.getHours()-1);
-    end.setHours(end.getHours()-1);
+    start.setHours(start.getHours() - 1);
+    end.setHours(end.getHours() - 1);
     this.startDate =
       start.getUTCFullYear() +
       "-" +
