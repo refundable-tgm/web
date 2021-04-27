@@ -860,7 +860,11 @@ export default {
      */
     loadView(data) {
       this.app = data;
-      if (this.checkRunning()) this.save();
+      if (this.checkRunning()) {
+        this.save();
+      } else {
+        console.log("Do not save!");
+      }
       this.title = this.app.name;
       this.kind = this.app.kind;
       this.currentTeacher = this.user.short;
