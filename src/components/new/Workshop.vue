@@ -264,7 +264,7 @@
                 description="Geben Sie Sonstige Art ein."
                 label="Sonstige Art"
                 label-for="son"
-                v-if="selected == '8'"
+                v-if="selected == '5'"
               >
                 <b-form-input
                   id="son"
