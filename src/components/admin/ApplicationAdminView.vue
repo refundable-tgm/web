@@ -617,10 +617,11 @@ export default {
           }
         )
         .then(response => {
+          console.log(response);
           this.showPDF(response.data);
-          return;
         })
         .catch(error => {
+          console.log(error);
           switch (error.response.status) {
             case 401:
               axios
