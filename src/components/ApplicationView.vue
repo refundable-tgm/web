@@ -1040,6 +1040,9 @@ export default {
      */
     checkRunning() {
       let current = new Date();
+      console.log(current.toISOString());
+      console.log(new Date(this.app.start_time).toISOString());
+      console.log(new Date(this.app.end_time).toISOString());
       if (this.app.kind === 0) {
         if (this.app.progress === 3) {
           if (
