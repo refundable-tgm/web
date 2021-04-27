@@ -184,6 +184,7 @@
           style="margin-right: 1rem"
           id="show-btn"
           @click="closeAntrag"
+          :disabled="isFinished"
           class="float-right"
           ><b-icon icon="file-earmark-excel"></b-icon> Antrag
           schließen</b-button
@@ -2599,6 +2600,20 @@ export default {
      */
     logout() {
       this.$emit("logout");
+    },
+    /**
+     * Gibt zurück, ob der Antrag abgeschlossen ist
+     */
+    isFinished() {
+      if (this.app.kind === 0) {
+        if (this.app.progress === 7) {
+          return true;
+        }
+      } else {
+        if (this.app.progress === 6) {
+          return true;
+        }
+      }
     }
   }
 };
