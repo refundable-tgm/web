@@ -317,10 +317,17 @@ export default {
           apps[i].business_trip_applications[0].date_application_filed
         );
         apps[i].start = this.formatDate(apps[i].start_time);
-        apps[i].from =
-          apps[i].business_trip_applications[0].name +
-          " " +
-          apps[i].business_trip_applications[0].surname;
+        switch (apps[i].kind) {
+          case 0:
+            apps[i].from = apps[i].school_event_details.teachers[0].name;
+          case 1:
+            apps[i].from = apps[i].training_details.filer;
+            break;
+          case 6:
+            apps[i].from = apps[i].other_reason_details.filer;
+            break;
+        }
+
         if (
           this.user.pek === true &&
           this.user.av === false &&

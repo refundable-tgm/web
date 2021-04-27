@@ -516,7 +516,8 @@ export default {
               kind: this.returnValue(this.selected),
               miscellaneous_reason: this.returnString(this.son),
               ph: this.returnValue(this.phNumber),
-              organizer: this.returnString(this.veran)
+              organizer: this.returnString(this.veran),
+              filer: this.returnString(this.user.longname)
             },
             business_trip_applications: business,
             travel_invoices: [

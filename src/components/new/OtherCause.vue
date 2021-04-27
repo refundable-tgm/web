@@ -744,7 +744,8 @@ export default {
               kind: this.returnValue(this.selected),
               miscellaneous_reason: this.returnString(this.son),
               service_mandate_gz: this.returnValue(this.gz),
-              service_mandate_title: this.returnString(this.title)
+              service_mandate_title: this.returnString(this.title),
+              filer: this.returnString(this.user.longname)
             },
             business_trip_applications: business,
             travel_invoices: invoice
