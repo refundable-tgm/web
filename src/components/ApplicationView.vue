@@ -1351,21 +1351,27 @@ export default {
         this.app.progress = 1;
       }
       if (this.app.kind === 0) {
-        if (this.belege.files.length >= 1) {
-          this.sendReceipts(this.belege);
+        if (this.app.progress >= 5) {
+          if (this.belege.files.length >= 1) {
+            this.sendReceipts(this.belege);
+          }
         }
       } else {
         if (this.app.kind === 1) {
-          if (this.belege.files.length >= 1) {
-            this.sendReceipts(this.belege);
+          if (this.app.progress >= 4) {
+            if (this.belege.files.length >= 1) {
+              this.sendReceipts(this.belege);
+            }
           }
         } else {
           if (
             this.app.other_reason_details.kind !== 7 &&
             this.app.other_reason_details.kind !== 9
           ) {
-            if (this.belege.files.length >= 1) {
-              this.sendReceipts(this.belege);
+            if (this.app.progress >= 4) {
+              if (this.belege.files.length >= 1) {
+                this.sendReceipts(this.belege);
+              }
             }
           }
         }
