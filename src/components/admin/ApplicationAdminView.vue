@@ -940,7 +940,8 @@ export default {
           },
           {
             title: "Abgeltung für pädagogische Betreuung",
-            form: "Compensation"
+            form: "Compensation",
+            teacher: 0
           }
         ];
         for (let i = 0; i < this.app.business_trip_applications.length; i++) {
@@ -988,7 +989,8 @@ export default {
             },
             {
               title: "Reiseformular",
-              form: "BusinessTripApplication"
+              form: "BusinessTripApplication",
+              teacher: 0
             }
           ];
           if (this.app.progress >= 4) {
