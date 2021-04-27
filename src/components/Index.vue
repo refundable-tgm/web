@@ -375,6 +375,7 @@ export default {
                     })
                     .then(res => {
                       this.news = this.cutNews(res.data);
+                      console.log(this.news);
                     })
                     .catch(e => {
                       e.toString();
