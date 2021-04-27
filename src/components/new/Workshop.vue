@@ -478,8 +478,8 @@ export default {
               other_participants: [],
               bonus_mile_confirmation_1: bonus1,
               bonus_mile_confirmation_2: bonus2,
-              travel_costs_paid_by_someone: this.teacher.reisekosten,
-              staying_costs_paid_by_someone: this.teacher.aufenthaltskosten,
+              travel_costs_paid_by_someone: this.returnBoolean(this.teacher.reisekosten),
+              staying_costs_paid_by_someone: this.returnBoolean(this.teacher.aufenthaltskosten),
               paid_by_whom: this.returnString(this.teacher.von),
               other_costs: this.returnValue(this.teacher.sonstige_kosten),
               estimated_costs: this.returnValue(
