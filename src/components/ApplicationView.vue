@@ -1041,9 +1041,6 @@ export default {
     checkRunning() {
       let current = new Date();
       current.setHours(current.getHours() + 1);
-      console.log(current.toISOString());
-      console.log(new Date(this.app.start_time).toISOString());
-      console.log(new Date(this.app.end_time).toISOString());
       if (this.app.kind === 0) {
         if (this.app.progress === 3) {
           if (
@@ -1065,7 +1062,16 @@ export default {
             this.app.progress = 3;
           }
           if (current >= new Date(this.app.end_time)) {
-            this.app.progress = 4;
+            if (this.app.kind === 6) {
+              if (
+                this.app.other_reason_details.kind !== 7 &&
+                this.app.other_reason_details.kind !== 9
+              ) {
+                this.app.progress = 4;
+              } else {
+                this.app.progress = 6;
+              }
+            }
           }
         }
       }
