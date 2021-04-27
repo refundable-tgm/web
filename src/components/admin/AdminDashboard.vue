@@ -432,12 +432,7 @@ export default {
     formatDate(datum) {
       let date = new Date(datum);
       return (
-        date.getFullYear() +
-        "-" +
-        date.getUTCMonth() +
-        1 +
-        "-" +
-        date.getUTCDate()
+        date.getFullYear() + "-" + date.getMonth() + 1 + "-" + date.getDate()
       );
     },
     /**
