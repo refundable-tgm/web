@@ -1312,21 +1312,20 @@ export default {
           for (let i = 0; i < this.app.business_trip_applications.length; i++) {
             this.app.business_trip_applications[i].referee = this.user.longname;
           }
-          this.app.progress === 0;
+          this.app.progress = 0;
         }
         if (this.app.progress === 5) {
-          this.app.progress === 4;
+          this.app.progress = 4;
         }
       } else {
         if (this.app.progress === 1) {
           for (let i = 0; i < this.app.business_trip_applications.length; i++) {
             this.app.business_trip_applications[i].referee = this.user.longname;
           }
-          console.log("Auf 0 setzen");
-          this.app.progress === 0;
+          this.app.progress = 0;
         }
         if (this.app.progress === 4) {
-          this.app.progress === 3;
+          this.app.progress = 3;
         }
       }
       this.app.last_changed = this.createNewDate();
