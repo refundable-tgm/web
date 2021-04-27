@@ -176,7 +176,7 @@ export default {
      * @returns Den String der gegebenen Variable
      */
     returnString(input) {
-      if (input === undefined || input === null || input === "") {
+      if (input === undefined || input === null) {
         return null;
       } else {
         return input;
@@ -221,29 +221,10 @@ export default {
             staffnr: this.returnValue(this.escorts.output[i].personalnummer),
             starting_point: this.returnString(this.escorts.start),
             end_point: this.returnString(this.escorts.ziel),
-            clerk: "",
-            reviewer: "",
-            zi: null,
             filing_date: this.createNewDate(
               new Date().toISOString().split("T")[0],
               new Date().toISOString().split("T")[1]
-            ),
-            approval_date: null,
-            daily_charges_mode: null,
-            shortened_amount: null,
-            nightly_charges_mode: null,
-            breakfasts: null,
-            lunches: null,
-            dinners: null,
-            official_business_card_got: null,
-            travel_grant: null,
-            replacement_for_train_card_class_2: null,
-            kilometre_allowance: null,
-            kilometre_amount: null,
-            nr_and_indications_of_participants: null,
-            travel_costs_cited: null,
-            no_travel_costs: null,
-            calculation: null
+            )
           });
           teachers.push({
             attendance_from: this.createNewDate(
@@ -340,8 +321,6 @@ export default {
               new Date().toISOString().split("T")[0],
               new Date().toISOString().split("T")[1]
             ),
-            date_application_approved: null,
-            referee: null,
             business_card_emitted_outward: this.escorts.output[i].emitted_out,
             business_card_emitted_return: this.escorts.output[i].emitted_out
           });
@@ -445,7 +424,7 @@ export default {
       var str = tmp.toISOString();
       str = str.split("T");
       var str2 = str[1].split(":");
-      var str3 = Number(str2[0]) + 1;
+      var str3 = Number(str2[0]) + 2;
       if (str3 < 10) {
         return (
           str[0] +

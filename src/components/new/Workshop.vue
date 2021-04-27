@@ -414,7 +414,7 @@ export default {
      * @returns Den String der gegebenen Variable
      */
     returnString(input) {
-      if (input === undefined || input === null || input === "") {
+      if (input === undefined || input === null) {
         return null;
       } else {
         return input;
@@ -454,10 +454,10 @@ export default {
           var business = [
             {
               id: 0,
-              name: this.user.longname.split(" ")[0],
-              surname: this.user.longname.split(" ")[1],
-              degree: this.teacher.degree,
-              title: this.teacher.title,
+              name: this.returnString(this.user.longname.split(" ")[0]),
+              surname: this.returnString(this.user.longname.split(" ")[1]),
+              degree: this.returnString(this.teacher.degree),
+              title: this.returnString(this.teacher.title),
               staffnr: this.returnValue(this.teacher.personalnummer),
               trip_begin_time: this.createNewDate(
                 this.startDate,
@@ -469,18 +469,18 @@ export default {
                 this.startTime
               ),
               service_end_time: this.createNewDate(this.endDate, this.endTime),
-              trip_goal: this.start,
-              travel_purpose: this.teacher.reason1,
+              trip_goal: this.returnString(this.start),
+              travel_purpose: this.returnString(this.teacher.reason1),
               travel_mode: this.returnValue(this.teacher.transport),
               starting_point: this.returnValue(this.teacher.ausgangspunkt),
               end_point: this.returnValue(this.teacher.endpunkt),
-              reasoning: this.teacher.reason,
+              reasoning: this.returnString(this.teacher.reason),
               other_participants: [],
               bonus_mile_confirmation_1: bonus1,
               bonus_mile_confirmation_2: bonus2,
               travel_costs_paid_by_someone: this.teacher.reisekosten,
               staying_costs_paid_by_someone: this.teacher.aufenthaltskosten,
-              paid_by_whom: this.teacher.von,
+              paid_by_whom: this.returnString(this.teacher.von),
               other_costs: this.returnValue(this.teacher.sonstige_kosten),
               estimated_costs: this.returnValue(
                 this.teacher.geschaetzte_kosten
@@ -494,43 +494,42 @@ export default {
             }
           ];
           var data = {
-            uuid: "",
-            name: this.title,
+            uuid: this.returnString(""),
+            name: this.returnString(this.title),
             kind: 1,
-            miscellaneous_reason: "",
+            miscellaneous_reason: this.returnString(""),
             progress: 1,
             start_time: this.createNewDate(this.startDate, this.startTime),
             end_time: this.createNewDate(this.endDate, this.endTime),
-            notes: this.notes,
-            start_address: this.start,
-            destination_address: this.end,
+            notes: this.returnString(this.notes),
+            start_address: this.returnString(this.start),
+            destination_address: this.returnString(this.end),
             last_changed: this.createNewDate(
               new Date().toISOString().split("T")[0],
               new Date().toISOString().split("T")[1]
             ),
             training_details: {
               kind: this.returnValue(this.selected),
-              miscellaneous_reason: this.son,
+              miscellaneous_reason: this.returnString(this.son),
               ph: this.returnValue(this.phNumber),
-              organizer: this.veran
+              organizer: this.returnString(this.veran)
             },
             business_trip_applications: business,
             travel_invoices: [
               {
                 id: 0,
-                name: this.user.longname.split(" ")[0],
-                surname: this.user.longname.split(" ")[1],
-                degree: this.teacher.degree,
-                title: this.teacher.title,
+                name: this.returnString(this.user.longname.split(" ")[0]),
+                surname: this.returnString(this.user.longname.split(" ")[1]),
+                degree: this.returnString(this.teacher.degree),
+                title: this.returnString(this.teacher.title),
                 trip_begin_time: this.createNewDate(
                   this.startDate,
                   this.startTime
                 ),
                 trip_end_time: this.createNewDate(this.endDate, this.endTime),
-                travel_costs_pre_grant: null,
                 staffnr: this.returnValue(this.teacher.personalnummer),
-                starting_point: this.start,
-                end_point: this.end,
+                starting_point: this.returnString(this.start),
+                end_point: this.returnString(this.end),
                 filing_date: this.createNewDate(
                   new Date().toISOString().split("T")[0],
                   new Date().toISOString().split("T")[1]
@@ -610,7 +609,7 @@ export default {
       var str = tmp.toISOString();
       str = str.split("T");
       var str2 = str[1].split(":");
-      var str3 = Number(str2[0]) + 1;
+      var str3 = Number(str2[0]) + 2;
       if (str3 < 10) {
         return (
           str[0] +
