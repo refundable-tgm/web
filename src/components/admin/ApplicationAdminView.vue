@@ -899,7 +899,7 @@ export default {
     excelDownload(excel) {
       var anchor_href =
         "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64," +
-        excel;
+        excel.excel;
       var exportLinkElement = document.createElement("a");
 
       exportLinkElement.hidden = true;
