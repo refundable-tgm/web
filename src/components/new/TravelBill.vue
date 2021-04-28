@@ -622,7 +622,7 @@ export default {
     ) {
       this.readonly = false;
     }
-    if (this.app.travel_invoices.calculation !== undefined) {
+    if (this.app.calculation !== undefined) {
       this.loadData();
     } else {
       for (let i = 0; i <= this.calculateLength(); i++) {
