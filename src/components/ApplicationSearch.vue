@@ -126,6 +126,7 @@ export default {
           }
         })
         .then(response => {
+          console.log(response.data);
           return response.data;
         })
         .catch(error => {
@@ -148,6 +149,7 @@ export default {
                       }
                     })
                     .then(res => {
+                      console.log(res.data);
                       return res.data;
                     })
                     .catch(e => {
