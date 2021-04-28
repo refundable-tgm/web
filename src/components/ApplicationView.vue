@@ -2311,7 +2311,8 @@ export default {
                 "&short=" +
                 this.user.short +
                 "&ti_id=" +
-                this.currentTeacherIndex,
+                this.currentTeacherIndex +
+                "&receipts=true",
               {
                 headers: {
                   Authorization: "Basic " + this.token
@@ -2344,7 +2345,8 @@ export default {
                                 "&short=" +
                                 this.user.short +
                                 "&ti_id=" +
-                                this.currentTeacherIndex,
+                                this.currentTeacherIndex +
+                                "&receipts=true",
                               {
                                 headers: {
                                   Authorization:

@@ -769,7 +769,8 @@ export default {
             "&short=" +
             short +
             "&ti_id=" +
-            id,
+            id +
+            "&receipts=true",
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -800,7 +801,8 @@ export default {
                         "&short=" +
                         short +
                         "&ti_id=" +
-                        id,
+                        id +
+                        "&receipts=true",
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token

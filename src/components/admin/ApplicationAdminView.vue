@@ -1205,7 +1205,8 @@ export default {
                   this.app.business_trip_applications[item.teacher].surname
                 ) +
                 "&ti_id=" +
-                item.teacher,
+                item.teacher +
+                "&receipts=true",
               {
                 headers: {
                   Authorization: "Basic " + this.token
@@ -1241,7 +1242,8 @@ export default {
                                 .surname
                             ) +
                             "&ti_id=" +
-                            item.teacher,
+                            item.teacher +
+                            "&receipts=true",
                           {
                             headers: {
                               Authorization: "Basic " + resp.data.access_token
