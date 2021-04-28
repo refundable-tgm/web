@@ -76,7 +76,6 @@ export default {
      * @param application Die ID des Antrags, welcher angezeigt werden soll
      */
     changeComponent(component, back = true, application = null) {
-      console.log(application);
       this.$emit("change-component", component, back, application);
     },
     /**
