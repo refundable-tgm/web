@@ -611,19 +611,7 @@ export default {
      */
     createNewDate(date, time) {
       var tmp = new Date(date + "T" + time);
-      var str = tmp.toISOString();
-      str = str.split("T");
-      var str2 = str[1].split(":");
-      var str3 = str2[0];
-      return (
-        str[0] +
-        "T" +
-        str3 +
-        ":" +
-        str2[1] +
-        ":" +
-        str2[2]
-      );
+      return tmp.toISOString();
     },
     /**
      * Diese Methode überprüft die eingegebenen Daten, ob diese einen sinnvollen Wert haben

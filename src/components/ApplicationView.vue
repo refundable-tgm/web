@@ -1256,19 +1256,7 @@ export default {
      */
     createNewDate() {
       var tmp = new Date();
-      var str = tmp.toISOString();
-      str = str.split("T");
-      var str2 = str[1].split(":");
-      var str3 = str2[0];
-      return (
-        str[0] +
-        "T" +
-        str3 +
-        ":" +
-        str2[1] +
-        ":" +
-        str2[2].replace("Z", "")
-      );
+      return tmp.toISOString();
     },
     /**
      * Diese Methode sendet die Rechnungen eines Benutzers an das Backend zu dem entsprechenden Antrag

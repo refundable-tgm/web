@@ -267,19 +267,10 @@ export default {
       var end = new Date(this.endDate);
       end.setHours(this.endTime.split(":")[0]);
       end.setMinutes(this.endTime.split(":")[1]);
-      this.data.start_time = this.setTimezone(start);
-      this.data.end_time = this.setTimezone(end);
+      this.data.start_time = start;
+      this.data.end_time = end;
       this.updateData();
     },
-    /**
-     * Diese Methode setzt die verwendete Zeitzone von dem übergebenen Datum
-     * @param datum Das Datum, welches angepasst werden soll
-     * @returns Das angepasste Datum
-     */
-    setTimezone(datum) {
-      datum.setHours(datum.getHours() + 1);
-      return datum.toISOString().replace("Z", "") + "+01:00";
-    }
   }
 };
 </script>
