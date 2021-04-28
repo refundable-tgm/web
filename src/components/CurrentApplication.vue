@@ -438,7 +438,7 @@ export default {
      */
     checkRunning(app) {
       let current = new Date();
-      current.setHours(current.getHours() + 1);
+      current.setHours(current.getHours());
       if (app.kind === 0) {
         if (app.progress === 3) {
           if (
