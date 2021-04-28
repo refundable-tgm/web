@@ -791,9 +791,10 @@ export default {
      * Diese Methode rechnet die Zeit in das verwendete Datumsformat um
      */
     calcTime(date, datum) {
+      var tag = new Date(datum);
       var tmp = date.split(":");
-      datum.setHours(tmp[0]);
-      datum.setMinutes(tmp[1]);
+      tag.setHours(tmp[0]);
+      tag.setMinutes(tmp[1]);
       return datum.toISOString();
     },
     /**
