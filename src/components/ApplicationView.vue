@@ -666,8 +666,14 @@ export default {
         ].calculation.rows.push({
           nr: this.returnValue(data.items[i].index),
           date: this.calcDate(data.items[i].date),
-          begin: this.calcTime(data.items[i].start, date),
-          end: this.calcTime(data.items[i].end, date),
+          begin: this.calcTime(
+            data.items[i].start,
+            this.calcDate(data.items[i].date)
+          ),
+          end: this.calcTime(
+            data.items[i].end,
+            this.calcDate(data.items[i].date)
+          ),
           kind_of_costs: tmp_kind,
           kilometres: this.returnValue(data.items[i].km),
           travel_costs: this.returnValue(data.items[i].travelcosts),
