@@ -785,7 +785,7 @@ export default {
      */
     calcDate(date) {
       var tmp = date.split(".");
-      return tmp[2] + "-" + tmp[1] + "-" + tmp[0] + "T00:00:00";
+      return tmp[2] + "-" + tmp[1] + "-" + tmp[0] + "T00:00:00Z";
     },
     /**
      * Diese Methode rechnet die Zeit in das verwendete Datumsformat um
@@ -795,6 +795,9 @@ export default {
       var tmp = date.split(":");
       tag.setHours(tmp[0]);
       tag.setMinutes(tmp[1]);
+      console.log(date);
+      console.log(tmp);
+      console.log(tag);
       return tag.toISOString();
     },
     /**
