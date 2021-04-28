@@ -622,7 +622,7 @@ export default {
         ":" +
         str2[1] +
         ":" +
-        str2[2].replace("Z", "")
+        str2[2]
       );
     },
     /**
