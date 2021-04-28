@@ -673,18 +673,17 @@ export default {
     generallPDF() {
       this.classForm();
       axios
-        .get(
-          this.url +
-            "/getAbsenceFormForClasses?uuid=" +
-            this.app.uuid +
-            "&classes=" +
-            this.auswahl,
-          {
-            headers: {
-              Authorization: "Basic " + this.token
-            }
+        .get(this.url + "/getAbsenceFormForClasses?uuid=" + this.app.uuid, {
+          params: {
+            classes: this.auswahl
+          },
+          paramsSerializer: function(params) {
+            return qs.stringify(params, { indices: false });
+          },
+          headers: {
+            Authorization: "Basic " + this.token
           }
-        )
+        })
         .then(response => {
           this.showPDF(response.data);
         })
