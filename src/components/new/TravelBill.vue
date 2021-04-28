@@ -625,7 +625,7 @@ export default {
     if (this.app.calculation.rows !== null) {
       this.loadData();
     } else {
-      for (let i = 0; i <= this.calculateLength(); i++) {
+      for (let i = 0; i <= this.calculateLength()-1; i++) {
         var tmp = new Date(this.start);
         tmp.setDate(tmp.getDate() + i);
         this.data.items.push({
