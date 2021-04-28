@@ -174,7 +174,7 @@ export default {
           this.makeToast();
         } else {
           let application = this.requestApplication();
-          if (application) {
+          if (application.uuid !== "") {
             this.changeComponent("ApplicationView", application);
             this.changeURL("ApplicationView");
           } else {
