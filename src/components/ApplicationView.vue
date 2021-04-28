@@ -621,9 +621,9 @@ export default {
       this.app.travel_invoices[this.currentTeacherIndex].shortened_amount =
         data.short;
       this.app.travel_invoices[this.currentTeacherIndex].breakfasts =
-        data.breakfast;
-      this.app.travel_invoices[this.currentTeacherIndex].lunches = data.lunch;
-      this.app.travel_invoices[this.currentTeacherIndex].dinners = data.dinner;
+        this.returnValue(data.breakfast);
+      this.app.travel_invoices[this.currentTeacherIndex].lunches = this.returnValue(data.lunch);
+      this.app.travel_invoices[this.currentTeacherIndex].dinners = this.returnValue(data.dinner);
       this.app.travel_invoices[this.currentTeacherIndex].kilometre_amount =
         data.km;
       this.app.travel_invoices[
@@ -795,6 +795,7 @@ export default {
       var tmp = date.split(":");
       tag.setHours(tmp[0]);
       tag.setMinutes(tmp[1]);
+      console.log(datum);
       console.log(date);
       console.log(tmp);
       console.log(tag);
