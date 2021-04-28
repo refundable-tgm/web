@@ -622,7 +622,7 @@ export default {
     ) {
       this.readonly = false;
     }
-    if (this.app.calculation !== undefined) {
+    if (this.app.calculation.rows !== null) {
       this.loadData();
     } else {
       for (let i = 0; i <= this.calculateLength(); i++) {
