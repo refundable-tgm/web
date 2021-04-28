@@ -424,6 +424,7 @@ export default {
      */
     formatDate(datum) {
       let date = new Date(datum);
+      date.setHours(date.getHours()+2);
       return (
         date.getFullYear() +
         "-" +
