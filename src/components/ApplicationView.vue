@@ -795,7 +795,7 @@ export default {
       var tmp = date.split(":");
       tag.setHours(tmp[0]);
       tag.setMinutes(tmp[1]);
-      return datum.toISOString();
+      return tag.toISOString();
     },
     /**
      * Diese Methode lädt alle notwendigen Daten und formatiert jene so, dass diese richtig angezeigt werden
