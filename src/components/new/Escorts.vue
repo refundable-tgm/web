@@ -421,7 +421,6 @@ export default {
      */
     createNewDate(date, time) {
       var tmp = new Date(date + "T" + time);
-      tmp.setHours(tmp.getHours() + 2);
       var str = tmp.toISOString();
       str = str.split("T");
       var str2 = str[1].split(":");
@@ -433,8 +432,7 @@ export default {
         ":" +
         str2[1] +
         ":" +
-        str2[2].replace("Z", "") +
-        "+01:00"
+        str2[2].replace("Z", "")
       );
     },
     /**

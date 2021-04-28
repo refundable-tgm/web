@@ -196,8 +196,6 @@ export default {
     this.selected = this.data.group;
     var start = new Date(this.data.attendance_from);
     var end = new Date(this.data.attendance_till);
-    start.setHours(start.getHours() - 1);
-    end.setHours(end.getHours() - 1);
     this.startDate =
       start.getUTCFullYear() +
       "-" +
