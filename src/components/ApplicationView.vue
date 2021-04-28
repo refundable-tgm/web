@@ -803,9 +803,11 @@ export default {
           }
         })
         .then(response => {
+          console.log(response);
           this.loadView(response.data);
         })
         .catch(error => {
+          console.log(error);
           switch (error.response.status) {
             case 401:
               axios
