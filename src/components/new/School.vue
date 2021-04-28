@@ -207,7 +207,7 @@
               >
                 <b-form-tags
                   id="begl"
-                  input-id="tags-pills"
+                  input-id="tags-pills1"
                   v-model="data.teacher"
                   tag-variant="primary"
                   tag-pills
@@ -228,7 +228,7 @@
               >
                 <b-form-tags
                   id="kl"
-                  input-id="tags-pills"
+                  input-id="tags-pills2"
                   v-model="data.class"
                   :state="Class"
                   v-on:input="checkClass"
