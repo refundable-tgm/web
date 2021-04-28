@@ -806,7 +806,7 @@ export default {
     calcTime(date, datum) {
       var tag = new Date(datum);
       var tmp = date.split(":");
-      if (tmp !== [""]) {
+      if (tmp.length<2) {
         tag.setHours(tmp[0]);
         tag.setMinutes(tmp[1]);
         return tag.toISOString();
