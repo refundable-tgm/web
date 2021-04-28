@@ -538,7 +538,7 @@ export default {
      * Diese Methode setzt alle wichtigen Daten für diese Komponente
      */
     loadData() {
-      for (let i = 0; i <= this.calculateLength(); i++) {
+      for (let i = 0; i <= this.calculateLength()-1; i++) {
         var tmp = new Date(this.start);
         tmp.setDate(tmp.getDate() + i);
         let tmp_kind = [];
