@@ -796,6 +796,7 @@ export default {
      * Diese Methode lädt alle notwendigen Daten und formatiert jene so, dass diese richtig angezeigt werden
      */
     loadData() {
+      console.log(this.appid);
       axios
         .get(this.url + "/getApplication?uuid=" + this.appid, {
           headers: {
@@ -803,9 +804,11 @@ export default {
           }
         })
         .then(response => {
+          console.log(response);
           this.loadView(response.data);
         })
         .catch(error => {
+          console.log(error);
           switch (error.response.status) {
             case 401:
               axios
