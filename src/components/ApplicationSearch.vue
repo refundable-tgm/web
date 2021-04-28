@@ -126,7 +126,7 @@ export default {
           }
         })
         .then(response => {
-          return response.data.uuid;
+          return response.data;
         })
         .catch(error => {
           switch (error.response.status) {
@@ -148,7 +148,7 @@ export default {
                       }
                     })
                     .then(res => {
-                      return res.data.uuid;
+                      return res.data;
                     })
                     .catch(e => {
                       e.toString();
@@ -173,7 +173,7 @@ export default {
         if (this.searching === "") {
           this.makeToast();
         } else {
-          let application = this.requestApplication();
+          var application = this.requestApplication();
           console.log(application);
           if (application !== "") {
             this.changeComponent("ApplicationView", true, application);
