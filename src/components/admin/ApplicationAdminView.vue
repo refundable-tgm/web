@@ -672,18 +672,22 @@ export default {
      */
     generallPDF() {
       this.classForm();
+      var classes = "";
+      for (let i = 0; i < this.auswahl.length; i++) {
+        classes += "&classes=" + this.auswahl[i];
+      }
       axios
-        .get(this.url + "/getAbsenceFormForClasses?uuid=" + this.app.uuid, {
-          params: {
-            classes: this.auswahl
-          },
-          paramsSerializer: function(params) {
-            return qs.stringify(params, { indices: false });
-          },
-          headers: {
-            Authorization: "Basic " + this.token
+        .get(
+          this.url +
+            "/getAbsenceFormForClasses?uuid=" +
+            this.app.uuid +
+            classes,
+          {
+            headers: {
+              Authorization: "Basic " + this.token
+            }
           }
-        })
+        )
         .then(response => {
           this.showPDF(response.data);
         })
@@ -705,8 +709,7 @@ export default {
                       this.url +
                         "/getAbsenceFormForClasses?uuid=" +
                         this.app.uuid +
-                        "&classes=" +
-                        this.auswahl,
+                        classes,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
