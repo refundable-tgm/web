@@ -792,7 +792,7 @@ export default {
       var tmp = date.split(".");
       var ausg = new Date();
       ausg.setFullYear(tmp[2]);
-      ausg.setMonth(tmp[1]);
+      ausg.setMonth(tmp[1] - 1);
       ausg.setDate(tmp[0]);
       ausg.setHours(12);
       ausg.setMinutes(0);
@@ -806,7 +806,7 @@ export default {
     calcTime(date, datum) {
       var tag = new Date(datum);
       var tmp = date.split(":");
-      if (tmp.length<2) {
+      if (tmp.length < 2) {
         tag.setHours(tmp[0]);
         tag.setMinutes(tmp[1]);
         return tag.toISOString();
