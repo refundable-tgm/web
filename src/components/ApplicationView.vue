@@ -825,9 +825,11 @@ export default {
           }
         })
         .then(response => {
+          console.log(response);
           this.loadView(response.data);
         })
         .catch(error => {
+          console.log(error);
           switch (error.response.status) {
             case 401:
               axios
@@ -1363,9 +1365,7 @@ export default {
         if (this.app.progress >= 5) {
           if (this.belege.files !== undefined) {
             if (this.belege.files.length >= 1) {
-              if (this.belege.files !== undefined) {
-                this.sendReceipts(this.belege);
-              }
+              this.sendReceipts(this.belege);
             }
           }
         }
