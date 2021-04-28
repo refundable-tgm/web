@@ -209,16 +209,11 @@
                   id="begl"
                   input-id="tags-pills"
                   v-model="data.teacher"
-                  :state="Teacher"
-                  v-on:input="checkTeacher"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
                   placeholder="Einträge durch Leerzeichen trennen"
                 ></b-form-tags>
-                <b-form-invalid-feedback id="begl-feedback">
-                  Keine Begleitpersonen angegeben!
-                </b-form-invalid-feedback>
               </b-form-group>
               <!-- Bezeichnungen der Klassen -->
               <b-form-group
@@ -391,7 +386,6 @@ export default {
           this.makeToast();
           if (this.Time === null) this.Time = false;
           if (this.Desc === null) this.Desc = false;
-          if (this.Teacher === null) this.Teacher = false;
           if (this.Students === null) this.Students = false;
           if (this.Class === null) this.Class = false;
           if (this.Start === null) this.Start = false;
@@ -417,17 +411,6 @@ export default {
         this.Desc = false;
       } else {
         this.Desc = true;
-      }
-      this.checkInputs();
-    },
-    /**
-     * Diese Methode überprüft, ob Lehrer angegeben worden sind
-     */
-    checkTeacher() {
-      if (this.data.teacher.length === 0) {
-        this.Teacher = false;
-      } else {
-        this.Teacher = true;
       }
       this.checkInputs();
     },
@@ -508,7 +491,6 @@ export default {
       if (
         this.Time === true &&
         this.Desc === true &&
-        this.Teacher === true &&
         this.Class === true &&
         this.Students === true &&
         this.Start === true &&
@@ -540,7 +522,6 @@ export default {
       validInputs: false,
       Time: null,
       Desc: null,
-      Teacher: null,
       Class: null,
       Students: null,
       Start: null,
