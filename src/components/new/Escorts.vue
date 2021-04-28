@@ -238,7 +238,7 @@ export default {
             meeting_point: this.returnString(
               this.escorts.output[i].meetingpoint
             ),
-            name: this.returnString(this.escorts.output[i].name),
+            name: this.returnString(this.escorts.output[i].name+" "+this.escorts.output[i].surname),
             role: this.returnValue(this.escorts.output[i].role),
             group: this.returnValue(this.escorts.output[i].selected),
             shortname: this.returnString(this.escorts.output[i].shortname),
