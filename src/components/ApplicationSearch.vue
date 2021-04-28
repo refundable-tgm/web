@@ -175,7 +175,7 @@ export default {
         } else {
           let application = this.requestApplication();
           if (application !== "") {
-            this.changeComponent("ApplicationView", application);
+            this.changeComponent("ApplicationView", true, application);
             this.changeURL("ApplicationView");
           } else {
             this.failedLoad();
