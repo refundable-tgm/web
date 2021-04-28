@@ -555,7 +555,7 @@ export default {
           tmp_kind.push("3");
         }
         this.data.items.push({
-          index: i,
+          index: (i+1),
           date:
             tmp.getUTCDate() +
             "." +
@@ -629,7 +629,7 @@ export default {
         var tmp = new Date(this.start);
         tmp.setDate(tmp.getDate() + i);
         this.data.items.push({
-          index: i,
+          index: (i+1),
           date:
             tmp.getUTCDate() +
             "." +
