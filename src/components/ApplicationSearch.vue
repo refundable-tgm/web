@@ -56,8 +56,7 @@ export default {
   props: ["url", "user", "token", "refresh_token"],
   data() {
     return {
-      searching: "",
-      uuid: ""
+      searching: ""
     };
   },
   methods: {
@@ -142,7 +141,7 @@ export default {
                     resp.data.refresh_token
                   );
                   axios
-                    .get(this.url + "/getApplication?uuid=" + this.appid, {
+                    .get(this.url + "/getApplication?uuid=" + this.searching, {
                       headers: {
                         Authorization: "Basic " + resp.data.access_token
                       }
