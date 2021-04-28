@@ -666,8 +666,8 @@ export default {
         ].calculation.rows.push({
           nr: this.returnValue(data.items[i].index),
           date: this.calcDate(data.items[i].date),
-          begin: this.calcTime(data.items[i].start),
-          end: this.calcTime(data.items[i].end),
+          begin: this.calcTime(data.items[i].start, date),
+          end: this.calcTime(data.items[i].end, date),
           kind_of_costs: tmp_kind,
           kilometres: this.returnValue(data.items[i].km),
           travel_costs: this.returnValue(data.items[i].travelcosts),
@@ -779,18 +779,16 @@ export default {
      */
     calcDate(date) {
       var tmp = date.split(".");
-      return tmp[2] + "-" + tmp[1] + "-" + tmp[0] + "T00:00:00+01:00";
+      return tmp[2] + "-" + tmp[1] + "-" + tmp[0] + "T00:00:00";
     },
     /**
      * Diese Methode rechnet die Zeit in das verwendete Datumsformat um
      */
-    calcTime(date) {
+    calcTime(date, datum) {
       var tmp = date.split(":");
-      if (tmp[0] <= 10) {
-        return "2000-01-01T0" + (tmp[0] - 1) + ":" + tmp[1] + ":00+01:00";
-      } else {
-        return "2000-01-01T" + (tmp[0] - 1) + ":" + tmp[1] + ":00+01:00";
-      }
+      datum.setHours(tmp[0]);
+      datum.setMinutes(tmp[1]);
+      return datum.toISOString();
     },
     /**
      * Diese Methode lädt alle notwendigen Daten und formatiert jene so, dass diese richtig angezeigt werden
