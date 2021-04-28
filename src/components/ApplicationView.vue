@@ -1053,7 +1053,7 @@ export default {
             return true;
           }
         }
-        if (this.app.progress === 4) {
+        if (this.app.progress === 3 || this.app.progress === 4) {
           if (current >= new Date(this.app.end_time)) {
             this.app.progress = 5;
             return true;
@@ -1069,7 +1069,7 @@ export default {
             return true;
           }
         }
-        if (this.app.progress === 3) {
+        if (this.app.progress === 2 || this.app.progress === 3) {
           if (current >= new Date(this.app.end_time)) {
             if (this.app.kind === 6) {
               if (
