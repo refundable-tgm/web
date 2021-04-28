@@ -251,6 +251,7 @@ export default {
           break;
 
         case "ApplicationView":
+          console.log(application);
           this.loadApplication(application);
           this.change("ApplicationView", back, false);
           break;
