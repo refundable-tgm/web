@@ -1210,35 +1210,40 @@ export default {
                                 this.app.travel_invoices[i].calculation
                                   .sum_of_sums !== null
                               ) {
-                                for (
-                                  let j = 0;
-                                  j <
-                                  this.app.travel_invoices[i].calculation.rows
-                                    .length;
-                                  j++
+                                if (
+                                  this.app.travel_invoices[i].calculation
+                                    .rows !== null
                                 ) {
-                                  if (
-                                    this.app.travel_invoices[i].calculation
-                                      .rows[j].begin !== "" &&
-                                    this.app.travel_invoices[i].calculation
-                                      .rows[j].begin !== undefined &&
-                                    this.app.travel_invoices[i].calculation
-                                      .rows[j].begin !== null
+                                  for (
+                                    let j = 0;
+                                    j <
+                                    this.app.travel_invoices[i].calculation.rows
+                                      .length;
+                                    j++
                                   ) {
                                     if (
                                       this.app.travel_invoices[i].calculation
-                                        .rows[j].end !== "" &&
+                                        .rows[j].begin !== "" &&
                                       this.app.travel_invoices[i].calculation
-                                        .rows[j].end !== undefined &&
+                                        .rows[j].begin !== undefined &&
                                       this.app.travel_invoices[i].calculation
-                                        .rows[j].end !== null
+                                        .rows[j].begin !== null
                                     ) {
-                                      allInputed = true;
+                                      if (
+                                        this.app.travel_invoices[i].calculation
+                                          .rows[j].end !== "" &&
+                                        this.app.travel_invoices[i].calculation
+                                          .rows[j].end !== undefined &&
+                                        this.app.travel_invoices[i].calculation
+                                          .rows[j].end !== null
+                                      ) {
+                                        allInputed = true;
+                                      } else {
+                                        return false;
+                                      }
                                     } else {
                                       return false;
                                     }
-                                  } else {
-                                    return false;
                                   }
                                 }
                               } else {
