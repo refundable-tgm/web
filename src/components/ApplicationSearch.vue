@@ -126,8 +126,12 @@ export default {
           }
         })
         .then(response => {
-          console.log(response.data);
-          return response.data;
+          if (response.data.uuid !== "") {
+            this.changeComponent("ApplicationView", true, response.data.uuid);
+            this.changeURL("ApplicationView");
+          } else {
+            this.failedLoad();
+          }
         })
         .catch(error => {
           switch (error.response.status) {
@@ -149,8 +153,16 @@ export default {
                       }
                     })
                     .then(res => {
-                      console.log(res.data);
-                      return res.data;
+                      if (res.data.uuid !== "") {
+                        this.changeComponent(
+                          "ApplicationView",
+                          true,
+                          res.data.uuid
+                        );
+                        this.changeURL("ApplicationView");
+                      } else {
+                        this.failedLoad();
+                      }
                     })
                     .catch(e => {
                       e.toString();
@@ -175,14 +187,7 @@ export default {
         if (this.searching === "") {
           this.makeToast();
         } else {
-          var application = this.requestApplication();
-          console.log(application);
-          if (application !== "") {
-            this.changeComponent("ApplicationView", true, application);
-            this.changeURL("ApplicationView");
-          } else {
-            this.failedLoad();
-          }
+          this.requestApplication();
         }
       }
     },
