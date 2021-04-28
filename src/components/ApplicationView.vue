@@ -1373,6 +1373,7 @@ export default {
             if (this.belege.files !== undefined) {
               if (this.belege.files.length >= 1) {
                 this.sendReceipts(this.belege);
+                this.app.progress = 5;
               }
             }
           }
@@ -1385,6 +1386,7 @@ export default {
               if (this.belege.files.length >= 1) {
                 if (this.belege.files !== undefined) {
                   this.sendReceipts(this.belege);
+                  this.app.progress = 5;
                 }
               }
             }
