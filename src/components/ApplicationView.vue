@@ -1342,14 +1342,18 @@ export default {
       if (this.app.kind === 0) {
         if (this.app.progress >= 5) {
           if (this.belege.files.length >= 1) {
-            this.sendReceipts(this.belege);
+            if (this.belege.files !== undefined) {
+              this.sendReceipts(this.belege);
+            }
           }
         }
       } else {
         if (this.app.kind === 1) {
           if (this.app.progress >= 4) {
-            if (this.belege.files.length >= 1) {
-              this.sendReceipts(this.belege);
+            if (this.belege.files !== undefined) {
+              if (this.belege.files.length >= 1) {
+                this.sendReceipts(this.belege);
+              }
             }
           }
         } else {
@@ -1359,7 +1363,9 @@ export default {
           ) {
             if (this.app.progress >= 4) {
               if (this.belege.files.length >= 1) {
-                this.sendReceipts(this.belege);
+                if (this.belege.files !== undefined) {
+                  this.sendReceipts(this.belege);
+                }
               }
             }
           }
