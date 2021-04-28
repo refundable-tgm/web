@@ -499,19 +499,16 @@ export default {
      * Diese Methode lädt die Abwesenheitsformulare der Klassen herunter
      */
     getClassesPDF(uuid, klassen) {
+      var classes = "";
+      for (let i = 0; i < klassen.length; i++) {
+        classes += "&classes=" + klassen[i];
+      }
       axios
-        .get(
-          this.url +
-            "/getAbsenceFormForClasses?uuid=" +
-            uuid +
-            "&classes=" +
-            klassen,
-          {
-            headers: {
-              Authorization: "Basic " + this.token
-            }
+        .get(this.url + "/getAbsenceFormForClasses?uuid=" + uuid + classes, {
+          headers: {
+            Authorization: "Basic " + this.token
           }
-        )
+        })
         .then(response => {
           this.showPDF(response.data);
         })
@@ -533,8 +530,7 @@ export default {
                       this.url +
                         "/getAbsenceFormForClasses?uuid=" +
                         uuid +
-                        "&classes=" +
-                        klassen,
+                        classes,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token

@@ -1905,13 +1905,16 @@ export default {
      */
     generallPDF() {
       this.classForm();
+      var classes = "";
+      for (let i = 0; i < this.auswahl.length; i++) {
+        classes += "&classes=" + this.auswahl[i];
+      }
       axios
         .get(
           this.url +
             "/getAbsenceFormForClasses?uuid=" +
             this.app.uuid +
-            "&classes=" +
-            this.auswahl,
+            classes,
           {
             headers: {
               Authorization: "Basic " + this.token
@@ -1939,8 +1942,7 @@ export default {
                       this.url +
                         "/getAbsenceFormForClasses?uuid=" +
                         this.app.uuid +
-                        "&classes=" +
-                        this.auswahl,
+                        classes,
                       {
                         headers: {
                           Authorization: "Basic " + resp.data.access_token
