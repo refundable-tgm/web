@@ -654,19 +654,18 @@ export default {
       ].calculation.sum_of_sums = data.sum_of_sums;
       for (let i = 0; i < data.items.length; i++) {
         let tmp_kind = [];
-        if (data.items[i].kind_of_costs.includes("0")) {
+        if (data.items[i].kind_of_cost.includes("0")) {
           tmp_kind.push(0);
         }
-        if (data.items[i].kind_of_costs.includes("1")) {
+        if (data.items[i].kind_of_cost.includes("1")) {
           tmp_kind.push(1);
         }
-        if (data.items[i].kind_of_costs.includes("2")) {
+        if (data.items[i].kind_of_cost.includes("2")) {
           tmp_kind.push(2);
         }
-        if (data.items[i].kind_of_costs.includes("3")) {
+        if (data.items[i].kind_of_cost.includes("3")) {
           tmp_kind.push(3);
         }
-        console.log(tmp_kind);
         this.app.travel_invoices[
           this.currentTeacherIndex
         ].calculation.rows.push({
@@ -680,7 +679,7 @@ export default {
             data.items[i].end,
             this.calcDate(data.items[i].date)
           ),
-          kind_of_costs: tmp_kind,
+          kind_of_cost: tmp_kind,
           kilometres: this.returnValue(data.items[i].km),
           travel_costs: this.returnValue(data.items[i].travelcosts),
           daily_charges: this.returnValue(data.items[i].daycharge),
@@ -807,13 +806,13 @@ export default {
     calcTime(date, datum) {
       var tag = new Date(datum);
       var tmp = date.split(":");
-      tag.setHours(tmp[0]);
-      tag.setMinutes(tmp[1]);
-      console.log(datum);
-      console.log(date);
-      console.log(tmp);
-      console.log(tag);
-      return tag.toISOString();
+      if (tmp !== [""]) {
+        tag.setHours(tmp[0]);
+        tag.setMinutes(tmp[1]);
+        return tag.toISOString();
+      } else {
+        return "";
+      }
     },
     /**
      * Diese Methode lädt alle notwendigen Daten und formatiert jene so, dass diese richtig angezeigt werden

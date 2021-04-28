@@ -308,10 +308,10 @@
             ></b-form-timepicker>
           </template>
           <!-- Art Spalte -->
-          <template #cell(kind_of_costs)="data">
+          <template #cell(kind_of_cost)="data">
             <b-form-checkbox-group
               :id="data.index + '5'"
-              v-model="data.item.kind_of_costs"
+              v-model="data.item.kind_of_cost"
               v-on:input="update()"
               :disabled="readonly"
               stacked
@@ -340,7 +340,7 @@
               v-model="data.item.travelcosts"
               v-on:change="update()"
               :readonly="
-                readonly || data.item.kind_of_costs.includes('0') === false
+                readonly || data.item.kind_of_cost.includes('0') === false
               "
             >
             </b-form-input>
@@ -352,7 +352,7 @@
               v-model="data.item.daycharge"
               v-on:change="update()"
               :readonly="
-                readonly || data.item.kind_of_costs.includes('1') === false
+                readonly || data.item.kind_of_cost.includes('1') === false
               "
             >
             </b-form-input>
@@ -364,7 +364,7 @@
               v-model="data.item.sleepcharge"
               v-on:change="update()"
               :readonly="
-                readonly || data.item.kind_of_costs.includes('2') === false
+                readonly || data.item.kind_of_cost.includes('2') === false
               "
             >
             </b-form-input>
@@ -376,7 +376,7 @@
               v-model="data.item.othercosts"
               v-on:change="update()"
               :readonly="
-                readonly || data.item.kind_of_costs.includes('3') === false
+                readonly || data.item.kind_of_cost.includes('3') === false
               "
             >
             </b-form-input>
@@ -397,7 +397,7 @@ export default {
         { key: "date", label: "Tag" },
         { key: "start", label: "Beginn" },
         { key: "end", label: "Ende" },
-        { key: "kind_of_costs", label: "Art des Gebührenanspruches" },
+        { key: "kind_of_cost", label: "Art des Gebührenanspruches" },
         { key: "km", label: "Gesamtkilometer" },
         { key: "travelcosts", label: "Reisekosten" },
         { key: "daycharge", label: "Tagesgebühr" },
@@ -440,16 +440,16 @@ export default {
     calcSum() {
       for (let i = 0; i < this.data.items.length; i++) {
         this.data.items[i].sum = 0;
-        if (this.data.items[i].kind_of_costs.includes("0")) {
+        if (this.data.items[i].kind_of_cost.includes("0")) {
           this.data.items[i].sum += Number(this.data.items[i].travelcosts);
         }
-        if (this.data.items[i].kind_of_costs.includes("1")) {
+        if (this.data.items[i].kind_of_cost.includes("1")) {
           this.data.items[i].sum += Number(this.data.items[i].daycharge);
         }
-        if (this.data.items[i].kind_of_costs.includes("2")) {
+        if (this.data.items[i].kind_of_cost.includes("2")) {
           this.data.items[i].sum += Number(this.data.items[i].sleepcharge);
         }
-        if (this.data.items[i].kind_of_costs.includes("3")) {
+        if (this.data.items[i].kind_of_cost.includes("3")) {
           this.data.items[i].sum += Number(this.data.items[i].othercosts);
         }
       }
@@ -486,22 +486,22 @@ export default {
       var sac = 0;
       var sos = 0;
       for (let i = 0; i < this.data.items.length; i++) {
-        if (this.data.items[i].kind_of_costs.includes("0")) {
+        if (this.data.items[i].kind_of_cost.includes("0")) {
           if (!isNaN(Number(this.data.items[i].travelcosts))) {
             stc += Number(this.data.items[i].travelcosts);
           }
         }
-        if (this.data.items[i].kind_of_costs.includes("1")) {
+        if (this.data.items[i].kind_of_cost.includes("1")) {
           if (!isNaN(Number(this.data.items[i].daycharge))) {
             sdc += Number(this.data.items[i].daycharge);
           }
         }
-        if (this.data.items[i].kind_of_costs.includes("2")) {
+        if (this.data.items[i].kind_of_cost.includes("2")) {
           if (!isNaN(Number(this.data.items[i].sleepcharge))) {
             snc += Number(this.data.items[i].sleepcharge);
           }
         }
-        if (this.data.items[i].kind_of_costs.includes("3")) {
+        if (this.data.items[i].kind_of_cost.includes("3")) {
           if (!isNaN(Number(this.data.items[i].othercosts))) {
             sac += Number(this.data.items[i].othercosts);
           }
@@ -542,16 +542,16 @@ export default {
         var tmp = new Date(this.start);
         tmp.setDate(tmp.getDate() + i);
         let tmp_kind = [];
-        if (this.app.calculation.rows[i].kind_of_costs.includes(0)) {
+        if (this.app.calculation.rows[i].kind_of_cost.includes(0)) {
           tmp_kind.push("0");
         }
-        if (this.app.calculation.rows[i].kind_of_costs.includes(1)) {
+        if (this.app.calculation.rows[i].kind_of_cost.includes(1)) {
           tmp_kind.push("1");
         }
-        if (this.app.calculation.rows[i].kind_of_costs.includes(2)) {
+        if (this.app.calculation.rows[i].kind_of_cost.includes(2)) {
           tmp_kind.push("2");
         }
-        if (this.app.calculation.rows[i].kind_of_costs.includes(3)) {
+        if (this.app.calculation.rows[i].kind_of_cost.includes(3)) {
           tmp_kind.push("3");
         }
         this.data.items.push({
@@ -564,7 +564,7 @@ export default {
             tmp.getUTCFullYear(),
           start: this.getTimeOfDate(this.app.calculation.rows[i].begin),
           end: this.getTimeOfDate(this.app.calculation.rows[i].end),
-          kind_of_costs: tmp_kind,
+          kind_of_cost: tmp_kind,
           km: this.app.calculation.rows[i].kilometres,
           travelcosts: this.app.calculation.rows[i].travel_costs,
           daycharge: this.app.calculation.rows[i].daily_charges,
@@ -639,7 +639,7 @@ export default {
           start: "",
           end: "",
           km: 0,
-          kind_of_costs: [],
+          kind_of_cost: [],
           travelcosts: 0,
           daycharge: 0,
           sleepcharge: 0,
