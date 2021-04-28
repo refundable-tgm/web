@@ -666,6 +666,7 @@ export default {
         if (data.items[i].kind_of_costs.includes("3")) {
           tmp_kind.push(3);
         }
+        console.log(tmp_kind);
         this.app.travel_invoices[
           this.currentTeacherIndex
         ].calculation.rows.push({
@@ -794,7 +795,7 @@ export default {
       ausg.setFullYear(tmp[2]);
       ausg.setMonth(tmp[1]);
       ausg.setDate(tmp[0]);
-      ausg.setHours(0);
+      ausg.setHours(12);
       ausg.setMinutes(0);
       ausg.setSeconds(0);
       ausg.setMilliseconds(0);
