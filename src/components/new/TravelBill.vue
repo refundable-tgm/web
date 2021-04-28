@@ -327,7 +327,7 @@
             <b-form-input
               :id="data.index + '4'"
               v-model="data.item.km"
-              :readonly="readonly"
+              :readonly="readonly || data.item.kind_of_cost.includes('0') === false"
               v-on:input="update()"
               type="number"
             >
