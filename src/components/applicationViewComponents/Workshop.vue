@@ -270,7 +270,7 @@ export default {
       this.data.start_time = start;
       this.data.end_time = end;
       this.updateData();
-    },
+    }
   }
 };
 </script>

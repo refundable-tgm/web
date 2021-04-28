@@ -181,7 +181,7 @@ export default {
       this.data.attendance_from = start;
       this.data.attendance_till = end;
       this.updateData();
-    },
+    }
   },
   mounted() {
     this.selected = this.data.group;
