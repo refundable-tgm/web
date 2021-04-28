@@ -368,11 +368,9 @@ export default {
           }
         })
         .then(response => {
-          console.log(response);
           this.loadView(response.data);
         })
         .catch(error => {
-          console.log(error);
           switch (error.response.status) {
             case 401:
               axios
@@ -498,7 +496,7 @@ export default {
             return app;
           }
         }
-        if (this.app.progress === 3 || app.progress === 4) {
+        if (app.progress === 3 || app.progress === 4) {
           if (current >= new Date(app.end_time)) {
             app.progress = 5;
             return app;
@@ -514,7 +512,7 @@ export default {
             return app;
           }
         }
-        if (this.app.progress === 2 || app.progress === 3) {
+        if (app.progress === 2 || app.progress === 3) {
           if (current >= new Date(app.end_time)) {
             if (app.kind === 6) {
               if (
