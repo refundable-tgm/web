@@ -620,10 +620,15 @@ export default {
       ].end_point = this.app.destination_address;
       this.app.travel_invoices[this.currentTeacherIndex].shortened_amount =
         data.short;
-      this.app.travel_invoices[this.currentTeacherIndex].breakfasts =
-        this.returnValue(data.breakfast);
-      this.app.travel_invoices[this.currentTeacherIndex].lunches = this.returnValue(data.lunch);
-      this.app.travel_invoices[this.currentTeacherIndex].dinners = this.returnValue(data.dinner);
+      this.app.travel_invoices[
+        this.currentTeacherIndex
+      ].breakfasts = this.returnValue(data.breakfast);
+      this.app.travel_invoices[
+        this.currentTeacherIndex
+      ].lunches = this.returnValue(data.lunch);
+      this.app.travel_invoices[
+        this.currentTeacherIndex
+      ].dinners = this.returnValue(data.dinner);
       this.app.travel_invoices[this.currentTeacherIndex].kilometre_amount =
         data.km;
       this.app.travel_invoices[
@@ -785,7 +790,15 @@ export default {
      */
     calcDate(date) {
       var tmp = date.split(".");
-      return tmp[2] + "-" + tmp[1] + "-" + tmp[0] + "T00:00:00Z";
+      var ausg = new Date();
+      ausg.setFullYear(tmp[2]);
+      ausg.setMonth(tmp[1]);
+      ausg.setDate(tmp[0]);
+      ausg.setHours(0);
+      ausg.setMinutes(0);
+      ausg.setSeconds(0);
+      ausg.setMilliseconds(0);
+      return ausg.toISOString();
     },
     /**
      * Diese Methode rechnet die Zeit in das verwendete Datumsformat um
