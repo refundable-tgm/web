@@ -472,7 +472,7 @@ export default {
         });
       for (let i = 0; i < this.invoices.length; i++) {
         imgs[i] = await toBase64(this.invoices[i]);
-        this.data.beleg.files.push({ pdf: imgs[i] });
+        this.data.beleg.files.push({ pdf: imgs[i].substring(28) });
       }
       this.update();
     },
@@ -538,7 +538,7 @@ export default {
      * Diese Methode setzt alle wichtigen Daten für diese Komponente
      */
     loadData() {
-      for (let i = 0; i <= this.calculateLength()-1; i++) {
+      for (let i = 0; i <= this.calculateLength() - 1; i++) {
         var tmp = new Date(this.start);
         tmp.setDate(tmp.getDate() + i);
         let tmp_kind = [];
@@ -555,7 +555,7 @@ export default {
           tmp_kind.push("3");
         }
         this.data.items.push({
-          index: (i+1),
+          index: i + 1,
           date:
             tmp.getUTCDate() +
             "." +
@@ -622,14 +622,17 @@ export default {
     ) {
       this.readonly = false;
     }
-    if (this.app.calculation.rows !== null && this.app.calculation.rows !== []) {
+    if (
+      this.app.calculation.rows !== null &&
+      this.app.calculation.rows !== []
+    ) {
       this.loadData();
     } else {
       for (let i = 0; i <= this.calculateLength() - 1; i++) {
         var tmp = new Date(this.start);
         tmp.setDate(tmp.getDate() + i);
         this.data.items.push({
-          index: (i+1),
+          index: i + 1,
           date:
             tmp.getUTCDate() +
             "." +
