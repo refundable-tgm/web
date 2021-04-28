@@ -1082,6 +1082,9 @@ export default {
                 this.app.progress = 6;
                 return true;
               }
+            } else {
+              this.app.progress = 4;
+              return true;
             }
           } else {
             return false;

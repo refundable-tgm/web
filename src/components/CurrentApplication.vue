@@ -478,6 +478,9 @@ export default {
                 app.progress = 6;
                 return app;
               }
+            } else {
+              app.progress = 4;
+              return app;
             }
           } else {
             return app;
