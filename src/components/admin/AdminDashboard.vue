@@ -313,6 +313,7 @@ export default {
       for (let i = 0; i < apps.length; i++) {
         apps[i].title = apps[i].name;
         apps[i].stat = this.loadStatus(apps[i].kind, apps[i].progress);
+        console.log(apps[i].stat);
         apps[i].edat = this.formatDate(
           apps[i].business_trip_applications[0].date_application_filed
         );
