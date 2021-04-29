@@ -714,24 +714,35 @@ export default {
      */
     updateTA(index, data) {
       index.toString();
+      console.log("1");
       if (data.business_karte.includes("too")) {
         this.app.business_trip_applications[
           this.currentTeacherIndex
         ].business_card_emitted_outward = true;
+        console.log("2");
       } else {
         this.app.business_trip_applications[
           this.currentTeacherIndex
         ].business_card_emitted_outward = false;
+        console.log("3");
       }
       if (data.business_karte.includes("back")) {
         this.app.business_trip_applications[
           this.currentTeacherIndex
-        ].business_card_emitted_outward = true;
+        ].business_card_emitted_return = true;
+        console.log("4");
       } else {
         this.app.business_trip_applications[
           this.currentTeacherIndex
-        ].business_card_emitted_outward = false;
+        ].business_card_emitted_return = false;
+        console.log("5");
       }
+      console.log(this.app.business_trip_applications[
+          this.currentTeacherIndex
+        ].business_card_emitted_outward);
+        console.log(this.app.business_trip_applications[
+          this.currentTeacherIndex
+        ].business_card_emitted_return);
       if (data.bonus_meilen[0] === "0" || data.bonus_meilen[1] === "0") {
         this.app.business_trip_applications[
           this.currentTeacherIndex
