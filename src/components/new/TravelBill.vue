@@ -642,11 +642,11 @@ export default {
         this.data.items.push({
           index: i + 1,
           date:
-            tmp.getUTCDate() +
+            tmp.getDate() +
             "." +
-            (tmp.getUTCMonth() + 1) +
+            (tmp.getMonth() + 1) +
             "." +
-            tmp.getUTCFullYear(),
+            tmp.getFullYear(),
           start: "",
           end: "",
           km: 0,
