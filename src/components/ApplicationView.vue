@@ -1328,6 +1328,14 @@ export default {
         });
     },
     /**
+     * Diese Methode löscht das application_approved attribut des Antrags, welches fälschlicherweise gesetzt wird
+     */
+    deleteApproval() {
+      for(let i = 0;i<this.app.travel_invoices.length;i++) {
+        this.app.travel_invoices[i].approval_date = "";
+      }
+    },
+    /**
      * Diese Methode sendet den veränderten Antrag an das Backend
      */
     save() {
@@ -1341,6 +1349,8 @@ export default {
               this.sendReceipts(this.belege);
             }
           }
+        } else {
+          this.deleteApproval();
         }
       } else {
         if (this.app.kind === 1) {
@@ -1351,6 +1361,8 @@ export default {
                 this.app.progress = 5;
               }
             }
+          } else {
+            this.deleteApproval();
           }
         } else {
           if (
@@ -1364,6 +1376,8 @@ export default {
                   this.app.progress = 5;
                 }
               }
+            } else {
+              this.deleteApproval();
             }
           }
         }

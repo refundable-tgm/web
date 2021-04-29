@@ -1394,6 +1394,7 @@ export default {
             ].date_application_approved = this.createNewDate();
             this.app.last_changed = this.createNewDate();
             this.app.progress = 3;
+            this.deleteApproval();
           }
         }
         if (this.app.progress === 6) {
@@ -1412,6 +1413,7 @@ export default {
             ].date_application_approved = this.createNewDate();
             this.app.progress = 2;
             this.app.last_changed = this.createNewDate();
+            this.deleteApproval();
           }
         }
         if (this.app.progress === 5) {
@@ -1485,6 +1487,14 @@ export default {
               return false;
           }
         });
+    },
+    /**
+     * Diese Methode löscht das application_approved attribut des Antrags, welches fälschlicherweise gesetzt wird
+     */
+    deleteApproval() {
+      for(let i = 0;i<this.app.travel_invoices.length;i++) {
+        this.app.travel_invoices[i].approval_date = "";
+      }
     },
     /**
      * Diese methode sendet ein Signal an die Eltern-Componente
