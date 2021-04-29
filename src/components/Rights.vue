@@ -101,12 +101,6 @@ export default {
       }
     },
     /**
-     * Diese Methode lässt auf sich warten
-     */
-    sleep() {
-      return new Promise(resolve => setTimeout(resolve, 1000));
-    },
-    /**
      * Diese Methode sendet die Rechte für das angegebene Konto an das Backend
      */
     save() {
@@ -131,7 +125,6 @@ export default {
               }
             })
             .then(response => {
-              this.sleep();
               axios
                 .post(
                   this.url +
@@ -177,7 +170,6 @@ export default {
                           }
                         )
                         .then(re => {
-                          this.sleep();
                           axios
                             .post(
                               this.url +
