@@ -908,9 +908,11 @@ export default {
       if (this.checkRunning()) {
         this.save();
       }
+      console.log("1");
       this.title = this.app.name;
       this.kind = this.app.kind;
       this.currentTeacher = this.user.short;
+      console.log("2");
       if (this.app.kind === 0) {
         this.klassen = this.app.school_event_details.classes;
         this.auswahl = this.klassen;
@@ -944,26 +946,34 @@ export default {
           this.currentTeacherIndex
         ];
       } else {
+        console.log("3");
         this.currentTeacherIndex = 0;
       }
       if (this.app.kind === 1) {
+        console.log("4");
         this.isLeader = true;
         this.start = this.app.start_time;
         this.end = this.app.end_time;
         this.wdata = this.app;
       }
       if (this.app.kind === 6) {
+        console.log("5");
         this.isLeader = true;
         this.start = this.app.start_time;
         this.end = this.app.end_time;
         this.odata = this.app;
       }
+      console.log("6");
       this.tadata = this.app.business_trip_applications[
         this.currentTeacherIndex
       ];
+      console.log("7");
       this.tbdata = this.app.travel_invoices[this.currentTeacherIndex];
+      console.log("8");
       this.setItems(this.app);
+      console.log("9");
       this.setReads(this.app);
+      console.log("10");
     },
     /**
      * Diese Methode gibt den String der Variable zurück
