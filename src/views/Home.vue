@@ -423,7 +423,7 @@ export default {
      * Diese Methode erstellt die Datenstruktur für die Begleitpersonenformulare
      * @param escortsdata Die Informationen aus dem Schulveranstaltungsformular
      */
-    loadEscortsData(escortsdata) {
+    async loadEscortsData(escortsdata) {
       let output = [
         {
           name: this.user.longname.split(" ")[0],
