@@ -614,9 +614,9 @@ export default {
       ].trip_end_time = this.app.end_time;
       this.app.travel_invoices[
         this.currentTeacherIndex
-      ].staffnr = this.app.business_trip_applications[
+      ].staffnr = this.returnValue(this.app.business_trip_applications[
         this.currentTeacherIndex
-      ].staffnr;
+      ].staffnr);
       this.app.travel_invoices[
         this.currentTeacherIndex
       ].starting_point = this.app.start_address;
