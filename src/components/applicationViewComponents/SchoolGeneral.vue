@@ -157,7 +157,7 @@
               >
                 <b-form-tags
                   id="begl"
-                  input-id="tags-pills"
+                  input-id="tags-pills1"
                   v-model="beg"
                   :disabled="readonly"
                   @input="updateBeg"
@@ -180,7 +180,7 @@
               >
                 <b-form-tags
                   id="kl"
-                  input-id="tags-pills"
+                  input-id="tags-pills2"
                   v-model="data.school_event_details.classes"
                   :disabled="readonly"
                   @input="updateData"
