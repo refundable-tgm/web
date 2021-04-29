@@ -1492,7 +1492,7 @@ export default {
      * Diese Methode löscht das application_approved attribut des Antrags, welches fälschlicherweise gesetzt wird
      */
     deleteApproval() {
-      for(let i = 0;i<this.app.travel_invoices.length;i++) {
+      for (let i = 0; i < this.app.travel_invoices.length; i++) {
         this.app.travel_invoices[i].approval_date = "";
       }
     },
