@@ -225,8 +225,7 @@ export default {
       appid: "",
       token: "",
       refresh_token: "",
-      output: "",
-      loadFailed: true
+      output: ""
     };
   },
   methods: {
@@ -279,11 +278,6 @@ export default {
 
         case "Escorts":
           this.loadEscortsData(escortsdata);
-          if (!this.loadFailed) {
-            this.change("Escorts", back, false);
-          } else {
-            this.failedConfirm();
-          }
           break;
 
         case "OtherCause":
@@ -427,7 +421,6 @@ export default {
      * @param escortsdata Die Informationen aus dem Schulveranstaltungsformular
      */
     loadEscortsData(escortsdata) {
-      this.loadFailed = true;
       this.output = [
         {
           name: this.user.longname.split(" ")[0],
@@ -486,9 +479,8 @@ export default {
           if (index === max) {
             escortsdata.output = this.output;
             this.escortsdata = escortsdata;
-            this.loadFailed = false;
+            this.change("Escorts", back, false);
           }
-          return response.data;
         })
         .catch(error => {
           switch (error.response.status) {
