@@ -624,7 +624,7 @@ export default {
         this.currentTeacherIndex
       ].end_point = this.app.destination_address;
       this.app.travel_invoices[this.currentTeacherIndex].shortened_amount =
-        data.short;
+        this.returnValue(data.short);
       this.app.travel_invoices[
         this.currentTeacherIndex
       ].breakfasts = this.returnValue(data.breakfast);
@@ -635,10 +635,10 @@ export default {
         this.currentTeacherIndex
       ].dinners = this.returnValue(data.dinner);
       this.app.travel_invoices[this.currentTeacherIndex].kilometre_amount =
-        data.km;
+        this.returnValue(data.km);
       this.app.travel_invoices[
         this.currentTeacherIndex
-      ].travel_costs_pre_grant = data.travel_grant;
+      ].travel_costs_pre_grant = this.returnValue(data.travel_grant);
       this.app.travel_invoices[this.currentTeacherIndex].calculation = {};
       this.app.travel_invoices[this.currentTeacherIndex].calculation.id = 0;
       this.app.travel_invoices[this.currentTeacherIndex].calculation.rows = [];
