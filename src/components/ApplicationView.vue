@@ -118,7 +118,7 @@
                 v-on:update="updateSG"
                 v-on:updateToken="updateToken"
                 v-on:logout="logout"
-                v-if="isLeader && row.item.form == 'SchoolEventDetails'"
+                v-if="row.item.form == 'SchoolEventDetails'"
               />
               <!-- Veranstaltuns BEgleiter -->
               <SchoolEscorts
