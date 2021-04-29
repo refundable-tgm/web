@@ -500,13 +500,17 @@ export default {
      */
     updateTB(index, data) {
       index.toString();
-      this.app.travel_invoices[this.currentTeacherIndex].degree = this.app.business_trip_applications[
+      this.app.travel_invoices[
+        this.currentTeacherIndex
+      ].degree = this.app.business_trip_applications[
         this.currentTeacherIndex
       ].degree;
-      this.app.travel_invoices[this.currentTeacherIndex].title = this.app.business_trip_applications[
+      this.app.travel_invoices[
+        this.currentTeacherIndex
+      ].title = this.app.business_trip_applications[
         this.currentTeacherIndex
       ].title;
-      this.app.travel_invoices[this.currentTeacherIndex].title = data.title
+      this.app.travel_invoices[this.currentTeacherIndex].title = data.title;
       this.belege = data.beleg;
       if (data.selected.includes("a1")) {
         this.app.travel_invoices[
@@ -621,17 +625,18 @@ export default {
       ].trip_end_time = this.app.end_time;
       this.app.travel_invoices[
         this.currentTeacherIndex
-      ].staffnr = this.returnValue(this.app.business_trip_applications[
-        this.currentTeacherIndex
-      ].staffnr);
+      ].staffnr = this.returnValue(
+        this.app.business_trip_applications[this.currentTeacherIndex].staffnr
+      );
       this.app.travel_invoices[
         this.currentTeacherIndex
       ].starting_point = this.app.start_address;
       this.app.travel_invoices[
         this.currentTeacherIndex
       ].end_point = this.app.destination_address;
-      this.app.travel_invoices[this.currentTeacherIndex].shortened_amount =
-        this.returnValue(data.short);
+      this.app.travel_invoices[
+        this.currentTeacherIndex
+      ].shortened_amount = this.returnValue(data.short);
       this.app.travel_invoices[
         this.currentTeacherIndex
       ].breakfasts = this.returnValue(data.breakfast);
@@ -641,8 +646,9 @@ export default {
       this.app.travel_invoices[
         this.currentTeacherIndex
       ].dinners = this.returnValue(data.dinner);
-      this.app.travel_invoices[this.currentTeacherIndex].kilometre_amount =
-        this.returnValue(data.km);
+      this.app.travel_invoices[
+        this.currentTeacherIndex
+      ].kilometre_amount = this.returnValue(data.km);
       this.app.travel_invoices[
         this.currentTeacherIndex
       ].travel_costs_pre_grant = this.returnValue(data.travel_grant);
@@ -708,39 +714,23 @@ export default {
      */
     updateTA(index, data) {
       index.toString();
-      switch (data.business_karte) {
-        case "no":
-          this.app.business_trip_applications[
-            this.currentTeacherIndex
-          ].business_card_emitted_outward = false;
-          this.app.business_trip_applications[
-            this.currentTeacherIndex
-          ].business_card_emitted_return = false;
-          break;
-        case "too":
-          this.app.business_trip_applications[
-            this.currentTeacherIndex
-          ].business_card_emitted_outward = true;
-          this.app.business_trip_applications[
-            this.currentTeacherIndex
-          ].business_card_emitted_return = false;
-          break;
-        case "back":
-          this.app.business_trip_applications[
-            this.currentTeacherIndex
-          ].business_card_emitted_outward = false;
-          this.app.business_trip_applications[
-            this.currentTeacherIndex
-          ].business_card_emitted_return = true;
-          break;
-        default:
-          this.app.business_trip_applications[
-            this.currentTeacherIndex
-          ].business_card_emitted_outward = false;
-          this.app.business_trip_applications[
-            this.currentTeacherIndex
-          ].business_card_emitted_return = false;
-          break;
+      if (data.business_karte.includes("too")) {
+        this.app.business_trip_applications[
+          this.currentTeacherIndex
+        ].business_card_emitted_outward = true;
+      } else {
+        this.app.business_trip_applications[
+          this.currentTeacherIndex
+        ].business_card_emitted_outward = false;
+      }
+      if (data.business_karte.includes("back")) {
+        this.app.business_trip_applications[
+          this.currentTeacherIndex
+        ].business_card_emitted_outward = true;
+      } else {
+        this.app.business_trip_applications[
+          this.currentTeacherIndex
+        ].business_card_emitted_outward = false;
       }
       if (data.bonus_meilen[0] === "0" || data.bonus_meilen[1] === "0") {
         this.app.business_trip_applications[
