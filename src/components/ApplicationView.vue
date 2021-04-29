@@ -1332,7 +1332,7 @@ export default {
      */
     deleteApproval() {
       for (let i = 0; i < this.app.travel_invoices.length; i++) {
-        this.app.travel_invoices[i].approval_date = "";
+        delete this.app.travel_invoices[i].approval_date;
       }
     },
     /**
@@ -2502,6 +2502,7 @@ export default {
      * Diese Methode löscht den Antrag
      */
     delAn() {
+      this.deleteApproval();
       axios
         .delete(this.url + "/deleteApplication?uuid=" + this.app.uuid, {
           headers: {
@@ -2560,6 +2561,7 @@ export default {
      * Diese Methode schließt den geöffneten Antrag
      */
     closeAn() {
+      this.deleteApproval();
       if (this.app.kind === 0) {
         this.app.progress = 7;
       } else {

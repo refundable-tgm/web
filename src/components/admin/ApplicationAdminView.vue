@@ -1289,6 +1289,7 @@ export default {
      * Diese Methode lehnt den Antrag ab
      */
     delAn() {
+      this.deleteApproval();
       if (this.app.kind === 0) {
         if (this.app.progress === 2) {
           for (let i = 0; i < this.app.business_trip_applications.length; i++) {
@@ -1493,7 +1494,7 @@ export default {
      */
     deleteApproval() {
       for (let i = 0; i < this.app.travel_invoices.length; i++) {
-        this.app.travel_invoices[i].approval_date = "";
+        delete this.app.travel_invoices[i].approval_date;
       }
     },
     /**
