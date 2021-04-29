@@ -730,6 +730,8 @@ export default {
                     })
                     .catch(e => {
                       e.toString();
+                      this.hideClass();
+                      this.shown = false;
                       this.failedPDF();
                     });
                 })
@@ -739,6 +741,8 @@ export default {
                 });
               break;
             default:
+              this.hideClass();
+              this.shown = false;
               this.failedPDF();
               break;
           }
