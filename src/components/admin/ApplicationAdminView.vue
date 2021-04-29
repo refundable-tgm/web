@@ -7,37 +7,13 @@
         <h1 id="new-application-heading">Antrag für {{ app.name }}</h1>
       </b-col>
       <div class="col-12 col-md-6">
-        <!-- Startseite Button -->
-        <b-button
-          variant="outline-primary"
-          class="float-right"
-          v-on:click="index"
-          v-if="
-            !(
-              (user.pek === true &&
-                user.av === false &&
-                user.admin === false) ||
-              (user.administration === true &&
-                user.av === false &&
-                user.admin === false)
-            )
-          "
-        >
-          <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
-        </b-button>
         <!-- Dashoard Button -->
         <b-button
           variant="outline-primary"
           class="float-right"
           v-on:click="dashboard"
-          v-if="
-            (user.pek === true && user.av === false && user.admin === false) ||
-              (user.administration === true &&
-                user.av === false &&
-                user.admin === false)
-          "
         >
-          <b-icon icon="house" aria-hidden="true"></b-icon> Startseite
+          <b-icon icon="house" aria-hidden="true"></b-icon> Dashboard
         </b-button>
       </div>
     </b-row>
