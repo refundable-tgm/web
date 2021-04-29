@@ -440,7 +440,7 @@ export default {
         }
       ];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
-        var curTeach = this.getTeacher(escortsdata.teacher[i]);
+        var curTeach = await this.getTeacher(escortsdata.teacher[i]);
         console.log(curTeach);
         if (curTeach === undefined) {
           return false;
