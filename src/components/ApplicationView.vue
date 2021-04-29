@@ -500,6 +500,13 @@ export default {
      */
     updateTB(index, data) {
       index.toString();
+      this.app.travel_invoices[this.currentTeacherIndex].degree = this.app.business_trip_applications[
+        this.currentTeacherIndex
+      ].degree;
+      this.app.travel_invoices[this.currentTeacherIndex].title = this.app.business_trip_applications[
+        this.currentTeacherIndex
+      ].title;
+      this.app.travel_invoices[this.currentTeacherIndex].title = data.title
       this.belege = data.beleg;
       if (data.selected.includes("a1")) {
         this.app.travel_invoices[
@@ -789,6 +796,12 @@ export default {
       this.app.business_trip_applications[
         this.currentTeacherIndex
       ].estimated_costs = this.returnValue(data.geschaetzte_kosten);
+      this.app.business_trip_applications[
+        this.currentTeacherIndex
+      ].degree = this.returnString(data.degree);
+      this.app.business_trip_applications[
+        this.currentTeacherIndex
+      ].title = this.returnString(data.title);
     },
     /**
      * Diese Methode rechnet das Datum in das verwendete Datumsformat um
