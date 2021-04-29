@@ -314,6 +314,10 @@
             </div>
           </b-col></b-row
         >
+        <b-button v-if="shown" variant="primary" disabled>
+          <b-spinner small></b-spinner>
+          Dieser Vorgang kann mehrere Minuten dauern...
+        </b-button>
         <b-row>
           <b-col cols="6">
             <!-- PDF öffnen bestätigung -->
@@ -441,7 +445,8 @@ export default {
       currentTeacherIndex: -1,
       auswahl: [],
       klassen: [],
-      belege: []
+      belege: [],
+      shown: false
     };
   },
   computed: {
@@ -1883,7 +1888,7 @@ export default {
      * Lädt die PDF für die Klassen herunter
      */
     generallPDF() {
-      this.classForm();
+      this.shown = true;
       var classes = "";
       for (let i = 0; i < this.auswahl.length; i++) {
         classes += "&classes=" + this.auswahl[i];
@@ -1901,6 +1906,8 @@ export default {
           }
         )
         .then(response => {
+          this.hideClass();
+          this.shown = false;
           this.showPDF(response.data);
         })
         .catch(error => {
@@ -1929,6 +1936,8 @@ export default {
                       }
                     )
                     .then(res => {
+                      this.hideClass();
+                      this.shown = false;
                       this.showPDF(res.data);
                     })
                     .catch(e => {
