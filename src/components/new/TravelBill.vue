@@ -523,7 +523,11 @@ export default {
      * @returns Die Dauer des Antrags
      */
     calculateLength() {
-      let diff = new Date(this.end).getTime() - new Date(this.start).getTime();
+      var ende = new Date(this.end);
+      var starten = new Date(this.start);
+      ende.setHours(10);
+      starten.setHours(12);
+      let diff = ende.getTime() - starten.getTime();
       let days = diff / (1000 * 3600 * 24);
       return Math.ceil(days);
     },
