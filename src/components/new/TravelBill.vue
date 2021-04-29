@@ -527,8 +527,8 @@ export default {
       var starten = new Date(this.start);
       console.log(ende);
       console.log(starten);
-      ende.setHours(10);
-      starten.setHours(12);
+      ende.setHours(1);
+      starten.setHours(0);
       let diff = ende.getTime() - starten.getTime();
       let days = diff / (1000 * 3600 * 24);
       console.log(ende);
