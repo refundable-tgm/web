@@ -445,7 +445,7 @@ export default {
      * @param shortName Der Kürzel des verlangten Lehrers
      */
     getTeacher(shortName, escortsdata, index, back) {
-      var max = escortsdata.teacher.length;
+      var max = escortsdata.teacher.length - 1;
       axios
         .get(this.url + "/getTeacherByShort?name=" + shortName, {
           headers: {
@@ -501,7 +501,34 @@ export default {
                       }
                     })
                     .then(res => {
-                      return res.data;
+                      this.output.push(
+                        JSON.parse(
+                          '{"name":"' +
+                            res.data.longname.split(" ")[0] +
+                            '","surname":"' +
+                            res.data.longname.split(" ")[1] +
+                            '","shortname":"' +
+                            escortsdata.teacher[index] +
+                            '","startDate":"' +
+                            escortsdata.startDate +
+                            '","endDate":"' +
+                            escortsdata.endDate +
+                            '","startTime":"' +
+                            escortsdata.startTime +
+                            '","endTime":"' +
+                            escortsdata.endTime +
+                            '","selected":"","role":1, "startadresse":"' +
+                            escortsdata.start +
+                            '","meetingpoint":"' +
+                            escortsdata.start +
+                            '"}'
+                        )
+                      );
+                      if (index === max) {
+                        escortsdata.output = this.output;
+                        this.escortsdata = escortsdata;
+                        this.change("Escorts", back, false);
+                      }
                     })
                     .catch(e => {
                       e.toString();
