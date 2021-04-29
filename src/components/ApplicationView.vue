@@ -1366,6 +1366,8 @@ export default {
                 this.app.progress = 5;
               }
             }
+          } else {
+            this.app.progress = 5;
           }
         } else {
           this.deleteApproval();
@@ -1379,6 +1381,8 @@ export default {
                   this.sendReceipts(this.belege);
                   this.app.progress = 5;
                 }
+              } else {
+                this.app.progress = 5;
               }
             }
           }
