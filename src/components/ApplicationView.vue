@@ -806,7 +806,7 @@ export default {
       ausg.setMinutes(0);
       ausg.setSeconds(0);
       ausg.setMilliseconds(0);
-      console.log(aus.toISOString());
+      console.log(ausg.toISOString());
       return ausg.toISOString();
     },
     /**
