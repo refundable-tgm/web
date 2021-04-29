@@ -799,7 +799,6 @@ export default {
     calcDate(date) {
       var tmp = date.split(".");
       var ausg = new Date();
-      console.log(tmp);
       ausg.setFullYear(tmp[2]);
       ausg.setMonth(tmp[1] - 1);
       ausg.setDate(tmp[0]);
@@ -807,6 +806,7 @@ export default {
       ausg.setMinutes(0);
       ausg.setSeconds(0);
       ausg.setMilliseconds(0);
+      console.log(aus.toISOString());
       return ausg.toISOString();
     },
     /**
