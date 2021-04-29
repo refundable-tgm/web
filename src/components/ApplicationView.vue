@@ -1425,9 +1425,9 @@ export default {
             if (this.belege.files !== undefined) {
               if (this.belege.files.length >= 1) {
                 this.sendReceipts(this.belege);
-                this.app.progress = 5;
               }
-            } else {
+            }
+            if(this.app.travel_invoices[0].calculation.rows !== null) {
               this.app.progress = 5;
             }
           }
@@ -1440,11 +1440,11 @@ export default {
               if (this.belege.files !== undefined) {
                 if (this.belege.files.length >= 1) {
                   this.sendReceipts(this.belege);
-                  this.app.progress = 5;
                 }
-              } else {
-                this.app.progress = 5;
               }
+              if(this.app.travel_invoices[0].calculation.rows !== null) {
+              this.app.progress = 5;
+            }
             }
           }
         }
