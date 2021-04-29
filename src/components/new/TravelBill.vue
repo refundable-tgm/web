@@ -547,6 +547,7 @@ export default {
       for (let i = 0; i <= this.calculateLength() - 1; i++) {
         var tmp = new Date(this.start);
         tmp.setDate(tmp.getDate() + i);
+        tmp.setHours(12);
         let tmp_kind = [];
         if (this.app.calculation.rows[i].kind_of_cost.includes(0)) {
           tmp_kind.push("0");
@@ -563,11 +564,11 @@ export default {
         this.data.items.push({
           index: i + 1,
           date:
-            tmp.getUTCDate() +
+            tmp.getDate() +
             "." +
-            (tmp.getUTCMonth() + 1) +
+            (tmp.getMonth() + 1) +
             "." +
-            tmp.getUTCFullYear(),
+            tmp.getFullYear(),
           start: this.getTimeOfDate(this.app.calculation.rows[i].begin),
           end: this.getTimeOfDate(this.app.calculation.rows[i].end),
           kind_of_cost: tmp_kind,
