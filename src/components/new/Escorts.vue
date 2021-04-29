@@ -324,7 +324,7 @@ export default {
               new Date().toISOString().split("T")[1]
             ),
             business_card_emitted_outward: this.escorts.output[i].emitted_out,
-            business_card_emitted_return: this.escorts.output[i].emitted_out
+            business_card_emitted_return: this.escorts.output[i].emitted_ret
           });
         }
         var data = {
