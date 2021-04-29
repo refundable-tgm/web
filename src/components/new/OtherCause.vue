@@ -198,7 +198,7 @@
                 description="Geben Sie den Grund an."
                 label="Sonstiger Grund"
                 label-for="son"
-                v-if="selected == '8'"
+                v-if="selected == '10'"
               >
                 <b-form-input
                   id="son"

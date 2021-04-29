@@ -1395,9 +1395,9 @@ export default {
                 this.sendReceipts(this.belege);
                 this.app.progress = 5;
               }
+            } else {
+              this.app.progress = 5;
             }
-          } else {
-            this.app.progress = 5;
           }
         } else {
           this.deleteApproval();
@@ -1406,8 +1406,8 @@ export default {
             this.app.other_reason_details.kind !== 9
           ) {
             if (this.app.progress >= 4) {
-              if (this.belege.files.length >= 1) {
-                if (this.belege.files !== undefined) {
+              if (this.belege.files !== undefined) {
+                if (this.belege.files.length >= 1) {
                   this.sendReceipts(this.belege);
                   this.app.progress = 5;
                 }
