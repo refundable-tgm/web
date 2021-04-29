@@ -478,7 +478,7 @@ export default {
      * @param shortName Der Kürzel des verlangten Lehrers
      */
     getTeacher(shortName) {
-      axios
+      await axios
         .get(this.url + "/getTeacherByShort?name=" + shortName, {
           headers: {
             Authorization: "Basic " + this.token
