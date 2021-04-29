@@ -714,37 +714,24 @@ export default {
      */
     updateTA(index, data) {
       index.toString();
-      console.log("1");
       if (data.business_karte.includes("too")) {
         this.app.business_trip_applications[
           this.currentTeacherIndex
         ].business_card_emitted_outward = true;
-        console.log("2");
       } else {
         this.app.business_trip_applications[
           this.currentTeacherIndex
         ].business_card_emitted_outward = false;
-        console.log("3");
       }
       if (data.business_karte.includes("back")) {
         this.app.business_trip_applications[
           this.currentTeacherIndex
         ].business_card_emitted_return = true;
-        console.log("4");
       } else {
         this.app.business_trip_applications[
           this.currentTeacherIndex
         ].business_card_emitted_return = false;
-        console.log("5");
       }
-      console.log(
-        this.app.business_trip_applications[this.currentTeacherIndex]
-          .business_card_emitted_outward
-      );
-      console.log(
-        this.app.business_trip_applications[this.currentTeacherIndex]
-          .business_card_emitted_return
-      );
       if (data.bonus_meilen[0] === "0" || data.bonus_meilen[1] === "0") {
         this.app.business_trip_applications[
           this.currentTeacherIndex
@@ -846,11 +833,9 @@ export default {
           }
         })
         .then(response => {
-          console.log(response);
           this.loadView(response.data);
         })
         .catch(error => {
-          console.log(error);
           switch (error.response.status) {
             case 401:
               axios
@@ -908,11 +893,9 @@ export default {
       if (this.checkRunning()) {
         this.save();
       }
-      console.log("1");
       this.title = this.app.name;
       this.kind = this.app.kind;
       this.currentTeacher = this.user.short;
-      console.log("2");
       if (this.app.kind === 0) {
         this.klassen = this.app.school_event_details.classes;
         this.auswahl = this.klassen;
@@ -946,34 +929,26 @@ export default {
           this.currentTeacherIndex
         ];
       } else {
-        console.log("3");
         this.currentTeacherIndex = 0;
       }
       if (this.app.kind === 1) {
-        console.log("4");
         this.isLeader = true;
         this.start = this.app.start_time;
         this.end = this.app.end_time;
         this.wdata = this.app;
       }
       if (this.app.kind === 6) {
-        console.log("5");
         this.isLeader = true;
         this.start = this.app.start_time;
         this.end = this.app.end_time;
         this.odata = this.app;
       }
-      console.log("6");
       this.tadata = this.app.business_trip_applications[
         this.currentTeacherIndex
       ];
-      console.log("7");
       this.tbdata = this.app.travel_invoices[this.currentTeacherIndex];
-      console.log("8");
       this.setItems(this.app);
-      console.log("9");
       this.setReads(this.app);
-      console.log("10");
     },
     /**
      * Diese Methode gibt den String der Variable zurück
