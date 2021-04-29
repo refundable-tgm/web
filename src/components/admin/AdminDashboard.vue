@@ -460,6 +460,7 @@ export default {
      * @returns Die Farbe, welche zur Phase des Antrags passt
      */
     getStateVariant(status) {
+      console.log(status);
       switch (status.toLowerCase()) {
         case "akzeptierungsphase":
           return "secondary";
