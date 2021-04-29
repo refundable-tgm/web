@@ -1232,6 +1232,8 @@ export default {
                                     .rows !== null
                                 ) {
                                   allInputed = true;
+                                } else {
+                                  return false;
                                 }
                               } else {
                                 return false;
