@@ -277,7 +277,7 @@ export default {
           break;
 
         case "Escorts":
-          this.loadEscortsData(escortsdata);
+          this.loadEscortsData(escortsdata, back);
           break;
 
         case "OtherCause":
@@ -420,7 +420,7 @@ export default {
      * Diese Methode erstellt die Datenstruktur für die Begleitpersonenformulare
      * @param escortsdata Die Informationen aus dem Schulveranstaltungsformular
      */
-    loadEscortsData(escortsdata) {
+    loadEscortsData(escortsdata, back) {
       this.output = [
         {
           name: this.user.longname.split(" ")[0],
@@ -437,14 +437,14 @@ export default {
         }
       ];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
-        this.getTeacher(escortsdata.teacher[i], escortsdata, i);
+        this.getTeacher(escortsdata.teacher[i], escortsdata, i, back);
       }
     },
     /**
      * Diese Methode gibt den vollen Namen eines Lehrers zurück
      * @param shortName Der Kürzel des verlangten Lehrers
      */
-    getTeacher(shortName, escortsdata, index) {
+    getTeacher(shortName, escortsdata, index, back) {
       var max = escortsdata.teacher.length;
       axios
         .get(this.url + "/getTeacherByShort?name=" + shortName, {
