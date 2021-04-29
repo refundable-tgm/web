@@ -477,7 +477,7 @@ export default {
      * Diese Methode gibt den vollen Namen eines Lehrers zurück
      * @param shortName Der Kürzel des verlangten Lehrers
      */
-    getTeacher(shortName) {
+    async getTeacher(shortName) {
       await axios
         .get(this.url + "/getTeacherByShort?name=" + shortName, {
           headers: {
