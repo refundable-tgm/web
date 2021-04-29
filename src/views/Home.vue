@@ -467,7 +467,7 @@ export default {
                 '","surname":"' +
                 response.data.longname.split(" ")[1] +
                 '","shortname":"' +
-                escortsdata.teacher[i] +
+                escortsdata.teacher[index] +
                 '","startDate":"' +
                 escortsdata.startDate +
                 '","endDate":"' +
