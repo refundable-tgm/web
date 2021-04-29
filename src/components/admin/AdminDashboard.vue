@@ -329,7 +329,9 @@ export default {
             apps[i].from = apps[i].other_reason_details.filer;
             break;
         }
-
+      }
+      var down = 0;
+      for (let i = 0; i < apps.length - down; i++) {
         if (
           this.user.pek === true &&
           this.user.av === false &&
@@ -341,12 +343,16 @@ export default {
             if (apps[i].progress !== 6) {
               console.log("kommt weg");
               apps.splice(i, 1);
+              down++;
+              i = i - down;
             }
           } else {
             console.log("Keine Schule");
             if (apps[i].progress !== 5) {
               console.log("kommt weg");
               apps.splice(i, 1);
+              down++;
+              i = i - down;
             }
           }
         }
@@ -361,16 +367,21 @@ export default {
             if (apps[i].progress !== 2) {
               console.log("kommt weg");
               apps.splice(i, 1);
+              down++;
+              i = i - down;
             }
           } else {
             console.log("Keine Schule");
             if (apps[i].progress !== 1) {
               console.log("kommt weg");
               apps.splice(i, 1);
+              down++;
+              i = i - down;
             }
           }
         }
       }
+
       this.items = apps;
       // Set the initial number of items
       this.totalRows = this.items.length;
