@@ -1045,8 +1045,10 @@ export default {
             this.getTeacherPDF(this.selected[i].uuid, abre);
             this.getBusiness(this.selected[i].uuid, abre, j);
             this.getBusinessExcel(this.selected[i].uuid, abre, j);
-            if(this.selected[i].progress >= 6) this.getInvoice(this.selected[i].uuid, abre, j);
-            if(this.selected[i].progress >= 6) this.getInvoiceExcel(this.selected[i].uuid, abre, j);
+            if (this.selected[i].progress >= 6)
+              this.getInvoice(this.selected[i].uuid, abre, j);
+            if (this.selected[i].progress >= 6)
+              this.getInvoiceExcel(this.selected[i].uuid, abre, j);
           }
         } else {
           var kurz = this.generateShortname(
@@ -1060,8 +1062,10 @@ export default {
           ) {
             this.getBusiness(this.selected[i].uuid, kurz, 0);
             this.getBusinessExcel(this.selected[i].uuid, kurz, 0);
-            if(this.selected[i].progress >= 5) this.getInvoice(this.selected[i].uuid, kurz, 0);
-            if(this.selected[i].progress >= 5) this.getInvoiceExcel(this.selected[i].uuid, kurz, 0);
+            if (this.selected[i].progress >= 5)
+              this.getInvoice(this.selected[i].uuid, kurz, 0);
+            if (this.selected[i].progress >= 5)
+              this.getInvoiceExcel(this.selected[i].uuid, kurz, 0);
           }
         }
       }
