@@ -328,7 +328,7 @@
             </div>
           </b-col></b-row
         >
-        <b-button v-if="shown" variant="primary" disabled>
+        <b-button style="width:100%" v-if="shown" variant="primary" disabled>
           <b-spinner small></b-spinner>
           Dieser Vorgang kann mehrere Minuten dauern...
         </b-button>
