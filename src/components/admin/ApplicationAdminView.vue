@@ -1302,6 +1302,7 @@ export default {
      * Diese Methode lehnt den Antrag ab
      */
     delAn() {
+      this.hideClose();
       this.deleteApproval();
       if (this.app.kind === 0) {
         if (this.app.progress === 2) {
