@@ -224,7 +224,9 @@ export default {
       logged: false,
       appid: "",
       token: "",
-      refresh_token: ""
+      refresh_token: "",
+      output: "",
+      loadFailed: true
     };
   },
   methods: {
@@ -276,7 +278,8 @@ export default {
           break;
 
         case "Escorts":
-          if (this.loadEscortsData(escortsdata)) {
+          this.loadEscortsData(escortsdata);
+          if (!this.loadFailed) {
             this.change("Escorts", back, false);
           } else {
             this.failedConfirm();
@@ -423,8 +426,9 @@ export default {
      * Diese Methode erstellt die Datenstruktur für die Begleitpersonenformulare
      * @param escortsdata Die Informationen aus dem Schulveranstaltungsformular
      */
-    async loadEscortsData(escortsdata) {
-      let output = [
+    loadEscortsData(escortsdata) {
+      this.loadFailed = true;
+      this.output = [
         {
           name: this.user.longname.split(" ")[0],
           surname: this.user.longname.split(" ")[1],
@@ -440,51 +444,50 @@ export default {
         }
       ];
       for (let i = 0; i < escortsdata.teacher.length; i++) {
-        var curTeach = await this.getTeacher(escortsdata.teacher[i]);
-        console.log(curTeach);
-        if (curTeach === undefined) {
-          return false;
-        }
-        output.push(
-          JSON.parse(
-            '{"name":"' +
-              curTeach.longname.split(" ")[0] +
-              '","surname":"' +
-              curTeach.longname.split(" ")[1] +
-              '","shortname":"' +
-              escortsdata.teacher[i] +
-              '","startDate":"' +
-              escortsdata.startDate +
-              '","endDate":"' +
-              escortsdata.endDate +
-              '","startTime":"' +
-              escortsdata.startTime +
-              '","endTime":"' +
-              escortsdata.endTime +
-              '","selected":"","role":1, "startadresse":"' +
-              escortsdata.start +
-              '","meetingpoint":"' +
-              escortsdata.start +
-              '"}'
-          )
-        );
+        this.getTeacher(escortsdata.teacher[i], escortsdata, i);
       }
-      escortsdata.output = output;
-      this.escortsdata = escortsdata;
-      return true;
     },
     /**
      * Diese Methode gibt den vollen Namen eines Lehrers zurück
      * @param shortName Der Kürzel des verlangten Lehrers
      */
-    async getTeacher(shortName) {
-      await axios
+    getTeacher(shortName, escortsdata, index) {
+      var max = escortsdata.teacher.length;
+      axios
         .get(this.url + "/getTeacherByShort?name=" + shortName, {
           headers: {
             Authorization: "Basic " + this.token
           }
         })
         .then(response => {
+          this.output.push(
+            JSON.parse(
+              '{"name":"' +
+                response.data.longname.split(" ")[0] +
+                '","surname":"' +
+                response.data.longname.split(" ")[1] +
+                '","shortname":"' +
+                escortsdata.teacher[i] +
+                '","startDate":"' +
+                escortsdata.startDate +
+                '","endDate":"' +
+                escortsdata.endDate +
+                '","startTime":"' +
+                escortsdata.startTime +
+                '","endTime":"' +
+                escortsdata.endTime +
+                '","selected":"","role":1, "startadresse":"' +
+                escortsdata.start +
+                '","meetingpoint":"' +
+                escortsdata.start +
+                '"}'
+            )
+          );
+          if (index === max) {
+            escortsdata.output = this.output;
+            this.escortsdata = escortsdata;
+            this.loadFailed = false;
+          }
           return response.data;
         })
         .catch(error => {
