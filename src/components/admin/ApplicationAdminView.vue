@@ -1296,8 +1296,8 @@ export default {
           }
           this.app.progress = 0;
         }
-        if (this.app.progress === 5) {
-          this.app.progress = 4;
+        if (this.app.progress === 6) {
+          this.app.progress = 5;
         }
       } else {
         if (this.app.progress === 1) {
@@ -1306,8 +1306,8 @@ export default {
           }
           this.app.progress = 0;
         }
-        if (this.app.progress === 4) {
-          this.app.progress = 3;
+        if (this.app.progress === 5) {
+          this.app.progress = 4;
         }
       }
       this.app.last_changed = this.createNewDate();
