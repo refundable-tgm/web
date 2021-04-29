@@ -800,13 +800,12 @@ export default {
       var tmp = date.split(".");
       var ausg = new Date();
       ausg.setFullYear(tmp[2]);
-      ausg.setMonth(tmp[1] - 1);
       ausg.setDate(tmp[0]);
+      ausg.setMonth(tmp[1] - 1);
       ausg.setHours(12);
       ausg.setMinutes(0);
       ausg.setSeconds(0);
       ausg.setMilliseconds(0);
-      console.log(ausg.toISOString());
       return ausg.toISOString();
     },
     /**
