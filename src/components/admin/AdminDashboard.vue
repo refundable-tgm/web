@@ -340,13 +340,13 @@ export default {
             if (apps[i].progress !== 6) {
               apps.splice(i, 1);
               down++;
-              i = i - down;
+              i--;
             }
           } else {
             if (apps[i].progress !== 5) {
               apps.splice(i, 1);
               down++;
-              i = i - down;
+              i--;
             }
           }
         }
@@ -359,13 +359,13 @@ export default {
             if (apps[i].progress !== 2) {
               apps.splice(i, 1);
               down++;
-              i = i - down;
+              i--;
             }
           } else {
             if (apps[i].progress !== 1) {
               apps.splice(i, 1);
               down++;
-              i = i - down;
+              i--;
             }
           }
         }
