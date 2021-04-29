@@ -737,12 +737,14 @@ export default {
         ].business_card_emitted_return = false;
         console.log("5");
       }
-      console.log(this.app.business_trip_applications[
-          this.currentTeacherIndex
-        ].business_card_emitted_outward);
-        console.log(this.app.business_trip_applications[
-          this.currentTeacherIndex
-        ].business_card_emitted_return);
+      console.log(
+        this.app.business_trip_applications[this.currentTeacherIndex]
+          .business_card_emitted_outward
+      );
+      console.log(
+        this.app.business_trip_applications[this.currentTeacherIndex]
+          .business_card_emitted_return
+      );
       if (data.bonus_meilen[0] === "0" || data.bonus_meilen[1] === "0") {
         this.app.business_trip_applications[
           this.currentTeacherIndex
