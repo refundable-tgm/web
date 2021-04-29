@@ -1804,8 +1804,8 @@ export default {
               form: "Compensation"
             },
             {
-              title: "Begleitformular",
-              form: "SchoolEventTeacherDetails - Abwesenheitsformular"
+              title: "Begleitformular - Abwesenheitsformular",
+              form: "SchoolEventTeacherDetails"
             },
             {
               title: "Reiseformular",
