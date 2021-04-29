@@ -891,7 +891,7 @@ export default {
     loadView(data) {
       this.app = data;
       if (this.checkRunning()) {
-        this.save();
+        this.speichern();
       }
       this.title = this.app.name;
       this.kind = this.app.kind;
@@ -1346,59 +1346,10 @@ export default {
       }
     },
     /**
-     * Diese Methode sendet den veränderten Antrag an das Backend
+     * Diese Methode sendet die Änderungen an das Backend
      */
-    save() {
-      if (this.app.progress === 0) {
-        this.app.progress = 1;
-      }
-      if (this.app.kind === 0) {
-        this.deleteApproval();
-        if (this.app.progress >= 5) {
-          if (this.belege.files !== undefined) {
-            if (this.belege.files.length >= 1) {
-              this.sendReceipts(this.belege);
-            }
-          }
-        }
-      } else {
-        if (this.app.kind === 1) {
-          this.deleteApproval();
-          if (this.app.progress >= 4) {
-            if (this.belege.files !== undefined) {
-              if (this.belege.files.length >= 1) {
-                this.sendReceipts(this.belege);
-                this.app.progress = 5;
-              }
-            } else {
-              this.app.progress = 5;
-            }
-          }
-        } else {
-          this.deleteApproval();
-          if (
-            this.app.other_reason_details.kind !== 7 &&
-            this.app.other_reason_details.kind !== 9
-          ) {
-            if (this.app.progress >= 4) {
-              if (this.belege.files !== undefined) {
-                if (this.belege.files.length >= 1) {
-                  this.sendReceipts(this.belege);
-                  this.app.progress = 5;
-                }
-              } else {
-                this.app.progress = 5;
-              }
-            }
-          }
-        }
-      }
-      if (this.checkProgression()) {
-        this.app.progress = 2;
-      }
-      if (this.checkInvoices()) {
-        this.app.progress = 6;
-      }
+    speichern() {
+      this.deleteApproval();
       this.app.last_changed = this.createNewDate();
       axios
         .put(this.url + "/updateApplication?uuid=" + this.app.uuid, this.app, {
@@ -1452,6 +1403,59 @@ export default {
               break;
           }
         });
+    },
+    /**
+     * Diese Methode sendet den veränderten Antrag an das Backend
+     */
+    save() {
+      if (this.app.progress === 0) {
+        this.app.progress = 1;
+      }
+      if (this.app.kind === 0) {
+        if (this.app.progress >= 5) {
+          if (this.belege.files !== undefined) {
+            if (this.belege.files.length >= 1) {
+              this.sendReceipts(this.belege);
+            }
+          }
+        }
+      } else {
+        if (this.app.kind === 1) {
+          if (this.app.progress >= 4) {
+            if (this.belege.files !== undefined) {
+              if (this.belege.files.length >= 1) {
+                this.sendReceipts(this.belege);
+                this.app.progress = 5;
+              }
+            } else {
+              this.app.progress = 5;
+            }
+          }
+        } else {
+          if (
+            this.app.other_reason_details.kind !== 7 &&
+            this.app.other_reason_details.kind !== 9
+          ) {
+            if (this.app.progress >= 4) {
+              if (this.belege.files !== undefined) {
+                if (this.belege.files.length >= 1) {
+                  this.sendReceipts(this.belege);
+                  this.app.progress = 5;
+                }
+              } else {
+                this.app.progress = 5;
+              }
+            }
+          }
+        }
+      }
+      if (this.checkProgression()) {
+        this.app.progress = 2;
+      }
+      if (this.checkInvoices()) {
+        this.app.progress = 6;
+      }
+      this.speichern();
     },
     /**
      * Diese Methode öffnet das Modal, in dem man den Antrag schließen kann
