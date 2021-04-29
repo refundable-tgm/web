@@ -337,19 +337,14 @@ export default {
           this.user.av === false &&
           this.user.admin === false
         ) {
-          console.log("PEK");
           if (apps[i].kind === 0) {
-            console.log("Schule");
             if (apps[i].progress !== 6) {
-              console.log("kommt weg");
               apps.splice(i, 1);
               down++;
               i = i - down;
             }
           } else {
-            console.log("Keine Schule");
             if (apps[i].progress !== 5) {
-              console.log("kommt weg");
               apps.splice(i, 1);
               down++;
               i = i - down;
@@ -361,19 +356,14 @@ export default {
           this.user.av === false &&
           this.user.admin === false
         ) {
-          console.log("Administration");
           if (apps[i].kind === 0) {
-            console.log("Schule");
             if (apps[i].progress !== 2) {
-              console.log("kommt weg");
               apps.splice(i, 1);
               down++;
               i = i - down;
             }
           } else {
-            console.log("Keine Schule");
             if (apps[i].progress !== 1) {
-              console.log("kommt weg");
               apps.splice(i, 1);
               down++;
               i = i - down;
