@@ -1122,21 +1122,27 @@ export default {
      */
     checkInvoices() {
       if (this.app.kind === 0) {
+        console.log("1");
         if (this.app.progress === 5) {
+          console.log("2");
           for (let i = 0; i < this.app.travel_invoices.length; i++) {
             var allInputed = false;
+            console.log("3");
             if (
               this.app.travel_invoices[i].daily_charges_mode === 0 ||
               this.app.travel_invoices[i].daily_charges_mode === 1 ||
               this.app.travel_invoices[i].daily_charges_mode === 2
             ) {
+              console.log("4");
               if (this.app.travel_invoices[i].daily_charges_mode === 2) {
+                console.log("5");
                 if (
                   this.app.travel_invoices[i].shortened_amount === "" ||
                   isNaN(this.app.travel_invoices[i].shortened_amount) ||
                   this.app.travel_invoices[i].shortened_amount === undefined ||
                   this.app.travel_invoices[i].shortened_amount === null
                 ) {
+                  console.log("6");
                   return false;
                 }
               }
@@ -1145,21 +1151,25 @@ export default {
                 this.app.travel_invoices[i].nightly_charges_mode === 1 ||
                 this.app.travel_invoices[i].nightly_charges_mode === 2
               ) {
+                console.log("7");
                 if (
                   this.app.travel_invoices[i].breakfasts !== "" &&
                   this.app.travel_invoices[i].breakfasts !== undefined &&
                   this.app.travel_invoices[i].breakfasts !== null
                 ) {
+                  console.log("8");
                   if (
                     this.app.travel_invoices[i].lunches !== "" &&
                     this.app.travel_invoices[i].lunches !== undefined &&
                     this.app.travel_invoices[i].lunches !== null
                   ) {
+                    console.log("9");
                     if (
                       this.app.travel_invoices[i].dinners !== "" &&
                       this.app.travel_invoices[i].dinners !== undefined &&
                       this.app.travel_invoices[i].dinners !== null
                     ) {
+                      console.log("10");
                       if (this.app.travel_invoices[i].kilometre_allowance) {
                         if (
                           this.app.travel_invoices[i].kilometre_amount === "" ||
@@ -1167,6 +1177,7 @@ export default {
                             undefined ||
                           this.app.travel_invoices[i].kilometre_amount === null
                         ) {
+                          console.log("11");
                           return false;
                         }
                       }
@@ -1178,6 +1189,7 @@ export default {
                         this.app.travel_invoices[i].calculation
                           .sum_travel_costs !== null
                       ) {
+                        console.log("12");
                         if (
                           this.app.travel_invoices[i].calculation
                             .sum_daily_charges !== "" &&
@@ -1186,6 +1198,7 @@ export default {
                           this.app.travel_invoices[i].calculation
                             .sum_daily_charges !== null
                         ) {
+                          console.log("13");
                           if (
                             this.app.travel_invoices[i].calculation
                               .sum_nightly_charges !== "" &&
@@ -1194,6 +1207,7 @@ export default {
                             this.app.travel_invoices[i].calculation
                               .sum_nightly_charges !== null
                           ) {
+                            console.log("14");
                             if (
                               this.app.travel_invoices[i].calculation
                                 .sum_additional_costs !== "" &&
@@ -1202,6 +1216,7 @@ export default {
                               this.app.travel_invoices[i].calculation
                                 .sum_additional_costs !== null
                             ) {
+                              console.log("15");
                               if (
                                 this.app.travel_invoices[i].calculation
                                   .sum_of_sums !== "" &&
@@ -1210,41 +1225,13 @@ export default {
                                 this.app.travel_invoices[i].calculation
                                   .sum_of_sums !== null
                               ) {
+                                console.log("16");
                                 if (
                                   this.app.travel_invoices[i].calculation
                                     .rows !== null
                                 ) {
-                                  for (
-                                    let j = 0;
-                                    j <
-                                    this.app.travel_invoices[i].calculation.rows
-                                      .length;
-                                    j++
-                                  ) {
-                                    if (
-                                      this.app.travel_invoices[i].calculation
-                                        .rows[j].begin !== "" &&
-                                      this.app.travel_invoices[i].calculation
-                                        .rows[j].begin !== undefined &&
-                                      this.app.travel_invoices[i].calculation
-                                        .rows[j].begin !== null
-                                    ) {
-                                      if (
-                                        this.app.travel_invoices[i].calculation
-                                          .rows[j].end !== "" &&
-                                        this.app.travel_invoices[i].calculation
-                                          .rows[j].end !== undefined &&
-                                        this.app.travel_invoices[i].calculation
-                                          .rows[j].end !== null
-                                      ) {
-                                        allInputed = true;
-                                      } else {
-                                        return false;
-                                      }
-                                    } else {
-                                      return false;
-                                    }
-                                  }
+                                  console.log("17");
+                                  allInputed = true;
                                 }
                               } else {
                                 return false;
@@ -1278,6 +1265,7 @@ export default {
             }
           }
           if (allInputed) {
+            console.log("20!");
             return true;
           }
         }
