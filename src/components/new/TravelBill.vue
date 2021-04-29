@@ -637,6 +637,7 @@ export default {
       for (let i = 0; i <= this.calculateLength() - 1; i++) {
         var tmp = new Date(this.start);
         tmp.setDate(tmp.getDate() + i);
+        tmp.setHours(tmp.getHours() + 2);
         this.data.items.push({
           index: i + 1,
           date:

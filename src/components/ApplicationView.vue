@@ -1427,7 +1427,7 @@ export default {
                 this.sendReceipts(this.belege);
               }
             }
-            if(this.app.travel_invoices[0].calculation.rows !== null) {
+            if (this.app.travel_invoices[0].calculation.rows !== null) {
               this.app.progress = 5;
             }
           }
@@ -1442,9 +1442,9 @@ export default {
                   this.sendReceipts(this.belege);
                 }
               }
-              if(this.app.travel_invoices[0].calculation.rows !== null) {
-              this.app.progress = 5;
-            }
+              if (this.app.travel_invoices[0].calculation.rows !== null) {
+                this.app.progress = 5;
+              }
             }
           }
         }
