@@ -445,7 +445,6 @@ export default {
      * @param shortName Der Kürzel des verlangten Lehrers
      */
     getTeacher(shortName, escortsdata, index, back) {
-      var max = escortsdata.teacher.length - 1;
       axios
         .get(this.url + "/getTeacherByShort?name=" + shortName, {
           headers: {
@@ -476,18 +475,12 @@ export default {
                 '"}'
             )
           );
-          if (index === max) {
-            console.log(index);
-            console.log(shortName);
-            console.log(this.output);
-            console.log(escortsdata.teacher.length + 1);
-            if (this.output.length === escortsdata.teacher.length + 1) {
-              escortsdata.output = this.output;
-              this.escortsdata = escortsdata;
-              this.change("Escorts", back, false);
-            } else {
-              this.failedConfirm();
-            }
+          if (this.output.length === escortsdata.teacher.length + 1) {
+            escortsdata.output = this.output;
+            this.escortsdata = escortsdata;
+            this.change("Escorts", back, false);
+          } else {
+            this.failedConfirm();
           }
         })
         .catch(error => {
@@ -532,17 +525,15 @@ export default {
                             '"}'
                         )
                       );
-                      if (index === max) {
-                        if (
-                          this.output.length ===
-                          escortsdata.teacher.length + 1
-                        ) {
-                          escortsdata.output = this.output;
-                          this.escortsdata = escortsdata;
-                          this.change("Escorts", back, false);
-                        } else {
-                          this.failedConfirm();
-                        }
+                      if (
+                        this.output.length ===
+                        escortsdata.teacher.length + 1
+                      ) {
+                        escortsdata.output = this.output;
+                        this.escortsdata = escortsdata;
+                        this.change("Escorts", back, false);
+                      } else {
+                        this.failedConfirm();
                       }
                     })
                     .catch(e => {
