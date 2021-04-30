@@ -401,57 +401,59 @@ export default {
      * Diese Methode berechnet, welcher Lehrer noch nicht seine Informationen eingegeben hat
      */
     checkFinished(index) {
-      if (this.app.progress === 1) {
+      if (this.data.progress === 1) {
         var allInput = true;
         if (
-          this.app.school_event_details.teachers[index].attendance_from !==
+          this.data.school_event_details.teachers[index].attendance_from !==
             "" &&
-          this.app.school_event_details.teachers[index].attendance_from !==
+          this.data.school_event_details.teachers[index].attendance_from !==
             undefined &&
-          this.app.school_event_details.teachers[index].attendance_from !== null
+          this.data.school_event_details.teachers[index].attendance_from !==
+            null
         ) {
           if (
-            this.app.school_event_details.teachers[index].attendance_till !==
+            this.data.school_event_details.teachers[index].attendance_till !==
               "" &&
-            this.app.school_event_details.teachers[index].attendance_till !==
+            this.data.school_event_details.teachers[index].attendance_till !==
               undefined &&
-            this.app.school_event_details.teachers[index].attendance_till !==
+            this.data.school_event_details.teachers[index].attendance_till !==
               null
           ) {
             if (
-              this.app.school_event_details.teachers[index].group === 1 ||
-              this.app.school_event_details.teachers[index].group === 2 ||
-              this.app.school_event_details.teachers[index].group === 3
+              this.data.school_event_details.teachers[index].group === 1 ||
+              this.data.school_event_details.teachers[index].group === 2 ||
+              this.data.school_event_details.teachers[index].group === 3
             ) {
               if (
-                this.app.school_event_details.teachers[index].start_address !==
+                this.data.school_event_details.teachers[index].start_address !==
                   "" &&
-                this.app.school_event_details.teachers[index].start_address !==
+                this.data.school_event_details.teachers[index].start_address !==
                   undefined &&
-                this.app.school_event_details.teachers[index].start_address !==
+                this.data.school_event_details.teachers[index].start_address !==
                   null
               ) {
                 if (
-                  this.app.school_event_details.teachers[index]
+                  this.data.school_event_details.teachers[index]
                     .meeting_point !== "" &&
-                  this.app.school_event_details.teachers[index]
+                  this.data.school_event_details.teachers[index]
                     .meeting_point !== undefined &&
-                  this.app.school_event_details.teachers[index]
+                  this.data.school_event_details.teachers[index]
                     .meeting_point !== null
                 ) {
                   if (
-                    this.app.business_trip_applications[index].staffnr !== "" ||
-                    this.app.business_trip_applications[index].staffnr !==
+                    this.data.business_trip_applications[index].staffnr !==
+                      "" ||
+                    this.data.business_trip_applications[index].staffnr !==
                       undefined ||
-                    this.app.business_trip_applications[index].staffnr !== null
+                    this.data.business_trip_applications[index].staffnr !== null
                   ) {
                     if (
-                      this.app.business_trip_applications[index].travel_mode !==
-                        "" ||
-                      this.app.business_trip_applications[index].travel_mode !==
-                        undefined ||
-                      this.app.business_trip_applications[index].travel_mode !==
-                        null
+                      this.data.business_trip_applications[index]
+                        .travel_mode !== "" ||
+                      this.data.business_trip_applications[index]
+                        .travel_mode !== undefined ||
+                      this.data.business_trip_applications[index]
+                        .travel_mode !== null
                     ) {
                       allInput = true;
                     } else {
@@ -479,94 +481,95 @@ export default {
       if (allInput) {
         return true;
       }
-      if (this.app.progress === 5) {
+      if (this.data.progress === 5) {
         if (
-          this.app.travel_invoices[index].daily_charges_mode === 0 ||
-          this.app.travel_invoices[index].daily_charges_mode === 1 ||
-          this.app.travel_invoices[index].daily_charges_mode === 2
+          this.data.travel_invoices[index].daily_charges_mode === 0 ||
+          this.data.travel_invoices[index].daily_charges_mode === 1 ||
+          this.data.travel_invoices[index].daily_charges_mode === 2
         ) {
-          if (this.app.travel_invoices[index].daily_charges_mode === 2) {
+          if (this.data.travel_invoices[index].daily_charges_mode === 2) {
             if (
-              this.app.travel_invoices[index].shortened_amount === "" ||
-              isNaN(this.app.travel_invoices[index].shortened_amount) ||
-              this.app.travel_invoices[index].shortened_amount === undefined ||
-              this.app.travel_invoices[index].shortened_amount === null
+              this.data.travel_invoices[index].shortened_amount === "" ||
+              isNaN(this.data.travel_invoices[index].shortened_amount) ||
+              this.data.travel_invoices[index].shortened_amount === undefined ||
+              this.data.travel_invoices[index].shortened_amount === null
             ) {
               return false;
             }
           }
           if (
-            this.app.travel_invoices[index].nightly_charges_mode === 0 ||
-            this.app.travel_invoices[index].nightly_charges_mode === 1 ||
-            this.app.travel_invoices[index].nightly_charges_mode === 2
+            this.data.travel_invoices[index].nightly_charges_mode === 0 ||
+            this.data.travel_invoices[index].nightly_charges_mode === 1 ||
+            this.data.travel_invoices[index].nightly_charges_mode === 2
           ) {
             if (
-              this.app.travel_invoices[index].breakfasts !== "" &&
-              this.app.travel_invoices[index].breakfasts !== undefined &&
-              this.app.travel_invoices[index].breakfasts !== null
+              this.data.travel_invoices[index].breakfasts !== "" &&
+              this.data.travel_invoices[index].breakfasts !== undefined &&
+              this.data.travel_invoices[index].breakfasts !== null
             ) {
               if (
-                this.app.travel_invoices[index].lunches !== "" &&
-                this.app.travel_invoices[index].lunches !== undefined &&
-                this.app.travel_invoices[index].lunches !== null
+                this.data.travel_invoices[index].lunches !== "" &&
+                this.data.travel_invoices[index].lunches !== undefined &&
+                this.data.travel_invoices[index].lunches !== null
               ) {
                 if (
-                  this.app.travel_invoices[index].dinners !== "" &&
-                  this.app.travel_invoices[index].dinners !== undefined &&
-                  this.app.travel_invoices[index].dinners !== null
+                  this.data.travel_invoices[index].dinners !== "" &&
+                  this.data.travel_invoices[index].dinners !== undefined &&
+                  this.data.travel_invoices[index].dinners !== null
                 ) {
-                  if (this.app.travel_invoices[index].kilometre_allowance) {
+                  if (this.data.travel_invoices[index].kilometre_allowance) {
                     if (
-                      this.app.travel_invoices[index].kilometre_amount === "" ||
-                      this.app.travel_invoices[index].kilometre_amount ===
+                      this.data.travel_invoices[index].kilometre_amount ===
+                        "" ||
+                      this.data.travel_invoices[index].kilometre_amount ===
                         undefined ||
-                      this.app.travel_invoices[index].kilometre_amount === null
+                      this.data.travel_invoices[index].kilometre_amount === null
                     ) {
                       return false;
                     }
                   }
                   if (
-                    this.app.travel_invoices[index].calculation
+                    this.data.travel_invoices[index].calculation
                       .sum_travel_costs !== "" &&
-                    this.app.travel_invoices[index].calculation
+                    this.data.travel_invoices[index].calculation
                       .sum_travel_costs !== undefined &&
-                    this.app.travel_invoices[index].calculation
+                    this.data.travel_invoices[index].calculation
                       .sum_travel_costs !== null
                   ) {
                     if (
-                      this.app.travel_invoices[index].calculation
+                      this.data.travel_invoices[index].calculation
                         .sum_daily_charges !== "" &&
-                      this.app.travel_invoices[index].calculation
+                      this.data.travel_invoices[index].calculation
                         .sum_daily_charges !== undefined &&
-                      this.app.travel_invoices[index].calculation
+                      this.data.travel_invoices[index].calculation
                         .sum_daily_charges !== null
                     ) {
                       if (
-                        this.app.travel_invoices[index].calculation
+                        this.data.travel_invoices[index].calculation
                           .sum_nightly_charges !== "" &&
-                        this.app.travel_invoices[index].calculation
+                        this.data.travel_invoices[index].calculation
                           .sum_nightly_charges !== undefined &&
-                        this.app.travel_invoices[index].calculation
+                        this.data.travel_invoices[index].calculation
                           .sum_nightly_charges !== null
                       ) {
                         if (
-                          this.app.travel_invoices[index].calculation
+                          this.data.travel_invoices[index].calculation
                             .sum_additional_costs !== "" &&
-                          this.app.travel_invoices[index].calculation
+                          this.data.travel_invoices[index].calculation
                             .sum_additional_costs !== undefined &&
-                          this.app.travel_invoices[index].calculation
+                          this.data.travel_invoices[index].calculation
                             .sum_additional_costs !== null
                         ) {
                           if (
-                            this.app.travel_invoices[index].calculation
+                            this.data.travel_invoices[index].calculation
                               .sum_of_sums !== "" &&
-                            this.app.travel_invoices[index].calculation
+                            this.data.travel_invoices[index].calculation
                               .sum_of_sums !== undefined &&
-                            this.app.travel_invoices[index].calculation
+                            this.data.travel_invoices[index].calculation
                               .sum_of_sums !== null
                           ) {
                             if (
-                              this.app.travel_invoices[index].calculation
+                              this.data.travel_invoices[index].calculation
                                 .rows !== null
                             ) {
                               return true;
