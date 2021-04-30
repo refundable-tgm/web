@@ -2008,10 +2008,10 @@ export default {
      */
     downloadExcel(item) {
       if (
-        "" +
-          this.app.business_trip_applications[this.currentTeacherIndex]
-            .staffnr ===
-        8
+        (
+          "" +
+          this.app.business_trip_applications[this.currentTeacherIndex].staffnr
+        ).length === 8
       ) {
         switch (item.form) {
           case "BusinessTripApplication":
@@ -2282,10 +2282,10 @@ export default {
      */
     openPDF(item) {
       if (
-        "" +
-          this.app.business_trip_applications[this.currentTeacherIndex]
-            .staffnr ===
-        8
+        (
+          "" +
+          this.app.business_trip_applications[this.currentTeacherIndex].staffnr
+        ).length === 8
       ) {
         switch (item.form) {
           case "SchoolEventDetails":
