@@ -437,7 +437,7 @@ export default {
      * Dieses Methode überprüft, ob die Personalnummer richtig gesetzt worden ist
      */
     checkPersonal() {
-      if (this.teacher.personalnummer.length === 8) {
+      if ("" + this.teacher.personalnummer.length === 8) {
         return true;
       }
       return false;

@@ -1350,12 +1350,14 @@ export default {
      */
     checkPersonal() {
       if (
-        this.app.business_trip_applications[this.currentTeacherIndex].staffnr
-          .length === 8
+        (
+          "" +
+          this.app.business_trip_applications[this.currentTeacherIndex].staffnr
+        ).length === 8
       ) {
         if (
-          this.app.travel_invoices[this.currentTeacherIndex].staffnr.length ===
-          8
+          ("" + this.app.travel_invoices[this.currentTeacherIndex].staffnr)
+            .length === 8
         ) {
           return true;
         }
