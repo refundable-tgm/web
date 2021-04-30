@@ -253,6 +253,28 @@
                   no-resize
                 ></b-form-textarea>
               </b-form-group>
+              <!-- Fehlende Lehrkräfte -->
+              <b-form-group
+                id="waiting"
+                label-cols-sm="4"
+                label-cols-lg="3"
+                content-cols-sm
+                content-cols-lg="7"
+                description="Die Lehrkräfte, die noch nicht die Daten angegeben haben"
+                label="Fehlende Informationen"
+                label-for="fl"
+              >
+                <b-form-tags
+                  id="fl"
+                  input-id="tags-pills3"
+                  v-model="waiting"
+                  :disabled="true"
+                  tag-variant="primary"
+                  tag-pills
+                  separator=" "
+                  placeholder="Einträge durch Leerzeichen trennen"
+                ></b-form-tags>
+              </b-form-group>
             </b-col>
           </b-row>
         </b-container>
@@ -271,7 +293,8 @@ export default {
       startTime: "",
       endDate: "",
       endTime: "",
-      beg: []
+      beg: [],
+      waiting: []
     };
   },
   methods: {
@@ -377,6 +400,214 @@ export default {
         });
     },
     /**
+     * Diese Methode berechnet, welcher Lehrer noch nicht seine Informationen eingegeben hat
+     */
+    checkFinished(index) {
+      if (this.app.progress === 1) {
+        var allInput = true;
+        if (
+          this.app.school_event_details.teachers[index].attendance_from !==
+            "" &&
+          this.app.school_event_details.teachers[index].attendance_from !==
+            undefined &&
+          this.app.school_event_details.teachers[index].attendance_from !== null
+        ) {
+          if (
+            this.app.school_event_details.teachers[index].attendance_till !==
+              "" &&
+            this.app.school_event_details.teachers[index].attendance_till !==
+              undefined &&
+            this.app.school_event_details.teachers[index].attendance_till !==
+              null
+          ) {
+            if (
+              this.app.school_event_details.teachers[index].group === 1 ||
+              this.app.school_event_details.teachers[index].group === 2 ||
+              this.app.school_event_details.teachers[index].group === 3
+            ) {
+              if (
+                this.app.school_event_details.teachers[index].start_address !==
+                  "" &&
+                this.app.school_event_details.teachers[index].start_address !==
+                  undefined &&
+                this.app.school_event_details.teachers[index].start_address !==
+                  null
+              ) {
+                if (
+                  this.app.school_event_details.teachers[index]
+                    .meeting_point !== "" &&
+                  this.app.school_event_details.teachers[index]
+                    .meeting_point !== undefined &&
+                  this.app.school_event_details.teachers[index]
+                    .meeting_point !== null
+                ) {
+                  if (
+                    this.app.business_trip_applications[index].staffnr !== "" ||
+                    this.app.business_trip_applications[index].staffnr !==
+                      undefined ||
+                    this.app.business_trip_applications[index].staffnr !== null
+                  ) {
+                    if (
+                      this.app.business_trip_applications[index].travel_mode !==
+                        "" ||
+                      this.app.business_trip_applications[index].travel_mode !==
+                        undefined ||
+                      this.app.business_trip_applications[index].travel_mode !==
+                        null
+                    ) {
+                      allInput = true;
+                    } else {
+                      return false;
+                    }
+                  } else {
+                    return false;
+                  }
+                } else {
+                  return false;
+                }
+              } else {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+      if (allInput) {
+        return true;
+      }
+      if (this.app.progress === 5) {
+        if (
+          this.app.travel_invoices[index].daily_charges_mode === 0 ||
+          this.app.travel_invoices[index].daily_charges_mode === 1 ||
+          this.app.travel_invoices[index].daily_charges_mode === 2
+        ) {
+          if (this.app.travel_invoices[index].daily_charges_mode === 2) {
+            if (
+              this.app.travel_invoices[index].shortened_amount === "" ||
+              isNaN(this.app.travel_invoices[index].shortened_amount) ||
+              this.app.travel_invoices[index].shortened_amount === undefined ||
+              this.app.travel_invoices[index].shortened_amount === null
+            ) {
+              return false;
+            }
+          }
+          if (
+            this.app.travel_invoices[index].nightly_charges_mode === 0 ||
+            this.app.travel_invoices[index].nightly_charges_mode === 1 ||
+            this.app.travel_invoices[index].nightly_charges_mode === 2
+          ) {
+            if (
+              this.app.travel_invoices[index].breakfasts !== "" &&
+              this.app.travel_invoices[index].breakfasts !== undefined &&
+              this.app.travel_invoices[index].breakfasts !== null
+            ) {
+              if (
+                this.app.travel_invoices[index].lunches !== "" &&
+                this.app.travel_invoices[index].lunches !== undefined &&
+                this.app.travel_invoices[index].lunches !== null
+              ) {
+                if (
+                  this.app.travel_invoices[index].dinners !== "" &&
+                  this.app.travel_invoices[index].dinners !== undefined &&
+                  this.app.travel_invoices[index].dinners !== null
+                ) {
+                  if (this.app.travel_invoices[index].kilometre_allowance) {
+                    if (
+                      this.app.travel_invoices[index].kilometre_amount === "" ||
+                      this.app.travel_invoices[index].kilometre_amount ===
+                        undefined ||
+                      this.app.travel_invoices[index].kilometre_amount === null
+                    ) {
+                      return false;
+                    }
+                  }
+                  if (
+                    this.app.travel_invoices[index].calculation
+                      .sum_travel_costs !== "" &&
+                    this.app.travel_invoices[index].calculation
+                      .sum_travel_costs !== undefined &&
+                    this.app.travel_invoices[index].calculation
+                      .sum_travel_costs !== null
+                  ) {
+                    if (
+                      this.app.travel_invoices[index].calculation
+                        .sum_daily_charges !== "" &&
+                      this.app.travel_invoices[index].calculation
+                        .sum_daily_charges !== undefined &&
+                      this.app.travel_invoices[index].calculation
+                        .sum_daily_charges !== null
+                    ) {
+                      if (
+                        this.app.travel_invoices[index].calculation
+                          .sum_nightly_charges !== "" &&
+                        this.app.travel_invoices[index].calculation
+                          .sum_nightly_charges !== undefined &&
+                        this.app.travel_invoices[index].calculation
+                          .sum_nightly_charges !== null
+                      ) {
+                        if (
+                          this.app.travel_invoices[index].calculation
+                            .sum_additional_costs !== "" &&
+                          this.app.travel_invoices[index].calculation
+                            .sum_additional_costs !== undefined &&
+                          this.app.travel_invoices[index].calculation
+                            .sum_additional_costs !== null
+                        ) {
+                          if (
+                            this.app.travel_invoices[index].calculation
+                              .sum_of_sums !== "" &&
+                            this.app.travel_invoices[index].calculation
+                              .sum_of_sums !== undefined &&
+                            this.app.travel_invoices[index].calculation
+                              .sum_of_sums !== null
+                          ) {
+                            if (
+                              this.app.travel_invoices[index].calculation
+                                .rows !== null
+                            ) {
+                              return true;
+                            } else {
+                              return false;
+                            }
+                          } else {
+                            return false;
+                          }
+                        } else {
+                          return false;
+                        }
+                      } else {
+                        return false;
+                      }
+                    } else {
+                      return false;
+                    }
+                  } else {
+                    return false;
+                  }
+                } else {
+                  return false;
+                }
+              } else {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      }
+    },
+    /**
      * Diese Methode zeigt dem Benutzer an, dass ein Lehrer nicht hinzugefügt werden konnte
      */
     addFailed() {
@@ -425,6 +656,12 @@ export default {
       i++
     ) {
       this.beg.push(this.data.school_event_details.teachers[i + 1].shortname);
+    }
+    this.waiting = [];
+    for (let i = 0; i < this.app.school_event_details.teachers.length; i++) {
+      if (this.checkFinished(i)) {
+        this.waiting.push(this.app.school_event_details.teachers[i].shortname);
+      }
     }
   }
 };

@@ -169,8 +169,8 @@
                 >
                 </b-form-input>
                 <datalist id="startadd">
-                    <option>Wexstraße 19-23, 1200 Wien, Österreich</option>
-                  </datalist>
+                  <option>Wexstraße 19-23, 1200 Wien, Österreich</option>
+                </datalist>
                 <b-form-invalid-feedback id="bezeichnung-feedback">
                   Keine Startadresse angegeben!
                 </b-form-invalid-feedback>
