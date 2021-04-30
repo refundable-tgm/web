@@ -1349,6 +1349,9 @@ export default {
      * Dieses Methode überprüft, ob die Personalnummer richtig gesetzt worden ist
      */
     checkPersonal() {
+      console.log(
+        this.app.business_trip_applications[this.currentTeacherIndex].staffnr
+      );
       if (
         (
           "" +
@@ -2004,143 +2007,157 @@ export default {
      * Diese Methode lädt das Excel-File von dem Backend und lädt diese dem Benutzer herunter
      */
     downloadExcel(item) {
-      switch (item.form) {
-        case "BusinessTripApplication":
-          axios
-            .get(
-              this.url +
-                "/getBusinessTripApplicationExcel?uuid=" +
-                this.app.uuid +
-                "&short=" +
-                this.user.short +
-                "&bta_id=" +
-                this.currentTeacherIndex,
-              {
-                headers: {
-                  Authorization: "Basic " + this.token
+      if (
+        "" +
+          this.app.business_trip_applications[this.currentTeacherIndex]
+            .staffnr ===
+        8
+      ) {
+        switch (item.form) {
+          case "BusinessTripApplication":
+            axios
+              .get(
+                this.url +
+                  "/getBusinessTripApplicationExcel?uuid=" +
+                  this.app.uuid +
+                  "&short=" +
+                  this.user.short +
+                  "&bta_id=" +
+                  this.currentTeacherIndex,
+                {
+                  headers: {
+                    Authorization: "Basic " + this.token
+                  }
                 }
-              }
-            )
-            .then(response => {
-              this.excelDownload(response.data);
-            })
-            .catch(error => {
-              switch (error.response.status) {
-                case 401:
-                  axios
-                    .post(this.url + "/login/refresh", {
-                      refresh_token: this.refresh_token
-                    })
-                    .then(resp => {
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(
-                          this.url +
-                            "/getBusinessTripApplicationExcel?uuid=" +
-                            this.app.uuid +
-                            "&short=" +
-                            this.user.short +
-                            "&bta_id=" +
-                            this.currentTeacherIndex,
-                          {
-                            headers: {
-                              Authorization: "Basic " + resp.data.access_token
+              )
+              .then(response => {
+                this.excelDownload(response.data);
+              })
+              .catch(error => {
+                switch (error.response.status) {
+                  case 401:
+                    axios
+                      .post(this.url + "/login/refresh", {
+                        refresh_token: this.refresh_token
+                      })
+                      .then(resp => {
+                        this.$emit(
+                          "updateToken",
+                          resp.data.access_token,
+                          resp.data.refresh_token
+                        );
+                        axios
+                          .get(
+                            this.url +
+                              "/getBusinessTripApplicationExcel?uuid=" +
+                              this.app.uuid +
+                              "&short=" +
+                              this.user.short +
+                              "&bta_id=" +
+                              this.currentTeacherIndex,
+                            {
+                              headers: {
+                                Authorization: "Basic " + resp.data.access_token
+                              }
                             }
-                          }
-                        )
-                        .then(res => {
-                          this.excelDownload(res.data);
-                        })
-                        .catch(e => {
-                          e.toString();
-                          this.failedExcel();
-                        });
-                    })
-                    .catch(err => {
-                      err.toString();
-                      this.$emit("logout");
-                    });
-                  break;
-                default:
-                  this.failedExcel();
-                  break;
-              }
-            });
-          break;
-        case "TravelInvoice":
-          axios
-            .get(
-              this.url +
-                "/getTravelInvoiceExcel?uuid=" +
-                this.app.uuid +
-                "&short=" +
-                this.user.short +
-                "&ti_id=" +
-                this.currentTeacherIndex,
-              {
-                headers: {
-                  Authorization: "Basic " + this.token
+                          )
+                          .then(res => {
+                            this.excelDownload(res.data);
+                          })
+                          .catch(e => {
+                            e.toString();
+                            this.failedExcel();
+                          });
+                      })
+                      .catch(err => {
+                        err.toString();
+                        this.$emit("logout");
+                      });
+                    break;
+                  default:
+                    this.failedExcel();
+                    break;
                 }
-              }
-            )
-            .then(response => {
-              this.excelDownload(response.data);
-            })
-            .catch(error => {
-              switch (error.response.status) {
-                case 401:
-                  axios
-                    .post(this.url + "/login/refresh", {
-                      refresh_token: this.refresh_token
-                    })
-                    .then(resp => {
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(
-                          this.url +
-                            "/getTravelInvoiceExcel?uuid=" +
-                            this.app.uuid +
-                            "&short=" +
-                            this.user.short +
-                            "&ti_id=" +
-                            this.currentTeacherIndex,
-                          {
-                            headers: {
-                              Authorization: "Basic " + resp.data.access_token
+              });
+            break;
+          case "TravelInvoice":
+            axios
+              .get(
+                this.url +
+                  "/getTravelInvoiceExcel?uuid=" +
+                  this.app.uuid +
+                  "&short=" +
+                  this.user.short +
+                  "&ti_id=" +
+                  this.currentTeacherIndex,
+                {
+                  headers: {
+                    Authorization: "Basic " + this.token
+                  }
+                }
+              )
+              .then(response => {
+                this.excelDownload(response.data);
+              })
+              .catch(error => {
+                switch (error.response.status) {
+                  case 401:
+                    axios
+                      .post(this.url + "/login/refresh", {
+                        refresh_token: this.refresh_token
+                      })
+                      .then(resp => {
+                        this.$emit(
+                          "updateToken",
+                          resp.data.access_token,
+                          resp.data.refresh_token
+                        );
+                        axios
+                          .get(
+                            this.url +
+                              "/getTravelInvoiceExcel?uuid=" +
+                              this.app.uuid +
+                              "&short=" +
+                              this.user.short +
+                              "&ti_id=" +
+                              this.currentTeacherIndex,
+                            {
+                              headers: {
+                                Authorization: "Basic " + resp.data.access_token
+                              }
                             }
-                          }
-                        )
-                        .then(res => {
-                          this.excelDownload(res.data);
-                        })
-                        .catch(e => {
-                          e.toString();
-                          this.failedExcel();
-                        });
-                    })
-                    .catch(err => {
-                      err.toString();
-                      this.$emit("logout");
-                    });
-                  break;
-                default:
-                  this.failedExcel();
-                  break;
-              }
-            });
+                          )
+                          .then(res => {
+                            this.excelDownload(res.data);
+                          })
+                          .catch(e => {
+                            e.toString();
+                            this.failedExcel();
+                          });
+                      })
+                      .catch(err => {
+                        err.toString();
+                        this.$emit("logout");
+                      });
+                    break;
+                  default:
+                    this.failedExcel();
+                    break;
+                }
+              });
 
-          break;
-        default:
-          this.failedExcel();
-          break;
+            break;
+          default:
+            this.failedExcel();
+            break;
+        }
+      } else {
+        this.$bvToast.toast("Die Personalnummer wurde nicht richtig gesetzt!", {
+          title: "Änderungen nicht gespeichert",
+          autoHideDelay: 2500,
+          appendToast: false,
+          variant: "danger"
+        });
       }
     },
     /**
@@ -2264,161 +2281,175 @@ export default {
      * Diese Methode lädt die PDF von dem Backend
      */
     openPDF(item) {
-      switch (item.form) {
-        case "SchoolEventDetails":
-          this.classForm();
-          break;
-        case "SchoolEventTeacherDetails":
-          this.applicationPDF();
-          break;
-        case "TrainingDetails":
-          this.applicationPDF();
-          break;
-        case "OtherReasonDetails":
-          this.applicationPDF();
-          break;
-        case "BusinessTripApplication":
-          axios
-            .get(
-              this.url +
-                "/getBusinessTripApplicationForm?uuid=" +
-                this.app.uuid +
-                "&short=" +
-                this.user.short +
-                "&bta_id=" +
-                this.currentTeacherIndex,
-              {
-                headers: {
-                  Authorization: "Basic " + this.token
+      if (
+        "" +
+          this.app.business_trip_applications[this.currentTeacherIndex]
+            .staffnr ===
+        8
+      ) {
+        switch (item.form) {
+          case "SchoolEventDetails":
+            this.classForm();
+            break;
+          case "SchoolEventTeacherDetails":
+            this.applicationPDF();
+            break;
+          case "TrainingDetails":
+            this.applicationPDF();
+            break;
+          case "OtherReasonDetails":
+            this.applicationPDF();
+            break;
+          case "BusinessTripApplication":
+            axios
+              .get(
+                this.url +
+                  "/getBusinessTripApplicationForm?uuid=" +
+                  this.app.uuid +
+                  "&short=" +
+                  this.user.short +
+                  "&bta_id=" +
+                  this.currentTeacherIndex,
+                {
+                  headers: {
+                    Authorization: "Basic " + this.token
+                  }
                 }
-              }
-            )
-            .then(response => {
-              this.showPDF(response.data);
-            })
-            .catch(error => {
-              switch (error.response.status) {
-                case 401:
-                  axios
-                    .post(this.url + "/login/refresh", {
-                      refresh_token: this.refresh_token
-                    })
-                    .then(resp => {
-                      this.$emit(
-                        "updateToken",
-                        resp.data.access_token,
-                        resp.data.refresh_token
-                      );
-                      axios
-                        .get(
-                          this.url +
-                            "/getBusinessTripApplicationForm?uuid=" +
-                            this.app.uuid +
-                            "&short=" +
-                            this.user.short +
-                            "&bta_id=" +
-                            this.currentTeacherIndex,
-                          {
-                            headers: {
-                              Authorization: "Basic " + resp.data.access_token
-                            }
-                          }
-                        )
-                        .then(res => {
-                          this.showPDF(res.data);
-                        })
-                        .catch(e => {
-                          e.toString();
-                          this.failedPDF();
-                        });
-                    })
-                    .catch(err => {
-                      err.toString();
-                      this.$emit("logout");
-                    });
-                  break;
-                default:
-                  this.failedPDF();
-                  break;
-              }
-            });
-          break;
-        case "TravelInvoice":
-          axios
-            .get(
-              this.url +
-                "/getTravelInvoiceForm?uuid=" +
-                this.app.uuid +
-                "&short=" +
-                this.user.short +
-                "&ti_id=" +
-                this.currentTeacherIndex +
-                "&receipts=true",
-              {
-                headers: {
-                  Authorization: "Basic " + this.token
-                }
-              }
-            )
-            .then(response => {
-              this.showPDF(response.data);
-            })
-            .catch(error => {
-              switch (error.response.status) {
-                case 401:
-                  axios
-                    .post(this.url + "/login/refresh", {
-                      refresh_token: this.refresh_token
-                    })
-                    .then(resp => {
-                      switch (resp.status) {
-                        case 201:
-                          this.$emit(
-                            "updateToken",
-                            resp.data.access_token,
-                            resp.data.refresh_token
-                          );
-                          axios
-                            .get(
-                              this.url +
-                                "/getTravelInvoiceForm?uuid=" +
-                                this.app.uuid +
-                                "&short=" +
-                                this.user.short +
-                                "&ti_id=" +
-                                this.currentTeacherIndex +
-                                "&receipts=true",
-                              {
-                                headers: {
-                                  Authorization:
-                                    "Basic " + resp.data.access_token
-                                }
+              )
+              .then(response => {
+                this.showPDF(response.data);
+              })
+              .catch(error => {
+                switch (error.response.status) {
+                  case 401:
+                    axios
+                      .post(this.url + "/login/refresh", {
+                        refresh_token: this.refresh_token
+                      })
+                      .then(resp => {
+                        this.$emit(
+                          "updateToken",
+                          resp.data.access_token,
+                          resp.data.refresh_token
+                        );
+                        axios
+                          .get(
+                            this.url +
+                              "/getBusinessTripApplicationForm?uuid=" +
+                              this.app.uuid +
+                              "&short=" +
+                              this.user.short +
+                              "&bta_id=" +
+                              this.currentTeacherIndex,
+                            {
+                              headers: {
+                                Authorization: "Basic " + resp.data.access_token
                               }
-                            )
-                            .then(res => {
-                              this.showPDF(res.data);
-                            })
-                            .catch(e => {
-                              e.toString();
-                              this.failedPDF();
-                            });
-                          break;
-                      }
-                    })
-                    .catch(err => {
-                      err.toString();
-                      this.$emit("logout");
-                    });
-                  break;
-                default:
-                  this.failedPDF();
-                  break;
-              }
-            });
-          break;
-        default:
-          this.failedPDF();
-          break;
+                            }
+                          )
+                          .then(res => {
+                            this.showPDF(res.data);
+                          })
+                          .catch(e => {
+                            e.toString();
+                            this.failedPDF();
+                          });
+                      })
+                      .catch(err => {
+                        err.toString();
+                        this.$emit("logout");
+                      });
+                    break;
+                  default:
+                    this.failedPDF();
+                    break;
+                }
+              });
+            break;
+          case "TravelInvoice":
+            axios
+              .get(
+                this.url +
+                  "/getTravelInvoiceForm?uuid=" +
+                  this.app.uuid +
+                  "&short=" +
+                  this.user.short +
+                  "&ti_id=" +
+                  this.currentTeacherIndex +
+                  "&receipts=true",
+                {
+                  headers: {
+                    Authorization: "Basic " + this.token
+                  }
+                }
+              )
+              .then(response => {
+                this.showPDF(response.data);
+              })
+              .catch(error => {
+                switch (error.response.status) {
+                  case 401:
+                    axios
+                      .post(this.url + "/login/refresh", {
+                        refresh_token: this.refresh_token
+                      })
+                      .then(resp => {
+                        switch (resp.status) {
+                          case 201:
+                            this.$emit(
+                              "updateToken",
+                              resp.data.access_token,
+                              resp.data.refresh_token
+                            );
+                            axios
+                              .get(
+                                this.url +
+                                  "/getTravelInvoiceForm?uuid=" +
+                                  this.app.uuid +
+                                  "&short=" +
+                                  this.user.short +
+                                  "&ti_id=" +
+                                  this.currentTeacherIndex +
+                                  "&receipts=true",
+                                {
+                                  headers: {
+                                    Authorization:
+                                      "Basic " + resp.data.access_token
+                                  }
+                                }
+                              )
+                              .then(res => {
+                                this.showPDF(res.data);
+                              })
+                              .catch(e => {
+                                e.toString();
+                                this.failedPDF();
+                              });
+                            break;
+                        }
+                      })
+                      .catch(err => {
+                        err.toString();
+                        this.$emit("logout");
+                      });
+                    break;
+                  default:
+                    this.failedPDF();
+                    break;
+                }
+              });
+            break;
+          default:
+            this.failedPDF();
+            break;
+        }
+      } else {
+        this.$bvToast.toast("Die Personalnummer wurde nicht richtig gesetzt!", {
+          title: "Änderungen nicht gespeichert",
+          autoHideDelay: 2500,
+          appendToast: false,
+          variant: "danger"
+        });
       }
     },
     /**
