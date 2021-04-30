@@ -445,7 +445,7 @@ export default {
      * @param shortName Der Kürzel des verlangten Lehrers
      */
     getTeacher(shortName, escortsdata, index, back) {
-      var max = escortsdata.teacher.length - 1;
+      var max = escortsdata.teacher.length;
       axios
         .get(this.url + "/getTeacherByShort?name=" + shortName, {
           headers: {
@@ -477,8 +477,6 @@ export default {
             )
           );
           if (index === max) {
-            console.log(this.output.length);
-            console.log((escortsdata.teacher.length+1));
             if (this.output.length === escortsdata.teacher.length + 1) {
               escortsdata.output = this.output;
               this.escortsdata = escortsdata;
