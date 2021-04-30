@@ -696,6 +696,7 @@ export default {
               perso = false;
             }
           } else {
+            perso = true;
             business.push({
               id: 0,
               name: this.returnString(this.user.longname.split(" ")[0]),
