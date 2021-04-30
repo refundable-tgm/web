@@ -479,8 +479,6 @@ export default {
             escortsdata.output = this.output;
             this.escortsdata = escortsdata;
             this.change("Escorts", back, false);
-          } else {
-            this.failedConfirm();
           }
         })
         .catch(error => {
@@ -532,8 +530,6 @@ export default {
                         escortsdata.output = this.output;
                         this.escortsdata = escortsdata;
                         this.change("Escorts", back, false);
-                      } else {
-                        this.failedConfirm();
                       }
                     })
                     .catch(e => {
