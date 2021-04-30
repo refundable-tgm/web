@@ -1367,70 +1367,208 @@ export default {
     speichern() {
       this.deleteApproval();
       this.app.last_changed = this.createNewDate();
-      if (this.checkPersonal()) {
-        axios
-          .put(
-            this.url + "/updateApplication?uuid=" + this.app.uuid,
-            this.app,
-            {
-              headers: {
-                Authorization: "Basic " + this.token
+      if (this.app.kind === 6) {
+        if (
+          this.app.other_reason_details.kind === 7 ||
+          this.app.other_reason_details.kind === 9
+        ) {
+          axios
+            .put(
+              this.url + "/updateApplication?uuid=" + this.app.uuid,
+              this.app,
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
               }
-            }
-          )
-          .then(response => {
-            response.toString();
-            this.saveConfirm();
-          })
-          .catch(error => {
-            switch (error.response.status) {
-              case 401:
-                axios
-                  .post(this.url + "/login/refresh", {
-                    refresh_token: this.refresh_token
-                  })
-                  .then(resp => {
-                    this.$emit(
-                      "updateToken",
-                      resp.data.access_token,
-                      resp.data.refresh_token
-                    );
-                    axios
-                      .put(
-                        this.url + "/updateApplication?uuid=" + this.app.uuid,
-                        this.app,
-                        {
-                          headers: {
-                            Authorization: "Basic " + resp.data.access_token
+            )
+            .then(response => {
+              response.toString();
+              this.saveConfirm();
+            })
+            .catch(error => {
+              switch (error.response.status) {
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      refresh_token: this.refresh_token
+                    })
+                    .then(resp => {
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .put(
+                          this.url + "/updateApplication?uuid=" + this.app.uuid,
+                          this.app,
+                          {
+                            headers: {
+                              Authorization: "Basic " + resp.data.access_token
+                            }
                           }
-                        }
-                      )
-                      .then(res => {
-                        res.toString();
-                        this.saveConfirm();
+                        )
+                        .then(res => {
+                          res.toString();
+                          this.saveConfirm();
+                        })
+                        .catch(e => {
+                          e.toString();
+                          this.failedConfirm();
+                        });
+                    })
+                    .catch(err => {
+                      err.toString();
+                      this.$emit("logout");
+                    });
+                  break;
+                default:
+                  this.failedConfirm();
+                  break;
+              }
+            });
+        } else {
+          if (this.checkPersonal()) {
+            axios
+              .put(
+                this.url + "/updateApplication?uuid=" + this.app.uuid,
+                this.app,
+                {
+                  headers: {
+                    Authorization: "Basic " + this.token
+                  }
+                }
+              )
+              .then(response => {
+                response.toString();
+                this.saveConfirm();
+              })
+              .catch(error => {
+                switch (error.response.status) {
+                  case 401:
+                    axios
+                      .post(this.url + "/login/refresh", {
+                        refresh_token: this.refresh_token
                       })
-                      .catch(e => {
-                        e.toString();
-                        this.failedConfirm();
+                      .then(resp => {
+                        this.$emit(
+                          "updateToken",
+                          resp.data.access_token,
+                          resp.data.refresh_token
+                        );
+                        axios
+                          .put(
+                            this.url +
+                              "/updateApplication?uuid=" +
+                              this.app.uuid,
+                            this.app,
+                            {
+                              headers: {
+                                Authorization: "Basic " + resp.data.access_token
+                              }
+                            }
+                          )
+                          .then(res => {
+                            res.toString();
+                            this.saveConfirm();
+                          })
+                          .catch(e => {
+                            e.toString();
+                            this.failedConfirm();
+                          });
+                      })
+                      .catch(err => {
+                        err.toString();
+                        this.$emit("logout");
                       });
-                  })
-                  .catch(err => {
-                    err.toString();
-                    this.$emit("logout");
-                  });
-                break;
-              default:
-                this.failedConfirm();
-                break;
-            }
-          });
+                    break;
+                  default:
+                    this.failedConfirm();
+                    break;
+                }
+              });
+          } else {
+            this.$bvToast.toast(
+              "Die Personalnummer wurde nicht richtig gesetzt!",
+              {
+                title: "Änderungen nicht gespeichert",
+                autoHideDelay: 2500,
+                appendToast: false,
+                variant: "danger"
+              }
+            );
+          }
+        }
       } else {
-        this.$bvToast.toast("Die Personalnummer wurde nicht richtig gesetzt!", {
-          title: "Änderungen nicht gespeichert",
-          autoHideDelay: 2500,
-          appendToast: false,
-          variant: "danger"
-        });
+        if (this.checkPersonal()) {
+          axios
+            .put(
+              this.url + "/updateApplication?uuid=" + this.app.uuid,
+              this.app,
+              {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
+              }
+            )
+            .then(response => {
+              response.toString();
+              this.saveConfirm();
+            })
+            .catch(error => {
+              switch (error.response.status) {
+                case 401:
+                  axios
+                    .post(this.url + "/login/refresh", {
+                      refresh_token: this.refresh_token
+                    })
+                    .then(resp => {
+                      this.$emit(
+                        "updateToken",
+                        resp.data.access_token,
+                        resp.data.refresh_token
+                      );
+                      axios
+                        .put(
+                          this.url + "/updateApplication?uuid=" + this.app.uuid,
+                          this.app,
+                          {
+                            headers: {
+                              Authorization: "Basic " + resp.data.access_token
+                            }
+                          }
+                        )
+                        .then(res => {
+                          res.toString();
+                          this.saveConfirm();
+                        })
+                        .catch(e => {
+                          e.toString();
+                          this.failedConfirm();
+                        });
+                    })
+                    .catch(err => {
+                      err.toString();
+                      this.$emit("logout");
+                    });
+                  break;
+                default:
+                  this.failedConfirm();
+                  break;
+              }
+            });
+        } else {
+          this.$bvToast.toast(
+            "Die Personalnummer wurde nicht richtig gesetzt!",
+            {
+              title: "Änderungen nicht gespeichert",
+              autoHideDelay: 2500,
+              appendToast: false,
+              variant: "danger"
+            }
+          );
+        }
       }
     },
     /**
