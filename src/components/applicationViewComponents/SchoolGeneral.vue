@@ -442,16 +442,17 @@ export default {
                 ) {
                   if (
                     this.data.business_trip_applications[index].staffnr !==
-                      "" ||
+                      "" &&
                     this.data.business_trip_applications[index].staffnr !==
-                      undefined ||
+                      undefined &&
                     this.data.business_trip_applications[index].staffnr !== null
+                    && (""+this.data.business_trip_applications[index].staffnr).length === 8
                   ) {
                     if (
                       this.data.business_trip_applications[index]
-                        .travel_mode !== "" ||
+                        .travel_mode !== "" &&
                       this.data.business_trip_applications[index]
-                        .travel_mode !== undefined ||
+                        .travel_mode !== undefined &&
                       this.data.business_trip_applications[index]
                         .travel_mode !== null
                     ) {

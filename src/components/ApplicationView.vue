@@ -1025,16 +1025,17 @@ export default {
                         .meeting_point !== null
                     ) {
                       if (
-                        this.app.business_trip_applications[i].staffnr !== "" ||
+                        this.app.business_trip_applications[i].staffnr !== "" &&
                         this.app.business_trip_applications[i].staffnr !==
-                          undefined ||
-                        this.app.business_trip_applications[i].staffnr !== null
+                          undefined &&
+                        this.app.business_trip_applications[i].staffnr !== null &&
+                        (""+this.data.business_trip_applications[index].staffnr).length === 8
                       ) {
                         if (
                           this.app.business_trip_applications[i].travel_mode !==
-                            "" ||
+                            "" &&
                           this.app.business_trip_applications[i].travel_mode !==
-                            undefined ||
+                            undefined &&
                           this.app.business_trip_applications[i].travel_mode !==
                             null
                         ) {
