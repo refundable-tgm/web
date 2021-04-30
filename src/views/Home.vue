@@ -536,12 +536,14 @@ export default {
                           escortsdata.output = this.output;
                           this.escortsdata = escortsdata;
                           this.change("Escorts", back, false);
+                        } else {
+                          this.failedConfirm();
                         }
                       }
                     })
                     .catch(e => {
                       e.toString();
-                      return false;
+                      this.failedConfirm();
                     });
                 })
                 .catch(err => {
@@ -550,7 +552,7 @@ export default {
                 });
               break;
             default:
-              return false;
+              this.failedConfirm();
           }
         });
     },
