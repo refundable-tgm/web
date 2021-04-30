@@ -892,9 +892,6 @@ export default {
      */
     loadView(data) {
       this.app = data;
-      if (this.checkRunning()) {
-        this.speichern();
-      }
       this.title = this.app.name;
       this.kind = this.app.kind;
       this.currentTeacher = this.user.short;
@@ -951,6 +948,9 @@ export default {
       this.tbdata = this.app.travel_invoices[this.currentTeacherIndex];
       this.setItems(this.app);
       this.setReads(this.app);
+      if (this.checkRunning()) {
+        this.speichern();
+      }
     },
     /**
      * Diese Methode gibt den String der Variable zurück
