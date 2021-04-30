@@ -944,11 +944,11 @@ export default {
         this.currentTeacherIndex
       ];
       this.tbdata = this.app.travel_invoices[this.currentTeacherIndex];
-      this.setItems(this.app);
-      this.setReads(this.app);
       if (this.checkRunning()) {
         this.speichern();
       }
+      this.setItems(this.app);
+      this.setReads(this.app);
     },
     /**
      * Diese Methode gibt den String der Variable zurück
