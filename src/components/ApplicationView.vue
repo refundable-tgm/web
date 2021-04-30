@@ -1346,63 +1346,93 @@ export default {
       }
     },
     /**
+     * Dieses Methode überprüft, ob die Personalnummer richtig gesetzt worden ist
+     */
+    checkPersonal() {
+      if (
+        this.app.business_trip_applications[this.currentTeacherIndex].staffnr
+          .length === 8
+      ) {
+        if (
+          this.app.travel_invoices[this.currentTeacherIndex].staffnr.length ===
+          8
+        ) {
+          return true;
+        }
+      }
+      return false;
+    },
+    /**
      * Diese Methode sendet die Änderungen an das Backend
      */
     speichern() {
       this.deleteApproval();
       this.app.last_changed = this.createNewDate();
-      axios
-        .put(this.url + "/updateApplication?uuid=" + this.app.uuid, this.app, {
-          headers: {
-            Authorization: "Basic " + this.token
-          }
-        })
-        .then(response => {
-          response.toString();
-          this.saveConfirm();
-        })
-        .catch(error => {
-          switch (error.response.status) {
-            case 401:
-              axios
-                .post(this.url + "/login/refresh", {
-                  refresh_token: this.refresh_token
-                })
-                .then(resp => {
-                  this.$emit(
-                    "updateToken",
-                    resp.data.access_token,
-                    resp.data.refresh_token
-                  );
-                  axios
-                    .put(
-                      this.url + "/updateApplication?uuid=" + this.app.uuid,
-                      this.app,
-                      {
-                        headers: {
-                          Authorization: "Basic " + resp.data.access_token
+      if (this.checkPersonal()) {
+        axios
+          .put(
+            this.url + "/updateApplication?uuid=" + this.app.uuid,
+            this.app,
+            {
+              headers: {
+                Authorization: "Basic " + this.token
+              }
+            }
+          )
+          .then(response => {
+            response.toString();
+            this.saveConfirm();
+          })
+          .catch(error => {
+            switch (error.response.status) {
+              case 401:
+                axios
+                  .post(this.url + "/login/refresh", {
+                    refresh_token: this.refresh_token
+                  })
+                  .then(resp => {
+                    this.$emit(
+                      "updateToken",
+                      resp.data.access_token,
+                      resp.data.refresh_token
+                    );
+                    axios
+                      .put(
+                        this.url + "/updateApplication?uuid=" + this.app.uuid,
+                        this.app,
+                        {
+                          headers: {
+                            Authorization: "Basic " + resp.data.access_token
+                          }
                         }
-                      }
-                    )
-                    .then(res => {
-                      res.toString();
-                      this.saveConfirm();
-                    })
-                    .catch(e => {
-                      e.toString();
-                      this.failedConfirm();
-                    });
-                })
-                .catch(err => {
-                  err.toString();
-                  this.$emit("logout");
-                });
-              break;
-            default:
-              this.failedConfirm();
-              break;
-          }
+                      )
+                      .then(res => {
+                        res.toString();
+                        this.saveConfirm();
+                      })
+                      .catch(e => {
+                        e.toString();
+                        this.failedConfirm();
+                      });
+                  })
+                  .catch(err => {
+                    err.toString();
+                    this.$emit("logout");
+                  });
+                break;
+              default:
+                this.failedConfirm();
+                break;
+            }
+          });
+      } else {
+        this.$bvToast.toast("Die Personalnummer wurde nicht richtig gesetzt!", {
+          title: "Änderungen nicht gespeichert",
+          autoHideDelay: 2500,
+          appendToast: false,
+          variant: "danger"
         });
+      }
     },
     /**
      * Diese Methode sendet den veränderten Antrag an das Backend

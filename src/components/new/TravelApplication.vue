@@ -51,7 +51,7 @@
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
-          description="Geben Sie die Personalnummer der Begleitperson ein."
+          description="Geben Sie die Personalnummer ein."
           label="Personalnummer"
           label-for="pn"
         >
@@ -376,7 +376,7 @@ export default {
       data: {
         degree: "",
         title: "",
-        personalnummer: null,
+        personalnummer: 0,
         transport: [],
         ausgangspunkt: 1,
         endpunkt: 1,
