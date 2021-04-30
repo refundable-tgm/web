@@ -1030,7 +1030,7 @@ export default {
                           undefined &&
                         this.app.business_trip_applications[i].staffnr !==
                           null &&
-                        ("" + this.data.business_trip_applications[i].staffnr)
+                        ("" + this.app.business_trip_applications[i].staffnr)
                           .length === 8
                       ) {
                         if (

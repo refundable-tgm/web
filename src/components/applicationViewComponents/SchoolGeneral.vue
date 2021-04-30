@@ -271,6 +271,7 @@
                   :disabled="true"
                   tag-variant="primary"
                   tag-pills
+                  placeholder=""
                 ></b-form-tags>
               </b-form-group>
             </b-col>
