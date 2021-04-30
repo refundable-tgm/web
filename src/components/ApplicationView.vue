@@ -2278,26 +2278,81 @@ export default {
      * Diese Methode lädt die PDF von dem Backend
      */
     openPDF(item) {
-      if (
-        (
-          "" +
-          this.app.business_trip_applications[this.currentTeacherIndex].staffnr
-        ).length === 8
-      ) {
-        switch (item.form) {
-          case "SchoolEventDetails":
-            this.classForm();
-            break;
-          case "SchoolEventTeacherDetails":
+      switch (item.form) {
+        case "SchoolEventDetails":
+          this.classForm();
+          break;
+        case "SchoolEventTeacherDetails":
+          if (
+            (
+              "" +
+              this.app.business_trip_applications[this.currentTeacherIndex]
+                .staffnr
+            ).length === 8
+          ) {
             this.applicationPDF();
-            break;
-          case "TrainingDetails":
+          } else {
+            this.$bvToast.toast(
+              "Die Personalnummer wurde nicht richtig gesetzt!",
+              {
+                title: "Änderungen nicht gespeichert",
+                autoHideDelay: 2500,
+                appendToast: false,
+                variant: "danger"
+              }
+            );
+          }
+          break;
+        case "TrainingDetails":
+          if (
+            (
+              "" +
+              this.app.business_trip_applications[this.currentTeacherIndex]
+                .staffnr
+            ).length === 8
+          ) {
             this.applicationPDF();
-            break;
-          case "OtherReasonDetails":
+          } else {
+            this.$bvToast.toast(
+              "Die Personalnummer wurde nicht richtig gesetzt!",
+              {
+                title: "Änderungen nicht gespeichert",
+                autoHideDelay: 2500,
+                appendToast: false,
+                variant: "danger"
+              }
+            );
+          }
+          break;
+        case "OtherReasonDetails":
+          if (
+            (
+              "" +
+              this.app.business_trip_applications[this.currentTeacherIndex]
+                .staffnr
+            ).length === 8
+          ) {
             this.applicationPDF();
-            break;
-          case "BusinessTripApplication":
+          } else {
+            this.$bvToast.toast(
+              "Die Personalnummer wurde nicht richtig gesetzt!",
+              {
+                title: "Änderungen nicht gespeichert",
+                autoHideDelay: 2500,
+                appendToast: false,
+                variant: "danger"
+              }
+            );
+          }
+          break;
+        case "BusinessTripApplication":
+          if (
+            (
+              "" +
+              this.app.business_trip_applications[this.currentTeacherIndex]
+                .staffnr
+            ).length === 8
+          ) {
             axios
               .get(
                 this.url +
@@ -2362,8 +2417,26 @@ export default {
                     break;
                 }
               });
-            break;
-          case "TravelInvoice":
+          } else {
+            this.$bvToast.toast(
+              "Die Personalnummer wurde nicht richtig gesetzt!",
+              {
+                title: "Änderungen nicht gespeichert",
+                autoHideDelay: 2500,
+                appendToast: false,
+                variant: "danger"
+              }
+            );
+          }
+          break;
+        case "TravelInvoice":
+          if (
+            (
+              "" +
+              this.app.business_trip_applications[this.currentTeacherIndex]
+                .staffnr
+            ).length === 8
+          ) {
             axios
               .get(
                 this.url +
@@ -2435,18 +2508,21 @@ export default {
                     break;
                 }
               });
-            break;
-          default:
-            this.failedPDF();
-            break;
-        }
-      } else {
-        this.$bvToast.toast("Die Personalnummer wurde nicht richtig gesetzt!", {
-          title: "Änderungen nicht gespeichert",
-          autoHideDelay: 2500,
-          appendToast: false,
-          variant: "danger"
-        });
+          } else {
+            this.$bvToast.toast(
+              "Die Personalnummer wurde nicht richtig gesetzt!",
+              {
+                title: "Änderungen nicht gespeichert",
+                autoHideDelay: 2500,
+                appendToast: false,
+                variant: "danger"
+              }
+            );
+          }
+          break;
+        default:
+          this.failedPDF();
+          break;
       }
     },
     /**
