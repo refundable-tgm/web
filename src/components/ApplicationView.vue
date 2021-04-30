@@ -1349,9 +1349,6 @@ export default {
      * Dieses Methode überprüft, ob die Personalnummer richtig gesetzt worden ist
      */
     checkPersonal() {
-      console.log(
-        this.app.business_trip_applications[this.currentTeacherIndex].staffnr
-      );
       if (
         (
           "" +
