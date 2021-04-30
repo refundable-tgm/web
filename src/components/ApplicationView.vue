@@ -2326,23 +2326,30 @@ export default {
           break;
         case "OtherReasonDetails":
           if (
-            (
-              "" +
-              this.app.business_trip_applications[this.currentTeacherIndex]
-                .staffnr
-            ).length === 8
+            this.app.other_reason_details.kind === 7 ||
+            this.app.other_reason_details.kind === 9
           ) {
             this.applicationPDF();
           } else {
-            this.$bvToast.toast(
-              "Die Personalnummer wurde nicht richtig gesetzt!",
-              {
-                title: "Änderungen nicht gespeichert",
-                autoHideDelay: 2500,
-                appendToast: false,
-                variant: "danger"
-              }
-            );
+            if (
+              (
+                "" +
+                this.app.business_trip_applications[this.currentTeacherIndex]
+                  .staffnr
+              ).length === 8
+            ) {
+              this.applicationPDF();
+            } else {
+              this.$bvToast.toast(
+                "Die Personalnummer wurde nicht richtig gesetzt!",
+                {
+                  title: "Änderungen nicht gespeichert",
+                  autoHideDelay: 2500,
+                  appendToast: false,
+                  variant: "danger"
+                }
+              );
+            }
           }
           break;
         case "BusinessTripApplication":
