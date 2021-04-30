@@ -341,7 +341,7 @@ export default {
      */
     failedConfirm(teacher) {
       this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
-        title: teacher+" ist nicht am System registriert",
+        title: teacher + " ist nicht am System registriert",
         autoHideDelay: 2500,
         appendToast: false,
         variant: "danger"
