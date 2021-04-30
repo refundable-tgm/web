@@ -271,8 +271,6 @@
                   :disabled="true"
                   tag-variant="primary"
                   tag-pills
-                  separator=" "
-                  placeholder="Einträge durch Leerzeichen trennen"
                 ></b-form-tags>
               </b-form-group>
             </b-col>
@@ -658,9 +656,9 @@ export default {
       this.beg.push(this.data.school_event_details.teachers[i + 1].shortname);
     }
     this.waiting = [];
-    for (let i = 0; i < this.app.school_event_details.teachers.length; i++) {
+    for (let i = 0; i < this.data.school_event_details.teachers.length; i++) {
       if (this.checkFinished(i)) {
-        this.waiting.push(this.app.school_event_details.teachers[i].shortname);
+        this.waiting.push(this.data.school_event_details.teachers[i].shortname);
       }
     }
   }
