@@ -339,9 +339,9 @@ export default {
     /**
      * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
      */
-    failedConfirm() {
+    failedConfirm(teacher) {
       this.$bvToast.toast("Es ist ein Fehler aufgetreten!", {
-        title: "Zumindest ein Leherer ist nicht am System registriert",
+        title: teacher+" ist nicht am System registriert",
         autoHideDelay: 2500,
         appendToast: false,
         variant: "danger"
@@ -534,7 +534,7 @@ export default {
                     })
                     .catch(e => {
                       e.toString();
-                      this.failedConfirm();
+                      this.failedConfirm(shortName);
                     });
                 })
                 .catch(err => {
