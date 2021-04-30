@@ -660,7 +660,7 @@ export default {
     }
     this.waiting = [];
     for (let i = 0; i < this.data.school_event_details.teachers.length; i++) {
-      if (this.checkFinished(i)) {
+      if (!this.checkFinished(i)) {
         this.waiting.push(this.data.school_event_details.teachers[i].shortname);
       }
     }
