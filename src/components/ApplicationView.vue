@@ -1355,12 +1355,7 @@ export default {
           this.app.business_trip_applications[this.currentTeacherIndex].staffnr
         ).length === 8
       ) {
-        if (
-          ("" + this.app.travel_invoices[this.currentTeacherIndex].staffnr)
-            .length === 8
-        ) {
-          return true;
-        }
+        return true;
       }
       return false;
     },
