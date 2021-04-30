@@ -9,8 +9,8 @@
           label-cols-lg="3"
           content-cols-sm
           content-cols-lg="7"
-          description="Geben Sie den akademischen Titel an."
-          label="Akademischer Titel"
+          description="Geben Sie den amtlichen Titel an."
+          label="Amtlicher Titel"
           label-for="pn"
         >
           <b-form-input
