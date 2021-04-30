@@ -289,16 +289,18 @@ export default {
           case 0:
             return "Abgelehnt";
           case 1:
-            return "Akzeptierungsphase";
+            return "Einreichung";
           case 2:
-            return "Bestätigt";
+            return "Akzeptierungsphase";
           case 3:
-            return "Läuft...";
+            return "Bestätigt";
           case 4:
-            return "Kosten ausstehend";
+            return "Läuft...";
           case 5:
-            return "Rechnungsphase";
+            return "Kosten ausstehend";
           case 6:
+            return "Rechnungsphase";
+          case 7:
             return "Abgeschlossen";
           default:
             return "Abgelehnt";
@@ -343,7 +345,7 @@ export default {
               i--;
             }
           } else {
-            if (apps[i].progress !== 5) {
+            if (apps[i].progress !== 6) {
               apps.splice(i, 1);
               down++;
               i--;
@@ -362,7 +364,7 @@ export default {
               i--;
             }
           } else {
-            if (apps[i].progress !== 1) {
+            if (apps[i].progress !== 2) {
               apps.splice(i, 1);
               down++;
               i--;
@@ -1073,9 +1075,9 @@ export default {
           ) {
             this.getBusiness(this.selected[i].uuid, kurz, 0);
             this.getBusinessExcel(this.selected[i].uuid, kurz, 0);
-            if (this.selected[i].progress >= 5)
+            if (this.selected[i].progress >= 6)
               this.getInvoice(this.selected[i].uuid, kurz, 0);
-            if (this.selected[i].progress >= 5)
+            if (this.selected[i].progress >= 6)
               this.getInvoiceExcel(this.selected[i].uuid, kurz, 0);
           }
         }

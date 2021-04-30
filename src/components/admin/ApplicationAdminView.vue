@@ -24,7 +24,7 @@
       style="margin-top:1rem;margin-bottom:3rem"
     >
       <b-col cols="12">
-        <Progress v-bind:progress="app.progress" v-bind:kind="app.kind" />
+        <Progress v-bind:progress="app.progress" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -969,7 +969,7 @@ export default {
               teacher: 0
             }
           ];
-          if (this.app.progress >= 4) {
+          if (this.app.progress >= 5) {
             this.items.push({
               title: "Reiserechnung",
               form: "TravelInvoice",
@@ -1001,7 +1001,7 @@ export default {
                 teacher: 0
               }
             ];
-            if (this.app.progress >= 4) {
+            if (this.app.progress >= 5) {
               this.items.push({
                 title: "Reiserechnung",
                 form: "TravelInvoice",
@@ -1023,7 +1023,7 @@ export default {
           return true;
         }
       } else {
-        if (this.app.progress === 1 || this.app.progress === 5) {
+        if (this.app.progress === 2 || this.app.progress === 6) {
           return false;
         } else {
           return true;
@@ -1291,14 +1291,14 @@ export default {
           this.app.progress = 5;
         }
       } else {
-        if (this.app.progress === 1) {
+        if (this.app.progress === 2) {
           for (let i = 0; i < this.app.business_trip_applications.length; i++) {
             this.app.business_trip_applications[i].referee = this.user.longname;
           }
           this.app.progress = 0;
         }
-        if (this.app.progress === 5) {
-          this.app.progress = 4;
+        if (this.app.progress === 6) {
+          this.app.progress = 5;
         }
       }
       this.app.last_changed = this.createNewDate();
@@ -1396,22 +1396,22 @@ export default {
           this.app.last_changed = this.createNewDate();
         }
       } else {
-        if (this.app.progress === 1) {
+        if (this.app.progress === 2) {
           for (let i = 0; i < this.app.business_trip_applications.length; i++) {
             this.app.business_trip_applications[i].referee = this.user.longname;
             this.app.business_trip_applications[
               i
             ].date_application_approved = this.createNewDate();
-            this.app.progress = 2;
+            this.app.progress = 3;
             this.app.last_changed = this.createNewDate();
             this.deleteApproval();
           }
         }
-        if (this.app.progress === 5) {
+        if (this.app.progress === 6) {
           for (let i = 0; i < this.app.travel_invoices.length; i++) {
             this.app.travel_invoices[i].approval_date = this.createNewDate();
           }
-          this.app.progress = 6;
+          this.app.progress = 7;
           this.app.last_changed = this.createNewDate();
         }
       }

@@ -6,8 +6,8 @@
   >
     <b-row align-h="center">
       <b-col cols="12">
-        <!-- Falles der Antrag eine Schulveranstaltung ist -->
-        <div v-if="kind === 0" class="track">
+        <!-- Der Fortschritt des Antrags -->
+        <div class="track">
           <div
             :class="{
               active: progress >= 1
@@ -145,146 +145,13 @@
             >
           </div>
         </div>
-        <!-- Falls der Antrag keine Schulveranstaltung ist -->
-        <div
-          v-if="
-            kind === 1 ||
-              kind === 2 ||
-              kind === 3 ||
-              kind === 4 ||
-              kind === 5 ||
-              kind === 6 ||
-              kind === 7 ||
-              kind === 8 ||
-              kind === 9 ||
-              kind === 10
-          "
-          class="track"
-        >
-          <div
-            :class="{
-              active: progress >= 1
-            }"
-            class="step"
-          >
-            <span class="icon">
-              <i
-                :class="{
-                  'fa-check': progress >= 1,
-                  'fa-circle': progress < 1 && progress > 0,
-                  'fa-exclamation': progress == 0
-                }"
-                class="fa"
-              ></i>
-            </span>
-            <span class="text text-truncate d-none d-md-block"
-              >In Bearbeitung</span
-            >
-          </div>
-          <div
-            :class="{
-              active: progress >= 2
-            }"
-            class="step"
-          >
-            <span class="icon">
-              <i
-                :class="{
-                  'fa-check': progress >= 2,
-                  'fa-circle': progress < 2 && progress > 0,
-                  'fa-exclamation': progress == 0
-                }"
-                class="fa"
-              ></i>
-            </span>
-            <span class="text text-truncate d-none d-md-block">Bestätigt</span>
-          </div>
-          <div
-            :class="{
-              active: progress >= 3
-            }"
-            class="step"
-          >
-            <span class="icon">
-              <i
-                :class="{
-                  'fa-check': progress >= 3,
-                  'fa-circle': progress < 3 && progress > 0,
-                  'fa-exclamation': progress == 0
-                }"
-                class="fa"
-              ></i>
-            </span>
-            <span class="text text-truncate d-none d-md-block">Läuft...</span>
-          </div>
-          <div
-            :class="{
-              active: progress >= 4
-            }"
-            class="step"
-          >
-            <span class="icon">
-              <i
-                :class="{
-                  'fa-check': progress >= 4,
-                  'fa-circle': progress < 4 && progress > 0,
-                  'fa-exclamation': progress == 0
-                }"
-                class="fa"
-              ></i>
-            </span>
-            <span class="text text-truncate d-none d-md-block"
-              >Kosten ausstehend</span
-            >
-          </div>
-          <div
-            :class="{
-              active: progress >= 5
-            }"
-            class="step"
-          >
-            <span class="icon">
-              <i
-                :class="{
-                  'fa-check': progress >= 5,
-                  'fa-circle': progress < 5 && progress > 0,
-                  'fa-exclamation': progress == 0
-                }"
-                class="fa"
-              ></i>
-            </span>
-            <span class="text text-truncate d-none d-md-block"
-              >Kosten in Bearbeitung</span
-            >
-          </div>
-          <div
-            :class="{
-              active: progress >= 6
-            }"
-            class="step"
-          >
-            <span class="icon">
-              <i
-                :class="{
-                  'fa-check': progress >= 6,
-                  'fa-circle': progress < 6 && progress > 0,
-                  'fa-exclamation': progress == 0
-                }"
-                class="fa"
-              ></i>
-            </span>
-            <span class="text text-truncate d-none d-md-block"
-              >Abgeschlossen</span
-            >
-          </div>
-        </div>
       </b-col>
     </b-row>
   </b-container>
 </template>
 <script>
 export default {
-  props: ["kind", "progress"]
+  props: ["progress"]
 };
 </script>
 

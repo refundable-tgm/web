@@ -33,7 +33,7 @@
     >
       <b-col cols="12">
         <!-- Progressbar -->
-        <Progress v-bind:progress="app.progress" v-bind:kind="app.kind" />
+        <Progress v-bind:progress="app.progress" />
       </b-col>
     </b-row>
     <b-row style="margin-top:2rem">
@@ -1093,30 +1093,30 @@ export default {
           }
         }
       } else {
-        if (this.app.progress === 2) {
+        if (this.app.progress === 3) {
           if (
             new Date(this.app.start_time) <= current &&
             current <= new Date(this.app.end_time)
           ) {
-            this.app.progress = 3;
+            this.app.progress = 4;
             return true;
           }
         }
-        if (this.app.progress === 2 || this.app.progress === 3) {
+        if (this.app.progress === 3 || this.app.progress === 4) {
           if (current >= new Date(this.app.end_time)) {
             if (this.app.kind === 6) {
               if (
                 this.app.other_reason_details.kind !== 7 &&
                 this.app.other_reason_details.kind !== 9
               ) {
-                this.app.progress = 4;
+                this.app.progress = 5;
                 return true;
               } else {
-                this.app.progress = 6;
+                this.app.progress = 7;
                 return true;
               }
             } else {
-              this.app.progress = 4;
+              this.app.progress = 5;
               return true;
             }
           } else {
@@ -1589,14 +1589,14 @@ export default {
         }
       } else {
         if (this.app.kind === 1) {
-          if (this.app.progress >= 4) {
+          if (this.app.progress >= 5) {
             if (this.belege.files !== undefined) {
               if (this.belege.files.length >= 1) {
                 this.sendReceipts(this.belege);
               }
             }
             if (this.app.travel_invoices[0].calculation.rows !== null) {
-              this.app.progress = 5;
+              this.app.progress = 6;
             }
           }
         } else {
@@ -1604,14 +1604,14 @@ export default {
             this.app.other_reason_details.kind !== 7 &&
             this.app.other_reason_details.kind !== 9
           ) {
-            if (this.app.progress >= 4) {
+            if (this.app.progress >= 5) {
               if (this.belege.files !== undefined) {
                 if (this.belege.files.length >= 1) {
                   this.sendReceipts(this.belege);
                 }
               }
               if (this.app.travel_invoices[0].calculation.rows !== null) {
-                this.app.progress = 5;
+                this.app.progress = 6;
               }
             }
           }
@@ -1853,8 +1853,8 @@ export default {
               this.tbreadonly = true;
               break;
             case 1:
-              this.wreadonly = true;
-              this.tareadonly = true;
+              this.wreadonly = false;
+              this.tareadonly = false;
               this.tbreadonly = true;
               break;
             case 2:
@@ -1870,14 +1870,19 @@ export default {
             case 4:
               this.wreadonly = true;
               this.tareadonly = true;
-              this.tbreadonly = false;
+              this.tbreadonly = true;
               break;
             case 5:
               this.wreadonly = true;
               this.tareadonly = true;
-              this.tbreadonly = true;
+              this.tbreadonly = false;
               break;
             case 6:
+              this.wreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 7:
               this.wreadonly = true;
               this.tareadonly = true;
               this.tbreadonly = true;
@@ -1899,8 +1904,8 @@ export default {
               this.tbreadonly = true;
               break;
             case 1:
-              this.oreadonly = true;
-              this.tareadonly = true;
+              this.oreadonly = false;
+              this.tareadonly = false;
               this.tbreadonly = true;
               break;
             case 2:
@@ -1916,14 +1921,19 @@ export default {
             case 4:
               this.oreadonly = true;
               this.tareadonly = true;
-              this.tbreadonly = false;
+              this.tbreadonly = true;
               break;
             case 5:
               this.oreadonly = true;
               this.tareadonly = true;
-              this.tbreadonly = true;
+              this.tbreadonly = false;
               break;
             case 6:
+              this.oreadonly = true;
+              this.tareadonly = true;
+              this.tbreadonly = true;
+              break;
+            case 7:
               this.oreadonly = true;
               this.tareadonly = true;
               this.tbreadonly = true;
@@ -2008,7 +2018,7 @@ export default {
               form: "BusinessTripApplication"
             }
           ];
-          if (app.progress >= 4) {
+          if (app.progress >= 5) {
             this.items.push({
               title: "Reiserechnung",
               form: "TravelInvoice"
@@ -2036,7 +2046,7 @@ export default {
                 form: "BusinessTripApplication"
               }
             ];
-            if (app.progress >= 4) {
+            if (app.progress >= 5) {
               this.items.push({
                 title: "Reiserechnung",
                 form: "TravelInvoice"
@@ -2870,7 +2880,7 @@ export default {
       if (this.app.kind === 0) {
         this.app.progress = 7;
       } else {
-        this.app.progress = 6;
+        this.app.progress = 7;
       }
       this.save();
       this.hideClose();
@@ -2914,7 +2924,7 @@ export default {
           return false;
         }
       } else {
-        if (this.app.progress === 6) {
+        if (this.app.progress === 7) {
           return true;
         } else {
           return false;
