@@ -117,7 +117,7 @@
               >
                 <b-form-input
                   id="ta"
-                  placeholder="Wexstraße 19-23, 1200 Wien, Österreich"
+                  placeholder="Straße & Nr., Postleitzahl & Ort, Land"
                   v-model="data.start_address"
                   :readonly="readonly"
                   v-on:input="updateData"
