@@ -479,7 +479,7 @@ export default {
           if (index === max) {
             console.log(index);
             console.log(shortName);
-            console.log(this.output.length);
+            console.log(this.output);
             console.log(escortsdata.teacher.length + 1);
             if (this.output.length === escortsdata.teacher.length + 1) {
               escortsdata.output = this.output;
