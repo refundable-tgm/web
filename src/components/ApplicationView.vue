@@ -976,6 +976,99 @@ export default {
       }
     },
     /**
+     * Diese Methode schaut, ob die Fortbildung oder der Sonstige Antrag auf 2 gesetzt werden soll
+     */
+    checkApplication() {
+      if (this.app.progress === 1) {
+        if (this.app.kind !== 0) {
+          if (this.app.kind === 6) {
+            if (
+              this.app.other_reason_details.kind === 7 ||
+              this.app.other_reason_details.kind === 9
+            ) {
+              if (
+                this.app.start_address !== "" &&
+                this.app.start_address !== undefined &&
+                this.app.start_address !== null
+              ) {
+                if (
+                  this.app.destination_address !== "" &&
+                  this.app.destination_address !== undefined &&
+                  this.app.destination_address !== null
+                ) {
+                  return true;
+                } else {
+                  return false;
+                }
+              } else {
+                return false;
+              }
+            } else {
+              if (
+                this.app.business_trip_applications[this.currentTeacherIndex]
+                  .staffnr !== "" &&
+                this.app.business_trip_applications[this.currentTeacherIndex]
+                  .staffnr !== undefined &&
+                this.app.business_trip_applications[this.currentTeacherIndex]
+                  .staffnr !== null &&
+                (
+                  "" +
+                  this.app.business_trip_applications[this.currentTeacherIndex]
+                    .staffnr
+                ).length === 8
+              ) {
+                if (
+                  this.app.business_trip_applications[this.currentTeacherIndex]
+                    .travel_mode !== "" &&
+                  this.app.business_trip_applications[this.currentTeacherIndex]
+                    .travel_mode !== undefined &&
+                  this.app.business_trip_applications[this.currentTeacherIndex]
+                    .travel_mode !== null
+                ) {
+                  return true;
+                } else {
+                  return false;
+                }
+              } else {
+                return false;
+              }
+            }
+          } else {
+            if (
+              this.app.business_trip_applications[this.currentTeacherIndex]
+                .staffnr !== "" &&
+              this.app.business_trip_applications[this.currentTeacherIndex]
+                .staffnr !== undefined &&
+              this.app.business_trip_applications[this.currentTeacherIndex]
+                .staffnr !== null &&
+              (
+                "" +
+                this.app.business_trip_applications[this.currentTeacherIndex]
+                  .staffnr
+              ).length === 8
+            ) {
+              if (
+                this.app.business_trip_applications[this.currentTeacherIndex]
+                  .travel_mode !== "" &&
+                this.app.business_trip_applications[this.currentTeacherIndex]
+                  .travel_mode !== undefined &&
+                this.app.business_trip_applications[this.currentTeacherIndex]
+                  .travel_mode !== null
+              ) {
+                return true;
+              } else {
+                return false;
+              }
+            } else {
+              return false;
+            }
+          }
+        }
+      } else {
+        return false;
+      }
+    },
+    /**
      * Diese Methode schaut nach, ob in dem Antrag alle Begleitlehrer ihre Daten eingetragen haben, damit die Progression weiter geht.
      * @returns Einen Boolean Wert, welcher aussagt, ob alle Begleitlehrere Ihre Informationen angegeben haben.
      */
@@ -1578,6 +1671,9 @@ export default {
     save() {
       if (this.app.progress === 0) {
         this.app.progress = 1;
+      }
+      if (this.checkApplication()) {
+        this.app.progress = 2;
       }
       if (this.app.kind === 0) {
         if (this.app.progress >= 5) {
