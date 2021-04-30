@@ -543,7 +543,7 @@ export default {
                 });
               break;
             default:
-              this.failedConfirm();
+              this.failedConfirm(shortName);
           }
         });
     },
