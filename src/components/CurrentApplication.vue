@@ -202,7 +202,7 @@ export default {
         if (progress > 0 && progress < 7) return true;
         else return false;
       } else {
-        if (progress > 0 && progress < 6) return true;
+        if (progress > 0 && progress < 7) return true;
         else return false;
       }
     },
@@ -239,16 +239,18 @@ export default {
           case 0:
             return "Abgelehnt";
           case 1:
-            return "In Bearbeitung";
+            return "Einreichung";
           case 2:
-            return "Bestätigt";
+            return "In Bearbeitung";
           case 3:
-            return "Läuft...";
+            return "Bestätigt";
           case 4:
-            return "Kosten ausstehend";
+            return "Läuft...";
           case 5:
-            return "Kosten in Bearbeitung";
+            return "Kosten ausstehend";
           case 6:
+            return "Kosten in Bearbeitung";
+          case 7:
             return "Abgeschlossen";
           default:
             return "Abgelehnt";
@@ -368,7 +370,7 @@ export default {
           }
         } else {
           switch (data[i].progress) {
-            case 6:
+            case 7:
               data[i]._rowVariant = "success";
               break;
             case 1:
@@ -384,6 +386,9 @@ export default {
               data[i]._rowVariant = "warning";
               break;
             case 5:
+              data[i]._rowVariant = "warning";
+              break;
+            case 6:
               data[i]._rowVariant = "warning";
               break;
             case 0:
@@ -456,30 +461,30 @@ export default {
           }
         }
       } else {
-        if (app.progress === 2) {
+        if (app.progress === 3) {
           if (
             new Date(app.start_time) <= current &&
             current <= new Date(app.end_time)
           ) {
-            app.progress = 3;
+            app.progress = 4;
             return app;
           }
         }
-        if (app.progress === 2 || app.progress === 3) {
+        if (app.progress === 3 || app.progress === 4) {
           if (current >= new Date(app.end_time)) {
             if (app.kind === 6) {
               if (
                 app.other_reason_details.kind !== 7 &&
                 app.other_reason_details.kind !== 9
               ) {
-                app.progress = 4;
+                app.progress = 5;
                 return app;
               } else {
-                app.progress = 6;
+                app.progress = 7;
                 return app;
               }
             } else {
-              app.progress = 4;
+              app.progress = 5;
               return app;
             }
           } else {
