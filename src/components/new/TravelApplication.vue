@@ -422,6 +422,7 @@ export default {
       this.data.sonstige_kosten = this.app.other_costs;
       this.data.geschaetzte_kosten = this.app.estimated_costs;
     }
+    this.update();
   }
 };
 </script>

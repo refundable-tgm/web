@@ -380,6 +380,7 @@ export default {
     next() {
       if (this.checkClick()) {
         if (this.validInputs) {
+          this.makeUpper();
           this.calculateLength();
           this.changeComponent("Escorts", true, null, this.data);
         } else {
@@ -391,6 +392,14 @@ export default {
           if (this.Start === null) this.Start = false;
           if (this.Ziel === null) this.Ziel = false;
         }
+      }
+    },
+    /**
+     * Diese Methode schreibt alle Klassen richtig an
+     */
+    makeUpper() {
+      for(let i = 0;i<this.data.class.length;i++) {
+        this.data.class[i] = this.data.class[i].toUpperCase();
       }
     },
     /**

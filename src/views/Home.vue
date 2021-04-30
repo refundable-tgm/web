@@ -477,9 +477,13 @@ export default {
             )
           );
           if (index === max) {
-            escortsdata.output = this.output;
-            this.escortsdata = escortsdata;
-            this.change("Escorts", back, false);
+            if (this.output.length === max + 1) {
+              escortsdata.output = this.output;
+              this.escortsdata = escortsdata;
+              this.change("Escorts", back, false);
+            } else {
+              this.failedConfirm();
+            }
           }
         })
         .catch(error => {
@@ -525,9 +529,11 @@ export default {
                         )
                       );
                       if (index === max) {
-                        escortsdata.output = this.output;
-                        this.escortsdata = escortsdata;
-                        this.change("Escorts", back, false);
+                        if (this.output.length === max + 1) {
+                          escortsdata.output = this.output;
+                          this.escortsdata = escortsdata;
+                          this.change("Escorts", back, false);
+                        }
                       }
                     })
                     .catch(e => {
