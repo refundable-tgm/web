@@ -398,7 +398,7 @@ export default {
      * Diese Methode schreibt alle Klassen richtig an
      */
     makeUpper() {
-      for(let i = 0;i<this.data.class.length;i++) {
+      for (let i = 0; i < this.data.class.length; i++) {
         this.data.class[i] = this.data.class[i].toUpperCase();
       }
     },
