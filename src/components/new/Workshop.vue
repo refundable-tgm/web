@@ -434,168 +434,193 @@ export default {
       }
     },
     /**
+     * Dieses Methode überprüft, ob die Personalnummer richtig gesetzt worden ist
+     */
+    checkPersonal() {
+      if (this.teacher.personalnummer.length === 8) {
+        return true;
+      }
+      return false;
+    },
+    /**
      * Diese Methode fügt die einzelnen Daten zu einem für das Backend verwendbares Objekt zusammen und sendet dieses an das Backend
      */
     einreichen() {
       if (this.checkClick()) {
         if (this.validInputs) {
-          var bonus1 = false;
-          var bonus2 = false;
-          if (this.teacher.bonus_meilen.includes("0")) {
-            bonus1 = true;
-          } else {
-            bonus1 = false;
-          }
-          if (this.teacher.bonus_meilen.includes("1")) {
-            bonus2 = true;
-          } else {
-            bonus2 = false;
-          }
-          var business = [
-            {
-              id: 0,
-              name: this.returnString(this.user.longname.split(" ")[0]),
-              surname: this.returnString(this.user.longname.split(" ")[1]),
-              degree: this.returnString(this.teacher.degree),
-              title: this.returnString(this.teacher.title),
-              staffnr: this.returnValue(this.teacher.personalnummer),
-              trip_begin_time: this.createNewDate(
-                this.startDate,
-                this.startTime
-              ),
-              trip_end_time: this.createNewDate(this.endDate, this.endTime),
-              service_begin_time: this.createNewDate(
-                this.startDate,
-                this.startTime
-              ),
-              service_end_time: this.createNewDate(this.endDate, this.endTime),
-              trip_goal: this.returnString(this.start),
-              travel_purpose: this.returnString(this.teacher.reason1),
-              travel_mode: this.returnValue(this.teacher.transport),
-              starting_point: this.returnValue(this.teacher.ausgangspunkt),
-              end_point: this.returnValue(this.teacher.endpunkt),
-              reasoning: this.returnString(this.teacher.reason),
-              other_participants: [],
-              bonus_mile_confirmation_1: bonus1,
-              bonus_mile_confirmation_2: bonus2,
-              travel_costs_paid_by_someone: this.returnBoolean(
-                this.teacher.reisekosten
-              ),
-              staying_costs_paid_by_someone: this.returnBoolean(
-                this.teacher.aufenthaltskosten
-              ),
-              paid_by_whom: this.returnString(this.teacher.von),
-              other_costs: this.returnValue(this.teacher.sonstige_kosten),
-              estimated_costs: this.returnValue(
-                this.teacher.geschaetzte_kosten
-              ),
-              date_application_filed: this.createNewDate(
-                new Date().toISOString().split("T")[0],
-                new Date().toISOString().split("T")[1]
-              ),
-              business_card_emitted_outward: this.teacher.emitted_out,
-              business_card_emitted_return: this.teacher.emitted_ret
+          if (this.checkPersonal()) {
+            var bonus1 = false;
+            var bonus2 = false;
+            if (this.teacher.bonus_meilen.includes("0")) {
+              bonus1 = true;
+            } else {
+              bonus1 = false;
             }
-          ];
-          var data = {
-            uuid: this.returnString(""),
-            name: this.returnString(this.title),
-            kind: 1,
-            miscellaneous_reason: this.returnString(""),
-            progress: 1,
-            start_time: this.createNewDate(this.startDate, this.startTime),
-            end_time: this.createNewDate(this.endDate, this.endTime),
-            notes: this.returnString(this.notes),
-            start_address: this.returnString(this.start),
-            destination_address: this.returnString(this.end),
-            last_changed: this.createNewDate(
-              new Date().toISOString().split("T")[0],
-              new Date().toISOString().split("T")[1]
-            ),
-            training_details: {
-              kind: this.returnValue(this.selected),
-              miscellaneous_reason: this.returnString(this.son),
-              ph: this.returnValue(this.phNumber),
-              organizer: this.returnString(this.veran),
-              filer: this.returnString(this.user.longname)
-            },
-            business_trip_applications: business,
-            travel_invoices: [
+            if (this.teacher.bonus_meilen.includes("1")) {
+              bonus2 = true;
+            } else {
+              bonus2 = false;
+            }
+            var business = [
               {
                 id: 0,
                 name: this.returnString(this.user.longname.split(" ")[0]),
                 surname: this.returnString(this.user.longname.split(" ")[1]),
                 degree: this.returnString(this.teacher.degree),
                 title: this.returnString(this.teacher.title),
+                staffnr: this.returnValue(this.teacher.personalnummer),
                 trip_begin_time: this.createNewDate(
                   this.startDate,
                   this.startTime
                 ),
                 trip_end_time: this.createNewDate(this.endDate, this.endTime),
-                staffnr: this.returnValue(this.teacher.personalnummer),
-                starting_point: this.returnString(this.start),
-                end_point: this.returnString(this.end),
-                filing_date: this.createNewDate(
+                service_begin_time: this.createNewDate(
+                  this.startDate,
+                  this.startTime
+                ),
+                service_end_time: this.createNewDate(
+                  this.endDate,
+                  this.endTime
+                ),
+                trip_goal: this.returnString(this.start),
+                travel_purpose: this.returnString(this.teacher.reason1),
+                travel_mode: this.returnValue(this.teacher.transport),
+                starting_point: this.returnValue(this.teacher.ausgangspunkt),
+                end_point: this.returnValue(this.teacher.endpunkt),
+                reasoning: this.returnString(this.teacher.reason),
+                other_participants: [],
+                bonus_mile_confirmation_1: bonus1,
+                bonus_mile_confirmation_2: bonus2,
+                travel_costs_paid_by_someone: this.returnBoolean(
+                  this.teacher.reisekosten
+                ),
+                staying_costs_paid_by_someone: this.returnBoolean(
+                  this.teacher.aufenthaltskosten
+                ),
+                paid_by_whom: this.returnString(this.teacher.von),
+                other_costs: this.returnValue(this.teacher.sonstige_kosten),
+                estimated_costs: this.returnValue(
+                  this.teacher.geschaetzte_kosten
+                ),
+                date_application_filed: this.createNewDate(
                   new Date().toISOString().split("T")[0],
                   new Date().toISOString().split("T")[1]
-                )
+                ),
+                business_card_emitted_outward: this.teacher.emitted_out,
+                business_card_emitted_return: this.teacher.emitted_ret
               }
-            ]
-          };
-          axios
-            .post(this.url + "/createApplication", data, {
-              headers: {
-                Authorization: "Basic " + this.token
+            ];
+            var data = {
+              uuid: this.returnString(""),
+              name: this.returnString(this.title),
+              kind: 1,
+              miscellaneous_reason: this.returnString(""),
+              progress: 1,
+              start_time: this.createNewDate(this.startDate, this.startTime),
+              end_time: this.createNewDate(this.endDate, this.endTime),
+              notes: this.returnString(this.notes),
+              start_address: this.returnString(this.start),
+              destination_address: this.returnString(this.end),
+              last_changed: this.createNewDate(
+                new Date().toISOString().split("T")[0],
+                new Date().toISOString().split("T")[1]
+              ),
+              training_details: {
+                kind: this.returnValue(this.selected),
+                miscellaneous_reason: this.returnString(this.son),
+                ph: this.returnValue(this.phNumber),
+                organizer: this.returnString(this.veran),
+                filer: this.returnString(this.user.longname)
+              },
+              business_trip_applications: business,
+              travel_invoices: [
+                {
+                  id: 0,
+                  name: this.returnString(this.user.longname.split(" ")[0]),
+                  surname: this.returnString(this.user.longname.split(" ")[1]),
+                  degree: this.returnString(this.teacher.degree),
+                  title: this.returnString(this.teacher.title),
+                  trip_begin_time: this.createNewDate(
+                    this.startDate,
+                    this.startTime
+                  ),
+                  trip_end_time: this.createNewDate(this.endDate, this.endTime),
+                  staffnr: this.returnValue(this.teacher.personalnummer),
+                  starting_point: this.returnString(this.start),
+                  end_point: this.returnString(this.end),
+                  filing_date: this.createNewDate(
+                    new Date().toISOString().split("T")[0],
+                    new Date().toISOString().split("T")[1]
+                  )
+                }
+              ]
+            };
+            axios
+              .post(this.url + "/createApplication", data, {
+                headers: {
+                  Authorization: "Basic " + this.token
+                }
+              })
+              .then(response => {
+                response.toString();
+                this.createConfirm();
+                this.changeComponent("Index");
+              })
+              .catch(error => {
+                switch (error.response.status) {
+                  case 401:
+                    axios
+                      .post(this.url + "/login/refresh", {
+                        refresh_token: this.refresh_token
+                      })
+                      .then(resp => {
+                        switch (resp.status) {
+                          case 201:
+                            this.$emit(
+                              "updateToken",
+                              resp.data.access_token,
+                              resp.data.refresh_token
+                            );
+                            axios
+                              .post(this.url + "/createApplication", data, {
+                                headers: {
+                                  Authorization:
+                                    "Basic " + resp.data.access_token
+                                }
+                              })
+                              .then(res => {
+                                res.toString();
+                                this.createConfirm();
+                                this.changeComponent("Index");
+                              })
+                              .catch(e => {
+                                e.toString();
+                                this.failedConfirm();
+                              });
+                            break;
+                        }
+                      })
+                      .catch(err => {
+                        err.toString();
+                        this.$emit("logout");
+                      });
+                    break;
+                  default:
+                    this.failedConfirm();
+                    break;
+                }
+              });
+          } else {
+            this.$bvToast.toast(
+              "Die Personalnummer wurde nicht richtig gesetzt!",
+              {
+                title: "Änderungen nicht gespeichert",
+                autoHideDelay: 2500,
+                appendToast: false,
+                variant: "danger"
               }
-            })
-            .then(response => {
-              response.toString();
-              this.createConfirm();
-              this.changeComponent("Index");
-            })
-            .catch(error => {
-              switch (error.response.status) {
-                case 401:
-                  axios
-                    .post(this.url + "/login/refresh", {
-                      refresh_token: this.refresh_token
-                    })
-                    .then(resp => {
-                      switch (resp.status) {
-                        case 201:
-                          this.$emit(
-                            "updateToken",
-                            resp.data.access_token,
-                            resp.data.refresh_token
-                          );
-                          axios
-                            .post(this.url + "/createApplication", data, {
-                              headers: {
-                                Authorization: "Basic " + resp.data.access_token
-                              }
-                            })
-                            .then(res => {
-                              res.toString();
-                              this.createConfirm();
-                              this.changeComponent("Index");
-                            })
-                            .catch(e => {
-                              e.toString();
-                              this.failedConfirm();
-                            });
-                          break;
-                      }
-                    })
-                    .catch(err => {
-                      err.toString();
-                      this.$emit("logout");
-                    });
-                  break;
-                default:
-                  this.failedConfirm();
-                  break;
-              }
-            });
+            );
+          }
         } else {
           this.makeToast();
           if (this.Time == null) this.Time = false;
