@@ -445,8 +445,10 @@ export default {
                       "" &&
                     this.data.business_trip_applications[index].staffnr !==
                       undefined &&
-                    this.data.business_trip_applications[index].staffnr !== null
-                    && (""+this.data.business_trip_applications[index].staffnr).length === 8
+                    this.data.business_trip_applications[index].staffnr !==
+                      null &&
+                    ("" + this.data.business_trip_applications[index].staffnr)
+                      .length === 8
                   ) {
                     if (
                       this.data.business_trip_applications[index]
