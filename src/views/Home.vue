@@ -477,7 +477,7 @@ export default {
             )
           );
           if (index === max) {
-            if (this.output.length === max + 1) {
+            if (this.output.length === this.escortsdata.teacher.length + 1) {
               escortsdata.output = this.output;
               this.escortsdata = escortsdata;
               this.change("Escorts", back, false);
