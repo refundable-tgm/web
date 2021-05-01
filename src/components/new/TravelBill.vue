@@ -475,7 +475,6 @@ export default {
       for (let i = 0; i < this.invoices.length; i++) {
         imgs[i] = await toBase64(this.invoices[i]);
         imgs[i] = imgs[i].replace("data:", "").replace(/^.+,/, "");
-        console.log(imgs[i]);
         this.data.beleg.files.push({ pdf: imgs[i] });
       }
       this.update();
