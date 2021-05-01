@@ -468,13 +468,14 @@ export default {
       const toBase64 = file =>
         new Promise((resolve, reject) => {
           const reader = new FileReader();
-          reader.readAsDataURL(file);
+          reader.readAsText(file);
           reader.onload = () => resolve(reader.result);
           reader.onerror = error => reject(error);
         });
       for (let i = 0; i < this.invoices.length; i++) {
         imgs[i] = await toBase64(this.invoices[i]);
-        this.data.beleg.files.push({ pdf: imgs[i].substring(28) });
+        console.log(imgs[i]);
+        this.data.beleg.files.push({ pdf: imgs[i] });
       }
       this.update();
     },
