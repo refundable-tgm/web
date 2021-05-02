@@ -254,11 +254,9 @@
                   content-cols-sm
                   content-cols-lg="7"
                   :description="
-                    'Geben Sie die Anzahl der Schüler der ' +
-                      clas.toUpperCase() +
-                      ' ein.'
+                    'Geben Sie die Anzahl der Schüler der ' + clas + ' ein.'
                   "
-                  :label="'Anzahl Schüler ' + clas.toUpperCase()"
+                  :label="'Anzahl Schüler ' + clas"
                   label-for="aschueler"
                 >
                   <b-form-input
@@ -283,10 +281,10 @@
                   content-cols-lg="7"
                   :description="
                     'Geben Sie die Anzahl der Schülerinnen der ' +
-                      clas.toUpperCase() +
+                      clas +
                       ' ein.'
                   "
-                  :label="'Anzahl Schülerinnen ' + clas.toUpperCase()"
+                  :label="'Anzahl Schülerinnen ' + clas"
                   label-for="aschuelerin"
                 >
                   <b-form-input
@@ -441,6 +439,9 @@ export default {
      * Diese Methode überprüft, ob Klassen angegeben worden sind
      */
     checkClass() {
+      for (let i = 0; i < this.data.class.length; i++) {
+        this.data.class[i] = this.data.class[i].toUpperCase();
+      }
       if (this.data.class.length === 0) {
         this.Class = false;
       } else {
@@ -523,8 +524,8 @@ export default {
         this.Start === true &&
         this.Ziel === true
       ) {
-        for (let i = 0; i < this.data.Class.length; i++) {
-          if (!this.data.Class[i]) {
+        for (let i = 0; i < this.Class.length; i++) {
+          if (!this.Class[i]) {
             this.validInputs = false;
             return;
           }
