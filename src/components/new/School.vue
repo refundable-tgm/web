@@ -255,10 +255,10 @@
                   content-cols-lg="7"
                   :description="
                     'Geben Sie die Anzahl der Schüler der ' +
-                      (clas.toUpperCase()) +
+                      clas.toUpperCase() +
                       ' ein.'
                   "
-                  :label="'Anzahl Schüler ' + (clas.toUpperCase())"
+                  :label="'Anzahl Schüler ' + clas.toUpperCase()"
                   label-for="aschueler"
                 >
                   <b-form-input
@@ -283,10 +283,10 @@
                   content-cols-lg="7"
                   :description="
                     'Geben Sie die Anzahl der Schülerinnen der ' +
-                      (clas.toUpperCase()) +
+                      clas.toUpperCase() +
                       ' ein.'
                   "
-                  :label="'Anzahl Schülerinnen ' + (clas.toUpperCase())"
+                  :label="'Anzahl Schülerinnen ' + clas.toUpperCase()"
                   label-for="aschuelerin"
                 >
                   <b-form-input
@@ -523,13 +523,10 @@ export default {
         this.Start === true &&
         this.Ziel === true
       ) {
-        var alle = true;
-        for(let i = 0;i<this.data.Class.length;i++) {
-          if(!this.data.Class[i]) {
+        for (let i = 0; i < this.data.Class.length; i++) {
+          if (!this.data.Class[i]) {
             this.validInputs = false;
             return;
-          } else {
-            this.validInputs = true;
           }
         }
         this.validInputs = true;
