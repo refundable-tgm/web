@@ -436,8 +436,14 @@ export default {
           role: 0
         }
       ];
-      for (let i = 0; i < escortsdata.teacher.length; i++) {
-        this.getTeacher(escortsdata.teacher[i], escortsdata, i, back);
+      if (escortsdata.teacher.length <= 0) {
+        escortsdata.output = this.output;
+        this.escortsdata = escortsdata;
+        this.change("Escorts", back, false);
+      } else {
+        for (let i = 0; i < escortsdata.teacher.length; i++) {
+          this.getTeacher(escortsdata.teacher[i], escortsdata, i, back);
+        }
       }
     },
     /**
