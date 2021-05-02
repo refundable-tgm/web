@@ -1365,6 +1365,22 @@ export default {
       return tmp.toISOString();
     },
     /**
+     * Diese Methode überprüft, ob bei jedem Datum in der Rechnung eine Zeit eingegeben worden ist
+     */
+    checkInvoiceTimes() {
+      var data = this.app.travel_invoices[this.currentTeacherIndex].calculation;
+      if (data.rows === null || data.rows === undefined || data.rows === "") {
+        return true;
+      } else {
+        for (let i = 0; i < data.rows.length; i++) {
+          if (data.rows[i].begin === "" || data.rows[i].end === "") {
+            return false;
+          }
+        }
+        return true;
+      }
+    },
+    /**
      * Diese Methode sendet die Rechnungen eines Benutzers an das Backend zu dem entsprechenden Antrag
      */
     sendReceipts(belege) {
@@ -1719,7 +1735,22 @@ export default {
       if (this.checkInvoices()) {
         this.app.progress = 6;
       }
-      this.speichern();
+      if (this.app.progress === 5) {
+        if (
+          this.app.travel_invoices[this.currentTeacherIndex].calculation
+            .rows === null
+        ) {
+          this.speichern();
+        } else {
+          if (this.checkInvoiceTimes()) {
+            this.speichern();
+          } else {
+            this.InvoiceFail();
+          }
+        }
+      } else {
+        this.speichern();
+      }
     },
     /**
      * Diese Methode öffnet das Modal, in dem man den Antrag schließen kann
@@ -1749,6 +1780,20 @@ export default {
         appendToast: false,
         variant: "success"
       });
+    },
+    /**
+     * Diese Methode zeigt dem Benutzer an, dass die Rechnung nicht vollständig ausgefüllt worden ist
+     */
+    InvoiceFail() {
+      this.$bvToast.toast(
+        "Die Reiserechnung wurde nicht komplett ausgefüllt!",
+        {
+          title: "Ein Fehler ist aufgetreten",
+          autoHideDelay: 2500,
+          appendToast: false,
+          variant: "danger"
+        }
+      );
     },
     /**
      * Diese Methode zeigt dem Benutzer an, dass der Antrag erfolgreich gespeichert worden ist
@@ -2325,71 +2370,83 @@ export default {
               });
             break;
           case "TravelInvoice":
-            axios
-              .get(
-                this.url +
-                  "/getTravelInvoiceExcel?uuid=" +
-                  this.app.uuid +
-                  "&short=" +
-                  this.user.short +
-                  "&ti_id=" +
-                  this.currentTeacherIndex,
-                {
-                  headers: {
-                    Authorization: "Basic " + this.token
+            if (this.checkInvoiceTimes()) {
+              axios
+                .get(
+                  this.url +
+                    "/getTravelInvoiceExcel?uuid=" +
+                    this.app.uuid +
+                    "&short=" +
+                    this.user.short +
+                    "&ti_id=" +
+                    this.currentTeacherIndex,
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.token
+                    }
                   }
-                }
-              )
-              .then(response => {
-                this.excelDownload(response.data);
-              })
-              .catch(error => {
-                switch (error.response.status) {
-                  case 401:
-                    axios
-                      .post(this.url + "/login/refresh", {
-                        refresh_token: this.refresh_token
-                      })
-                      .then(resp => {
-                        this.$emit(
-                          "updateToken",
-                          resp.data.access_token,
-                          resp.data.refresh_token
-                        );
-                        axios
-                          .get(
-                            this.url +
-                              "/getTravelInvoiceExcel?uuid=" +
-                              this.app.uuid +
-                              "&short=" +
-                              this.user.short +
-                              "&ti_id=" +
-                              this.currentTeacherIndex,
-                            {
-                              headers: {
-                                Authorization: "Basic " + resp.data.access_token
+                )
+                .then(response => {
+                  this.excelDownload(response.data);
+                })
+                .catch(error => {
+                  switch (error.response.status) {
+                    case 401:
+                      axios
+                        .post(this.url + "/login/refresh", {
+                          refresh_token: this.refresh_token
+                        })
+                        .then(resp => {
+                          this.$emit(
+                            "updateToken",
+                            resp.data.access_token,
+                            resp.data.refresh_token
+                          );
+                          axios
+                            .get(
+                              this.url +
+                                "/getTravelInvoiceExcel?uuid=" +
+                                this.app.uuid +
+                                "&short=" +
+                                this.user.short +
+                                "&ti_id=" +
+                                this.currentTeacherIndex,
+                              {
+                                headers: {
+                                  Authorization:
+                                    "Basic " + resp.data.access_token
+                                }
                               }
-                            }
-                          )
-                          .then(res => {
-                            this.excelDownload(res.data);
-                          })
-                          .catch(e => {
-                            e.toString();
-                            this.failedExcel();
-                          });
-                      })
-                      .catch(err => {
-                        err.toString();
-                        this.$emit("logout");
-                      });
-                    break;
-                  default:
-                    this.failedExcel();
-                    break;
+                            )
+                            .then(res => {
+                              this.excelDownload(res.data);
+                            })
+                            .catch(e => {
+                              e.toString();
+                              this.failedExcel();
+                            });
+                        })
+                        .catch(err => {
+                          err.toString();
+                          this.$emit("logout");
+                        });
+                      break;
+                    default:
+                      this.failedExcel();
+                      break;
+                  }
+                });
+            } else {
+              this.$bvToast.toast(
+                "Es wurden nicht alle notwendigen Informationen eingegeben!",
+                {
+                  title: "Reiserechnung ist unvollständig",
+                  autoHideDelay: 2500,
+                  appendToast: false,
+                  variant: "danger"
                 }
-              });
-
+              );
+            }
             break;
           default:
             this.failedExcel();
@@ -2397,7 +2454,7 @@ export default {
         }
       } else {
         this.$bvToast.toast("Die Personalnummer wurde nicht richtig gesetzt!", {
-          title: "Änderungen nicht gespeichert",
+          title: "Excel wurde nicht heruntergeladen",
           autoHideDelay: 2500,
           appendToast: false,
           variant: "danger"
@@ -2542,7 +2599,7 @@ export default {
             this.$bvToast.toast(
               "Die Personalnummer wurde nicht richtig gesetzt!",
               {
-                title: "Änderungen nicht gespeichert",
+                title: "PDF wurde nicht geöffnet",
                 autoHideDelay: 2500,
                 appendToast: false,
                 variant: "danger"
@@ -2563,7 +2620,7 @@ export default {
             this.$bvToast.toast(
               "Die Personalnummer wurde nicht richtig gesetzt!",
               {
-                title: "Änderungen nicht gespeichert",
+                title: "PDF wurde nicht geöffnet",
                 autoHideDelay: 2500,
                 appendToast: false,
                 variant: "danger"
@@ -2590,7 +2647,7 @@ export default {
               this.$bvToast.toast(
                 "Die Personalnummer wurde nicht richtig gesetzt!",
                 {
-                  title: "Änderungen nicht gespeichert",
+                  title: "PDF wurde nicht geöffnet",
                   autoHideDelay: 2500,
                   appendToast: false,
                   variant: "danger"
@@ -2675,7 +2732,7 @@ export default {
             this.$bvToast.toast(
               "Die Personalnummer wurde nicht richtig gesetzt!",
               {
-                title: "Änderungen nicht gespeichert",
+                title: "PDF wurde nicht geöffnet",
                 autoHideDelay: 2500,
                 appendToast: false,
                 variant: "danger"
@@ -2684,89 +2741,101 @@ export default {
           }
           break;
         case "TravelInvoice":
-          if (
-            (
-              "" +
-              this.app.business_trip_applications[this.currentTeacherIndex]
-                .staffnr
-            ).length === 8
-          ) {
-            axios
-              .get(
-                this.url +
-                  "/getTravelInvoiceForm?uuid=" +
-                  this.app.uuid +
-                  "&short=" +
-                  this.user.short +
-                  "&ti_id=" +
-                  this.currentTeacherIndex +
-                  "&receipts=true",
-                {
-                  headers: {
-                    Authorization: "Basic " + this.token
+          if (this.checkInvoiceTimes()) {
+            if (
+              (
+                "" +
+                this.app.business_trip_applications[this.currentTeacherIndex]
+                  .staffnr
+              ).length === 8
+            ) {
+              axios
+                .get(
+                  this.url +
+                    "/getTravelInvoiceForm?uuid=" +
+                    this.app.uuid +
+                    "&short=" +
+                    this.user.short +
+                    "&ti_id=" +
+                    this.currentTeacherIndex +
+                    "&receipts=true",
+                  {
+                    headers: {
+                      Authorization: "Basic " + this.token
+                    }
                   }
-                }
-              )
-              .then(response => {
-                this.showPDF(response.data);
-              })
-              .catch(error => {
-                switch (error.response.status) {
-                  case 401:
-                    axios
-                      .post(this.url + "/login/refresh", {
-                        refresh_token: this.refresh_token
-                      })
-                      .then(resp => {
-                        switch (resp.status) {
-                          case 201:
-                            this.$emit(
-                              "updateToken",
-                              resp.data.access_token,
-                              resp.data.refresh_token
-                            );
-                            axios
-                              .get(
-                                this.url +
-                                  "/getTravelInvoiceForm?uuid=" +
-                                  this.app.uuid +
-                                  "&short=" +
-                                  this.user.short +
-                                  "&ti_id=" +
-                                  this.currentTeacherIndex +
-                                  "&receipts=true",
-                                {
-                                  headers: {
-                                    Authorization:
-                                      "Basic " + resp.data.access_token
+                )
+                .then(response => {
+                  this.showPDF(response.data);
+                })
+                .catch(error => {
+                  switch (error.response.status) {
+                    case 401:
+                      axios
+                        .post(this.url + "/login/refresh", {
+                          refresh_token: this.refresh_token
+                        })
+                        .then(resp => {
+                          switch (resp.status) {
+                            case 201:
+                              this.$emit(
+                                "updateToken",
+                                resp.data.access_token,
+                                resp.data.refresh_token
+                              );
+                              axios
+                                .get(
+                                  this.url +
+                                    "/getTravelInvoiceForm?uuid=" +
+                                    this.app.uuid +
+                                    "&short=" +
+                                    this.user.short +
+                                    "&ti_id=" +
+                                    this.currentTeacherIndex +
+                                    "&receipts=true",
+                                  {
+                                    headers: {
+                                      Authorization:
+                                        "Basic " + resp.data.access_token
+                                    }
                                   }
-                                }
-                              )
-                              .then(res => {
-                                this.showPDF(res.data);
-                              })
-                              .catch(e => {
-                                e.toString();
-                                this.failedPDF();
-                              });
-                            break;
-                        }
-                      })
-                      .catch(err => {
-                        err.toString();
-                        this.$emit("logout");
-                      });
-                    break;
-                  default:
-                    this.failedPDF();
-                    break;
+                                )
+                                .then(res => {
+                                  this.showPDF(res.data);
+                                })
+                                .catch(e => {
+                                  e.toString();
+                                  this.failedPDF();
+                                });
+                              break;
+                          }
+                        })
+                        .catch(err => {
+                          err.toString();
+                          this.$emit("logout");
+                        });
+                      break;
+                    default:
+                      this.failedPDF();
+                      break;
+                  }
+                });
+            } else {
+              this.$bvToast.toast(
+                "Die Personalnummer wurde nicht richtig gesetzt!",
+                {
+                  title: "PDF wurde nicht geöffnet",
+                  autoHideDelay: 2500,
+                  appendToast: false,
+                  variant: "danger"
                 }
-              });
+              );
+            }
           } else {
             this.$bvToast.toast(
-              "Die Personalnummer wurde nicht richtig gesetzt!",
+              "Es wurden nicht alle notwendigen Informationen eingegeben!",
               {
-                title: "Änderungen nicht gespeichert",
+                title: "Reiserechnung ist unvollständig",
                 autoHideDelay: 2500,
                 appendToast: false,
                 variant: "danger"
