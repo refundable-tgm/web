@@ -376,6 +376,19 @@ export default {
       }
     },
     /**
+     * Diese Methode wandelt die Zahl inputs von Strings in Ints um
+     */
+    makeNumber() {
+      for (let i = 0; i < this.data.count_student_male.length; i++) {
+        this.data.count_student_male[i] = Number(
+          this.data.count_student_male[i]
+        );
+        this.data.count_student_female[i] = Number(
+          this.data.count_student_female[i]
+        );
+      }
+    },
+    /**
      * Diese Methode zeigt dem Benutzer an, dass nicht alle Felder richtig ausgefüllt worden sind
      */
     makeToast() {
@@ -393,6 +406,7 @@ export default {
       if (this.checkClick()) {
         if (this.validInputs) {
           this.makeUpper();
+          this.makeNumber();
           this.calculateLength();
           this.changeComponent("Escorts", true, null, this.data);
         } else {
