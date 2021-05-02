@@ -245,7 +245,7 @@
                   Keine Jahrgänge angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
-              <div v-for="(clas, index) in data.class" v-bind:key="clas">
+              <div v-for="(clas, index) in data.class" v-bind:key="index">
                 <!-- Anzahl der teilnehmenden Schüler -->
                 <b-form-group
                   id="schueler"
@@ -440,7 +440,7 @@ export default {
      */
     checkClass() {
       for (let i = 0; i < this.data.class.length; i++) {
-        this.data.class[i] = this.data.class[i].toUpperCase();
+        this.data.class[i] = ("" * this.data.class[i]).toUpperCase();
       }
       if (this.data.class.length === 0) {
         this.Class = false;
