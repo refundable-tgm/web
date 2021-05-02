@@ -405,7 +405,7 @@ export default {
      * @param shortName Der Kürzel des Lehrers
      * @returns Der ausgeschriebene Name des Lehrers
      */
-    getFullName(shortName) {
+    getTeacher(shortName) {
       axios
         .get(this.url + "/getTeacherByShort?name=" + shortName, {
           headers: {
