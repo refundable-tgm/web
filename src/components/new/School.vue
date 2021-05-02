@@ -441,7 +441,10 @@ export default {
     checkClass() {
       for (let i = 0; i < this.data.class.length; i++) {
         this.data.class[i] = ("" * this.data.class[i]).toUpperCase();
+        console.log(this.data.class[i]);
+        console.log(("" * this.data.class[i]).toUpperCase());
       }
+      console.log(this.data.class);
       if (this.data.class.length === 0) {
         this.Class = false;
       } else {
