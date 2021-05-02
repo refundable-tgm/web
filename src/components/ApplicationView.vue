@@ -1707,9 +1707,6 @@ export default {
                 this.sendReceipts(this.belege);
               }
             }
-            if (this.app.travel_invoices[0].calculation.rows !== null) {
-              this.app.progress = 6;
-            }
           }
         } else {
           if (
@@ -1721,9 +1718,6 @@ export default {
                 if (this.belege.files.length >= 1) {
                   this.sendReceipts(this.belege);
                 }
-              }
-              if (this.app.travel_invoices[0].calculation.rows !== null) {
-                this.app.progress = 6;
               }
             }
           }
@@ -1743,6 +1737,7 @@ export default {
           this.speichern();
         } else {
           if (this.checkInvoiceTimes()) {
+            this.app.progress = 6;
             this.speichern();
           } else {
             this.InvoiceFail();
