@@ -517,6 +517,12 @@ export default {
      * Diese Methode überprüft, ob die Eingaben valide sind
      */
     checkInputs() {
+      console.log(this.Time);
+      console.log(this.Desc);
+      console.log(this.Class);
+      console.log(this.Students);
+      console.log(this.Start);
+      console.log(this.Ziel);
       if (
         this.Time === true &&
         this.Desc === true &&
@@ -529,6 +535,7 @@ export default {
       } else {
         this.validInputs = false;
       }
+      console.log(this.validInputs);
     }
   },
   data() {
