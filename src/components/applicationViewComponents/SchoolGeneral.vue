@@ -151,7 +151,7 @@
                 label-cols-lg="3"
                 content-cols-sm
                 content-cols-lg="7"
-                description="Geben Sie die Kürzel der Begleitpersonen im Format ''mmuster'' für z.B.: Max Muster ein."
+                description="Die Begleitpersonen anwesend bei der Schulveranstaltung"
                 label="Begleitpersonen"
                 label-for="begl"
               >
@@ -173,7 +173,7 @@
                 label-cols-lg="3"
                 content-cols-sm
                 content-cols-lg="7"
-                description="Geben Sie die Kürzel der Klassen ein z.B.: ''5BHIT''"
+                description="Die Jahrgänge anwesend bei der Schulveranstaltung"
                 label="Jahrgänge"
                 label-for="kl"
               >
@@ -186,7 +186,7 @@
                   tag-variant="primary"
                   tag-pills
                   separator=" "
-                  placeholder="Einträge durch Leerzeichen trennen"
+                  placeholder=""
                 ></b-form-tags>
               </b-form-group>
               <div
