@@ -326,13 +326,13 @@ export default {
         if (found !== -1) {
           teach.push(this.data.school_event_details.teachers[found]);
         } else {
-          var l = this.getFullName(this.beg[i]);
+          var l = this.getTeacher(this.beg[i]);
           if (l.uuid === undefined) {
             return false;
           }
           teach.push({
-            name: l.long,
-            shortname: this.beg[i],
+            name: l.longname,
+            shortname: l.short,
             attendance_from: this.data.start_time,
             attendance_till: this.data.end_time,
             group: "",
@@ -340,10 +340,65 @@ export default {
             meeting_point: this.data.start_address,
             role: 0
           });
+          for (
+            let j = 0;
+            j < this.data.business_trip_applications.length;
+            j++
+          ) {
+            this.data.business_trip_applications[j].other_participants.push(
+              l.short
+            );
+          }
+          var leader = this.generateShortname(
+            this.data.business_trip_applications[0].name,
+            this.data.business_trip_applications[0].surname
+          );
+          var others = [];
+          others.push(leader);
+          for (
+            let j = 0;
+            j <
+            this.data.business_trip_applications[0].other_participants.length;
+            j++
+          ) {
+            others.push(
+              this.data.business_trip_applications[0].other_participants[j]
+            );
+          }
+          console.log(others);
+          this.data.business_trip_applications.push({
+            id: i,
+            surname: l.longname.split(" ")[1],
+            name: l.longname.split(" ")[0],
+            trip_begin_time: this.data.start_time,
+            trip_end_time: this.data.end_time,
+            service_begin_time: this.data.start_time,
+            service_end_time: this.data.end_time,
+            other_participants: others,
+            date_application_filed: new Date().toISOString()
+          });
+          this.data.travel_invoices.push({
+            id: i,
+            surname: l.longname.split(" ")[1],
+            name: l.longname.split(" ")[0],
+            trip_begin_time: this.data.start_time,
+            trip_end_time: this.data.end_time,
+            service_begin_time: this.data.start_time,
+            service_end_time: this.data.end_time,
+            starting_point: this.data.start_address,
+            end_point: this.data.destination_address,
+            filing_date: new Date().toISOString()
+          });
         }
       }
       this.data.school_event_details.teachers = teach;
       this.updateData();
+    },
+    /**
+     * Diese Methode generiert aus dem Namen einer Person, dass Kürzel
+     */
+    generateShortname(name, surname) {
+      return name.substring(0, 1).toLowerCase() + surname.toLowerCase();
     },
     /**
      * Diese Methode gibt das Kürzel des Lehreres zurück
@@ -352,7 +407,7 @@ export default {
      */
     getFullName(shortName) {
       axios
-        .get(this.url + "/getLongName?name=" + shortName, {
+        .get(this.url + "/getTeacherByShort?name=" + shortName, {
           headers: {
             Authorization: "Basic " + this.token
           }
@@ -374,7 +429,7 @@ export default {
                     resp.data.refresh_token
                   );
                   axios
-                    .get(this.url + "/getLongName?name=" + shortName, {
+                    .get(this.url + "/getTeacherByShort?name=" + shortName, {
                       headers: {
                         Authorization: "Basic " + resp.data.access_token
                       }
