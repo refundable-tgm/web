@@ -159,8 +159,7 @@
                   id="begl"
                   input-id="tags-pills1"
                   v-model="beg"
-                  :disabled="readonly"
-                  @input="updateBeg"
+                  :disabled="true"
                   tag-variant="primary"
                   tag-pills
                   separator=" "
@@ -282,7 +281,6 @@
   </b-container>
 </template>
 <script>
-import axios from "axios";
 export default {
   name: "NewApplication",
   props: ["data", "readonly", "url", "token", "refresh_token"],
@@ -302,156 +300,6 @@ export default {
      */
     updateData() {
       this.$emit("update", this.data);
-    },
-    /**
-     * Diese Methode erstellt die Begleitlehrer-Objekte für die neu erstellen Begleiter
-     */
-    updateBeg() {
-      var teach = [];
-      teach.push(this.data.school_event_details.teachers[0]);
-      var found = -1;
-      for (let i = 0; i < this.beg.length; i++) {
-        for (
-          let j = 0;
-          j < this.data.school_event_details.teachers.length;
-          j++
-        ) {
-          found = -1;
-          if (
-            this.beg[i] === this.data.school_event_details.teachers[j].shortname
-          ) {
-            found = j;
-          }
-        }
-        if (found !== -1) {
-          teach.push(this.data.school_event_details.teachers[found]);
-        } else {
-          var l = this.getTeacher(this.beg[i]);
-          if (l.uuid === undefined) {
-            return false;
-          }
-          teach.push({
-            name: l.longname,
-            shortname: l.short,
-            attendance_from: this.data.start_time,
-            attendance_till: this.data.end_time,
-            group: "",
-            start_address: this.data.start_address,
-            meeting_point: this.data.start_address,
-            role: 0
-          });
-          for (
-            let j = 0;
-            j < this.data.business_trip_applications.length;
-            j++
-          ) {
-            this.data.business_trip_applications[j].other_participants.push(
-              l.short
-            );
-          }
-          var leader = this.generateShortname(
-            this.data.business_trip_applications[0].name,
-            this.data.business_trip_applications[0].surname
-          );
-          var others = [];
-          others.push(leader);
-          for (
-            let j = 0;
-            j <
-            this.data.business_trip_applications[0].other_participants.length;
-            j++
-          ) {
-            others.push(
-              this.data.business_trip_applications[0].other_participants[j]
-            );
-          }
-          console.log(others);
-          this.data.business_trip_applications.push({
-            id: i,
-            surname: l.longname.split(" ")[1],
-            name: l.longname.split(" ")[0],
-            trip_begin_time: this.data.start_time,
-            trip_end_time: this.data.end_time,
-            service_begin_time: this.data.start_time,
-            service_end_time: this.data.end_time,
-            other_participants: others,
-            date_application_filed: new Date().toISOString()
-          });
-          this.data.travel_invoices.push({
-            id: i,
-            surname: l.longname.split(" ")[1],
-            name: l.longname.split(" ")[0],
-            trip_begin_time: this.data.start_time,
-            trip_end_time: this.data.end_time,
-            service_begin_time: this.data.start_time,
-            service_end_time: this.data.end_time,
-            starting_point: this.data.start_address,
-            end_point: this.data.destination_address,
-            filing_date: new Date().toISOString()
-          });
-        }
-      }
-      this.data.school_event_details.teachers = teach;
-      this.updateData();
-    },
-    /**
-     * Diese Methode generiert aus dem Namen einer Person, dass Kürzel
-     */
-    generateShortname(name, surname) {
-      return name.substring(0, 1).toLowerCase() + surname.toLowerCase();
-    },
-    /**
-     * Diese Methode gibt das Kürzel des Lehreres zurück
-     * @param shortName Der Kürzel des Lehrers
-     * @returns Der ausgeschriebene Name des Lehrers
-     */
-    getTeacher(shortName) {
-      axios
-        .get(this.url + "/getTeacherByShort?name=" + shortName, {
-          headers: {
-            Authorization: "Basic " + this.token
-          }
-        })
-        .then(response => {
-          return response.data;
-        })
-        .catch(error => {
-          switch (error.response.status) {
-            case 401:
-              axios
-                .post(this.url + "/login/refresh", {
-                  refresh_token: this.refresh_token
-                })
-                .then(resp => {
-                  this.$emit(
-                    "updateToken",
-                    resp.data.access_token,
-                    resp.data.refresh_token
-                  );
-                  axios
-                    .get(this.url + "/getTeacherByShort?name=" + shortName, {
-                      headers: {
-                        Authorization: "Basic " + resp.data.access_token
-                      }
-                    })
-                    .then(res => {
-                      return res.data;
-                    })
-                    .catch(e => {
-                      e.toString();
-                      this.addFailed();
-                    });
-                })
-                .catch(err => {
-                  err.toString();
-                  this.$emit("logout");
-                });
-              break;
-            default:
-              this.addFailed();
-              return false;
-          }
-        });
     },
     /**
      * Diese Methode berechnet, welcher Lehrer noch nicht seine Informationen eingegeben hat
