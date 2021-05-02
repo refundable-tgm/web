@@ -163,7 +163,7 @@
                   tag-variant="primary"
                   tag-pills
                   separator=" "
-                  placeholder="Einträge durch Leerzeichen trennen"
+                  placeholder=""
                 ></b-form-tags>
               </b-form-group>
               <!-- Bezeichnungen der teilnehmenden Klassen -->
@@ -186,7 +186,7 @@
                   tag-variant="primary"
                   tag-pills
                   separator=" "
-                  placeholder=" "
+                  placeholder="Einträge durch Leerzeichen trennen"
                 ></b-form-tags>
               </b-form-group>
               <!-- Anzahl der teilnehmenden Schüler -->
