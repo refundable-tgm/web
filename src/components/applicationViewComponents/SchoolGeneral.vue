@@ -311,9 +311,27 @@ export default {
   },
   methods: {
     /**
+     * Diese Methode wandelt die Inputs der Schüler in Zahlen um
+     */
+    makeNumber() {
+      for (
+        let i = 0;
+        i < this.data.school_event_details.amount_male_students.length;
+        i++
+      ) {
+        this.data.school_event_details.amount_male_students[i] = Number(
+          this.data.school_event_details.amount_male_students[i]
+        );
+        this.data.school_event_details.amount_female_students[i] = Number(
+          this.data.school_event_details.amount_female_students[i]
+        );
+      }
+    },
+    /**
      * Diese Methode sendet die aktuellen Daten an den Parent
      */
     updateData() {
+      this.makeNumber();
       this.$emit("update", this.data);
     },
     /**
