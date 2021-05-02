@@ -456,7 +456,13 @@ export default {
       for (let i = 0; i < this.data.count_student_male.length; i++) {
         if (
           this.data.count_student_male[i] + this.data.count_student_female[i] <=
-          0
+            0 ||
+          this.data.count_student_male[i] === undefined ||
+          this.data.count_student_male[i] === null ||
+          this.data.count_student_male[i] === "" ||
+          this.data.count_student_female[i] === undefined ||
+          this.data.count_student_female[i] === null ||
+          this.data.count_student_female[i] === ""
         ) {
           this.Students[i] = false;
         } else {
