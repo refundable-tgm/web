@@ -245,54 +245,62 @@
                   Keine Jahrgänge angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
-              <!-- Anzahl der teilnehmenden Schüler -->
-              <b-form-group
-                id="schueler"
-                label-cols-sm="4"
-                label-cols-lg="3"
-                content-cols-sm
-                content-cols-lg="7"
-                description="Geben Sie die anzahl der Schüler ein."
-                label="Anzahl Schüler"
-                label-for="aschueler"
-              >
-                <b-form-input
-                  id="aschueler"
-                  type="number"
-                  min="0"
-                  max="3000"
-                  v-model="data.count_student_male"
-                  :state="Students"
-                  v-on:input="checkStudents"
-                ></b-form-input>
-                <b-form-invalid-feedback id="aschueler-feedback">
-                  Keine Schüler/Schülerinnen angegeben!
-                </b-form-invalid-feedback>
-              </b-form-group>
-              <!-- ANzahö der teilnehmenden Schülerinnen -->
-              <b-form-group
-                id="schuelerinnen"
-                label-cols-sm="4"
-                label-cols-lg="3"
-                content-cols-sm
-                content-cols-lg="7"
-                description="Geben Sie die anzahl der Schülerinnen ein."
-                label="Anzahl Schülerinnen"
-                label-for="aschuelerin"
-              >
-                <b-form-input
-                  id="aschuelerin"
-                  type="number"
-                  min="0"
-                  max="3000"
-                  v-model="data.count_student_female"
-                  :state="Students"
-                  v-on:input="checkStudents"
-                ></b-form-input>
-                <b-form-invalid-feedback id="aschuelerin-feedback">
-                  Keine Schüler/Schülerinnen angegeben!
-                </b-form-invalid-feedback>
-              </b-form-group>
+              <div v-for="(index, clas) in data.class" v-bind:key="clas">
+                <!-- Anzahl der teilnehmenden Schüler -->
+                <b-form-group
+                  id="schueler"
+                  label-cols-sm="4"
+                  label-cols-lg="3"
+                  content-cols-sm
+                  content-cols-lg="7"
+                  :description="
+                    'Geben Sie die Anzahl der Schüler der ' + clas + ' ein.'
+                  "
+                  :label="'Anzahl Schüler ' + clas"
+                  label-for="aschueler"
+                >
+                  <b-form-input
+                    id="aschueler"
+                    type="number"
+                    min="0"
+                    max="3000"
+                    v-model="data.count_student_male[index]"
+                    :state="Students"
+                    v-on:input="checkStudents"
+                  ></b-form-input>
+                  <b-form-invalid-feedback id="aschueler-feedback">
+                    Keine Schüler/Schülerinnen angegeben!
+                  </b-form-invalid-feedback>
+                </b-form-group>
+                <!-- Anzahl der teilnehmenden Schülerinnen -->
+                <b-form-group
+                  id="schuelerinnen"
+                  label-cols-sm="4"
+                  label-cols-lg="3"
+                  content-cols-sm
+                  content-cols-lg="7"
+                  :description="
+                    'Geben Sie die Anzahl der Schülerinnen der ' +
+                      clas +
+                      ' ein.'
+                  "
+                  :label="'Anzahl Schülerinnen ' + clas"
+                  label-for="aschuelerin"
+                >
+                  <b-form-input
+                    id="aschuelerin"
+                    type="number"
+                    min="0"
+                    max="3000"
+                    v-model="data.count_student_female[index]"
+                    :state="Students"
+                    v-on:input="checkStudents"
+                  ></b-form-input>
+                  <b-form-invalid-feedback id="aschuelerin-feedback">
+                    Keine Schüler/Schülerinnen angegeben!
+                  </b-form-invalid-feedback>
+                </b-form-group>
+              </div>
               <!-- Anmerkungen -->
               <b-form-group
                 id="anmerkung"
@@ -527,8 +535,8 @@ export default {
         endTime: "",
         start: "",
         ziel: "",
-        count_student_male: 0,
-        count_student_female: 0,
+        count_student_male: [],
+        count_student_female: [],
         notes: "",
         exkursLength: 0
       },
