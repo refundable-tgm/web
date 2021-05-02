@@ -440,13 +440,8 @@ export default {
      */
     checkClass() {
       for (let i = 0; i < this.data.class.length; i++) {
-        console.log(this.data.class[i]);
-        console.log(("" + this.data.class[i]));
         this.data.class[i] = ("" + this.data.class[i]).toUpperCase();
-        console.log(this.data.class[i]);
-        console.log(("" + this.data.class[i]).toUpperCase());
       }
-      console.log(this.data.class);
       if (this.data.class.length === 0) {
         this.Class = false;
       } else {
@@ -525,16 +520,11 @@ export default {
       if (
         this.Time === true &&
         this.Desc === true &&
+        this.Class === true &&
         this.Students === true &&
         this.Start === true &&
         this.Ziel === true
       ) {
-        for (let i = 0; i < this.Class.length; i++) {
-          if (!this.Class[i]) {
-            this.validInputs = false;
-            return;
-          }
-        }
         this.validInputs = true;
       } else {
         this.validInputs = false;
