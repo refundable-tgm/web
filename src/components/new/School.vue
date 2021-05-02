@@ -245,7 +245,7 @@
                   Keine Jahrgänge angegeben!
                 </b-form-invalid-feedback>
               </b-form-group>
-              <div v-for="(index, clas) in data.class" v-bind:key="clas">
+              <div v-for="(clas, index) in data.class" v-bind:key="clas">
                 <!-- Anzahl der teilnehmenden Schüler -->
                 <b-form-group
                   id="schueler"
@@ -265,7 +265,7 @@
                     min="0"
                     max="3000"
                     v-model="data.count_student_male[index]"
-                    :state="Students"
+                    :state="Students[index]"
                     v-on:input="checkStudents"
                   ></b-form-input>
                   <b-form-invalid-feedback id="aschueler-feedback">
@@ -293,7 +293,7 @@
                     min="0"
                     max="3000"
                     v-model="data.count_student_female[index]"
-                    :state="Students"
+                    :state="Students[index]"
                     v-on:input="checkStudents"
                   ></b-form-input>
                   <b-form-invalid-feedback id="aschuelerin-feedback">
@@ -450,10 +450,15 @@ export default {
      * Diese Methode überprüft, ob SchülerInnen angegeben worden sind
      */
     checkStudents() {
-      if (this.data.count_student_male + this.data.count_student_female <= 0) {
-        this.Students = false;
-      } else {
-        this.Students = true;
+      for (let i = 0; i < this.data.count_student_male.length; i++) {
+        if (
+          this.data.count_student_male[i] + this.data.count_student_female[i] <=
+          0
+        ) {
+          this.Students[i] = false;
+        } else {
+          this.Students[i] = true;
+        }
       }
       this.checkInputs();
     },
@@ -544,7 +549,7 @@ export default {
       Time: null,
       Desc: null,
       Class: null,
-      Students: null,
+      Students: [],
       Start: null,
       Ziel: null
     };

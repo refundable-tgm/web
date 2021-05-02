@@ -190,7 +190,7 @@
                 ></b-form-tags>
               </b-form-group>
               <div
-                v-for="(index, clas) in data.school_event_details.classes"
+                v-for="(clas, index) in data.school_event_details.classes"
                 v-bind:key="clas"
               >
                 <!-- Anzahl der teilnehmenden Schüler -->
