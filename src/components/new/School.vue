@@ -254,9 +254,11 @@
                   content-cols-sm
                   content-cols-lg="7"
                   :description="
-                    'Geben Sie die Anzahl der Schüler der ' + clas + ' ein.'
+                    'Geben Sie die Anzahl der Schüler der ' +
+                      clas.toUpperCase() +
+                      ' ein.'
                   "
-                  :label="'Anzahl Schüler ' + clas"
+                  :label="'Anzahl Schüler ' + clas.toUpperCase()"
                   label-for="aschueler"
                 >
                   <b-form-input
@@ -281,10 +283,10 @@
                   content-cols-lg="7"
                   :description="
                     'Geben Sie die Anzahl der Schülerinnen der ' +
-                      clas +
+                      clas.toUpperCase() +
                       ' ein.'
                   "
-                  :label="'Anzahl Schülerinnen ' + clas"
+                  :label="'Anzahl Schülerinnen ' + clas.toUpperCase()"
                   label-for="aschuelerin"
                 >
                   <b-form-input
