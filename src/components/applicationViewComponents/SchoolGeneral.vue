@@ -189,49 +189,62 @@
                   placeholder="Einträge durch Leerzeichen trennen"
                 ></b-form-tags>
               </b-form-group>
-              <div v-for="(index, clas) in data.school_event_details.classes" v-bind:key="clas">
+              <div
+                v-for="(index, clas) in data.school_event_details.classes"
+                v-bind:key="clas"
+              >
                 <!-- Anzahl der teilnehmenden Schüler -->
-              <b-form-group
-                id="schueler"
-                label-cols-sm="4"
-                label-cols-lg="3"
-                content-cols-sm
-                content-cols-lg="7"
-                :description="'Geben Sie die Anzahl der Schüler der '+clas+' ein.'"
-                :label="'Anzahl Schüler '+clas"
-                label-for="aschueler"
-              >
-                <b-form-input
-                  id="aschueler"
-                  :readonly="readonly"
-                  v-model="data.school_event_details.amount_male_students[index]"
-                  @input="updateData"
-                  type="number"
-                  min="0"
-                  max="3000"
-                ></b-form-input>
-              </b-form-group>
-              <!-- Anzahl der teilnehmenden Schülerinnen -->
-              <b-form-group
-                id="schuelerinnen"
-                label-cols-sm="4"
-                label-cols-lg="3"
-                content-cols-sm
-                content-cols-lg="7"
-                :description="'Geben Sie die Anzahl der Schülerinnen der '+clas+' ein.'"
-                :label="'Anzahl Schülerinnen '+clas"
-                label-for="aschuelerin"
-              >
-                <b-form-input
-                  id="aschuelerin"
-                  v-model="data.school_event_details.amount_female_students[index]"
-                  :readonly="readonly"
-                  @input="updateData"
-                  type="number"
-                  min="0"
-                  max="3000"
-                ></b-form-input>
-              </b-form-group>
+                <b-form-group
+                  id="schueler"
+                  label-cols-sm="4"
+                  label-cols-lg="3"
+                  content-cols-sm
+                  content-cols-lg="7"
+                  :description="
+                    'Geben Sie die Anzahl der Schüler der ' + clas + ' ein.'
+                  "
+                  :label="'Anzahl Schüler ' + clas"
+                  label-for="aschueler"
+                >
+                  <b-form-input
+                    id="aschueler"
+                    :readonly="readonly"
+                    v-model="
+                      data.school_event_details.amount_male_students[index]
+                    "
+                    @input="updateData"
+                    type="number"
+                    min="0"
+                    max="3000"
+                  ></b-form-input>
+                </b-form-group>
+                <!-- Anzahl der teilnehmenden Schülerinnen -->
+                <b-form-group
+                  id="schuelerinnen"
+                  label-cols-sm="4"
+                  label-cols-lg="3"
+                  content-cols-sm
+                  content-cols-lg="7"
+                  :description="
+                    'Geben Sie die Anzahl der Schülerinnen der ' +
+                      clas +
+                      ' ein.'
+                  "
+                  :label="'Anzahl Schülerinnen ' + clas"
+                  label-for="aschuelerin"
+                >
+                  <b-form-input
+                    id="aschuelerin"
+                    v-model="
+                      data.school_event_details.amount_female_students[index]
+                    "
+                    :readonly="readonly"
+                    @input="updateData"
+                    type="number"
+                    min="0"
+                    max="3000"
+                  ></b-form-input>
+                </b-form-group>
               </div>
               <!-- Zusätzliche Anmerkungen -->
               <b-form-group
