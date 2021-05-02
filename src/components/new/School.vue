@@ -517,25 +517,23 @@ export default {
      * Diese Methode überprüft, ob die Eingaben valide sind
      */
     checkInputs() {
-      console.log(this.Time);
-      console.log(this.Desc);
-      console.log(this.Class);
-      console.log(this.Students);
-      console.log(this.Start);
-      console.log(this.Ziel);
       if (
         this.Time === true &&
         this.Desc === true &&
         this.Class === true &&
-        this.Students === true &&
         this.Start === true &&
         this.Ziel === true
       ) {
+        for (let i = 0; i < this.Students.length; i++) {
+          if (!this.Students[i]) {
+            this.validInputs = false;
+            return;
+          }
+        }
         this.validInputs = true;
       } else {
         this.validInputs = false;
       }
-      console.log(this.validInputs);
     }
   },
   data() {
