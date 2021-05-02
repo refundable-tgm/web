@@ -346,12 +346,8 @@ export default {
           destination_address: this.returnString(this.escorts.ziel),
           school_event_details: {
             classes: this.escorts.class,
-            amount_male_students: this.returnValue(
-              this.escorts.count_student_male
-            ),
-            amount_female_students: this.returnValue(
-              this.escorts.count_student_female
-            ),
+            amount_male_students: this.escorts.count_student_male,
+            amount_female_students: this.escorts.count_student_female,
             duration_in_days: this.returnValue(this.escorts.exkursLength),
             teachers: teachers
           },
