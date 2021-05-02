@@ -1370,7 +1370,7 @@ export default {
     checkInvoiceTimes() {
       var data = this.app.travel_invoices[this.currentTeacherIndex].calculation;
       if (data.rows === null || data.rows === undefined || data.rows === "") {
-        return true;
+        return false;
       } else {
         for (let i = 0; i < data.rows.length; i++) {
           if (data.rows[i].begin === "" || data.rows[i].end === "") {
