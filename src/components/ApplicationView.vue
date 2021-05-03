@@ -798,8 +798,18 @@ export default {
      */
     calcDate(date) {
       var tmp = date.split(".");
+      if (tmp[1] <= 10) {
+        tmp[1] = "0" + (tmp[1] - 1);
+      } else {
+        tmp[1] = tmp[1] - 1;
+      }
+      if (tmp[0] < 10) {
+        tmp[0] = "0" + tmp[0];
+      } else {
+        tmp[0] = tmp[0];
+      }
       var ausg = new Date(
-        tmp[2] + "-" + (tmp[1] - 1) + "-" + tmp[0] + "T12:00:00.000Z"
+        tmp[2] + "-" + tmp[1] + "-" + tmp[0] + "T12:00:00.000"
       );
       return ausg.toISOString();
     },
