@@ -798,14 +798,9 @@ export default {
      */
     calcDate(date) {
       var tmp = date.split(".");
-      var ausg = new Date();
-      ausg.setFullYear(tmp[2]);
-      ausg.setDate(tmp[0]);
-      ausg.setMonth(tmp[1] - 1);
-      ausg.setHours(12);
-      ausg.setMinutes(0);
-      ausg.setSeconds(0);
-      ausg.setMilliseconds(0);
+      var ausg = new Date(
+        tmp[2] + "-" + (tmp[1] - 1) + "-" + tmp[0] + "T12:00:00.000Z"
+      );
       return ausg.toISOString();
     },
     /**
