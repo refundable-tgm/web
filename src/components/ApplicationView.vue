@@ -1381,7 +1381,10 @@ export default {
           if (
             data.rows[i].begin === "" ||
             data.rows[i].end === "" ||
-            data.rows.kind_of_cost.length === 0
+            !data.rows.kind_of_cost.includes(0) ||
+            !data.rows.kind_of_cost.includes(1) ||
+            !data.rows.kind_of_cost.includes(2) ||
+            !data.rows.kind_of_cost.includes(3)
           ) {
             return false;
           }
