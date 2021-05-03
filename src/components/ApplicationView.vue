@@ -1378,14 +1378,7 @@ export default {
         return false;
       } else {
         for (let i = 0; i < data.rows.length; i++) {
-          if (
-            data.rows[i].begin === "" ||
-            data.rows[i].end === "" ||
-            !data.rows.kind_of_cost.includes(0) ||
-            !data.rows.kind_of_cost.includes(1) ||
-            !data.rows.kind_of_cost.includes(2) ||
-            !data.rows.kind_of_cost.includes(3)
-          ) {
+          if (data.rows[i].begin === "" || data.rows[i].end === "") {
             return false;
           }
         }
