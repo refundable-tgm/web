@@ -806,7 +806,7 @@ export default {
       if (tmp[0] < 10) {
         tmp[0] = "0" + tmp[0];
       } else {
-        tmp[0] = tmp[0];
+        tmp[0] = "" + tmp[0];
       }
       var ausg = new Date(
         tmp[2] + "-" + tmp[1] + "-" + tmp[0] + "T12:00:00.000"
