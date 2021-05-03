@@ -660,7 +660,7 @@ export default {
         });
       }
     }
-    this.update();
+    this.calcSum();
   }
 };
 </script>
