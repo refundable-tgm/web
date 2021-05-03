@@ -1378,7 +1378,11 @@ export default {
         return false;
       } else {
         for (let i = 0; i < data.rows.length; i++) {
-          if (data.rows[i].begin === "" || data.rows[i].end === "") {
+          if (
+            data.rows[i].begin === "" ||
+            data.rows[i].end === "" ||
+            data.rows.kind_of_cost === []
+          ) {
             return false;
           }
         }
