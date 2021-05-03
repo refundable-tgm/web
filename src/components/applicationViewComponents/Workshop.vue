@@ -236,17 +236,13 @@ export default {
     var start = new Date(this.data.start_time);
     var end = new Date(this.data.end_time);
     this.startDate =
-      start.getUTCFullYear() +
+      start.getFullYear() +
       "-" +
-      (start.getUTCMonth() + 1) +
+      (start.getMonth() + 1) +
       "-" +
       start.getDate();
     this.endDate =
-      end.getUTCFullYear() +
-      "-" +
-      (end.getUTCMonth() + 1) +
-      "-" +
-      end.getDate();
+      end.getFullYear() + "-" + (end.getMonth() + 1) + "-" + end.getDate();
     this.startTime = start.getHours() + ":" + start.getMinutes();
     this.endTime = end.getHours() + ":" + end.getMinutes();
   },
