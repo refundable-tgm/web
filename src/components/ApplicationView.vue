@@ -1321,8 +1321,10 @@ export default {
                                   this.app.travel_invoices[i].calculation
                                     .rows !== null
                                 ) {
+                                  console.log("Wurde eingetragen");
                                   allInputed = true;
                                 } else {
+                                  console.log("rows is null");
                                   return false;
                                 }
                               } else {
