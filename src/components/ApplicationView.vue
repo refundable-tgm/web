@@ -799,9 +799,9 @@ export default {
     calcDate(date) {
       var tmp = date.split(".");
       if (tmp[1] <= 10) {
-        tmp[1] = "0" + (tmp[1] - 1);
+        tmp[1] = "0" + tmp[1];
       } else {
-        tmp[1] = tmp[1] - 1;
+        tmp[1] = "" + tmp[1];
       }
       if (tmp[0] < 10) {
         tmp[0] = "0" + tmp[0];
