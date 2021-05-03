@@ -504,49 +504,30 @@ export default {
       var sac = 0;
       var sos = 0;
       for (let i = 0; i < this.data.items.length; i++) {
-        console.log("1");
         if (this.data.items[i].kind_of_cost.includes("0")) {
-          console.log("2");
           if (!isNaN(Number(this.data.items[i].travelcosts))) {
-            console.log("3");
             stc += Number(this.data.items[i].travelcosts);
           }
         }
-        console.log("4");
         if (this.data.items[i].kind_of_cost.includes("1")) {
-          console.log("5");
           if (!isNaN(Number(this.data.items[i].daycharge))) {
-            console.log("6");
             sdc += Number(this.data.items[i].daycharge);
           }
         }
-        console.log("7");
         if (this.data.items[i].kind_of_cost.includes("2")) {
-          console.log("8");
           if (!isNaN(Number(this.data.items[i].sleepcharge))) {
-            console.log("9");
             snc += Number(this.data.items[i].sleepcharge);
           }
         }
-        console.log("10");
         if (this.data.items[i].kind_of_cost.includes("3")) {
-          console.log("11");
           if (!isNaN(Number(this.data.items[i].othercosts))) {
-            console.log("12");
             sac += Number(this.data.items[i].othercosts);
           }
         }
-        console.log("13");
         if (!isNaN(Number(this.data.items[i].sum))) {
-          console.log("14");
           sos += Number(this.data.items[i].sum);
         }
       }
-      console.log(stc);
-      console.log(sdc);
-      console.log(snc);
-      console.log(sac);
-      console.log(sos);
       this.data.sum_travelcosts = Number(stc);
       this.data.sum_daily_charges = Number(sdc);
       this.data.sum_nightly_charges = Number(snc);
@@ -694,7 +675,7 @@ export default {
         });
       }
     }
-    this.calcSum();
+    this.update();
   }
 };
 </script>
