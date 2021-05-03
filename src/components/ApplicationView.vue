@@ -1321,10 +1321,8 @@ export default {
                                   this.app.travel_invoices[i].calculation
                                     .rows !== null
                                 ) {
-                                  console.log("Wurde eingetragen");
                                   allInputed = true;
                                 } else {
-                                  console.log("rows is null");
                                   return false;
                                 }
                               } else {
@@ -1736,19 +1734,23 @@ export default {
       if (this.checkInvoices()) {
         this.app.progress = 6;
       }
-      if (this.app.progress === 5) {
-        if (
-          this.app.travel_invoices[this.currentTeacherIndex].calculation
-            .rows === null
-        ) {
-          this.speichern();
-        } else {
-          if (this.checkInvoiceTimes()) {
-            this.app.progress = 6;
+      if (this.app.kind !== 0) {
+        if (this.app.progress === 5) {
+          if (
+            this.app.travel_invoices[this.currentTeacherIndex].calculation
+              .rows === null
+          ) {
             this.speichern();
           } else {
-            this.InvoiceFail();
+            if (this.checkInvoiceTimes()) {
+              this.app.progress = 6;
+              this.speichern();
+            } else {
+              this.InvoiceFail();
+            }
           }
+        } else {
+          this.speichern();
         }
       } else {
         this.speichern();
