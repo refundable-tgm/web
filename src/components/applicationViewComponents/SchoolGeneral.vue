@@ -338,7 +338,7 @@ export default {
      * Diese Methode berechnet, welcher Lehrer noch nicht seine Informationen eingegeben hat
      */
     checkFinished(index) {
-      if (this.data.progress === 1) {
+      if (this.data.progress < 5) {
         var allInput = true;
         if (
           this.data.school_event_details.teachers[index].attendance_from !==
@@ -421,7 +421,7 @@ export default {
       if (allInput) {
         return true;
       }
-      if (this.data.progress === 5) {
+      if (this.data.progress >= 5) {
         if (
           this.data.travel_invoices[index].daily_charges_mode === 0 ||
           this.data.travel_invoices[index].daily_charges_mode === 1 ||
